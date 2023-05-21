@@ -16,13 +16,17 @@
     "@types/node": "20.2.1",
     "@types/react": "18.2.6",
     "@types/react-dom": "18.2.4",
+    "apollo-server-micro": "^3.12.0",
+    "class-validator": "^0.14.0",
     "eslint": "8.41.0",
     "eslint-config-next": "13.4.3",
     "framer-motion": "^10.12.12",
-    "graphql": "16.6.0",
+    "graphql": "^16.6.0",
     "next": "13.4.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "reflect-metadata": "^0.1.13",
+    "type-graphql": "^2.0.0-beta.2",
     "typescript": "5.0.4"
   }
 }
