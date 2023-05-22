@@ -1,6 +1,9 @@
 import "reflect-metadata";
 import type { NextApiRequest, NextApiResponse } from "next";
+
 import { ApolloServer } from "apollo-server-micro";
+import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
+
 import {
   Field,
   ID,
@@ -11,41 +14,30 @@ import {
 } from "type-graphql";
 
 @ObjectType()
-export class User {
+export class Dog {
   @Field(() => ID)
-  id?: string;
-
-  @Field(() => String)
   name?: string;
 }
 
-@Resolver(User)
-export class UserResolver {
-  constructor() {}
-  @Query(() => User)
-  async user() {
-    return {
-      id: "1",
-      name: "John Doe",
-    };
+@Resolver(Dog)
+export class DogResolver {
+  @Query(() => [Dog])
+  async dogs() {
+    return [{ name: "test" }, { name: "test2" }];
   }
 }
 
 const schema = await buildSchema({
-  resolvers: [UserResolver],
+  resolvers: [DogResolver],
 });
 
-const apolloServer = new ApolloServer({
+export const apolloServer = new ApolloServer({
   schema,
+  plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
+  introspection: true,
 });
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
-
-const startServer = apolloServer.start();
+export const startServer = apolloServer.start();
 
 export default async function handler(
   req: NextApiRequest,
@@ -56,3 +48,9 @@ export default async function handler(
     path: "/api/graphql",
   })(req, res);
 }
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
