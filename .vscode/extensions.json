@@ -1,6 +1,7 @@
 {
-    "recommendations": [
-        "esbenp.prettier-vscode",
-        "apollographql.vscode-apollo",
-    ]
+  "recommendations": [
+    "esbenp.prettier-vscode",
+    "apollographql.vscode-apollo",
+    "prisma.prisma"
+  ]
 }
