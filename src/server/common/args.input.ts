@@ -1,16 +1,17 @@
-import { Field, InputType } from "type-graphql";
+import { gql } from "@apollo/client";
 
-@InputType()
-export class Args {
-  @Field(() => PaginationInput, { nullable: true })
-  pagination: PaginationInput;
+export interface Args {
+  pagination?: Pagination;
 }
 
-@InputType()
-export class PaginationInput {
-  @Field({ nullable: true })
-  skip: number;
-
-  @Field({ nullable: true })
-  take: number;
+export interface Pagination {
+  take?: number;
+  skip?: number;
 }
+
+export const ArgsSchema = gql`
+  input Pagination {
+    take: Int
+    skip: Int
+  }
+`;
