@@ -1,27 +1,23 @@
-import { buildSchema } from "type-graphql";
 import { ApolloServer } from "@apollo/server";
+import { apolloPlugins } from "./plugins";
+import { gql } from "graphql-tag";
 
-import {
-  ApolloServerPluginLandingPageLocalDefault,
-  ApolloServerPluginLandingPageProductionDefault,
-} from "@apollo/server/plugin/landingPage/default";
-import { DogResolver } from "./dogs/dog.resolver";
-import { UserResolver } from "./users/user.resolver";
+const resolvers = {
+  Query: {
+    hello: () => {
+      return "Hello world!";
+    },
+  },
+};
 
-let plugins = [];
-if (process.env.NODE_ENV === "production") {
-  plugins = [
-    ApolloServerPluginLandingPageProductionDefault({
-      embed: true,
-      graphRef: "myGraph@prod",
-    }),
-  ];
-} else {
-  plugins = [ApolloServerPluginLandingPageLocalDefault({ embed: true })];
-}
+const typeDefs = gql`
+  type Query {
+    hello: String
+  }
+`;
 
-const schema = await buildSchema({
-  resolvers: [DogResolver, UserResolver],
+export const apolloServer = new ApolloServer({
+  resolvers,
+  typeDefs,
+  plugins: apolloPlugins,
 });
-
-export const apolloServer = new ApolloServer({ schema, plugins });

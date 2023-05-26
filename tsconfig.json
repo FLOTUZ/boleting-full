@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es2018",
-    "lib": ["dom", "dom.iterable", "esnext", "esnext.asynciterable"],
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -14,9 +14,6 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    //omit not initialized properties in class
     "strictPropertyInitialization": false,
     "paths": {
       "@/*": ["./src/*"]
