@@ -6,6 +6,7 @@ import {
   ApolloServerPluginLandingPageProductionDefault,
 } from "@apollo/server/plugin/landingPage/default";
 import { DogResolver } from "./dogs/dog.resolver";
+import { UserResolver } from "./users/user.resolver";
 
 let plugins = [];
 if (process.env.NODE_ENV === "production") {
@@ -20,7 +21,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 const schema = await buildSchema({
-  resolvers: [DogResolver],
+  resolvers: [DogResolver, UserResolver],
 });
 
 export const apolloServer = new ApolloServer({ schema, plugins });

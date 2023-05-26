@@ -16,6 +16,8 @@
     "incremental": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    //omit not initialized properties in class
+    "strictPropertyInitialization": false,
     "paths": {
       "@/*": ["./src/*"]
     }
