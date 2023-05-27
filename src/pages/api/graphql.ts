@@ -4,6 +4,6 @@ import { startServerAndCreateNextHandler } from "@as-integrations/next";
 
 export default startServerAndCreateNextHandler(apolloServer, {
   context: async (req: NextApiRequest, res: NextApiResponse) => {
-    return { req, res, id_user: 1, prisma };
+    return { id_user: 1, prisma, req, res };
   },
 });
