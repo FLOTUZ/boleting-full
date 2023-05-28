@@ -3,11 +3,11 @@ import { apolloPlugins } from "./plugins";
 
 import { ArgsSchema, ScalarsSchema } from "./common";
 
-import { UserSchema, AuthSchema } from "./modules/schemas";
-import { UserResolver, AuthResolver } from "./modules/resolvers";
+import * as schemas from "./modules/schemas";
+import * as resolvers from "./modules/resolvers";
 
 export const apolloServer = new ApolloServer({
-  typeDefs: [ArgsSchema, ScalarsSchema, AuthSchema, UserSchema],
-  resolvers: [AuthResolver, UserResolver],
+  typeDefs: [ArgsSchema, ScalarsSchema, ...Object.values(schemas)],
+  resolvers: [...Object.values(resolvers)],
   plugins: apolloPlugins,
 });

@@ -1,6 +1,7 @@
 import { User } from "@prisma/client";
 import { IGraphqlContext } from "../../common/graphql.context";
 import { AuthenticationError, NotFoundError } from "@/server/utils";
+import * as argon from "argon2";
 import jwt from "jsonwebtoken";
 
 interface ILogin {
@@ -25,8 +26,9 @@ export const AuthResolver = {
 
       if (!user) throw new NotFoundError("User not found");
 
-      if (user.password !== data.password)
-        throw new AuthenticationError("Invalid password");
+      const passwordIsValid = await argon.verify(user.password, data.password);
+
+      if (!passwordIsValid) throw new AuthenticationError("Invalid password");
 
       const token = jwt.sign(
         {

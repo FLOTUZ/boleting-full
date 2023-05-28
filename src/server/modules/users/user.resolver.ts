@@ -31,16 +31,23 @@ export const UserResolver = {
   Mutation: {
     createUser: async (
       _: any,
-      { data }: { data: User },
+      { data }: { data: User & { role: number[] } },
       { prisma }: IGraphqlContext
     ) => {
       try {
         // Encript password with argon2
-        const hash = await argon2.hash("password");
+        const hash = await argon2.hash(data.password);
+        console.log({
+          pass: data.password,
+          hash,
+        });
         return await prisma.user.create({
           data: {
             ...data,
             password: hash,
+            role: {
+              connect: data.role?.map((id) => ({ id })),
+            },
           },
         });
       } catch (error: any) {
