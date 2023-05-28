@@ -2,6 +2,11 @@ import { IGraphqlContext } from "@/server/common/graphql.context";
 import { PrismaError } from "@/server/utils";
 import { Args } from "@/server/common";
 import { Role } from "@prisma/client";
+import {
+  CreateRoleSchema,
+  UpdateRoleSchema,
+  validateData,
+} from "@/validations";
 
 export const RolesResolver = {
   Query: {
@@ -25,8 +30,22 @@ export const RolesResolver = {
       { data }: { data: Role },
       { prisma }: IGraphqlContext
     ) => {
+      await validateData({ schema: CreateRoleSchema, data });
       try {
         return await prisma.role.create({ data });
+      } catch (error: any) {
+        throw PrismaError.handle(error);
+      }
+    },
+
+    updateRole: async (
+      _: any,
+      { id, data }: { id: number; data: Role },
+      { prisma }: IGraphqlContext
+    ) => {
+      await validateData({ schema: UpdateRoleSchema, data });
+      try {
+        return await prisma.role.update({ where: { id }, data });
       } catch (error: any) {
         throw PrismaError.handle(error);
       }

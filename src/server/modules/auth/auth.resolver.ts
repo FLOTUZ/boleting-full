@@ -1,8 +1,10 @@
+import * as argon from "argon2";
+import jwt from "jsonwebtoken";
+
 import { User } from "@prisma/client";
 import { IGraphqlContext } from "../../common/graphql.context";
 import { AuthenticationError, NotFoundError } from "@/server/utils";
-import * as argon from "argon2";
-import jwt from "jsonwebtoken";
+import { LoginSchema, validateData } from "@/validations";
 
 interface ILogin {
   email: string;
@@ -20,6 +22,7 @@ export const AuthResolver = {
       },
       { res, prisma }: IGraphqlContext
     ) => {
+      await validateData({ schema: LoginSchema, data });
       const user: User | null = await prisma.user.findUnique({
         where: { email: data.email },
       });

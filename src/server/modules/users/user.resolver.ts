@@ -1,9 +1,15 @@
 import * as argon2 from "argon2";
-
 import { User } from "@prisma/client";
+
 import { Args } from "../../common";
 import { IGraphqlContext } from "../../common/graphql.context";
-import { PrismaError } from "../../utils/prisma.errors";
+import { PrismaError } from "../../utils";
+
+import {
+  CreateUserSchema,
+  UpdateRoleSchema,
+  validateData,
+} from "@/validations";
 
 export const UserResolver = {
   Query: {
@@ -34,13 +40,10 @@ export const UserResolver = {
       { data }: { data: User & { role: number[] } },
       { prisma }: IGraphqlContext
     ) => {
+      await validateData({ schema: CreateUserSchema, data });
+
       try {
-        // Encript password with argon2
         const hash = await argon2.hash(data.password);
-        console.log({
-          pass: data.password,
-          hash,
-        });
         return await prisma.user.create({
           data: {
             ...data,
@@ -60,6 +63,7 @@ export const UserResolver = {
       { id, data }: { id: number; data: User },
       { prisma }: IGraphqlContext
     ) => {
+      await validateData({ schema: UpdateRoleSchema, data });
       return await prisma.user.update({ where: { id }, data });
     },
 
