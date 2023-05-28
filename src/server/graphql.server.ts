@@ -1,9 +1,10 @@
 import { ApolloServer } from "@apollo/server";
 import { apolloPlugins } from "./plugins";
-import { UserSchema } from "./users/user.schema";
-import { ScalarsSchema } from "./common/scalars";
-import { ArgsSchema } from "./common";
-import { UserResolver } from "./users/user.resolver";
+
+import { ArgsSchema, ScalarsSchema } from "./common";
+
+import { UserSchema } from "./modules/schemas";
+import { UserResolver } from "./modules/resolvers";
 
 export const apolloServer = new ApolloServer({
   typeDefs: [ScalarsSchema, ArgsSchema, UserSchema],

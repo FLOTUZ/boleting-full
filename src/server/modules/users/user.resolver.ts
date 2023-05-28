@@ -1,7 +1,7 @@
 import { User } from "@prisma/client";
-import { Args } from "../common";
-import { IGraphqlContext } from "../common/graphql.context";
-import { PrismaError } from "../utils/prisma.errors";
+import { Args } from "../../common";
+import { IGraphqlContext } from "../../common/graphql.context";
+import { PrismaError } from "../../utils/prisma.errors";
 
 export const UserResolver = {
   Query: {
