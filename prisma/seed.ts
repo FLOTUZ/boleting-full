@@ -21,13 +21,19 @@ async function main() {
     ],
   });
 
+  const roles = await prisma.role.findMany();
+
   await prisma.user.create({
     data: {
       name: "Administrador",
       last_name: "Admin",
       email: "admin@thecore.events",
       password: await argon2.hash("admin"),
-      roleId: 1,
+      role: {
+        connect: {
+          name: "ADMIN",
+        },
+      },
     },
   });
 
@@ -37,7 +43,9 @@ async function main() {
       last_name: "Developer",
       email: "developer@thecore.events",
       password: await argon2.hash("developer"),
-      roleId: 2,
+      role: {
+        connect: roles.map((role) => ({ id: role.id })),
+      },
     },
   });
 
@@ -47,7 +55,11 @@ async function main() {
       last_name: "Manager",
       email: "gerente@thecore.events",
       password: await argon2.hash("gerente"),
-      roleId: 3,
+      role: {
+        connect: {
+          name: "MANAGER",
+        },
+      },
     },
   });
 
@@ -57,7 +69,11 @@ async function main() {
       last_name: "Attendee",
       email: "asistente@thecore.events",
       password: await argon2.hash("asistente"),
-      roleId: 4,
+      role: {
+        connect: {
+          name: "ATTENDEE",
+        },
+      },
     },
   });
 }
@@ -69,4 +85,5 @@ main()
   })
   .finally(async () => {
     await prisma.$disconnect();
+    console.log("====== Seed finished ====== ✔");
   });
