@@ -1,3 +1,5 @@
+import * as argon2 from "argon2";
+
 import { User } from "@prisma/client";
 import { Args } from "../../common";
 import { IGraphqlContext } from "../../common/graphql.context";
@@ -33,7 +35,14 @@ export const UserResolver = {
       { prisma }: IGraphqlContext
     ) => {
       try {
-        return await prisma.user.create({ data });
+        // Encript password with argon2
+        const hash = await argon2.hash("password");
+        return await prisma.user.create({
+          data: {
+            ...data,
+            password: hash,
+          },
+        });
       } catch (error: any) {
         throw PrismaError.handle(error);
       }
