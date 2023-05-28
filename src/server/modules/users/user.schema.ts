@@ -6,7 +6,7 @@ export const UserSchema = gql`
     name: String!
     password: String!
     last_name: String!
-    role: [Int!]
+    roles: [Int!]
   }
 
   input UpdateUserInput {
@@ -14,7 +14,7 @@ export const UserSchema = gql`
     last_name: String
     email: String
     password: String
-    role: [Int!]
+    roles: [Int!]
   }
 
   type User {
@@ -27,7 +27,7 @@ export const UserSchema = gql`
     updatedAt: DateTime
     deleted: Boolean
     deletedAt: DateTime
-    role: [Role!]
+    roles: [Role!]
   }
 
   type Query {

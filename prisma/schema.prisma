@@ -45,7 +45,7 @@ model User {
   updatedAt                 DateTime           @updatedAt
   deleted                   Boolean?
   deletedAt                 DateTime?
-  role                      Role[]             @relation("users")
+  roles                     Role[]             @relation("users")
   created_by                User               @relation("created_users", fields: [id], references: [id])
   created_events            Event[]            @relation("created_events")
   staff_of_events           Event[]            @relation("staff_of_events")

@@ -10,6 +10,7 @@ import {
   UpdateRoleSchema,
   validateData,
 } from "@/validations";
+import { autorizedRoles } from "@/server/autorization/role-based.autorization";
 
 export const UserResolver = {
   Query: {
@@ -29,6 +30,12 @@ export const UserResolver = {
       __: User,
       { id_user, prisma }: IGraphqlContext
     ) => {
+      await autorizedRoles({
+        authorized_roles: [],
+        id_user,
+        prisma,
+      });
+
       if (!id_user) return null;
       return await prisma.user.findUniqueOrThrow({ where: { id: id_user } });
     },
@@ -48,7 +55,7 @@ export const UserResolver = {
           data: {
             ...data,
             password: hash,
-            role: {
+            roles: {
               connect: data.role?.map((id) => ({ id })),
             },
           },
