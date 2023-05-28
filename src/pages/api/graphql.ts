@@ -8,7 +8,7 @@ import { AuthenticationError } from "@/server/utils";
 export default startServerAndCreateNextHandler(apolloServer, {
   context: async (req: NextApiRequest, res: NextApiResponse) => {
     const token = req.headers.authorization?.split(" ")[1];
-    const user = token ? await getUser(token) : null;
+    const user = token ? getUser(token) : null;
 
     if (!user) return { id_user: null, prisma, req, res };
 
@@ -16,10 +16,9 @@ export default startServerAndCreateNextHandler(apolloServer, {
   },
 });
 
-const getUser = async (token: string) => {
+const getUser = (token: string) => {
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as User;
-    return await prisma.user.findUnique({ where: { id: decoded.id } });
+    return jwt.verify(token, process.env.JWT_SECRET as string) as User;
   } catch (error) {
     throw new AuthenticationError("Invalid token");
   }
