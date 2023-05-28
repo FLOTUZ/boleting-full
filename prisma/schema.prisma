@@ -10,13 +10,538 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Abilities {
+  id          Int       @id @unique @default(autoincrement())
+  name        String    @unique @db.VarChar(50)
+  description String?   @db.VarChar(255)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deleted     Boolean
+  deletedAt   DateTime?
+  role        Role[]
+}
+
+model Role {
+  id                      Int           @id @unique @default(autoincrement())
+  name                    String        @unique @db.VarChar(50)
+  description             String?       @db.VarChar(255)
+  createdAt               DateTime      @default(now())
+  updatedAt               DateTime      @updatedAt
+  deleted                 Boolean?
+  deletedAt               DateTime?
+  abilities               Abilities[]
+  users                   User[]        @relation("users")
+  user_clients            UserClient[]  @relation("user_client")
+  application_permissions Application[] @relation("application_roles")
+}
+
 model User {
-  id        Int       @id @default(autoincrement())
-  email     String    @unique
-  name      String?
-  password  String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
-  deleted   Boolean   @default(false)
+  id                        Int                @id @unique @default(autoincrement())
+  name                      String             @db.VarChar(50)
+  last_name                 String             @db.VarChar(50)
+  email                     String             @unique @db.VarChar(100)
+  password                  String             @db.VarChar(255)
+  createdAt                 DateTime           @default(now())
+  updatedAt                 DateTime           @updatedAt
+  deleted                   Boolean?
+  deletedAt                 DateTime?
+  role                      Role[]             @relation("users")
+  created_by                User               @relation("created_users", fields: [id], references: [id])
+  created_events            Event[]            @relation("created_events")
+  staff_of_events           Event[]            @relation("staff_of_events")
+  created_users             User[]             @relation("created_users")
+  created_access_types      AccesType[]        @relation("created_access_types")
+  authorized_dealers        AuthorizedDealer[] @relation("authorized_dealers")
+  managers_on_cashless_site CashlessSite[]     @relation("managers_on_cashless_site")
+  cashless_cashier          CashlessCashier[]  @relation("cashless_cashier")
+  opened_money_boxes        MoneyBox[]         @relation("opened_money_boxes")
+  closed_money_boxes        MoneyBox[]         @relation("closed_money_boxes")
+  notifications             Notification[]     @relation("notifications")
+  sended_mails              Mail[]             @relation("sended_mails")
+  activities                ActivityLog[]      @relation("activities")
+  cashless_designs          CashlessDesign[]   @relation("cashless_designs")
+}
+
+model UserClient {
+  id                   Int              @id @unique @default(autoincrement())
+  name                 String           @db.VarChar(50)
+  last_name            String           @db.VarChar(50)
+  email                String           @unique @db.VarChar(100)
+  password             String           @db.VarChar(255)
+  roleId               Int
+  createdAt            DateTime         @default(now())
+  updatedAt            DateTime         @updatedAt
+  deleted              Boolean?
+  deletedAt            DateTime?
+  atendee_of_events    Event[]          @relation("atendee_of_events")
+  buy_cart             BuyCart[]        @relation("buy_cart")
+  payment_card         PaymentCard[]
+  cashless_mediums     Cashless[]       @relation("cashless_mediums")
+  cashless_refill      CashlessRefill[] @relation("cashless_refill")
+  notifications        Notification[]   @relation("client_notifications")
+  mail                 Mail[]           @relation("client_recibed_mails")
+  user_client_activity ActivityLog[]    @relation("user_client_activity")
+  role                 Role             @relation("user_client", fields: [roleId], references: [id])
+}
+
+model Notification {
+  id            Int         @id @unique @default(autoincrement())
+  tittle        String      @unique @db.VarChar(50)
+  description   String?     @db.VarChar(255)
+  redirect_url  String?     @db.VarChar(255)
+  is_read       Boolean     @default(false)
+  userId        Int?
+  user_clientId Int?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  deleted       Boolean?
+  deletedAt     DateTime?
+  user          User?       @relation("notifications", fields: [userId], references: [id])
+  user_client   UserClient? @relation("client_notifications", fields: [user_clientId], references: [id])
+}
+
+model Mail {
+  id            Int         @id @unique @default(autoincrement())
+  to            String      @db.VarChar(255)
+  subject       String      @db.VarChar(255)
+  body          String      @db.Text
+  userId        Int?
+  user_clientId Int?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  deleted       Boolean?
+  deletedAt     DateTime?
+  user          User?       @relation("sended_mails", fields: [userId], references: [id])
+  user_client   UserClient? @relation("client_recibed_mails", fields: [user_clientId], references: [id])
+}
+
+enum ActivityLogType {
+  CREATE
+  UPDATE
+  DELETE
+  LOGIN
+}
+
+model ActivityLog {
+  id            Int             @id @unique @default(autoincrement())
+  tittle        String          @unique @db.VarChar(50)
+  description   String?         @db.VarChar(100)
+  useful_link   String?         @db.VarChar(255)
+  type          ActivityLogType
+  userId        Int?
+  userClientId  Int?
+  applicationId Int?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  deleted       Boolean?
+  deletedAt     DateTime?
+  user          User?           @relation("activities", fields: [userId], references: [id])
+  user_client   UserClient?     @relation("user_client_activity", fields: [userClientId], references: [id])
+  application   Application?    @relation("application_log", fields: [applicationId], references: [id])
+}
+
+model Application {
+  id               Int           @id @unique @default(autoincrement())
+  name             String        @unique @db.VarChar(50)
+  description      String?       @db.VarChar(255)
+  token            String        @unique @db.VarChar(255)
+  expires_in       Int?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  roleId           Int
+  deleted          Boolean?
+  deletedAt        DateTime?
+  role             Role          @relation("application_roles", fields: [roleId], references: [id])
+  application_logs ActivityLog[] @relation("application_log")
+}
+
+//============================= EVENT MANAGEMENT ================================
+
+model Event {
+  id                 Int                @id @unique @default(autoincrement())
+  event_key          String?            @unique @db.VarChar(8)
+  name               String             @unique @db.VarChar(50)
+  description        String?            @db.VarChar(255)
+  event_location     String             @db.VarChar(255)
+  event_location_url String             @db.VarChar(255)
+  date               DateTime           @db.Date
+  start_time         DateTime?          @db.Date
+  end_time           DateTime?          @db.Date
+  re_entry           Boolean            @default(false)
+  event_logo_url     String?            @db.VarChar(255)
+  event_banner_url   String?            @db.VarChar(255)
+  hostId             Int
+  categoryId         Int
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  deleted            Boolean?
+  deletedAt          DateTime?
+  host               User               @relation("created_events", fields: [hostId], references: [id])
+  event_category     EventCategory      @relation(fields: [categoryId], references: [id])
+  staff              User[]             @relation("staff_of_events")
+  ateendees          UserClient[]       @relation("atendee_of_events")
+  ticket             Ticket[]           @relation("tickets_in_event")
+  event_social_media EventSocialMedia[] @relation("event_social_media")
+}
+
+model EventSocialMedia {
+  id          Int       @id @unique @default(autoincrement())
+  name        String    @unique @db.VarChar(20)
+  description String?   @db.VarChar(255)
+  url         String    @db.VarChar(255)
+  eventId     Int
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deleted     Boolean?
+  deletedAt   DateTime?
+  event       Event     @relation("event_social_media", fields: [eventId], references: [id])
+}
+
+model EventCategory {
+  id          Int       @id @unique @default(autoincrement())
+  name        String    @unique @db.VarChar(20)
+  description String?   @db.VarChar(255)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deleted     Boolean?
+  deletedAt   DateTime?
+  events      Event[]
+}
+
+//===================================== TICKETING =====================================
+
+model AccesType {
+  id                    Int       @id @unique @default(autoincrement())
+  name                  String    @unique @db.VarChar(15)
+  description           String?   @db.VarChar(255)
+  enter_and_exit_option Boolean?  @default(false)
+  userId                Int
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+  deleted               Boolean?
+  deletedAt             DateTime?
+  user                  User      @relation("created_access_types", fields: [userId], references: [id])
+  tickets               Ticket[]  @relation("access_type")
+}
+
+model OwnerType {
+  id          Int       @id @unique @default(autoincrement())
+  name        String    @unique @db.VarChar(10)
+  description String?   @db.VarChar(255)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deleted     Boolean?
+  deletedAt   DateTime?
+  ticket      Ticket[]  @relation("owner_types")
+}
+
+model Ticket {
+  id             Int        @id @unique @default(autoincrement())
+  description    String     @db.VarChar(50)
+  serial_number  String     @unique @db.VarChar(6)
+  price          Decimal    @db.Money
+  is_paid        Boolean    @default(false)
+  is_used        Boolean?   @default(false)
+  service_charge Decimal    @db.Money
+  eventId        Int
+  access_typeId  Int?
+  owner_typeId   Int?
+  buy_cartId     Int
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  deleted        Boolean?
+  deletedAt      DateTime?
+  event          Event      @relation("tickets_in_event", fields: [eventId], references: [id])
+  acces_type     AccesType? @relation("access_type", fields: [access_typeId], references: [id])
+  ticket_type    OwnerType? @relation("owner_types", fields: [owner_typeId], references: [id])
+  buy_cart       BuyCart    @relation("buy_cart", fields: [buy_cartId], references: [id])
+}
+
+// ================================ SEATING ================================
+model SeatMap {
+  id                  Int           @id @unique @default(autoincrement())
+  name                String        @db.VarChar(50)
+  description         String?       @db.VarChar(255)
+  backround_image_url String        @db.VarChar(255)
+  image_height        Int           @default(0)
+  image_width         Int           @default(0)
+  // seatSectionId       Int
+  eventId             Int
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+  deleted             Boolean?
+  deletedAt           DateTime?
+  seat_section        SeatSection[]
+}
+
+enum SeatSectionType {
+  ASSIGNED_SEATTING
+  UNASSIGNED_SEATTING
+  AREAS_OF_INTEREST
+}
+
+enum SeatAlignment {
+  CENTER
+  LEFT_ALIGN
+  RIGHT_ALIGN
+}
+
+model SeatSection {
+  id                   Int              @id @unique @default(autoincrement())
+  name                 String           @db.VarChar(50)
+  section_index        String           @db.VarChar(5)
+  seat_alignment       SeatAlignment?   @default(CENTER)
+  seat_section_type    SeatSectionType? @default(ASSIGNED_SEATTING)
+  icon_url             String?          @db.VarChar(255)
+  background_color     String?          @db.VarChar(7)
+  text_caption_color   String?          @db.VarChar(7)
+  capacity             Int?             @default(0)
+  position_x           Int?             @default(0)
+  position_y           Int?             @default(0)
+  rotation             Int?             @default(0)
+  seat_mapId           Int?
+  createdAt            DateTime         @default(now())
+  updatedAt            DateTime         @updatedAt
+  deleted              Boolean?
+  deletedAt            DateTime?
+  seat_map             SeatMap?         @relation(fields: [seat_mapId], references: [id])
+  rows_in_seat_section SeatRow[]        @relation("rows_in_seat_section")
+}
+
+model SeatRow {
+  id             Int         @id @unique @default(autoincrement())
+  row_index      String      @db.VarChar(5)
+  seat_sectionId Int
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+  deleted        Boolean?
+  deletedAt      DateTime?
+  seat_section   SeatSection @relation("rows_in_seat_section", fields: [seat_sectionId], references: [id])
+  seats_in_row   Seat[]      @relation("seats_in_row")
+}
+
+enum SeatStatus {
+  AVAILABLE
+  UNAVAILABLE
+  TEMPORARILY_UNAVAILABLE
+  RESERVED
+  TAKEN
+}
+
+model Seat {
+  id                 Int        @id @unique @default(autoincrement())
+  unique_seat_number String     @db.VarChar(5)
+  seat_price         Decimal    @db.Money
+  seat_status        SeatStatus @default(AVAILABLE)
+  seat_rowId         Int
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @updatedAt
+  seat_row           SeatRow    @relation("seats_in_row", fields: [seat_rowId], references: [id])
+}
+
+// ================================ BUYING ================================
+model PaymentCard {
+  id               Int           @id @unique @default(autoincrement())
+  is_credit_card   Boolean       @default(true)
+  nick_name        String        @db.VarChar(255)
+  owner_name       String        @db.VarChar(255)
+  card_number      String        @unique @db.VarChar(255)
+  expiration_date  String        @db.VarChar(255)
+  country          String        @db.VarChar(255)
+  is_default       Boolean       @default(false)
+  user_clientId    Int
+  payment_methodId Int           @unique
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  payment_method   PaymentMethod @relation(fields: [payment_methodId], references: [id])
+  user_client      UserClient    @relation(fields: [user_clientId], references: [id])
+}
+
+enum PaymentMethodType {
+  CREDIT_CARD
+  DEBIT_CARD
+  PAYPAL
+  DEALER
+  OXXO
+}
+
+model PaymentMethod {
+  id                Int               @id @unique @default(autoincrement())
+  payment_type      PaymentMethodType @default(CREDIT_CARD)
+  description       String?           @db.VarChar(255)
+  payment_reference String?           @db.VarChar(255)
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  payment_card      PaymentCard?
+  buy_cart          BuyCart[]         @relation("payment_method")
+}
+
+model BuyCart {
+  id                Int             @id @unique @default(autoincrement())
+  total_price       Decimal         @db.Money
+  is_paid           Boolean         @default(false)
+  userClientId      Int
+  payment_methodId  Int
+  recibed_paymentId Int?
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  user_client       UserClient      @relation("buy_cart", fields: [userClientId], references: [id])
+  selled_tickets    Ticket[]        @relation("buy_cart")
+  payment_method    PaymentMethod   @relation("payment_method", fields: [payment_methodId], references: [id])
+  recibed_payment   PaymentRecibed? @relation("buy_cart_is_payed", fields: [recibed_paymentId], references: [id])
+}
+
+model PaymentRecibed {
+  id                  Int               @id @unique @default(autoincrement())
+  payment_date        DateTime          @db.Timestamp()
+  payment_amount      Decimal           @db.Money
+  is_confirmed        Boolean           @default(false)
+  is_refunded         Boolean           @default(false)
+  authorized_dealerId Int?
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
+  buy_cart            BuyCart[]         @relation("buy_cart_is_payed")
+  authorized_dealer   AuthorizedDealer? @relation("dealer_recibed_payments", fields: [authorized_dealerId], references: [id])
+}
+
+// ================================ TICKET DISTRIBUTION =============================
+model AuthorizedDealer {
+  id               Int              @id @unique @default(autoincrement())
+  name             String           @unique @db.VarChar(50)
+  description      String?          @db.VarChar(255)
+  telephone        String           @db.VarChar(15)
+  email            String           @db.VarChar(100)
+  commision        Decimal          @db.Money
+  address          String           @db.VarChar(255)
+  userId           Int?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  deleted          Boolean?
+  deletedAt        DateTime?
+  user             User?            @relation("authorized_dealers", fields: [userId], references: [id])
+  recibed_payments PaymentRecibed[] @relation("dealer_recibed_payments")
+}
+
+enum CashLessType {
+  VIRTUAL
+  PAPER_STICKY
+  PVC_CARD
+  BRACELET
+  RING
+  CUSTOM
+}
+
+model CashlessDesign {
+  id                        Int          @id @unique @default(autoincrement())
+  name                      String       @db.VarChar(255)
+  userId                    Int
+  cashless_type             CashLessType
+  //----- Required for VIRTUAL -------------
+  virtual_image_url         String?      @db.VarChar(255)
+  //----- Required for PAPER_STICKY --------
+  paper_sticky_image_url    String?      @db.VarChar(255)
+  //----- Required for PVC CARD -------------
+  pv_card_image_url         String?      @db.VarChar(255)
+  //----- Required for BRACELET -------------
+  paper_band_image_url      String?      @db.VarChar(255) // <- This is required for paper bracelet
+  chip_area_image_url       String?      @db.VarChar(255)
+  band_image_url            String?      @db.VarChar(255)
+  //----- Required for RING ----------------
+  ring_image_url            String?      @db.VarChar(255)
+  // ------ Required for CUSTOM ------------
+  custom_design_plane_url   String?      @db.VarChar(255)
+  require_leds              Boolean?     @default(false)
+  number_of_leds            Int?
+  led_color                 String?      @db.VarChar(255)
+  require_batery            Boolean?     @default(false)
+  require_case              Boolean?     @default(false)
+  case_plane_image_url      String?      @db.VarChar(255)
+  //----- Required for ALL -----------------
+  unit_budget               Decimal      @db.Money
+  aproximate_requered_units Int          @default(0)
+  require_approval          Boolean      @default(true)
+  is_aproved                Boolean      @default(false)
+  createdAt                 DateTime     @default(now())
+  updatedAt                 DateTime     @updatedAt
+  deleted                   Boolean?
+  deletedAt                 DateTime?
+  cashless                  Cashless[]   @relation("cashless_design")
+  designed_by               User         @relation("cashless_designs", fields: [userId], references: [id])
+}
+
+model Cashless {
+  id                       Int              @id @unique @default(autoincrement())
+  code                     String           @unique @db.VarChar(255)
+  it_was_already_refounded Boolean          @default(false)
+  user_clientId            Int              @unique
+  cashless_designId        Int
+  cashless_siteId          Int
+  cashless_cashierId       Int
+  createdAt                DateTime         @default(now())
+  updatedAt                DateTime         @updatedAt
+  user_client              UserClient       @relation("cashless_mediums", fields: [user_clientId], references: [id])
+  cashless                 CashlessDesign   @relation("cashless_design", fields: [cashless_designId], references: [id])
+  delivery_on_site         CashlessSite     @relation("delivered_cashless", fields: [cashless_siteId], references: [id])
+  delivered_by_cashier     CashlessCashier  @relation("delivered_cashless", fields: [cashless_cashierId], references: [id])
+  refills                  CashlessRefill[] @relation("cashless_refill")
+}
+
+model CashlessSite {
+  id                 Int              @id @unique @default(autoincrement())
+  name               String           @db.VarChar(255)
+  description        String?          @db.VarChar(255)
+  where_is           String           @db.VarChar(255)
+  userId             Int
+  cashless_cashierId Int?
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  deleted            Boolean?
+  deletedAt          DateTime?
+  head_of_site       User             @relation("managers_on_cashless_site", fields: [userId], references: [id])
+  delivered_cashless Cashless[]       @relation("delivered_cashless")
+  cashless_cashier   CashlessCashier? @relation("cashless_site", fields: [cashless_cashierId], references: [id])
+}
+
+model CashlessRefill {
+  id                  Int        @id @unique @default(autoincrement())
+  money               Decimal    @db.Money
+  user_clientId       Int
+  cashlessId          Int
+  money_boxId         Int
+  createdAt           DateTime   @default(now())
+  updatedAt           DateTime   @updatedAt
+  user_client         UserClient @relation("cashless_refill", fields: [user_clientId], references: [id])
+  cashless            Cashless   @relation("cashless_refill", fields: [cashlessId], references: [id])
+  refill_in_money_box MoneyBox   @relation("refill_in_money_box", fields: [money_boxId], references: [id])
+}
+
+model MoneyBox {
+  id                 Int              @id @unique @default(autoincrement())
+  description        String
+  init_money         Decimal          @db.Money
+  final_money        Decimal          @db.Money
+  total_box_flow     Decimal          @db.Money
+  cashless_cashierId Int
+  opened_byId        Int
+  closed_byId        Int
+  open_at            DateTime
+  closed_at          DateTime?
+  opened_by          User             @relation("opened_money_boxes", fields: [opened_byId], references: [id])
+  closed_by          User             @relation("closed_money_boxes", fields: [closed_byId], references: [id])
+  cashless_cashier   CashlessCashier  @relation("money_box", fields: [cashless_cashierId], references: [id])
+  cashless_refills   CashlessRefill[] @relation("refill_in_money_box")
+}
+
+model CashlessCashier {
+  id                 Int            @id @unique @default(autoincrement())
+  cashier_name       String         @db.VarChar(255)
+  userId             Int
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+  deleted            Boolean?
+  deletedAt          DateTime?
+  cashless_cashier   User           @relation("cashless_cashier", fields: [userId], references: [id])
+  money_box          MoneyBox[]     @relation("money_box")
+  cashless_site      CashlessSite[] @relation("cashless_site")
+  delivered_cashless Cashless[]     @relation("delivered_cashless")
 }
