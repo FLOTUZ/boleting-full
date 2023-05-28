@@ -17,7 +17,6 @@ export const UserSchema = gql`
     id: Int
     email: String
     name: String
-    password: String
     createdAt: DateTime
     updatedAt: DateTime
     deletedAt: DateTime
