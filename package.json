@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@apollo/client": "3.7.14",
-    "@apollo/server": "4.7.1",
+    "@apollo/server": "^4.7.1",
     "@as-integrations/next": "2.0.0",
     "@chakra-ui/react": "^2.6.1",
     "@emotion/react": "^11.11.0",

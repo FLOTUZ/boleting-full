@@ -10,4 +10,8 @@ export const apolloServer = new ApolloServer({
   typeDefs: [ArgsSchema, ScalarsSchema, ...Object.values(schemas)],
   resolvers: [...Object.values(resolvers)],
   plugins: apolloPlugins,
+  formatError(error: any) {
+    console.error(error);
+    return { error: error.extensions.code, message: error.message };
+  },
 });

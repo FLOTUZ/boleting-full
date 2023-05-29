@@ -51,4 +51,10 @@ export const RolesResolver = {
       }
     },
   },
+
+  Role: {
+    users: async ({ id }: Role, _: any, { prisma }: IGraphqlContext) => {
+      return await prisma.user.findMany({ where: { roles: { some: { id } } } });
+    },
+  },
 };

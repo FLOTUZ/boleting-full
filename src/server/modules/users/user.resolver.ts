@@ -81,4 +81,12 @@ export const UserResolver = {
       });
     },
   },
+
+  User: {
+    roles: async ({ id }: User, _: any, { prisma }: IGraphqlContext) => {
+      return await prisma.role.findMany({
+        where: { users: { some: { id } } },
+      });
+    },
+  },
 };
