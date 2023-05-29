@@ -1,0 +1,10 @@
+query RolesList {
+  roles {
+    id
+    name
+    description
+    createdAt
+    updatedAt
+    deletedAt
+  }
+}

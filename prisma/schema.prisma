@@ -177,7 +177,7 @@ model Event {
   deleted            Boolean?
   deletedAt          DateTime?
   host               User               @relation("created_events", fields: [hostId], references: [id])
-  event_category     EventCategory      @relation(fields: [categoryId], references: [id])
+  event_categories   EventCategory[]    @relation("event_categories")
   staff              User[]             @relation("staff_of_events")
   ateendees          UserClient[]       @relation("atendee_of_events")
   ticket             Ticket[]           @relation("tickets_in_event")
@@ -205,7 +205,7 @@ model EventCategory {
   updatedAt   DateTime  @updatedAt
   deleted     Boolean?
   deletedAt   DateTime?
-  events      Event[]
+  events      Event[]   @relation("event_categories")
 }
 
 //===================================== TICKETING =====================================

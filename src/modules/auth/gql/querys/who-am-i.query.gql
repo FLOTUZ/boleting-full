@@ -1,0 +1,14 @@
+query WhoAmI {
+  me {
+    id
+    name
+    last_name
+    email
+    createdAt
+    updatedAt
+    Role {
+      id
+      name
+    }
+  }
+}

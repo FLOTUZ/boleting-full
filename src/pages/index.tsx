@@ -1,9 +1,12 @@
-import { Heading } from "@chakra-ui/react";
+import { UserProvider } from "@/contexts/user.context";
+import MainView from "@/modules/main.view";
 
-export default function Home() {
+const MaindRoute = () => {
   return (
-    <>
-      <Heading size={"xl"}>Home</Heading>
-    </>
+    <UserProvider>
+      <MainView />
+    </UserProvider>
   );
-}
+};
+
+export default MaindRoute;

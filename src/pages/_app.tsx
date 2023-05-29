@@ -1,20 +1,20 @@
+import { apolloClient, theme } from "@/providers";
 import type { AppProps } from "next/app";
 
-import RootLayout from "@/layouts/layout";
-
-import { ChakraBaseProvider } from "@chakra-ui/react";
+// Apollo graphql
 import { ApolloProvider } from "@apollo/client";
 
-import { apolloClient, theme } from "@/providers";
+//Chackra UI
+import { ChakraProvider } from "@chakra-ui/react";
+
+// Import react context
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <ApolloProvider client={apolloClient}>
-      <ChakraBaseProvider theme={theme}>
-        <RootLayout>
-          <Component {...pageProps} />
-        </RootLayout>
-      </ChakraBaseProvider>
+      <ChakraProvider theme={theme}>
+        <Component {...pageProps} />
+      </ChakraProvider>
     </ApolloProvider>
   );
 }

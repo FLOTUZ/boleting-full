@@ -1,11 +1,7 @@
-import { Heading } from "@chakra-ui/react";
+import LoginView from "@/modules/auth/views/login.view";
 
-const LoginPage = () => {
-  return (
-    <div>
-      <Heading size={"xl"}>Login</Heading>
-    </div>
-  );
+const LoginRoute = () => {
+  return <LoginView />;
 };
 
-export default LoginPage;
+export default LoginRoute;

@@ -1,0 +1,14 @@
+query WhoAMi {
+  currentUser {
+    id
+    name
+    last_name
+    email
+    roles {
+      id
+      name
+    }
+    createdAt
+    updatedAt
+  }
+}

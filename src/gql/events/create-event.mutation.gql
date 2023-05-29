@@ -1,0 +1,17 @@
+mutation CreateEvent($input: CreateEventInput!) {
+  createEvent(input: $input) {
+    id
+    event_key
+    name
+    description
+    event_location
+    event_logo_url
+    date
+    start_time
+    end_time
+    re_entry
+    event_logo_url
+    hostId
+    categoryId
+  }
+}

@@ -1,11 +1,9 @@
-import { Heading } from "@chakra-ui/react";
-
-const RegisterPage = () => {
+const RegisterRoute = () => {
   return (
     <div>
-      <Heading size={"xl"}>Register</Heading>
+      <h1>Register</h1>
     </div>
   );
 };
 
-export default RegisterPage;
+export default RegisterRoute;
