@@ -30,12 +30,6 @@ export const UserResolver = {
       __: User,
       { id_user, prisma }: IGraphqlContext
     ) => {
-      await autorizedAbilities({
-        authorized_abilities: ["user:read"],
-        id_user,
-        prisma,
-      });
-
       if (!id_user) return null;
       return await prisma.user.findUniqueOrThrow({ where: { id: id_user } });
     },
