@@ -93,6 +93,12 @@ export type LoginInput = {
   password: Scalars['String']['input'];
 };
 
+export type LoginResponse = {
+  __typename?: 'LoginResponse';
+  accessToken?: Maybe<Scalars['String']['output']>;
+  user?: Maybe<User>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createEvent?: Maybe<Event>;
@@ -103,7 +109,7 @@ export type Mutation = {
   deleteEventCategory?: Maybe<Event>;
   deleteRole?: Maybe<Role>;
   deleteUser?: Maybe<User>;
-  login?: Maybe<User>;
+  login: LoginResponse;
   updateEvent?: Maybe<Event>;
   updateEventCategory?: Maybe<Event>;
   updateRole?: Maybe<Role>;
@@ -301,7 +307,7 @@ export type LoginMutationVariables = Exact<{
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', login?: { __typename?: 'User', id: number, name?: string | null, email?: string | null, last_name?: string | null } | null };
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'LoginResponse', accessToken?: string | null, user?: { __typename?: 'User', id: number, name?: string | null, email?: string | null, last_name?: string | null } | null } };
 
 export type WhoAMiQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -351,10 +357,13 @@ export type GetUserQuery = { __typename?: 'Query', users?: Array<{ __typename?: 
 export const LoginDocument = gql`
     mutation Login($data: LoginInput!) {
   login(data: $data) {
-    id
-    name
-    email
-    last_name
+    accessToken
+    user {
+      id
+      name
+      email
+      last_name
+    }
   }
 }
     `;

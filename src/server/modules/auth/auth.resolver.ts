@@ -43,7 +43,10 @@ export const AuthResolver = {
 
       res?.setHeader("Authorization", `Bearer ${token}`);
 
-      return user;
+      return {
+        user,
+        accessToken: `Bearer ${token}`,
+      };
     },
   },
 };

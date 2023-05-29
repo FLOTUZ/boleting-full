@@ -1,10 +1,10 @@
-import { UserEntity, useLoginMutation, useWhoAmIQuery } from "@/gql/generated";
+import { User, useLoginMutation, useWhoAMiQuery } from "@/gql/generated";
 import { useToast } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export const useSession = () => {
-  const [user, setUser] = useState<UserEntity | null>(null);
+  const [user, setUser] = useState<User | null>(null);
 
   const router = useRouter();
   const toast = useToast();
@@ -17,7 +17,8 @@ export const useSession = () => {
           data.login.accessToken ? data.login.accessToken : ""
         );
 
-        await refetchUser();
+        localStorage.setItem("user", JSON.stringify(data.login.user as User));
+
         router.replace("/");
       },
 
@@ -33,19 +34,6 @@ export const useSession = () => {
       },
     });
 
-  const { refetch: refetchUser, loading: userLoading } = useWhoAmIQuery({
-    onCompleted(data) {
-      setUser(data.me as UserEntity);
-      localStorage.setItem("user", JSON.stringify(data.me));
-    },
-    onError(error) {
-      console.log({
-        message: "Error on get user",
-        error,
-      });
-    },
-  });
-
   const logout = () => {
     setUser(null);
     localStorage.removeItem("user");
@@ -53,25 +41,23 @@ export const useSession = () => {
     router.push("/auth/login");
   };
 
-  const getUser = (): UserEntity | null => {
-    if (user) return user;
+  useEffect(() => {
+    const getUser = (): User | null => {
+      const userStorage = localStorage.getItem("user");
 
-    const userStorage = localStorage.getItem("user");
+      if (userStorage) {
+        setUser(JSON.parse(userStorage));
+        return JSON.parse(userStorage) as User;
+      }
 
-    if (userStorage) {
-      setUser(JSON.parse(userStorage));
-      return JSON.parse(userStorage) as UserEntity;
-    }
-
-    return null;
-  };
+      return null;
+    };
+    getUser();
+  }, []);
 
   return {
-    getUser,
     user,
     setUser,
-    refetchUser,
-    userLoading,
     logout,
     login,
     loginLoading,

@@ -23,8 +23,10 @@ function LoginView() {
     const password = e.currentTarget.password.value;
     await login({
       variables: {
-        email,
-        password,
+        data: {
+          email,
+          password,
+        },
       },
     });
   };

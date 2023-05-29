@@ -1,8 +1,11 @@
 mutation Login($data: LoginInput!) {
   login(data: $data) {
-    id
-    name
-    email
-    last_name
+    accessToken
+    user {
+      id
+      name
+      email
+      last_name
+    }
   }
 }

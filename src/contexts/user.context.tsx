@@ -1,12 +1,11 @@
-import { createContext, useContext, useEffect } from "react";
-import { UserEntity } from "@/gql/generated";
+import { createContext, useContext } from "react";
+import { User } from "@/gql/generated";
 import { useSession } from "@/hooks/useSession";
 import CircularLoaderComponent from "@/components/loaders/circular-loader.component";
-import LoginView from "@/modules/auth/views/login.view";
 
 export type UserContextType = {
-  user: UserEntity | null;
-  setUser: (user: UserEntity | null) => void;
+  user: User | null;
+  setUser: (user: User | null) => void;
   logout: () => void;
 };
 
@@ -19,14 +18,10 @@ export const UserContext = createContext<UserContextType>({
 export const useUser = () => useContext(UserContext);
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
-  const { getUser, user, setUser, userLoading, logout } = useSession();
+  const { user, setUser, logout, loginLoading } = useSession();
 
-  if (userLoading) {
+  if (loginLoading) {
     return <CircularLoaderComponent />;
-  }
-
-  if (!getUser()) {
-    return <LoginView />;
   }
 
   return (

@@ -6,7 +6,12 @@ export const AuthSchema = gql`
     password: String!
   }
 
+  type LoginResponse {
+    user: User
+    accessToken: String
+  }
+
   type Mutation {
-    login(data: LoginInput!): User
+    login(data: LoginInput!): LoginResponse!
   }
 `;

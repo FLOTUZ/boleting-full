@@ -1,7 +1,7 @@
 //User profile
 
-import DesktopLayoutComponent from "@/components/layouts/desktop-layout-component/desktop-layout.component";
 import { useSession } from "@/hooks/useSession";
+import DesktopLayoutComponent from "@/layouts/desktop-layout-component/desktop-layout.component";
 import {
   Card,
   CardHeader,
@@ -13,9 +13,14 @@ import {
   Text,
   AbsoluteCenter,
 } from "@chakra-ui/react";
+import { useEffect } from "react";
 
 function ProfileRoute() {
   const { user } = useSession();
+
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
 
   return (
     <DesktopLayoutComponent title={"About me"}>
