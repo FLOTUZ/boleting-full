@@ -23,7 +23,7 @@ export const EventsCategorySchema = gql`
 
   type Query {
     eventCategory(id: Int!): Event
-    eventCategories(pagination: Pagination): [Event]
+    eventCategories(pagination: Pagination): [EventCategory]
   }
 
   type Mutation {

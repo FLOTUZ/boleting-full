@@ -16,7 +16,7 @@ model Abilities {
   description String?   @db.VarChar(255)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  deleted     Boolean
+  deleted     Boolean   @default(false)
   deletedAt   DateTime?
   role        Role[]
 }
@@ -27,7 +27,7 @@ model Role {
   description             String?       @db.VarChar(255)
   createdAt               DateTime      @default(now())
   updatedAt               DateTime      @updatedAt
-  deleted                 Boolean?
+  deleted                 Boolean       @default(false)
   deletedAt               DateTime?
   abilities               Abilities[]
   users                   User[]        @relation("users")
@@ -43,7 +43,7 @@ model User {
   password                  String             @db.VarChar(255)
   createdAt                 DateTime           @default(now())
   updatedAt                 DateTime           @updatedAt
-  deleted                   Boolean?
+  deleted                   Boolean            @default(false)
   deletedAt                 DateTime?
   roles                     Role[]             @relation("users")
   created_by                User               @relation("created_users", fields: [id], references: [id])
@@ -71,7 +71,7 @@ model UserClient {
   roleId               Int
   createdAt            DateTime         @default(now())
   updatedAt            DateTime         @updatedAt
-  deleted              Boolean?
+  deleted              Boolean          @default(false)
   deletedAt            DateTime?
   atendee_of_events    Event[]          @relation("atendee_of_events")
   buy_cart             BuyCart[]        @relation("buy_cart")
@@ -94,7 +94,7 @@ model Notification {
   user_clientId Int?
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
-  deleted       Boolean?
+  deleted       Boolean     @default(false)
   deletedAt     DateTime?
   user          User?       @relation("notifications", fields: [userId], references: [id])
   user_client   UserClient? @relation("client_notifications", fields: [user_clientId], references: [id])
@@ -109,7 +109,7 @@ model Mail {
   user_clientId Int?
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
-  deleted       Boolean?
+  deleted       Boolean     @default(false)
   deletedAt     DateTime?
   user          User?       @relation("sended_mails", fields: [userId], references: [id])
   user_client   UserClient? @relation("client_recibed_mails", fields: [user_clientId], references: [id])
@@ -133,7 +133,7 @@ model ActivityLog {
   applicationId Int?
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
-  deleted       Boolean?
+  deleted       Boolean         @default(false)
   deletedAt     DateTime?
   user          User?           @relation("activities", fields: [userId], references: [id])
   user_client   UserClient?     @relation("user_client_activity", fields: [userClientId], references: [id])
@@ -149,7 +149,7 @@ model Application {
   createdAt        DateTime      @default(now())
   updatedAt        DateTime      @updatedAt
   roleId           Int
-  deleted          Boolean?
+  deleted          Boolean       @default(false)
   deletedAt        DateTime?
   role             Role          @relation("application_roles", fields: [roleId], references: [id])
   application_logs ActivityLog[] @relation("application_log")
@@ -171,10 +171,9 @@ model Event {
   event_logo_url     String?            @db.VarChar(255)
   event_banner_url   String?            @db.VarChar(255)
   hostId             Int
-  categoryId         Int
   createdAt          DateTime           @default(now())
   updatedAt          DateTime           @updatedAt
-  deleted            Boolean?
+  deleted            Boolean            @default(false)
   deletedAt          DateTime?
   host               User               @relation("created_events", fields: [hostId], references: [id])
   event_categories   EventCategory[]    @relation("event_categories")
@@ -192,7 +191,7 @@ model EventSocialMedia {
   eventId     Int
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  deleted     Boolean?
+  deleted     Boolean   @default(false)
   deletedAt   DateTime?
   event       Event     @relation("event_social_media", fields: [eventId], references: [id])
 }
@@ -203,7 +202,7 @@ model EventCategory {
   description String?   @db.VarChar(255)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  deleted     Boolean?
+  deleted     Boolean   @default(false)
   deletedAt   DateTime?
   events      Event[]   @relation("event_categories")
 }
@@ -218,7 +217,7 @@ model AccesType {
   userId                Int
   createdAt             DateTime  @default(now())
   updatedAt             DateTime  @updatedAt
-  deleted               Boolean?
+  deleted               Boolean   @default(false)
   deletedAt             DateTime?
   user                  User      @relation("created_access_types", fields: [userId], references: [id])
   tickets               Ticket[]  @relation("access_type")
@@ -230,7 +229,7 @@ model OwnerType {
   description String?   @db.VarChar(255)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  deleted     Boolean?
+  deleted     Boolean   @default(false)
   deletedAt   DateTime?
   ticket      Ticket[]  @relation("owner_types")
 }
@@ -249,7 +248,7 @@ model Ticket {
   buy_cartId     Int
   createdAt      DateTime   @default(now())
   updatedAt      DateTime   @updatedAt
-  deleted        Boolean?
+  deleted        Boolean    @default(false)
   deletedAt      DateTime?
   event          Event      @relation("tickets_in_event", fields: [eventId], references: [id])
   acces_type     AccesType? @relation("access_type", fields: [access_typeId], references: [id])
@@ -269,7 +268,7 @@ model SeatMap {
   eventId             Int
   createdAt           DateTime      @default(now())
   updatedAt           DateTime      @updatedAt
-  deleted             Boolean?
+  deleted             Boolean       @default(false)
   deletedAt           DateTime?
   seat_section        SeatSection[]
 }
@@ -302,7 +301,7 @@ model SeatSection {
   seat_mapId           Int?
   createdAt            DateTime         @default(now())
   updatedAt            DateTime         @updatedAt
-  deleted              Boolean?
+  deleted              Boolean          @default(false)
   deletedAt            DateTime?
   seat_map             SeatMap?         @relation(fields: [seat_mapId], references: [id])
   rows_in_seat_section SeatRow[]        @relation("rows_in_seat_section")
@@ -314,7 +313,7 @@ model SeatRow {
   seat_sectionId Int
   createdAt      DateTime    @default(now())
   updatedAt      DateTime    @updatedAt
-  deleted        Boolean?
+  deleted        Boolean     @default(false)
   deletedAt      DateTime?
   seat_section   SeatSection @relation("rows_in_seat_section", fields: [seat_sectionId], references: [id])
   seats_in_row   Seat[]      @relation("seats_in_row")
@@ -336,6 +335,8 @@ model Seat {
   seat_rowId         Int
   createdAt          DateTime   @default(now())
   updatedAt          DateTime   @updatedAt
+  deleted            Boolean    @default(false)
+  deletedAt          DateTime?
   seat_row           SeatRow    @relation("seats_in_row", fields: [seat_rowId], references: [id])
 }
 
@@ -353,6 +354,8 @@ model PaymentCard {
   payment_methodId Int           @unique
   createdAt        DateTime      @default(now())
   updatedAt        DateTime      @updatedAt
+  deleted          Boolean       @default(false)
+  deletedAt        DateTime?
   payment_method   PaymentMethod @relation(fields: [payment_methodId], references: [id])
   user_client      UserClient    @relation(fields: [user_clientId], references: [id])
 }
@@ -372,6 +375,8 @@ model PaymentMethod {
   payment_reference String?           @db.VarChar(255)
   createdAt         DateTime          @default(now())
   updatedAt         DateTime          @updatedAt
+  deleted           Boolean           @default(false)
+  deletedAt         DateTime?
   payment_card      PaymentCard?
   buy_cart          BuyCart[]         @relation("payment_method")
 }
@@ -385,6 +390,8 @@ model BuyCart {
   recibed_paymentId Int?
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
+  deleted           Boolean         @default(false)
+  deletedAt         DateTime?
   user_client       UserClient      @relation("buy_cart", fields: [userClientId], references: [id])
   selled_tickets    Ticket[]        @relation("buy_cart")
   payment_method    PaymentMethod   @relation("payment_method", fields: [payment_methodId], references: [id])
@@ -400,6 +407,8 @@ model PaymentRecibed {
   authorized_dealerId Int?
   createdAt           DateTime          @default(now())
   updatedAt           DateTime          @updatedAt
+  deleted             Boolean           @default(false)
+  deletedAt           DateTime?
   buy_cart            BuyCart[]         @relation("buy_cart_is_payed")
   authorized_dealer   AuthorizedDealer? @relation("dealer_recibed_payments", fields: [authorized_dealerId], references: [id])
 }
@@ -416,7 +425,7 @@ model AuthorizedDealer {
   userId           Int?
   createdAt        DateTime         @default(now())
   updatedAt        DateTime         @updatedAt
-  deleted          Boolean?
+  deleted          Boolean          @default(false)
   deletedAt        DateTime?
   user             User?            @relation("authorized_dealers", fields: [userId], references: [id])
   recibed_payments PaymentRecibed[] @relation("dealer_recibed_payments")
@@ -463,7 +472,7 @@ model CashlessDesign {
   is_aproved                Boolean      @default(false)
   createdAt                 DateTime     @default(now())
   updatedAt                 DateTime     @updatedAt
-  deleted                   Boolean?
+  deleted                   Boolean      @default(false)
   deletedAt                 DateTime?
   cashless                  Cashless[]   @relation("cashless_design")
   designed_by               User         @relation("cashless_designs", fields: [userId], references: [id])
@@ -479,6 +488,8 @@ model Cashless {
   cashless_cashierId       Int
   createdAt                DateTime         @default(now())
   updatedAt                DateTime         @updatedAt
+  deleted                  Boolean          @default(false)
+  deletedAt                DateTime?
   user_client              UserClient       @relation("cashless_mediums", fields: [user_clientId], references: [id])
   cashless                 CashlessDesign   @relation("cashless_design", fields: [cashless_designId], references: [id])
   delivery_on_site         CashlessSite     @relation("delivered_cashless", fields: [cashless_siteId], references: [id])
@@ -495,7 +506,7 @@ model CashlessSite {
   cashless_cashierId Int?
   createdAt          DateTime         @default(now())
   updatedAt          DateTime         @updatedAt
-  deleted            Boolean?
+  deleted            Boolean          @default(false)
   deletedAt          DateTime?
   head_of_site       User             @relation("managers_on_cashless_site", fields: [userId], references: [id])
   delivered_cashless Cashless[]       @relation("delivered_cashless")
@@ -510,6 +521,8 @@ model CashlessRefill {
   money_boxId         Int
   createdAt           DateTime   @default(now())
   updatedAt           DateTime   @updatedAt
+  deleted             Boolean    @default(false)
+  deletedAt           DateTime?
   user_client         UserClient @relation("cashless_refill", fields: [user_clientId], references: [id])
   cashless            Cashless   @relation("cashless_refill", fields: [cashlessId], references: [id])
   refill_in_money_box MoneyBox   @relation("refill_in_money_box", fields: [money_boxId], references: [id])
@@ -526,6 +539,8 @@ model MoneyBox {
   closed_byId        Int
   open_at            DateTime
   closed_at          DateTime?
+  deleted            Boolean          @default(false)
+  deletedAt          DateTime?
   opened_by          User             @relation("opened_money_boxes", fields: [opened_byId], references: [id])
   closed_by          User             @relation("closed_money_boxes", fields: [closed_byId], references: [id])
   cashless_cashier   CashlessCashier  @relation("money_box", fields: [cashless_cashierId], references: [id])
@@ -538,7 +553,7 @@ model CashlessCashier {
   userId             Int
   createdAt          DateTime       @default(now())
   updatedAt          DateTime       @updatedAt
-  deleted            Boolean?
+  deleted            Boolean        @default(false)
   deletedAt          DateTime?
   cashless_cashier   User           @relation("cashless_cashier", fields: [userId], references: [id])
   money_box          MoneyBox[]     @relation("money_box")

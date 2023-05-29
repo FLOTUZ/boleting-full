@@ -29,7 +29,7 @@ async function main() {
       last_name: "Admin",
       email: "admin@thecore.events",
       password: await argon2.hash("admin"),
-      role: {
+      roles: {
         connect: {
           name: "ADMIN",
         },
@@ -43,7 +43,7 @@ async function main() {
       last_name: "Developer",
       email: "developer@thecore.events",
       password: await argon2.hash("developer"),
-      role: {
+      roles: {
         connect: roles.map((role) => ({ id: role.id })),
       },
     },
@@ -55,7 +55,7 @@ async function main() {
       last_name: "Manager",
       email: "gerente@thecore.events",
       password: await argon2.hash("gerente"),
-      role: {
+      roles: {
         connect: {
           name: "MANAGER",
         },
@@ -69,7 +69,7 @@ async function main() {
       last_name: "Attendee",
       email: "asistente@thecore.events",
       password: await argon2.hash("asistente"),
-      role: {
+      roles: {
         connect: {
           name: "ATTENDEE",
         },

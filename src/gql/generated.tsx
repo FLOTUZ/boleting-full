@@ -29,11 +29,9 @@ export type CreateEventInput = {
   end_time: Scalars['DateTime']['input'];
   event_banner_url: Scalars['String']['input'];
   event_categories?: InputMaybe<Array<Scalars['Int']['input']>>;
-  event_key: Scalars['String']['input'];
   event_location: Scalars['String']['input'];
   event_location_url: Scalars['String']['input'];
   event_logo_url: Scalars['String']['input'];
-  hostId: Scalars['Int']['input'];
   name: Scalars['String']['input'];
   re_entry: Scalars['Boolean']['input'];
   start_time: Scalars['DateTime']['input'];
@@ -54,7 +52,6 @@ export type CreateUserInput = {
 
 export type Event = {
   __typename?: 'Event';
-  categoryId?: Maybe<Scalars['Int']['output']>;
   createdAt?: Maybe<Scalars['DateTime']['output']>;
   date?: Maybe<Scalars['DateTime']['output']>;
   deleted?: Maybe<Scalars['Boolean']['output']>;
@@ -118,7 +115,7 @@ export type Mutation = {
 
 
 export type MutationCreateEventArgs = {
-  input: CreateEventInput;
+  data: CreateEventInput;
 };
 
 
@@ -194,7 +191,7 @@ export type Query = {
   __typename?: 'Query';
   currentUser?: Maybe<User>;
   event?: Maybe<Event>;
-  eventCategories?: Maybe<Array<Maybe<Event>>>;
+  eventCategories?: Maybe<Array<Maybe<EventCategory>>>;
   eventCategory?: Maybe<Event>;
   events?: Maybe<Array<Maybe<Event>>>;
   role?: Maybe<Role>;
@@ -266,7 +263,6 @@ export type UpdateEventInput = {
   end_time?: InputMaybe<Scalars['DateTime']['input']>;
   event_banner_url?: InputMaybe<Scalars['String']['input']>;
   event_categories?: InputMaybe<Array<Scalars['Int']['input']>>;
-  event_key?: InputMaybe<Scalars['String']['input']>;
   event_location?: InputMaybe<Scalars['String']['input']>;
   event_location_url?: InputMaybe<Scalars['String']['input']>;
   event_logo_url?: InputMaybe<Scalars['String']['input']>;
@@ -314,19 +310,24 @@ export type WhoAMiQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type WhoAMiQuery = { __typename?: 'Query', currentUser?: { __typename?: 'User', id: number, name?: string | null, last_name?: string | null, email?: string | null, createdAt?: any | null, updatedAt?: any | null, roles?: Array<{ __typename?: 'Role', id: number, name?: string | null }> | null } | null };
 
+export type EventCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type EventCategoriesQuery = { __typename?: 'Query', eventCategories?: Array<{ __typename?: 'EventCategory', id?: number | null, name?: string | null, description?: string | null } | null> | null };
+
 export type CreateEventMutationVariables = Exact<{
   input: CreateEventInput;
 }>;
 
 
-export type CreateEventMutation = { __typename?: 'Mutation', createEvent?: { __typename?: 'Event', id?: number | null, event_key?: string | null, name?: string | null, description?: string | null, event_location?: string | null, event_logo_url?: string | null, date?: any | null, start_time?: any | null, end_time?: any | null, re_entry?: boolean | null, hostId?: number | null, categoryId?: number | null } | null };
+export type CreateEventMutation = { __typename?: 'Mutation', createEvent?: { __typename?: 'Event', id?: number | null, event_key?: string | null, name?: string | null, description?: string | null, event_location?: string | null, event_logo_url?: string | null, date?: any | null, start_time?: any | null, end_time?: any | null, re_entry?: boolean | null, hostId?: number | null, event_categories?: Array<{ __typename?: 'EventCategory', id?: number | null, name?: string | null } | null> | null } | null };
 
 export type ShowEventQueryVariables = Exact<{
   eventId: Scalars['Int']['input'];
 }>;
 
 
-export type ShowEventQuery = { __typename?: 'Query', event?: { __typename?: 'Event', id?: number | null, event_key?: string | null, name?: string | null, description?: string | null, event_location?: string | null, event_logo_url?: string | null, date?: any | null, start_time?: any | null, end_time?: any | null, re_entry?: boolean | null, hostId?: number | null, categoryId?: number | null } | null };
+export type ShowEventQuery = { __typename?: 'Query', event?: { __typename?: 'Event', id?: number | null, event_key?: string | null, name?: string | null, description?: string | null, event_location?: string | null, event_logo_url?: string | null, date?: any | null, start_time?: any | null, end_time?: any | null, re_entry?: boolean | null, hostId?: number | null } | null };
 
 export type UpdateEventMutationVariables = Exact<{
   updateEventId: Scalars['Int']['input'];
@@ -334,7 +335,7 @@ export type UpdateEventMutationVariables = Exact<{
 }>;
 
 
-export type UpdateEventMutation = { __typename?: 'Mutation', updateEvent?: { __typename?: 'Event', id?: number | null, event_key?: string | null, name?: string | null, description?: string | null, event_location?: string | null, event_logo_url?: string | null, date?: any | null, start_time?: any | null, end_time?: any | null, re_entry?: boolean | null, hostId?: number | null, categoryId?: number | null } | null };
+export type UpdateEventMutation = { __typename?: 'Mutation', updateEvent?: { __typename?: 'Event', id?: number | null, event_key?: string | null, name?: string | null, description?: string | null, event_location?: string | null, event_logo_url?: string | null, date?: any | null, start_time?: any | null, end_time?: any | null, re_entry?: boolean | null, hostId?: number | null } | null };
 
 export type RolesListQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -436,9 +437,45 @@ export function useWhoAMiLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Who
 export type WhoAMiQueryHookResult = ReturnType<typeof useWhoAMiQuery>;
 export type WhoAMiLazyQueryHookResult = ReturnType<typeof useWhoAMiLazyQuery>;
 export type WhoAMiQueryResult = Apollo.QueryResult<WhoAMiQuery, WhoAMiQueryVariables>;
+export const EventCategoriesDocument = gql`
+    query EventCategories {
+  eventCategories {
+    id
+    name
+    description
+  }
+}
+    `;
+
+/**
+ * __useEventCategoriesQuery__
+ *
+ * To run a query within a React component, call `useEventCategoriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useEventCategoriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useEventCategoriesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useEventCategoriesQuery(baseOptions?: Apollo.QueryHookOptions<EventCategoriesQuery, EventCategoriesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<EventCategoriesQuery, EventCategoriesQueryVariables>(EventCategoriesDocument, options);
+      }
+export function useEventCategoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<EventCategoriesQuery, EventCategoriesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<EventCategoriesQuery, EventCategoriesQueryVariables>(EventCategoriesDocument, options);
+        }
+export type EventCategoriesQueryHookResult = ReturnType<typeof useEventCategoriesQuery>;
+export type EventCategoriesLazyQueryHookResult = ReturnType<typeof useEventCategoriesLazyQuery>;
+export type EventCategoriesQueryResult = Apollo.QueryResult<EventCategoriesQuery, EventCategoriesQueryVariables>;
 export const CreateEventDocument = gql`
     mutation CreateEvent($input: CreateEventInput!) {
-  createEvent(input: $input) {
+  createEvent(data: $input) {
     id
     event_key
     name
@@ -451,7 +488,10 @@ export const CreateEventDocument = gql`
     re_entry
     event_logo_url
     hostId
-    categoryId
+    event_categories {
+      id
+      name
+    }
   }
 }
     `;
@@ -496,7 +536,6 @@ export const ShowEventDocument = gql`
     re_entry
     event_logo_url
     hostId
-    categoryId
   }
 }
     `;
@@ -543,7 +582,6 @@ export const UpdateEventDocument = gql`
     re_entry
     event_logo_url
     hostId
-    categoryId
   }
 }
     `;

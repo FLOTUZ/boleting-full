@@ -12,6 +12,5 @@ mutation UpdateEvent($updateEventId: Int!, $input: UpdateEventInput!) {
     re_entry
     event_logo_url
     hostId
-    categoryId
   }
 }

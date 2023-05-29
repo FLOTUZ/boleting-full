@@ -12,6 +12,5 @@ query ShowEvent($eventId: Int!) {
     re_entry
     event_logo_url
     hostId
-    categoryId
   }
 }

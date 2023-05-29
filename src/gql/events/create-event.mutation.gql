@@ -1,5 +1,5 @@
 mutation CreateEvent($input: CreateEventInput!) {
-  createEvent(input: $input) {
+  createEvent(data: $input) {
     id
     event_key
     name
@@ -12,6 +12,9 @@ mutation CreateEvent($input: CreateEventInput!) {
     re_entry
     event_logo_url
     hostId
-    categoryId
+    event_categories {
+      id
+      name
+    }
   }
 }

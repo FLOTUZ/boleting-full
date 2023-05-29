@@ -1,4 +1,4 @@
-import DesktopLayoutComponent from "@/components/layouts/desktop-layout-component/desktop-layout.component";
+import DesktopLayoutComponent from "@/layouts/desktop-layout-component/desktop-layout.component";
 import CreateEventView from "@/modules/events/views/create-event.view";
 import { EventsPath } from "@/routes";
 

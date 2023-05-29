@@ -1,7 +1,7 @@
 import {
-  CreateEventInput,
-  EventEntity,
+  EventCategory,
   useCreateEventMutation,
+  useEventCategoriesQuery,
 } from "@/gql/generated";
 import {
   Spacer,
@@ -16,11 +16,21 @@ import {
   Switch,
   Select,
   useToast,
+  Text,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
+import { useState } from "react";
 
 const CreateEventView = () => {
   const toast = useToast();
+  const [eventCategories, setEventcategories] = useState<EventCategory[]>([]);
+
+  const { loading: loadingEventCategories } = useEventCategoriesQuery({
+    onCompleted(data) {
+      setEventcategories(data.eventCategories as EventCategory[]);
+    },
+  });
+
   const [createEvent, { loading }] = useCreateEventMutation();
   const formCreateEvent = useFormik({
     initialValues: {
@@ -34,13 +44,14 @@ const CreateEventView = () => {
       re_entry: false,
       event_logo_url: "",
       event_banner_url: "",
-      categoryId: 0,
+      event_categories: [1],
     },
-    async onSubmit(values: CreateEventInput) {
+    async onSubmit(values: any) {
       await createEvent({
         variables: {
-          ...values,
-          categoryId: Number(values.categoryId),
+          input: {
+            ...values,
+          },
         },
         onCompleted() {
           toast({
@@ -89,20 +100,6 @@ const CreateEventView = () => {
               value={formCreateEvent.values.description!}
             />
 
-            <FormLabel htmlFor="category">Categoria:</FormLabel>
-            <Select
-              required
-              name="categoryId"
-              placeholder="Selecciona una opción"
-              variant={"filled"}
-              onChange={formCreateEvent.handleChange}
-              value={formCreateEvent.values.categoryId}
-            >
-              <option value={1}>Musica electronica</option>
-              <option value={2}>Conciertos</option>
-              <option value={3}>Convivencia</option>
-            </Select>
-
             <FormLabel htmlFor="event_location">Ubicacion evento:</FormLabel>
             <Input
               required
@@ -135,8 +132,12 @@ const CreateEventView = () => {
                   name="date"
                   type="date"
                   variant={"filled"}
-                  onChange={formCreateEvent.handleChange}
-                  value={formCreateEvent.values.date}
+                  onChange={(e) => {
+                    formCreateEvent.setFieldValue(
+                      "date",
+                      new Date(e.target.value).toISOString()
+                    );
+                  }}
                 />
               </Box>
 
@@ -146,8 +147,13 @@ const CreateEventView = () => {
                   name="start_time"
                   type="time"
                   variant={"filled"}
-                  onChange={formCreateEvent.handleChange}
-                  value={formCreateEvent.values.start_time}
+                  onChange={(e) =>
+                    // Format time to iso string
+                    formCreateEvent.setFieldValue(
+                      "start_time",
+                      new Date(e.target.value).toISOString()
+                    )
+                  }
                 />
               </Box>
 
@@ -155,10 +161,14 @@ const CreateEventView = () => {
                 <FormLabel htmlFor="end_time">Hora de finalizacion:</FormLabel>
                 <Input
                   name="end_time"
-                  type="date"
+                  type="time"
                   variant={"filled"}
-                  onChange={formCreateEvent.handleChange}
-                  value={formCreateEvent.values.end_time}
+                  onChange={(e) =>
+                    formCreateEvent.setFieldValue(
+                      "end_time",
+                      new Date(e.target.value).toISOString()
+                    )
+                  }
                 />
               </Box>
             </SimpleGrid>

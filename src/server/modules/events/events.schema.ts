@@ -1,7 +1,6 @@
 import { gql } from "graphql-tag";
 export const EventsSchema = gql`
   input CreateEventInput {
-    event_key: String!
     name: String!
     description: String!
     event_location: String!
@@ -12,12 +11,10 @@ export const EventsSchema = gql`
     re_entry: Boolean!
     event_logo_url: String!
     event_banner_url: String!
-    hostId: Int!
     event_categories: [Int!]
   }
 
   input UpdateEventInput {
-    event_key: String
     name: String
     description: String
     event_location: String
@@ -46,7 +43,6 @@ export const EventsSchema = gql`
     event_logo_url: String
     event_banner_url: String
     hostId: Int
-    categoryId: Int
     createdAt: DateTime
     updatedAt: DateTime
     deleted: Boolean
@@ -61,7 +57,7 @@ export const EventsSchema = gql`
   }
 
   type Mutation {
-    createEvent(input: CreateEventInput!): Event
+    createEvent(data: CreateEventInput!): Event
     updateEvent(id: Int!, input: UpdateEventInput!): Event
     deleteEvent(id: Int!): Event
   }

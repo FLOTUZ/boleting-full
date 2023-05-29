@@ -34,8 +34,8 @@ export const EventResolver = {
   Mutation: {
     createEvent: async (
       _: any,
-      { data }: { data: Event & { categories: number[] } },
-      { prisma }: IGraphqlContext
+      { data }: { data: Event & { event_categories: number[] } },
+      { id_user, prisma }: IGraphqlContext
     ) => {
       await validateData({ schema: CreateEventSchema, data });
 
@@ -43,12 +43,14 @@ export const EventResolver = {
         return await prisma.event.create({
           data: {
             ...data,
+            hostId: id_user!,
             event_categories: {
-              connect: data.categories?.map((id) => ({ id })),
+              connect: data.event_categories?.map((id) => ({ id })),
             },
           },
         });
       } catch (error: any) {
+        console.log(error);
         throw PrismaError.handle(error);
       }
     },
