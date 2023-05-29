@@ -10,7 +10,7 @@ import {
   UpdateRoleSchema,
   validateData,
 } from "@/validations";
-import { autorizedRoles } from "@/server/autorization/role-based.autorization";
+import { autorizedAbilities } from "@/server/autorization";
 
 export const UserResolver = {
   Query: {
@@ -30,8 +30,8 @@ export const UserResolver = {
       __: User,
       { id_user, prisma }: IGraphqlContext
     ) => {
-      await autorizedRoles({
-        authorized_roles: [],
+      await autorizedAbilities({
+        authorized_abilities: ["user:read"],
         id_user,
         prisma,
       });
