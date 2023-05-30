@@ -16,7 +16,7 @@ import {
   Switch,
   Select,
   useToast,
-  Text,
+  Checkbox,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import { useState } from "react";
@@ -24,6 +24,7 @@ import { useState } from "react";
 const CreateEventView = () => {
   const toast = useToast();
   const [eventCategories, setEventcategories] = useState<EventCategory[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
 
   const { loading: loadingEventCategories } = useEventCategoriesQuery({
     onCompleted(data) {
@@ -44,13 +45,19 @@ const CreateEventView = () => {
       re_entry: false,
       event_logo_url: "",
       event_banner_url: "",
-      event_categories: [1],
     },
     async onSubmit(values: any) {
+      console.log({
+        ...values,
+        date: new Date(values.date).toISOString(),
+        event_categories: selectedCategories,
+      });
       await createEvent({
         variables: {
           input: {
             ...values,
+            date: new Date(values.date).toISOString(),
+            event_categories: selectedCategories,
           },
         },
         onCompleted() {
@@ -75,7 +82,7 @@ const CreateEventView = () => {
 
   return (
     <>
-      <Card m={4} p={4}>
+      <Box m={4} p={4}>
         <form onSubmit={formCreateEvent.handleSubmit}>
           <Box>
             <FormLabel htmlFor="name">Nombre:</FormLabel>
@@ -99,6 +106,33 @@ const CreateEventView = () => {
               onChange={formCreateEvent.handleChange}
               value={formCreateEvent.values.description!}
             />
+
+            <FormLabel htmlFor="event_categories">Categorias:</FormLabel>
+            <Box p={4}>
+              {eventCategories.map((category, index) => (
+                <Checkbox
+                  key={index}
+                  value={category.id!}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setSelectedCategories([
+                        ...selectedCategories,
+                        category.id!,
+                      ]);
+                    } else {
+                      setSelectedCategories(
+                        selectedCategories.filter(
+                          (selectedCategory) =>
+                            selectedCategory !== category.id!
+                        )
+                      );
+                    }
+                  }}
+                >
+                  {category.name}
+                </Checkbox>
+              ))}
+            </Box>
 
             <FormLabel htmlFor="event_location">Ubicacion evento:</FormLabel>
             <Input
@@ -147,13 +181,8 @@ const CreateEventView = () => {
                   name="start_time"
                   type="time"
                   variant={"filled"}
-                  onChange={(e) =>
-                    // Format time to iso string
-                    formCreateEvent.setFieldValue(
-                      "start_time",
-                      new Date(e.target.value).toISOString()
-                    )
-                  }
+                  onChange={formCreateEvent.handleChange}
+                  value={formCreateEvent.values.start_time}
                 />
               </Box>
 
@@ -163,12 +192,8 @@ const CreateEventView = () => {
                   name="end_time"
                   type="time"
                   variant={"filled"}
-                  onChange={(e) =>
-                    formCreateEvent.setFieldValue(
-                      "end_time",
-                      new Date(e.target.value).toISOString()
-                    )
-                  }
+                  onChange={formCreateEvent.handleChange}
+                  value={formCreateEvent.values.end_time}
                 />
               </Box>
             </SimpleGrid>
@@ -213,7 +238,7 @@ const CreateEventView = () => {
             <Button colorScheme="red">Reset</Button>
           </HStack>
         </form>
-      </Card>
+      </Box>
     </>
   );
 };
