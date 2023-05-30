@@ -1,4 +1,4 @@
-import DesktopLayoutComponent from "@/components/layouts/desktop-layout-component/desktop-layout.component";
+import DesktopLayoutComponent from "@/layouts/desktop-layout-component/desktop-layout.component";
 import { UserProvider } from "@/contexts/user.context";
 import { Box } from "@chakra-ui/react";
 
@@ -22,12 +22,11 @@ const TicketsRoute = () => {
         {
           label: "Nuevo3",
           href: "/tickets/new3",
-          
         },
         {
           label: "Nuevo4",
           href: "/tickets/new4",
-        }
+        },
       ]}
     >
       <UserProvider>
