@@ -2,7 +2,7 @@ import { Event } from "@prisma/client";
 
 import { Args } from "../../common";
 import { IGraphqlContext } from "../../common/graphql.context";
-import { PrismaError } from "../../utils";
+import { AuthenticationError, PrismaError } from "../../utils";
 
 import { validateData } from "@/validations";
 import { CreateEventSchema, UpdateEventSchema } from "@/validations";
@@ -37,6 +37,7 @@ export const EventResolver = {
       { data }: { data: Event & { event_categories: number[] } },
       { id_user, prisma }: IGraphqlContext
     ) => {
+      if (!id_user) throw new AuthenticationError("User not authenticated");
       await validateData({ schema: CreateEventSchema, data });
 
       try {

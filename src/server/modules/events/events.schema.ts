@@ -6,8 +6,8 @@ export const EventsSchema = gql`
     event_location: String!
     event_location_url: String!
     date: DateTime!
-    start_time: DateTime!
-    end_time: DateTime!
+    start_time: String!
+    end_time: String!
     re_entry: Boolean!
     event_logo_url: String!
     event_banner_url: String!
@@ -20,8 +20,8 @@ export const EventsSchema = gql`
     event_location: String
     event_location_url: String
     date: DateTime
-    start_time: DateTime
-    end_time: DateTime
+    start_time: String
+    end_time: String
     re_entry: Boolean
     event_logo_url: String
     event_banner_url: String
@@ -37,8 +37,8 @@ export const EventsSchema = gql`
     event_location: String
     event_location_url: String
     date: DateTime
-    start_time: DateTime
-    end_time: DateTime
+    start_time: String
+    end_time: String
     re_entry: Boolean
     event_logo_url: String
     event_banner_url: String

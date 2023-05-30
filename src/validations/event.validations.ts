@@ -5,7 +5,7 @@ export const CreateEventSchema = y.object().shape({
   description: y.string().required(),
   event_location: y.string().required(),
   event_location_url: y.string().required(),
-  date: y.string().required(),
+  date: y.date().required(),
   start_time: y.string().required(),
   end_time: y.string().required(),
   re_entry: y.boolean().required(),
