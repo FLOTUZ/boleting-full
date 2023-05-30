@@ -1,38 +1,46 @@
 import {
-  RoleEntity,
+  Role,
   useCreateUserMutation,
   useRolesListQuery,
 } from "@/gql/generated";
 import { useState } from "react";
 import { useFormik } from "formik";
-import DesktopLayoutComponent from "@/components/layouts/desktop-layout-component/desktop-layout.component";
+
 import {
-  Flex,
   Box,
   Button,
   VStack,
   FormControl,
   FormLabel,
-  Input,  
+  Input,
   useToast,
-  Select,
+  Checkbox,
+  SimpleGrid,
 } from "@chakra-ui/react";
+import DesktopLayoutComponent from "@/layouts/desktop-layout-component/desktop-layout.component";
+import { UsersPath } from "@/routes";
+import { useRouter } from "next/router";
 
 const CreateUserView = () => {
-  const [roleList, setRoleList] = useState<RoleEntity[]>([]);
+  const router = useRouter();
+  const [roleList, setRoleList] = useState<Role[]>([]);
+  const [selectedRoles, setSelectedRoles] = useState<number[]>([]);
+
   const toast = useToast();
   const { loading: roleListLoading } = useRolesListQuery({
     onCompleted(data) {
-      setRoleList(data.roles as RoleEntity[]);
+      setRoleList(data.roles as Role[]);
     },
     onError(error) {
       console.log(error.message);
     },
   });
+
   const [createUser, { loading: createUserLoading }] = useCreateUserMutation({
     onCompleted(data) {
+      router.replace(UsersPath);
       toast({
-        title: `Usuario ${data.createUser.name} creado`,
+        title: `Usuario ${data.createUser?.name} creado`,
         position: "bottom-right",
         description: "El usuario se ha creado correctamente",
         status: "success",
@@ -62,14 +70,15 @@ const CreateUserView = () => {
       roleId: 0,
     },
     onSubmit: async (values) => {
-      console.log(JSON.stringify(values));
       await createUser({
         variables: {
-          name: values.name,
-          last_name: values.last_name,
-          email: values.email,
-          password: values.password,
-          roleId: Number(values.roleId),
+          data: {
+            name: values.name,
+            last_name: values.last_name,
+            email: values.email,
+            password: values.password,
+            roles: selectedRoles,
+          },
         },
       });
     },
@@ -77,87 +86,88 @@ const CreateUserView = () => {
 
   return (
     <DesktopLayoutComponent title={"Create user"}>
-      <Flex align="center" justify="center">
-        <Box p={6} rounded="md">
-          <form onSubmit={formCreate.handleSubmit}>
-            <VStack spacing={4} align="flex-start">
-              <FormControl isRequired>
-                <FormLabel htmlFor="name">Nombre</FormLabel>
-                <Input 
-                id="name" 
-                name="name" 
-                type="text" 
-                variant="filled" 
+      <Box p={6} rounded="md">
+        <form onSubmit={formCreate.handleSubmit}>
+          <VStack spacing={4} align="flex-start">
+            <FormControl isRequired>
+              <FormLabel htmlFor="name">Nombre</FormLabel>
+              <Input
+                id="name"
+                name="name"
+                type="text"
+                variant="filled"
                 onChange={formCreate.handleChange}
                 value={formCreate.values.name}
-                />
-              </FormControl>
+              />
+            </FormControl>
 
-              <FormControl isRequired>
-                <FormLabel htmlFor="last_name">Apellido</FormLabel>
-                <Input
-                  id="last_name"
-                  name="last_name"
-                  type="text"
-                  variant="filled"
-                  onChange={formCreate.handleChange}
-                  value={formCreate.values.last_name}
-                />
-              </FormControl>
+            <FormControl isRequired>
+              <FormLabel htmlFor="last_name">Apellido</FormLabel>
+              <Input
+                id="last_name"
+                name="last_name"
+                type="text"
+                variant="filled"
+                onChange={formCreate.handleChange}
+                value={formCreate.values.last_name}
+              />
+            </FormControl>
 
-              <FormControl>
-                <FormLabel htmlFor="email">Correo Electronico</FormLabel>
-                <Input
-                 id="email"
-                 name="email" 
-                 type="email" 
-                 variant="filled" 
-                 onChange={formCreate.handleChange}
-                  value={formCreate.values.email}
-                 />
-              </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="email">Correo Electronico</FormLabel>
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                variant="filled"
+                onChange={formCreate.handleChange}
+                value={formCreate.values.email}
+              />
+            </FormControl>
 
-              <FormControl>
-                <FormLabel htmlFor="password">Contraseña</FormLabel>
-                <Input
-                  id="password"
-                  name="password"
-                  type="password"
-                  variant="filled"
-                  onChange={formCreate.handleChange}
-                  value={formCreate.values.password}
-                />
-              </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="password">Contraseña</FormLabel>
+              <Input
+                id="password"
+                name="password"
+                type="password"
+                variant="filled"
+                onChange={formCreate.handleChange}
+                value={formCreate.values.password}
+              />
+            </FormControl>
 
-              <FormControl>
-                <FormLabel htmlFor="roleId">
-                  Selecciona tu rol
-                  <Select
-                    id="roleId"
-                    isRequired
-                    placeholder="Selecciona tu rol"
-                    variant="filled"
-                    onChange={formCreate.handleChange}
-                    value={formCreate.values.roleId}
-                  >
-                    {roleList.map((rol, index) => {
-                      return (
-                        <option value={rol.id} key={index}>
-                          {rol.name}
-                        </option>
-                      );
-                    })}
-                  </Select>
-                </FormLabel>
-              </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="roles">Roles</FormLabel>
+              <SimpleGrid columns={[1, 2, 3, 4, 5]} spacing={2}>
+                {roleList.map((role) => (
+                  <Box key={role.id}>
+                    <Checkbox
+                      value={role.id}
+                      size={"lg"}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setSelectedRoles([...selectedRoles, role.id]);
+                        } else {
+                          setSelectedRoles(
+                            selectedRoles.filter((id) => id !== role.id)
+                          );
+                        }
+                      }}
+                    >
+                      {role.name}
+                    </Checkbox>
+                  </Box>
+                ))}
+              </SimpleGrid>
+            </FormControl>
 
-              <Button type="submit" w="full" isLoading={createUserLoading}>
-                Create User
-              </Button>
-            </VStack>
-          </form>
-        </Box>
-      </Flex>
+            <Button type="submit" w="full" isLoading={createUserLoading}>
+              Create User
+            </Button>
+          </VStack>
+        </form>
+      </Box>
     </DesktopLayoutComponent>
   );
 };

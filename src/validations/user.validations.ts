@@ -5,7 +5,7 @@ export const CreateUserSchema = y.object().shape({
   email: y.string().email().required(),
   password: y.string().required(),
   last_name: y.string().required(),
-  role: y.array().of(y.number().required()).required(),
+  roles: y.array().of(y.number().required()).required(),
 });
 
 export const UpdateUserSchema = y.object().shape({
@@ -13,5 +13,5 @@ export const UpdateUserSchema = y.object().shape({
   email: y.string().email(),
   password: y.string(),
   last_name: y.string(),
-  role: y.array().of(y.number().required()),
+  roles: y.array().of(y.number().required()),
 });
