@@ -26,7 +26,7 @@ export type CreateEventCategoryInput = {
 export type CreateEventInput = {
   date: Scalars['DateTime']['input'];
   description: Scalars['String']['input'];
-  end_time: Scalars['DateTime']['input'];
+  end_time: Scalars['String']['input'];
   event_banner_url: Scalars['String']['input'];
   event_categories?: InputMaybe<Array<Scalars['Int']['input']>>;
   event_location: Scalars['String']['input'];
@@ -34,7 +34,7 @@ export type CreateEventInput = {
   event_logo_url: Scalars['String']['input'];
   name: Scalars['String']['input'];
   re_entry: Scalars['Boolean']['input'];
-  start_time: Scalars['DateTime']['input'];
+  start_time: Scalars['String']['input'];
 };
 
 export type CreateRoleInput = {
@@ -57,7 +57,7 @@ export type Event = {
   deleted?: Maybe<Scalars['Boolean']['output']>;
   deletedAt?: Maybe<Scalars['DateTime']['output']>;
   description?: Maybe<Scalars['String']['output']>;
-  end_time?: Maybe<Scalars['DateTime']['output']>;
+  end_time?: Maybe<Scalars['String']['output']>;
   event_banner_url?: Maybe<Scalars['String']['output']>;
   event_categories?: Maybe<Array<Maybe<EventCategory>>>;
   event_key?: Maybe<Scalars['String']['output']>;
@@ -69,7 +69,7 @@ export type Event = {
   id?: Maybe<Scalars['Int']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   re_entry?: Maybe<Scalars['Boolean']['output']>;
-  start_time?: Maybe<Scalars['DateTime']['output']>;
+  start_time?: Maybe<Scalars['String']['output']>;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
@@ -260,7 +260,7 @@ export type UpdateEventCategoryInput = {
 export type UpdateEventInput = {
   date?: InputMaybe<Scalars['DateTime']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
-  end_time?: InputMaybe<Scalars['DateTime']['input']>;
+  end_time?: InputMaybe<Scalars['String']['input']>;
   event_banner_url?: InputMaybe<Scalars['String']['input']>;
   event_categories?: InputMaybe<Array<Scalars['Int']['input']>>;
   event_location?: InputMaybe<Scalars['String']['input']>;
@@ -269,7 +269,7 @@ export type UpdateEventInput = {
   hostId?: InputMaybe<Scalars['Int']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   re_entry?: InputMaybe<Scalars['Boolean']['input']>;
-  start_time?: InputMaybe<Scalars['DateTime']['input']>;
+  start_time?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type UpdateRoleInput = {
@@ -320,14 +320,19 @@ export type CreateEventMutationVariables = Exact<{
 }>;
 
 
-export type CreateEventMutation = { __typename?: 'Mutation', createEvent?: { __typename?: 'Event', id?: number | null, event_key?: string | null, name?: string | null, description?: string | null, event_location?: string | null, event_logo_url?: string | null, date?: any | null, start_time?: any | null, end_time?: any | null, re_entry?: boolean | null, hostId?: number | null, event_categories?: Array<{ __typename?: 'EventCategory', id?: number | null, name?: string | null } | null> | null } | null };
+export type CreateEventMutation = { __typename?: 'Mutation', createEvent?: { __typename?: 'Event', id?: number | null, event_key?: string | null, name?: string | null, description?: string | null, event_location?: string | null, event_logo_url?: string | null, date?: any | null, start_time?: string | null, end_time?: string | null, re_entry?: boolean | null, hostId?: number | null, event_categories?: Array<{ __typename?: 'EventCategory', id?: number | null, name?: string | null } | null> | null } | null };
 
 export type ShowEventQueryVariables = Exact<{
   eventId: Scalars['Int']['input'];
 }>;
 
 
-export type ShowEventQuery = { __typename?: 'Query', event?: { __typename?: 'Event', id?: number | null, event_key?: string | null, name?: string | null, description?: string | null, event_location?: string | null, event_logo_url?: string | null, date?: any | null, start_time?: any | null, end_time?: any | null, re_entry?: boolean | null, hostId?: number | null } | null };
+export type ShowEventQuery = { __typename?: 'Query', event?: { __typename?: 'Event', id?: number | null, event_key?: string | null, name?: string | null, description?: string | null, event_location?: string | null, event_logo_url?: string | null, date?: any | null, start_time?: string | null, end_time?: string | null, re_entry?: boolean | null, hostId?: number | null } | null };
+
+export type ShowEventsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ShowEventsQuery = { __typename?: 'Query', events?: Array<{ __typename?: 'Event', id?: number | null, event_logo_url?: string | null, event_location?: string | null, event_key?: string | null, name?: string | null, description?: string | null, date?: any | null, deleted?: boolean | null, event_banner_url?: string | null, event_categories?: Array<{ __typename?: 'EventCategory', id?: number | null, name?: string | null } | null> | null } | null> | null };
 
 export type UpdateEventMutationVariables = Exact<{
   updateEventId: Scalars['Int']['input'];
@@ -335,7 +340,7 @@ export type UpdateEventMutationVariables = Exact<{
 }>;
 
 
-export type UpdateEventMutation = { __typename?: 'Mutation', updateEvent?: { __typename?: 'Event', id?: number | null, event_key?: string | null, name?: string | null, description?: string | null, event_location?: string | null, event_logo_url?: string | null, date?: any | null, start_time?: any | null, end_time?: any | null, re_entry?: boolean | null, hostId?: number | null } | null };
+export type UpdateEventMutation = { __typename?: 'Mutation', updateEvent?: { __typename?: 'Event', id?: number | null, event_key?: string | null, name?: string | null, description?: string | null, event_location?: string | null, event_logo_url?: string | null, date?: any | null, start_time?: string | null, end_time?: string | null, re_entry?: boolean | null, hostId?: number | null } | null };
 
 export type RolesListQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -567,6 +572,52 @@ export function useShowEventLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<
 export type ShowEventQueryHookResult = ReturnType<typeof useShowEventQuery>;
 export type ShowEventLazyQueryHookResult = ReturnType<typeof useShowEventLazyQuery>;
 export type ShowEventQueryResult = Apollo.QueryResult<ShowEventQuery, ShowEventQueryVariables>;
+export const ShowEventsDocument = gql`
+    query ShowEvents {
+  events {
+    id
+    event_logo_url
+    event_location
+    event_key
+    name
+    description
+    date
+    deleted
+    event_banner_url
+    event_categories {
+      id
+      name
+    }
+  }
+}
+    `;
+
+/**
+ * __useShowEventsQuery__
+ *
+ * To run a query within a React component, call `useShowEventsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useShowEventsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useShowEventsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useShowEventsQuery(baseOptions?: Apollo.QueryHookOptions<ShowEventsQuery, ShowEventsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ShowEventsQuery, ShowEventsQueryVariables>(ShowEventsDocument, options);
+      }
+export function useShowEventsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ShowEventsQuery, ShowEventsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ShowEventsQuery, ShowEventsQueryVariables>(ShowEventsDocument, options);
+        }
+export type ShowEventsQueryHookResult = ReturnType<typeof useShowEventsQuery>;
+export type ShowEventsLazyQueryHookResult = ReturnType<typeof useShowEventsLazyQuery>;
+export type ShowEventsQueryResult = Apollo.QueryResult<ShowEventsQuery, ShowEventsQueryVariables>;
 export const UpdateEventDocument = gql`
     mutation UpdateEvent($updateEventId: Int!, $input: UpdateEventInput!) {
   updateEvent(id: $updateEventId, input: $input) {

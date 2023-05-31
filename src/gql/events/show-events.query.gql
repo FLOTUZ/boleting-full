@@ -1,0 +1,17 @@
+query ShowEvents {
+  events {
+    id
+    event_logo_url
+    event_location
+    event_key
+    name
+    description
+    date
+    deleted
+    event_banner_url
+    event_categories {
+      id
+      name
+    }
+  }
+}

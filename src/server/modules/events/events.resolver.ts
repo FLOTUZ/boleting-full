@@ -85,5 +85,15 @@ export const EventResolver = {
     host: async ({ id }: Event, _: any, { prisma }: IGraphqlContext) => {
       return await prisma.event.findUnique({ where: { id } }).host();
     },
+
+    event_categories: async (
+      { id }: Event,
+      _: any,
+      { prisma }: IGraphqlContext
+    ) => {
+      return await prisma.eventCategory.findMany({
+        where: { events: { some: { id } } },
+      });
+    },
   },
 };

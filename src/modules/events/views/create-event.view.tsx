@@ -17,18 +17,22 @@ import {
   Select,
   useToast,
   Checkbox,
+  Skeleton,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const CreateEventView = () => {
   const toast = useToast();
-  const [eventCategories, setEventcategories] = useState<EventCategory[]>([]);
+  const [eventCategories, setEventCategories] = useState<EventCategory[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
 
-  const { loading: loadingEventCategories } = useEventCategoriesQuery({
+  const { loading: loadingEventCategoriesList } = useEventCategoriesQuery({
+    onError(error) {
+      console.log(error);
+    },
     onCompleted(data) {
-      setEventcategories(data.eventCategories as EventCategory[]);
+      setEventCategories(data.eventCategories as EventCategory[]);
     },
   });
 
@@ -108,31 +112,33 @@ const CreateEventView = () => {
             />
 
             <FormLabel htmlFor="event_categories">Categorias:</FormLabel>
-            <Box p={4}>
-              {eventCategories.map((category, index) => (
-                <Checkbox
-                  key={index}
-                  value={category.id!}
-                  onChange={(e) => {
-                    if (e.target.checked) {
-                      setSelectedCategories([
-                        ...selectedCategories,
-                        category.id!,
-                      ]);
-                    } else {
-                      setSelectedCategories(
-                        selectedCategories.filter(
-                          (selectedCategory) =>
-                            selectedCategory !== category.id!
-                        )
-                      );
-                    }
-                  }}
-                >
-                  {category.name}
-                </Checkbox>
-              ))}
-            </Box>
+            <Skeleton isLoaded={!loadingEventCategoriesList}>
+              <Box p={4}>
+                {eventCategories.map((category, index) => (
+                  <Checkbox
+                    key={index}
+                    value={category.id!}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setSelectedCategories([
+                          ...selectedCategories,
+                          category.id!,
+                        ]);
+                      } else {
+                        setSelectedCategories(
+                          selectedCategories.filter(
+                            (selectedCategory) =>
+                              selectedCategory !== category.id!
+                          )
+                        );
+                      }
+                    }}
+                  >
+                    {category.name}
+                  </Checkbox>
+                ))}
+              </Box>
+            </Skeleton>
 
             <FormLabel htmlFor="event_location">Ubicacion evento:</FormLabel>
             <Input

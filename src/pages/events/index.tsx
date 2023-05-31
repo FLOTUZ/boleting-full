@@ -1,5 +1,5 @@
 import DesktopLayoutComponent from "@/layouts/desktop-layout-component/desktop-layout.component";
-import CreateEventView from "@/modules/events/views/create-event.view";
+import ShowEventsView from "@/modules/events/views/show-events.view";
 import { EventsPath } from "@/routes";
 
 function EventsRoute() {
@@ -13,7 +13,7 @@ function EventsRoute() {
         },
       ]}
     >
-      <CreateEventView />
+      <ShowEventsView />
     </DesktopLayoutComponent>
   );
 }
