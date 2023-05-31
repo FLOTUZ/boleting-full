@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { BsSunFill } from "react-icons/bs";
 import { TbMoonFilled } from "react-icons/tb";
+import { useRouter } from "next/router";
 
 export interface BreadCrumbItem {
   label: string;
@@ -25,6 +26,7 @@ export const DesktopHeaderComponent = ({
   title,
   breadCrumbs,
 }: DesktopHeaderComponentProps) => {
+  const router = useRouter();
   const { colorMode, toggleColorMode } = useColorMode();
 
   const isCurrentPage = (breadCrumb: BreadCrumbItem) => {
@@ -56,15 +58,9 @@ export const DesktopHeaderComponent = ({
             return (
               <HStack key={index}>
                 {!isCurrentPage(breadCrumb) ? (
-                  <Link
-                    href={breadCrumb.href}
-                    style={{
-                      fontSize: "0.8rem",
-                      display: "inline",
-                    }}
-                  >
+                  <Button onClick={() => router.back()}>
                     {breadCrumb.label}
-                  </Link>
+                  </Button>
                 ) : (
                   <Text fontSize={"sm"} cursor={"default"} display={"inline"}>
                     {breadCrumb.label}
