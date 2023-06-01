@@ -56,15 +56,6 @@ export const useSession = () => {
     getUser();
   }, []);
 
-  useEffect(() => {
-    const userStorage = localStorage.getItem("user");
-
-    if (!userStorage) {
-      router.replace(LoginPath);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   return {
     user,
     setUser,
