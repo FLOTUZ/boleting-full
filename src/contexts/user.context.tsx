@@ -1,7 +1,9 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext, useEffect } from "react";
 import { User } from "@/gql/generated";
 import { useSession } from "@/hooks/useSession";
 import CircularLoaderComponent from "@/components/loaders/circular-loader.component";
+import { useRouter } from "next/router";
+import { LoginPath } from "@/routes";
 
 export type UserContextType = {
   user: User | null;

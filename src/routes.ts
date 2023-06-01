@@ -1,4 +1,6 @@
 export const rootPath = "/";
+export const LoginPath = "auth/login";
+export const RegisterPath = "auth/register";
 export const profilePath = "/profile";
 
 //============= EVENTS ============

@@ -1,7 +1,8 @@
 import { User, useLoginMutation, useWhoAMiQuery } from "@/gql/generated";
+import { LoginPath, rootPath } from "@/routes";
 import { useToast } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export const useSession = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -19,7 +20,7 @@ export const useSession = () => {
 
         localStorage.setItem("user", JSON.stringify(data.login.user as User));
 
-        router.replace("/");
+        router.replace(rootPath);
       },
 
       onError(error) {
@@ -38,7 +39,7 @@ export const useSession = () => {
     setUser(null);
     localStorage.removeItem("user");
     localStorage.removeItem("access-token");
-    router.push("/auth/login");
+    router.push(LoginPath);
   };
 
   useEffect(() => {
@@ -53,6 +54,15 @@ export const useSession = () => {
       return null;
     };
     getUser();
+  }, []);
+
+  useEffect(() => {
+    const userStorage = localStorage.getItem("user");
+
+    if (!userStorage) {
+      router.replace(LoginPath);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return {
