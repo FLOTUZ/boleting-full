@@ -158,8 +158,12 @@ const DesktopLayoutComponent = ({
           borderWidth={"1px"}
         >
           <DesktopHeaderComponent title={title} breadCrumbs={breadCrumbs} />
-          <Box h={"100%"}>{children}</Box>
-          <Box borderWidth={"1px"}> Footer </Box>
+          <Box h={"100%"} mb={16}>
+            {children}
+          </Box>
+          <Box borderWidth={"1px"} bgColor={"red"}>
+            Footer
+          </Box>
         </GridItem>
       </Grid>
     </>
