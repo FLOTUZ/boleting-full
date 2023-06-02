@@ -161,7 +161,7 @@ const DesktopLayoutComponent = ({
           <Box h={"100%"} mb={16}>
             {children}
           </Box>
-          <Box borderWidth={"1px"} bgColor={"red"}>
+          <Box borderWidth={"1px"} bgColor={"--chakra-colors-gray-primary"}>
             Footer
           </Box>
         </GridItem>
