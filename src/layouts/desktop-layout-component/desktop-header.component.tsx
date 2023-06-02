@@ -58,7 +58,7 @@ export const DesktopHeaderComponent = ({
             return (
               <HStack key={index}>
                 {!isCurrentPage(breadCrumb) ? (
-                  <Button onClick={() => router.back()}>
+                  <Button onClick={() => router.replace(breadCrumb.href)}>
                     {breadCrumb.label}
                   </Button>
                 ) : (
