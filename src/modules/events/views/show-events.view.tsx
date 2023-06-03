@@ -59,7 +59,7 @@ const ShowEventsView = () => {
           <TbReload />
         </Button>
         <Button onClick={() => setToggle()}>
-          {toogle ? <FaList /> : <HiSquares2X2 />}
+          {toogle ? <HiSquares2X2 /> : <FaList />}
         </Button>
       </HStack>
       <Box mt={8}>
@@ -74,7 +74,7 @@ const ShowEventsView = () => {
         ) : (
           <Skeleton isLoaded={!eventsLoader}>
             <SimpleGrid columns={5} spacing={4}>
-              {data.map((event: Event) => (
+              {data?.map((event: Event) => (
                 <Box
                   key={event.id}
                   p={4}
@@ -99,10 +99,7 @@ const ShowEventsView = () => {
                   )}
                   <Box fontWeight="bold">{event.name}</Box>
                   <Box h="100px" overflow="hidden" textOverflow="ellipsis">
-                    {event.description} aaaaaaaaaaaaaaa aaaaaaaaaaaaaaa
-                    aaaaaaaaaaaaaaa aaaaaaaaaaaaaaa aaaaaaaaaaaaaaa
-                    aaaaaaaaaaaaaaa aaaaaaaaaaaaaaa aaaaaaaaaaaaaaa
-                    aaaaaaaaaaaaaaa aaaaaaaaaaaaaaa aaaaaaaaaaaaaaa
+                    {event.description}
                   </Box>
                   <Box>{new Date(event.date).toLocaleDateString()}</Box>
                 </Box>
