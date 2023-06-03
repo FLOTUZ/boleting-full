@@ -95,7 +95,7 @@ const DesktopLayoutComponent = ({
           <Box w={"100%"} mt={100} pos={"inherit"} top={0} right={0}>
             {menuItems.map((item, index) => {
               return (
-                <Link href={item.href} key={index}>
+                <Link href={item.href} key={index} replace={true}>
                   <Box
                     justifyContent={"center"}
                     cursor={"pointer"}
