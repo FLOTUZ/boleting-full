@@ -26,7 +26,7 @@ export type CreateEventCategoryInput = {
 
 export type CreateEventInput = {
   description: Scalars['String']['input'];
-  end_date: Scalars['DateTime']['input'];
+  end_date?: InputMaybe<Scalars['DateTime']['input']>;
   end_time: Scalars['String']['input'];
   event_banner_url: Scalars['String']['input'];
   event_location: Scalars['String']['input'];

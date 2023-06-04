@@ -1,5 +1,6 @@
 import {
   EventCategory,
+  EventSubCategory,
   useCreateEventMutation,
   useEventCategoriesQuery,
 } from "@/gql/generated";
@@ -25,7 +26,14 @@ import { useEffect, useState } from "react";
 const CreateEventView = () => {
   const toast = useToast();
   const [eventCategories, setEventCategories] = useState<EventCategory[]>([]);
+  const [eventSubCategories, setEventSubCategories] = useState<
+    EventSubCategory[]
+  >([]);
+
   const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
+  const [selectedSubCategories, setSelectedSubCategories] = useState<number[]>(
+    []
+  );
 
   const { loading: loadingEventCategoriesList } = useEventCategoriesQuery({
     onError(error) {
@@ -43,7 +51,8 @@ const CreateEventView = () => {
       description: "",
       event_location: "",
       event_location_url: "",
-      date: "",
+      start_date: "",
+      end_date: "",
       start_time: "",
       end_time: "",
       re_entry: false,
@@ -52,16 +61,13 @@ const CreateEventView = () => {
     },
     async onSubmit(values: any) {
       console.log({
-        ...values,
-        date: new Date(values.date).toISOString(),
-        event_categories: selectedCategories,
+        selectedSubCategories,
       });
       await createEvent({
         variables: {
           input: {
             ...values,
-            date: new Date(values.date).toISOString(),
-            event_categories: selectedCategories,
+            sub_categories: selectedSubCategories,
           },
         },
         onCompleted() {
@@ -124,6 +130,12 @@ const CreateEventView = () => {
                           ...selectedCategories,
                           category.id!,
                         ]);
+
+                        // Add sub categories of the category
+                        setEventSubCategories([
+                          ...eventSubCategories,
+                          ...(category.sub_categories! as EventSubCategory[]),
+                        ]);
                       } else {
                         setSelectedCategories(
                           selectedCategories.filter(
@@ -131,10 +143,61 @@ const CreateEventView = () => {
                               selectedCategory !== category.id!
                           )
                         );
+
+                        // Remove sub categories of the category
+                        setEventSubCategories(
+                          eventSubCategories.filter(
+                            (subCategory) =>
+                              subCategory.parent_event_categoryId !==
+                              category.id!
+                          )
+                        );
+
+                        // Remove selected sub categories of the category
+                        setSelectedSubCategories(
+                          selectedSubCategories.filter(
+                            (selectedSubCategory) =>
+                              selectedSubCategory !== category.id!
+                          )
+                        );
                       }
                     }}
                   >
                     {category.name}
+                  </Checkbox>
+                ))}
+              </Box>
+            </Skeleton>
+
+            <FormLabel htmlFor="event_sub_categories">
+              Sub categorias:
+            </FormLabel>
+            <Skeleton isLoaded={!loadingEventCategoriesList}>
+              <Box p={4}>
+                {eventSubCategories.map((subCategory, index) => (
+                  <Checkbox
+                    key={index}
+                    value={subCategory.id!}
+                    isChecked={selectedSubCategories.includes(
+                      Number(subCategory.id!)
+                    )}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setSelectedSubCategories([
+                          ...selectedSubCategories,
+                          Number(subCategory.id!),
+                        ]);
+                      } else {
+                        setSelectedSubCategories(
+                          selectedSubCategories.filter(
+                            (selectedSubCategory) =>
+                              selectedSubCategory !== Number(subCategory.id!)
+                          )
+                        );
+                      }
+                    }}
+                  >
+                    {subCategory.name}
                   </Checkbox>
                 ))}
               </Box>
@@ -166,19 +229,35 @@ const CreateEventView = () => {
 
             <SimpleGrid columns={[1, 2, 3]} spacing={4} w={"100%"}>
               <Box w={"100%"}>
-                <FormLabel htmlFor="date">Fecha del evento:</FormLabel>
+                <FormLabel htmlFor="date">Fecha de inicio:</FormLabel>
                 <Input
                   required
-                  name="date"
+                  name="start_date"
                   type="date"
                   variant={"filled"}
                   onChange={(e) => {
                     formCreateEvent.setFieldValue(
-                      "date",
+                      "start_date",
                       new Date(e.target.value).toISOString()
                     );
                   }}
                 />
+
+                <Box w={"100%"}>
+                  <FormLabel htmlFor="end_date">Fecha de cierre:</FormLabel>
+                  <Input
+                    required
+                    name="end_date"
+                    type="date"
+                    variant={"filled"}
+                    onChange={(e) => {
+                      formCreateEvent.setFieldValue(
+                        "end_date",
+                        new Date(e.target.value).toISOString()
+                      );
+                    }}
+                  />
+                </Box>
               </Box>
 
               <Box w={"100%"}>

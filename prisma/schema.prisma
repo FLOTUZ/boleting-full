@@ -178,7 +178,7 @@ model Event {
   event_location     String             @db.VarChar(255)
   event_location_url String             @db.VarChar(1000)
   start_date         DateTime           @db.Date
-  end_date           DateTime           @db.Date
+  end_date           DateTime?          @db.Date
   start_time         String?            @db.VarChar(5)
   end_time           String?            @db.VarChar(5)
   re_entry           Boolean            @default(false)

@@ -6,7 +6,7 @@ export const EventsSchema = gql`
     event_location: String!
     event_location_url: String!
     start_date: DateTime!
-    end_date: DateTime!
+    end_date: DateTime
     start_time: String!
     end_time: String!
     re_entry: Boolean!

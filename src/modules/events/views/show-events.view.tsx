@@ -16,8 +16,12 @@ import {
 import { FaList } from "react-icons/fa";
 import { HiSquares2X2 } from "react-icons/hi2";
 import { TbReload } from "react-icons/tb";
+import { ShowEventPath } from "@/routes";
+import { useRouter } from "next/router";
+import Link from "next/link";
 
 const ShowEventsView = () => {
+  const router = useRouter();
   const [toogle, setToggle] = useToggle(true);
   const [columns, setcolumns] = useState<TableColumn<Event>[]>([]);
   const [data, setdata] = useState<any>([]);
@@ -39,8 +43,8 @@ const ShowEventsView = () => {
         selector: (row) => row.name!,
       },
       {
-        name: "Fecha",
-        selector: (row) => new Date(row.date).toLocaleDateString(),
+        name: "Inicia",
+        selector: (row) => new Date(row.start_date).toLocaleDateString(),
       },
       {
         name: "Descripción",
@@ -75,34 +79,35 @@ const ShowEventsView = () => {
           <Skeleton isLoaded={!eventsLoader}>
             <SimpleGrid columns={5} spacing={4}>
               {data?.map((event: Event) => (
-                <Box
-                  key={event.id}
-                  p={4}
-                  boxShadow="sm"
-                  rounded="md"
-                  transition="all .2s ease-in-out"
-                  transform="scale(1)"
-                  _hover={{
-                    pointer: "cursor",
-                    boxShadow: "0 0 0 1px #3182ce",
-                    transition: "all .2s ease-in-out",
-                    transform: "scale(1.05)",
-                  }}
-                >
-                  {event.event_logo_url && (
-                    <Image
-                      src={event.event_logo_url}
-                      alt={event.description!}
-                      rounded="md"
-                      mb={4}
-                    />
-                  )}
-                  <Box fontWeight="bold">{event.name}</Box>
-                  <Box h="100px" overflow="hidden" textOverflow="ellipsis">
-                    {event.description}
+                <Link key={event.id} href={ShowEventPath(event.id!.toString())}>
+                  <Box
+                    p={4}
+                    boxShadow="sm"
+                    rounded="md"
+                    transition="all .2s ease-in-out"
+                    transform="scale(1)"
+                    _hover={{
+                      pointer: "cursor",
+                      boxShadow: "0 0 0 1px #3182ce",
+                      transition: "all .2s ease-in-out",
+                      transform: "scale(1.05)",
+                    }}
+                  >
+                    {event.event_logo_url && (
+                      <Image
+                        src={event.event_logo_url}
+                        alt={event.description!}
+                        rounded="md"
+                        mb={4}
+                      />
+                    )}
+                    <Box fontWeight="bold">{event.name}</Box>
+                    <Box h="100px" overflow="hidden" textOverflow="ellipsis">
+                      {event.description}
+                    </Box>
+                    <Box>{new Date(event.start_date).toLocaleDateString()}</Box>
                   </Box>
-                  <Box>{new Date(event.date).toLocaleDateString()}</Box>
-                </Box>
+                </Link>
               ))}
             </SimpleGrid>
           </Skeleton>

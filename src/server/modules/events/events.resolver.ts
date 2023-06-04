@@ -34,7 +34,7 @@ export const EventResolver = {
   Mutation: {
     createEvent: async (
       _: any,
-      { data }: { data: Event & { event_sub_categories: number[] } },
+      { data }: { data: Event & { sub_categories: number[] } },
       { id_user, id_organization, prisma }: IGraphqlContext
     ) => {
       if (!id_user) throw new AuthenticationError("User not authenticated");
@@ -47,7 +47,7 @@ export const EventResolver = {
             userId: id_user,
             organizationId: id_organization!,
             sub_categories: {
-              connect: data.event_sub_categories?.map((id) => ({ id })),
+              connect: data.sub_categories?.map((id) => ({ id })),
             },
           },
         });

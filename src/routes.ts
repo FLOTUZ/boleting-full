@@ -6,6 +6,7 @@ export const profilePath = "/profile";
 //============= EVENTS ============
 export const EventsPath = "/events";
 export const CreateEventPath = "/events/create";
+export const ShowEventPath = (id: string) => `/events/${id}`;
 
 // =========== TICKETS ============
 export const TicketsPath = "/tickets";
