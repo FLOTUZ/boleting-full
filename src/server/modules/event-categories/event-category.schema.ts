@@ -21,7 +21,7 @@ export const EventsCategorySchema = gql`
     deleted: Boolean
     deletedAt: DateTime
     events: [Event]
-    # sub_categories: [EventCategory]
+    sub_categories: [EventCategory]
   }
 
   type Query {

@@ -83,7 +83,7 @@ export const EventResolver = {
   },
 
   Event: {
-    user: async ({ id }: Event, _: any, { prisma }: IGraphqlContext) => {
+    createdBy: async ({ id }: Event, _: any, { prisma }: IGraphqlContext) => {
       return await prisma.event.findUnique({ where: { id } }).createdBy();
     },
 

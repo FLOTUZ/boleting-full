@@ -27,7 +27,7 @@ export const EventsSchema = gql`
     re_entry: Boolean
     event_logo_url: String
     event_banner_url: String
-    hostId: Int
+    userId: Int
     sub_categories: [Int!]
   }
 
@@ -52,8 +52,8 @@ export const EventsSchema = gql`
     deleted: Boolean
     deletedAt: DateTime
     createdBy: User
-    # sub_categories: [EventSubCategory]
-    # organization: Organization
+    sub_categories: [EventSubCategory]
+    organization: Organization
   }
 
   type Query {

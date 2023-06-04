@@ -27,6 +27,7 @@ export const UserSchema = gql`
     deleted: Boolean
     deletedAt: DateTime
     roles: [Role!]
+    organization: Organization
   }
 
   type Query {

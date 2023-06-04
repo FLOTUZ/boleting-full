@@ -89,7 +89,7 @@ export const EventCategoryResolver = {
   },
 
   EventCategory: {
-    sub_category: async (
+    sub_categories: async (
       { id }: EventCategory,
       _: any,
       { prisma }: IGraphqlContext
