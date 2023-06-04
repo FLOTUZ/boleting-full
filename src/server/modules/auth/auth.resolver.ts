@@ -37,6 +37,7 @@ export const AuthResolver = {
         {
           id: user.id,
           email: user.email,
+          organizationId: user.organizationId,
         },
         process.env.JWT_SECRET as string
       );

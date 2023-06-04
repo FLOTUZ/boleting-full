@@ -3,11 +3,13 @@ export const EventsCategorySchema = gql`
   input CreateEventCategoryInput {
     name: String!
     description: String
+    sub_categories: [Int!]
   }
 
   input UpdateEventCategoryInput {
     name: String
     description: String
+    sub_categories: [Int!]
   }
 
   type EventCategory {
@@ -19,6 +21,7 @@ export const EventsCategorySchema = gql`
     deleted: Boolean
     deletedAt: DateTime
     events: [Event]
+    # sub_categories: [EventCategory]
   }
 
   type Query {

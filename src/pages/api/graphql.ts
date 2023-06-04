@@ -10,9 +10,16 @@ export default startServerAndCreateNextHandler(apolloServer, {
     const token = req.headers.authorization?.split(" ")[1];
     const user = token ? getUser(token) : null;
 
-    if (!user) return { id_user: null, prisma, req, res };
+    if (!user)
+      return { id_user: null, id_organization: null, prisma, req, res };
 
-    return { id_user: user.id, prisma, req, res };
+    return {
+      id_user: user.id,
+      id_organization: user.organizationId,
+      prisma,
+      req,
+      res,
+    };
   },
 });
 

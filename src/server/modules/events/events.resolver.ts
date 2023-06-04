@@ -34,8 +34,8 @@ export const EventResolver = {
   Mutation: {
     createEvent: async (
       _: any,
-      { data }: { data: Event & { event_categories: number[] } },
-      { id_user, prisma }: IGraphqlContext
+      { data }: { data: Event & { event_sub_categories: number[] } },
+      { id_user, id_organization, prisma }: IGraphqlContext
     ) => {
       if (!id_user) throw new AuthenticationError("User not authenticated");
       await validateData({ schema: CreateEventSchema, data });
@@ -44,9 +44,10 @@ export const EventResolver = {
         return await prisma.event.create({
           data: {
             ...data,
-            hostId: id_user!,
-            event_categories: {
-              connect: data.event_categories?.map((id) => ({ id })),
+            userId: id_user,
+            organizationId: id_organization!,
+            sub_categories: {
+              connect: data.event_sub_categories?.map((id) => ({ id })),
             },
           },
         });
@@ -58,7 +59,7 @@ export const EventResolver = {
 
     updateEvent: async (
       _: any,
-      { id, data }: { id: number; data: Event & { categories: number[] } },
+      { id, data }: { id: number; data: Event & { subcategories: number[] } },
       { prisma }: IGraphqlContext
     ) => {
       await validateData({ schema: UpdateEventSchema, data });
@@ -66,8 +67,8 @@ export const EventResolver = {
         where: { id },
         data: {
           ...data,
-          event_categories: {
-            connect: data.categories?.map((id) => ({ id })),
+          sub_categories: {
+            connect: data.subcategories?.map((id) => ({ id })),
           },
         },
       });
@@ -82,16 +83,16 @@ export const EventResolver = {
   },
 
   Event: {
-    host: async ({ id }: Event, _: any, { prisma }: IGraphqlContext) => {
-      return await prisma.event.findUnique({ where: { id } }).host();
+    user: async ({ id }: Event, _: any, { prisma }: IGraphqlContext) => {
+      return await prisma.event.findUnique({ where: { id } }).createdBy();
     },
 
-    event_categories: async (
+    sub_categories: async (
       { id }: Event,
       _: any,
       { prisma }: IGraphqlContext
     ) => {
-      return await prisma.eventCategory.findMany({
+      return await prisma.eventSubCategory.findMany({
         where: { events: { some: { id } } },
       });
     },

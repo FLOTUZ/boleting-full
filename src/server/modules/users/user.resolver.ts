@@ -82,5 +82,11 @@ export const UserResolver = {
         where: { users: { some: { id } } },
       });
     },
+
+    organization: async ({ id }: User, _: any, { prisma }: IGraphqlContext) => {
+      return await prisma.organization.findFirst({
+        where: { users: { some: { id } } },
+      });
+    },
   },
 };

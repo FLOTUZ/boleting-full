@@ -5,13 +5,14 @@ export const EventsSchema = gql`
     description: String!
     event_location: String!
     event_location_url: String!
-    date: DateTime!
+    start_date: DateTime!
+    end_date: DateTime!
     start_time: String!
     end_time: String!
     re_entry: Boolean!
     event_logo_url: String!
     event_banner_url: String!
-    event_categories: [Int!]
+    sub_categories: [Int!]
   }
 
   input UpdateEventInput {
@@ -20,13 +21,14 @@ export const EventsSchema = gql`
     event_location: String
     event_location_url: String
     date: DateTime
-    start_time: String
+    start_date: DateTime!
+    end_date: DateTime!
     end_time: String
     re_entry: Boolean
     event_logo_url: String
     event_banner_url: String
     hostId: Int
-    event_categories: [Int!]
+    sub_categories: [Int!]
   }
 
   type Event {
@@ -36,19 +38,22 @@ export const EventsSchema = gql`
     description: String
     event_location: String
     event_location_url: String
-    date: DateTime
+    start_date: DateTime
+    end_date: DateTime
     start_time: String
     end_time: String
     re_entry: Boolean
     event_logo_url: String
     event_banner_url: String
-    hostId: Int
+    userId: Int
+    organizationId: Int
     createdAt: DateTime
     updatedAt: DateTime
     deleted: Boolean
     deletedAt: DateTime
-    host: User
-    event_categories: [EventCategory]
+    createdBy: User
+    # sub_categories: [EventSubCategory]
+    # organization: Organization
   }
 
   type Query {
