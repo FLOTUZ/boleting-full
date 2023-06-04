@@ -21,14 +21,14 @@ export const EventsSchema = gql`
     event_location: String
     event_location_url: String
     date: DateTime
-    start_date: DateTime!
-    end_date: DateTime!
+    start_date: DateTime
+    end_date: DateTime
     end_time: String
     re_entry: Boolean
     event_logo_url: String
     event_banner_url: String
     userId: Int
-    sub_categories: [Int!]
+    sub_categories: [Int]
   }
 
   type Event {
@@ -63,7 +63,7 @@ export const EventsSchema = gql`
 
   type Mutation {
     createEvent(data: CreateEventInput!): Event
-    updateEvent(id: Int!, input: UpdateEventInput!): Event
+    updateEvent(id: Int!, data: UpdateEventInput!): Event
     deleteEvent(id: Int!): Event
   }
 `;

@@ -1,16 +1,19 @@
 mutation UpdateEvent($updateEventId: Int!, $input: UpdateEventInput!) {
-  updateEvent(id: $updateEventId, input: $input) {
+  updateEvent(id: $updateEventId, data: $input) {
     id
     event_key
     name
     description
     event_location
     event_logo_url
-    date
+    start_date
     start_time
     end_time
     re_entry
     event_logo_url
-    hostId
+    userId
+    sub_categories {
+      name
+    }
   }
 }

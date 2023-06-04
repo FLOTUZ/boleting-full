@@ -6,10 +6,10 @@ query ShowEvents {
     event_key
     name
     description
-    date
+    start_date
     deleted
     event_banner_url
-    event_categories {
+    sub_categories {
       id
       name
     }

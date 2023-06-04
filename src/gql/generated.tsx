@@ -327,7 +327,7 @@ export type ShowEventQueryVariables = Exact<{
 }>;
 
 
-export type ShowEventQuery = { __typename?: 'Query', event?: { __typename?: 'Event', id?: number | null, event_key?: string | null, name?: string | null, description?: string | null, event_location?: string | null, event_logo_url?: string | null, date?: any | null, start_time?: string | null, end_time?: string | null, re_entry?: boolean | null, hostId?: number | null } | null };
+export type ShowEventQuery = { __typename?: 'Query', event?: { __typename?: 'Event', id?: number | null, event_key?: string | null, name?: string | null, description?: string | null, event_location?: string | null, event_logo_url?: string | null, event_banner_url?: string | null, event_location_url?: string | null, date?: any | null, start_time?: string | null, end_time?: string | null, re_entry?: boolean | null, createdAt?: any | null, updatedAt?: any | null, deleted?: boolean | null, host?: { __typename?: 'User', id: number, name?: string | null } | null, event_categories?: Array<{ __typename?: 'EventCategory', id?: number | null, name?: string | null } | null> | null } | null };
 
 export type ShowEventsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -535,12 +535,24 @@ export const ShowEventDocument = gql`
     description
     event_location
     event_logo_url
+    event_banner_url
+    event_location_url
     date
     start_time
     end_time
     re_entry
     event_logo_url
-    hostId
+    createdAt
+    updatedAt
+    deleted
+    host {
+      id
+      name
+    }
+    event_categories {
+      id
+      name
+    }
   }
 }
     `;

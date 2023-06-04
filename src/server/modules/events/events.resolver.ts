@@ -59,16 +59,16 @@ export const EventResolver = {
 
     updateEvent: async (
       _: any,
-      { id, data }: { id: number; data: Event & { subcategories: number[] } },
+      { id, data }: { id: number; data: Event & { sub_categories: number[] } },
       { prisma }: IGraphqlContext
     ) => {
-      await validateData({ schema: UpdateEventSchema, data });
+      await validateData({ schema: UpdateEventSchema, data: data });
       return await prisma.event.update({
         where: { id },
         data: {
           ...data,
           sub_categories: {
-            connect: data.subcategories?.map((id) => ({ id })),
+            connect: data.sub_categories?.map((id) => ({ id })),
           },
         },
       });
