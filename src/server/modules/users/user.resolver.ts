@@ -38,23 +38,25 @@ export const UserResolver = {
   Mutation: {
     createUser: async (
       _: any,
-      { data }: { data: User & { role: number[] } },
-      { prisma }: IGraphqlContext
+      { data }: { data: User & { roles: number[] } },
+      { id_organization, prisma }: IGraphqlContext
     ) => {
       await validateData({ schema: CreateUserSchema, data });
-
+      console.log(data);
       try {
         const hash = await argon2.hash(data.password);
         return await prisma.user.create({
           data: {
             ...data,
             password: hash,
+            organizationId: id_organization!,
             roles: {
-              connect: data.role?.map((id) => ({ id })),
+              connect: data.roles?.map((id) => ({ id })),
             },
           },
         });
       } catch (error: any) {
+        console.log(error);
         throw PrismaError.handle(error);
       }
     },

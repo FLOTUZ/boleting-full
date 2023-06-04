@@ -38,7 +38,7 @@ const CreateUserView = () => {
 
   const [createUser, { loading: createUserLoading }] = useCreateUserMutation({
     onCompleted(data) {
-      router.replace(UsersPath);
+      // router.replace(UsersPath);
       toast({
         title: `Usuario ${data.createUser?.name} creado`,
         position: "bottom-right",
@@ -67,9 +67,9 @@ const CreateUserView = () => {
       last_name: "",
       email: "",
       password: "",
-      roleId: 0,
     },
     onSubmit: async (values) => {
+      console.log(selectedRoles);
       await createUser({
         variables: {
           data: {
