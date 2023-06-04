@@ -3,5 +3,10 @@ query EventCategories {
     id
     name
     description
+    sub_categories {
+      id
+      name
+      parent_event_categoryId
+    }
   }
 }

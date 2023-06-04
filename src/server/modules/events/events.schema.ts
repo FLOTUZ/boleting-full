@@ -52,7 +52,7 @@ export const EventsSchema = gql`
     deleted: Boolean
     deletedAt: DateTime
     createdBy: User
-    sub_categories: [EventSubCategory]
+    sub_categories: [EventSubCategory!]
     organization: Organization
   }
 

@@ -21,12 +21,13 @@ export const EventsCategorySchema = gql`
     deleted: Boolean
     deletedAt: DateTime
     events: [Event]
-    sub_categories: [EventCategory]
+    sub_categories: [EventSubCategory]
   }
 
   type Query {
     eventCategory(id: Int!): Event
     eventCategories(pagination: Pagination): [EventCategory]
+    filteredByParentsEventSubCategories(parentsIds: [Int!]): [EventCategory]
   }
 
   type Mutation {

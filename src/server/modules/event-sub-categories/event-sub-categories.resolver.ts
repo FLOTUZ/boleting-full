@@ -28,6 +28,22 @@ export const EventSubCategoryResolver = {
         where: { id },
       });
     },
+
+    filteredByParentsEventSubCategories: async (
+      _: any,
+      { parentsIds }: { parentsIds: number[] },
+      { prisma }: IGraphqlContext
+    ) => {
+      return await prisma.eventSubCategory.findMany({
+        where: {
+          parent_event_category: {
+            id: {
+              in: parentsIds,
+            },
+          },
+        },
+      });
+    },
   },
 
   Mutation: {

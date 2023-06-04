@@ -21,20 +21,40 @@ export type Scalars = {
 export type CreateEventCategoryInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   name: Scalars['String']['input'];
+  sub_categories?: InputMaybe<Array<Scalars['Int']['input']>>;
 };
 
 export type CreateEventInput = {
-  date: Scalars['DateTime']['input'];
   description: Scalars['String']['input'];
+  end_date: Scalars['DateTime']['input'];
   end_time: Scalars['String']['input'];
   event_banner_url: Scalars['String']['input'];
-  event_categories?: InputMaybe<Array<Scalars['Int']['input']>>;
   event_location: Scalars['String']['input'];
   event_location_url: Scalars['String']['input'];
   event_logo_url: Scalars['String']['input'];
   name: Scalars['String']['input'];
   re_entry: Scalars['Boolean']['input'];
+  start_date: Scalars['DateTime']['input'];
   start_time: Scalars['String']['input'];
+  sub_categories?: InputMaybe<Array<Scalars['Int']['input']>>;
+};
+
+export type CreateEventSubCategoryInput = {
+  createdAt: Scalars['DateTime']['input'];
+  description: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  parent_event_category?: InputMaybe<Array<Scalars['Int']['input']>>;
+  parent_event_categoryId: Scalars['Int']['input'];
+};
+
+export type CreateOrganizationInput = {
+  createdAt: Scalars['DateTime']['input'];
+  deleted: Scalars['Boolean']['input'];
+  deletedAt: Scalars['DateTime']['input'];
+  events?: InputMaybe<Array<Scalars['Int']['input']>>;
+  name: Scalars['String']['input'];
+  updatedAt: Scalars['DateTime']['input'];
+  users?: InputMaybe<Array<Scalars['Int']['input']>>;
 };
 
 export type CreateRoleInput = {
@@ -53,24 +73,27 @@ export type CreateUserInput = {
 export type Event = {
   __typename?: 'Event';
   createdAt?: Maybe<Scalars['DateTime']['output']>;
-  date?: Maybe<Scalars['DateTime']['output']>;
+  createdBy?: Maybe<User>;
   deleted?: Maybe<Scalars['Boolean']['output']>;
   deletedAt?: Maybe<Scalars['DateTime']['output']>;
   description?: Maybe<Scalars['String']['output']>;
+  end_date?: Maybe<Scalars['DateTime']['output']>;
   end_time?: Maybe<Scalars['String']['output']>;
   event_banner_url?: Maybe<Scalars['String']['output']>;
-  event_categories?: Maybe<Array<Maybe<EventCategory>>>;
   event_key?: Maybe<Scalars['String']['output']>;
   event_location?: Maybe<Scalars['String']['output']>;
   event_location_url?: Maybe<Scalars['String']['output']>;
   event_logo_url?: Maybe<Scalars['String']['output']>;
-  host?: Maybe<User>;
-  hostId?: Maybe<Scalars['Int']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
   name?: Maybe<Scalars['String']['output']>;
+  organization?: Maybe<Organization>;
+  organizationId?: Maybe<Scalars['Int']['output']>;
   re_entry?: Maybe<Scalars['Boolean']['output']>;
+  start_date?: Maybe<Scalars['DateTime']['output']>;
   start_time?: Maybe<Scalars['String']['output']>;
+  sub_categories?: Maybe<Array<EventSubCategory>>;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  userId?: Maybe<Scalars['Int']['output']>;
 };
 
 export type EventCategory = {
@@ -82,7 +105,19 @@ export type EventCategory = {
   events?: Maybe<Array<Maybe<Event>>>;
   id?: Maybe<Scalars['Int']['output']>;
   name?: Maybe<Scalars['String']['output']>;
+  sub_categories?: Maybe<Array<Maybe<EventSubCategory>>>;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
+};
+
+export type EventSubCategory = {
+  __typename?: 'EventSubCategory';
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  events?: Maybe<Array<Event>>;
+  id: Scalars['ID']['output'];
+  name?: Maybe<Scalars['String']['output']>;
+  parent_event_category?: Maybe<Array<EventCategory>>;
+  parent_event_categoryId?: Maybe<Scalars['Int']['output']>;
 };
 
 export type LoginInput = {
@@ -100,15 +135,21 @@ export type Mutation = {
   __typename?: 'Mutation';
   createEvent?: Maybe<Event>;
   createEventCategory?: Maybe<Event>;
+  createEventSubCategories?: Maybe<EventSubCategory>;
+  createOrganization?: Maybe<Organization>;
   createRole?: Maybe<Role>;
   createUser?: Maybe<User>;
   deleteEvent?: Maybe<Event>;
   deleteEventCategory?: Maybe<Event>;
+  deleteEventSubCategories?: Maybe<EventSubCategory>;
+  deleteOrganization?: Maybe<Organization>;
   deleteRole?: Maybe<Role>;
   deleteUser?: Maybe<User>;
   login: LoginResponse;
   updateEvent?: Maybe<Event>;
   updateEventCategory?: Maybe<Event>;
+  updateEventSubCategories?: Maybe<EventSubCategory>;
+  updateOrganization?: Maybe<Organization>;
   updateRole?: Maybe<Role>;
   updateUser?: Maybe<User>;
 };
@@ -121,6 +162,16 @@ export type MutationCreateEventArgs = {
 
 export type MutationCreateEventCategoryArgs = {
   input: CreateEventCategoryInput;
+};
+
+
+export type MutationCreateEventSubCategoriesArgs = {
+  data: CreateEventSubCategoryInput;
+};
+
+
+export type MutationCreateOrganizationArgs = {
+  data: CreateOrganizationInput;
 };
 
 
@@ -144,6 +195,16 @@ export type MutationDeleteEventCategoryArgs = {
 };
 
 
+export type MutationDeleteEventSubCategoriesArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type MutationDeleteOrganizationArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
 export type MutationDeleteRoleArgs = {
   id: Scalars['Int']['input'];
 };
@@ -160,14 +221,26 @@ export type MutationLoginArgs = {
 
 
 export type MutationUpdateEventArgs = {
+  data: UpdateEventInput;
   id: Scalars['Int']['input'];
-  input: UpdateEventInput;
 };
 
 
 export type MutationUpdateEventCategoryArgs = {
   id: Scalars['Int']['input'];
   input: UpdateEventCategoryInput;
+};
+
+
+export type MutationUpdateEventSubCategoriesArgs = {
+  data: UpdateEventSubCategoryInput;
+  id: Scalars['Int']['input'];
+};
+
+
+export type MutationUpdateOrganizationArgs = {
+  data: UpdateOrganizationInput;
+  id: Scalars['Int']['input'];
 };
 
 
@@ -182,6 +255,18 @@ export type MutationUpdateUserArgs = {
   id: Scalars['Int']['input'];
 };
 
+export type Organization = {
+  __typename?: 'Organization';
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  deleted?: Maybe<Scalars['Boolean']['output']>;
+  deletedAt?: Maybe<Scalars['DateTime']['output']>;
+  events?: Maybe<Event>;
+  id: Scalars['ID']['output'];
+  name?: Maybe<Scalars['String']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  users?: Maybe<User>;
+};
+
 export type Pagination = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
@@ -193,7 +278,12 @@ export type Query = {
   event?: Maybe<Event>;
   eventCategories?: Maybe<Array<Maybe<EventCategory>>>;
   eventCategory?: Maybe<Event>;
+  eventSubCategory?: Maybe<EventSubCategory>;
   events?: Maybe<Array<Maybe<Event>>>;
+  eventsSubCategories?: Maybe<Array<Maybe<EventSubCategory>>>;
+  filteredByParentsEventSubCategories?: Maybe<Array<Maybe<EventCategory>>>;
+  organization?: Maybe<Organization>;
+  organizations?: Maybe<Array<Maybe<Organization>>>;
   role?: Maybe<Role>;
   roles?: Maybe<Array<Maybe<Role>>>;
   user?: Maybe<User>;
@@ -216,7 +306,32 @@ export type QueryEventCategoryArgs = {
 };
 
 
+export type QueryEventSubCategoryArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
 export type QueryEventsArgs = {
+  pagination?: InputMaybe<Pagination>;
+};
+
+
+export type QueryEventsSubCategoriesArgs = {
+  pagination?: InputMaybe<Pagination>;
+};
+
+
+export type QueryFilteredByParentsEventSubCategoriesArgs = {
+  parentsIds?: InputMaybe<Array<Scalars['Int']['input']>>;
+};
+
+
+export type QueryOrganizationArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type QueryOrganizationsArgs = {
   pagination?: InputMaybe<Pagination>;
 };
 
@@ -255,21 +370,41 @@ export type Role = {
 export type UpdateEventCategoryInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  sub_categories?: InputMaybe<Array<Scalars['Int']['input']>>;
 };
 
 export type UpdateEventInput = {
   date?: InputMaybe<Scalars['DateTime']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
+  end_date?: InputMaybe<Scalars['DateTime']['input']>;
   end_time?: InputMaybe<Scalars['String']['input']>;
   event_banner_url?: InputMaybe<Scalars['String']['input']>;
-  event_categories?: InputMaybe<Array<Scalars['Int']['input']>>;
   event_location?: InputMaybe<Scalars['String']['input']>;
   event_location_url?: InputMaybe<Scalars['String']['input']>;
   event_logo_url?: InputMaybe<Scalars['String']['input']>;
-  hostId?: InputMaybe<Scalars['Int']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   re_entry?: InputMaybe<Scalars['Boolean']['input']>;
-  start_time?: InputMaybe<Scalars['String']['input']>;
+  start_date?: InputMaybe<Scalars['DateTime']['input']>;
+  sub_categories?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
+  userId?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type UpdateEventSubCategoryInput = {
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  parent_event_category?: InputMaybe<Array<Scalars['Int']['input']>>;
+  parent_event_categoryId?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type UpdateOrganizationInput = {
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  deleted?: InputMaybe<Scalars['Boolean']['input']>;
+  deletedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  events?: InputMaybe<Array<Scalars['Int']['input']>>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  users?: InputMaybe<Array<Scalars['Int']['input']>>;
 };
 
 export type UpdateRoleInput = {
@@ -294,6 +429,7 @@ export type User = {
   id: Scalars['Int']['output'];
   last_name?: Maybe<Scalars['String']['output']>;
   name?: Maybe<Scalars['String']['output']>;
+  organization?: Maybe<Organization>;
   roles?: Maybe<Array<Role>>;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
@@ -313,26 +449,26 @@ export type WhoAMiQuery = { __typename?: 'Query', currentUser?: { __typename?: '
 export type EventCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type EventCategoriesQuery = { __typename?: 'Query', eventCategories?: Array<{ __typename?: 'EventCategory', id?: number | null, name?: string | null, description?: string | null } | null> | null };
+export type EventCategoriesQuery = { __typename?: 'Query', eventCategories?: Array<{ __typename?: 'EventCategory', id?: number | null, name?: string | null, description?: string | null, sub_categories?: Array<{ __typename?: 'EventSubCategory', id: string, name?: string | null, parent_event_categoryId?: number | null } | null> | null } | null> | null };
 
 export type CreateEventMutationVariables = Exact<{
   input: CreateEventInput;
 }>;
 
 
-export type CreateEventMutation = { __typename?: 'Mutation', createEvent?: { __typename?: 'Event', id?: number | null, event_key?: string | null, name?: string | null, description?: string | null, event_location?: string | null, event_logo_url?: string | null, date?: any | null, start_time?: string | null, end_time?: string | null, re_entry?: boolean | null, hostId?: number | null, event_categories?: Array<{ __typename?: 'EventCategory', id?: number | null, name?: string | null } | null> | null } | null };
+export type CreateEventMutation = { __typename?: 'Mutation', createEvent?: { __typename?: 'Event', id?: number | null, event_key?: string | null, name?: string | null, description?: string | null, event_location?: string | null, event_logo_url?: string | null, start_date?: any | null, start_time?: string | null, end_time?: string | null, re_entry?: boolean | null, userId?: number | null, sub_categories?: Array<{ __typename?: 'EventSubCategory', id: string, name?: string | null }> | null } | null };
 
 export type ShowEventQueryVariables = Exact<{
   eventId: Scalars['Int']['input'];
 }>;
 
 
-export type ShowEventQuery = { __typename?: 'Query', event?: { __typename?: 'Event', id?: number | null, event_key?: string | null, name?: string | null, description?: string | null, event_location?: string | null, event_logo_url?: string | null, event_banner_url?: string | null, event_location_url?: string | null, date?: any | null, start_time?: string | null, end_time?: string | null, re_entry?: boolean | null, createdAt?: any | null, updatedAt?: any | null, deleted?: boolean | null, host?: { __typename?: 'User', id: number, name?: string | null } | null, event_categories?: Array<{ __typename?: 'EventCategory', id?: number | null, name?: string | null } | null> | null } | null };
+export type ShowEventQuery = { __typename?: 'Query', event?: { __typename?: 'Event', id?: number | null, event_key?: string | null, name?: string | null, description?: string | null, event_location?: string | null, event_logo_url?: string | null, event_banner_url?: string | null, event_location_url?: string | null, start_date?: any | null, start_time?: string | null, end_time?: string | null, re_entry?: boolean | null, createdAt?: any | null, updatedAt?: any | null, deleted?: boolean | null, createdBy?: { __typename?: 'User', id: number, name?: string | null } | null, sub_categories?: Array<{ __typename?: 'EventSubCategory', id: string, name?: string | null }> | null } | null };
 
 export type ShowEventsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ShowEventsQuery = { __typename?: 'Query', events?: Array<{ __typename?: 'Event', id?: number | null, event_logo_url?: string | null, event_location?: string | null, event_key?: string | null, name?: string | null, description?: string | null, date?: any | null, deleted?: boolean | null, event_banner_url?: string | null, event_categories?: Array<{ __typename?: 'EventCategory', id?: number | null, name?: string | null } | null> | null } | null> | null };
+export type ShowEventsQuery = { __typename?: 'Query', events?: Array<{ __typename?: 'Event', id?: number | null, event_logo_url?: string | null, event_location?: string | null, event_key?: string | null, name?: string | null, description?: string | null, start_date?: any | null, deleted?: boolean | null, event_banner_url?: string | null, sub_categories?: Array<{ __typename?: 'EventSubCategory', id: string, name?: string | null }> | null } | null> | null };
 
 export type UpdateEventMutationVariables = Exact<{
   updateEventId: Scalars['Int']['input'];
@@ -340,7 +476,7 @@ export type UpdateEventMutationVariables = Exact<{
 }>;
 
 
-export type UpdateEventMutation = { __typename?: 'Mutation', updateEvent?: { __typename?: 'Event', id?: number | null, event_key?: string | null, name?: string | null, description?: string | null, event_location?: string | null, event_logo_url?: string | null, date?: any | null, start_time?: string | null, end_time?: string | null, re_entry?: boolean | null, hostId?: number | null } | null };
+export type UpdateEventMutation = { __typename?: 'Mutation', updateEvent?: { __typename?: 'Event', id?: number | null, event_key?: string | null, name?: string | null, description?: string | null, event_location?: string | null, event_logo_url?: string | null, start_date?: any | null, start_time?: string | null, end_time?: string | null, re_entry?: boolean | null, userId?: number | null, sub_categories?: Array<{ __typename?: 'EventSubCategory', name?: string | null }> | null } | null };
 
 export type RolesListQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -448,6 +584,11 @@ export const EventCategoriesDocument = gql`
     id
     name
     description
+    sub_categories {
+      id
+      name
+      parent_event_categoryId
+    }
   }
 }
     `;
@@ -487,13 +628,13 @@ export const CreateEventDocument = gql`
     description
     event_location
     event_logo_url
-    date
+    start_date
     start_time
     end_time
     re_entry
     event_logo_url
-    hostId
-    event_categories {
+    userId
+    sub_categories {
       id
       name
     }
@@ -537,7 +678,7 @@ export const ShowEventDocument = gql`
     event_logo_url
     event_banner_url
     event_location_url
-    date
+    start_date
     start_time
     end_time
     re_entry
@@ -545,11 +686,11 @@ export const ShowEventDocument = gql`
     createdAt
     updatedAt
     deleted
-    host {
+    createdBy {
       id
       name
     }
-    event_categories {
+    sub_categories {
       id
       name
     }
@@ -593,10 +734,10 @@ export const ShowEventsDocument = gql`
     event_key
     name
     description
-    date
+    start_date
     deleted
     event_banner_url
-    event_categories {
+    sub_categories {
       id
       name
     }
@@ -632,19 +773,22 @@ export type ShowEventsLazyQueryHookResult = ReturnType<typeof useShowEventsLazyQ
 export type ShowEventsQueryResult = Apollo.QueryResult<ShowEventsQuery, ShowEventsQueryVariables>;
 export const UpdateEventDocument = gql`
     mutation UpdateEvent($updateEventId: Int!, $input: UpdateEventInput!) {
-  updateEvent(id: $updateEventId, input: $input) {
+  updateEvent(id: $updateEventId, data: $input) {
     id
     event_key
     name
     description
     event_location
     event_logo_url
-    date
+    start_date
     start_time
     end_time
     re_entry
     event_logo_url
-    hostId
+    userId
+    sub_categories {
+      name
+    }
   }
 }
     `;
