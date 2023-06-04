@@ -21,6 +21,17 @@ model Abilities {
   role        Role[]
 }
 
+model Organization {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique @db.VarChar(50)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deleted   Boolean   @default(false)
+  deletedAt DateTime?
+  events    Event[]   @relation("events_on_organization")
+  users     User[]    @relation("users_on_organization")
+}
+
 model Role {
   id                      Int           @id @unique @default(autoincrement())
   name                    String        @unique @db.VarChar(50)
@@ -41,6 +52,7 @@ model User {
   last_name                 String             @db.VarChar(50)
   email                     String             @unique @db.VarChar(100)
   password                  String             @db.VarChar(255)
+  organizationId            Int
   createdAt                 DateTime           @default(now())
   updatedAt                 DateTime           @updatedAt
   deleted                   Boolean            @default(false)
@@ -60,6 +72,7 @@ model User {
   sended_mails              Mail[]             @relation("sended_mails")
   activities                ActivityLog[]      @relation("activities")
   cashless_designs          CashlessDesign[]   @relation("cashless_designs")
+  organization              Organization       @relation("users_on_organization", fields: [organizationId], references: [id])
 }
 
 model UserClient {
@@ -163,24 +176,27 @@ model Event {
   name               String             @unique @db.VarChar(50)
   description        String?            @db.VarChar(255)
   event_location     String             @db.VarChar(255)
-  event_location_url String             @db.VarChar(255)
-  date               DateTime           @db.Date
+  event_location_url String             @db.VarChar(1000)
+  start_date         DateTime           @db.Date
+  end_date           DateTime           @db.Date
   start_time         String?            @db.VarChar(5)
   end_time           String?            @db.VarChar(5)
   re_entry           Boolean            @default(false)
-  event_logo_url     String?            @db.VarChar(255)
-  event_banner_url   String?            @db.VarChar(255)
-  hostId             Int
+  event_logo_url     String?            @db.VarChar(1000)
+  event_banner_url   String?            @db.VarChar(1000)
+  userId             Int
+  organizationId     Int
   createdAt          DateTime           @default(now())
   updatedAt          DateTime           @updatedAt
   deleted            Boolean            @default(false)
   deletedAt          DateTime?
-  host               User               @relation("created_events", fields: [hostId], references: [id])
-  event_categories   EventCategory[]    @relation("event_categories")
+  createdBy          User               @relation("created_events", fields: [userId], references: [id])
+  sub_categories     EventSubCategory[] @relation("event_categories")
   staff              User[]             @relation("staff_of_events")
   ateendees          UserClient[]       @relation("atendee_of_events")
   ticket             Ticket[]           @relation("tickets_in_event")
   event_social_media EventSocialMedia[] @relation("event_social_media")
+  organization       Organization?      @relation("events_on_organization", fields: [organizationId], references: [id])
 }
 
 model EventSocialMedia {
@@ -197,14 +213,27 @@ model EventSocialMedia {
 }
 
 model EventCategory {
-  id          Int       @id @unique @default(autoincrement())
-  name        String    @unique @db.VarChar(20)
-  description String?   @db.VarChar(255)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  deleted     Boolean   @default(false)
-  deletedAt   DateTime?
-  events      Event[]   @relation("event_categories")
+  id             Int                @id @unique @default(autoincrement())
+  name           String             @unique @db.VarChar(50)
+  description    String?            @db.VarChar(255)
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+  deleted        Boolean            @default(false)
+  deletedAt      DateTime?
+  sub_categories EventSubCategory[] @relation("event_sub_categories")
+}
+
+model EventSubCategory {
+  id                      Int           @id @unique @default(autoincrement())
+  name                    String        @unique @db.VarChar(50)
+  description             String?       @db.VarChar(255)
+  parent_event_categoryId Int
+  createdAt               DateTime      @default(now())
+  updatedAt               DateTime      @updatedAt
+  deleted                 Boolean       @default(false)
+  deletedAt               DateTime?
+  parent_event_category   EventCategory @relation("event_sub_categories", fields: [parent_event_categoryId], references: [id])
+  events                  Event[]       @relation("event_categories")
 }
 
 //===================================== TICKETING =====================================
