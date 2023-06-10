@@ -17,7 +17,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { GiTicket } from "react-icons/gi";
-import { IoPeopleCircleOutline } from "react-icons/io5";
+import { IoBusiness } from "react-icons/io5";
 import { MdDashboard } from "react-icons/md";
 import { TbBuildingCircus } from "react-icons/tb";
 import { FaChevronCircleDown } from "react-icons/fa";
@@ -26,7 +26,7 @@ import {
   BreadCrumbItem,
   DesktopHeaderComponent,
 } from "./desktop-header.component";
-import { profilePath } from "@/routes";
+import { OrganizationsPath, profilePath } from "@/routes";
 
 interface DesktopLayoutComponentProps {
   title: string;
@@ -64,9 +64,9 @@ const DesktopLayoutComponent = ({
       icon: <GiTicket size={25} />,
     },
     {
-      label: "Staff",
-      href: "/staff",
-      icon: <IoPeopleCircleOutline size={25} />,
+      label: "Organizaciones",
+      href: OrganizationsPath,
+      icon: <IoBusiness size={25} />,
     },
   ];
   return (
@@ -101,12 +101,13 @@ const DesktopLayoutComponent = ({
                     cursor={"pointer"}
                     h={"auto"}
                     p={"0.5rem"}
+                    transition="all .2s ease-in-out"
+                    left={"-0.5rem"}
                     _hover={{
                       position: "relative",
-                      top: "-1px",
                       boxShadow: "lg",
-                      shadowColor: "gray",
-                      transition: "all 0.3s ease-in-out",
+                      left: "0.5rem",
+                      borderRadius: "md",
                     }}
                   >
                     <HStack>
@@ -160,9 +161,6 @@ const DesktopLayoutComponent = ({
           <DesktopHeaderComponent title={title} breadCrumbs={breadCrumbs} />
           <Box h={"100%"} mb={16}>
             {children}
-          </Box>
-          <Box borderWidth={"1px"} bgColor={"--chakra-colors-gray-primary"}>
-            Footer
           </Box>
         </GridItem>
       </Grid>

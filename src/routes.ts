@@ -3,6 +3,11 @@ export const LoginPath = "auth/login";
 export const RegisterPath = "auth/register";
 export const profilePath = "/profile";
 
+// ============ ORGANIZATIONS ============
+export const OrganizationsPath = "/organizations";
+export const CreateOrganizationPath = "/organizations/create";
+export const ShowOrganizationPath = (id: string) => `/organizations/${id}`;
+
 //============= EVENTS ============
 export const EventsPath = "/events";
 export const CreateEventPath = "/events/create";
