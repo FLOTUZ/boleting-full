@@ -3,12 +3,6 @@ import { gql } from "graphql-tag";
 export const OrganizationSchema = gql`
   input CreateOrganizationInput {
     name: String!
-    createdAt: DateTime!
-    updatedAt: DateTime!
-    deleted: Boolean!
-    deletedAt: DateTime!
-    events: [Int!]
-    users: [Int!]
   }
 
   input UpdateOrganizationInput {
@@ -28,8 +22,8 @@ export const OrganizationSchema = gql`
     updatedAt: DateTime
     deleted: Boolean
     deletedAt: DateTime
-    events: Event
-    users: User
+    events: [Event]
+    users: [User]
   }
 
   type Query {

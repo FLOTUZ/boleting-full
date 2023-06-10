@@ -1,7 +1,7 @@
 import { IGraphqlContext } from "@/server";
 import { Args } from "@/server/common";
 import { PrismaError } from "@/server/utils";
-import { Organization } from "@prisma/client";
+import { Organization, Event } from "@prisma/client";
 
 export const OrganizationResolver = {
   Query: {
@@ -63,7 +63,28 @@ export const OrganizationResolver = {
     ) => {
       return await prisma.organization.update({
         where: { id },
-        data: { deleted: true },
+        data: {
+          deletedAt: new Date(),
+          deleted: true,
+        },
+      });
+    },
+  },
+
+  Organization: {
+    events: async (
+      { id }: Organization,
+      _: any,
+      { prisma }: IGraphqlContext
+    ) => {
+      return await prisma.event.findMany({
+        where: { organizationId: id },
+      });
+    },
+
+    users: async ({ id }: Event, _: any, { prisma }: IGraphqlContext) => {
+      return await prisma.user.findMany({
+        where: { organizationId: id },
       });
     },
   },

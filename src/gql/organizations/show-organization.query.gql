@@ -1,0 +1,9 @@
+query ShowOrganization($organizationId: Int!) {
+  organization(id: $organizationId) {
+    id
+    name
+    createdAt
+    deleted
+    deletedAt
+  }
+}

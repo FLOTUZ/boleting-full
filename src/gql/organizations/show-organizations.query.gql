@@ -1,0 +1,16 @@
+query ShowOrganizations {
+  organizations {
+    id
+    name
+    createdAt
+    events {
+      id
+      name
+    }
+    users {
+      id
+      name
+      last_name
+    }
+  }
+}

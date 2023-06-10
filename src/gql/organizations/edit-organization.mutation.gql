@@ -1,0 +1,11 @@
+mutation EditOrganizations(
+  $updateOrganizationId: Int!
+  $data: UpdateOrganizationInput!
+) {
+  updateOrganization(id: $updateOrganizationId, data: $data) {
+    id
+    name
+    createdAt
+    updatedAt
+  }
+}
