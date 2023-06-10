@@ -1,4 +1,3 @@
-//here we have the form that add a new organization that want to aquired our services
 import DesktopLayoutComponent from "@/layouts/desktop-layout-component/desktop-layout.component";
 import { useFormik } from "formik";
 import {
@@ -10,7 +9,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 
-export function addOrganization() {
+const addOrganization = () => {
   const formOrganization = useFormik({
     initialValues: {
       name: "",
@@ -38,7 +37,7 @@ export function addOrganization() {
               ></Input>
             </FormControl>
             <Button type="submit" w="full">
-              Create User
+              Añadir organización
             </Button>
           </VStack>
         </form>
