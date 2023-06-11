@@ -50,9 +50,17 @@ export const DesktopHeaderComponent = ({
       {breadCrumbs ? (
         <HStack
           w={"100%"}
-          overflow={"hidden"}
+          overflowY={"scroll"}
           whiteSpace={"nowrap"}
           textOverflow={"ellipsis"}
+          paddingStart={4}
+          paddingEnd={4}
+          sx={{
+            // Hide scrollbar
+            "&::-webkit-scrollbar": {
+              display: "none",
+            },
+          }}
         >
           {breadCrumbs!.map((breadCrumb, index) => {
             return (

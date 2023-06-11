@@ -11,22 +11,6 @@ const TicketsRoute = () => {
           label: "Tickets",
           href: "/tickets",
         },
-        {
-          label: "Nuevo",
-          href: "/tickets/new",
-        },
-        {
-          label: "Nuevo2",
-          href: "/tickets/new2",
-        },
-        {
-          label: "Nuevo3",
-          href: "/tickets/new3",
-        },
-        {
-          label: "Nuevo4",
-          href: "/tickets/new4",
-        },
       ]}
     >
       <UserProvider>
