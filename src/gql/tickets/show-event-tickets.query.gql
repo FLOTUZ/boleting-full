@@ -1,0 +1,11 @@
+query ShowEventTickets {
+  events {
+    id
+    name
+    start_date
+    event_logo_url
+    event_location
+    event_key
+    description
+  }
+}
