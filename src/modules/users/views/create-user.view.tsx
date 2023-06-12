@@ -38,7 +38,6 @@ const CreateUserView = () => {
 
   const [createUser, { loading: createUserLoading }] = useCreateUserMutation({
     onCompleted(data) {
-      // router.replace(UsersPath);
       toast({
         title: `Usuario ${data.createUser?.name} creado`,
         position: "bottom-right",
@@ -47,6 +46,7 @@ const CreateUserView = () => {
         duration: 9000,
         isClosable: true,
       });
+      router.replace(UsersPath);
     },
     onError(error) {
       toast({
