@@ -32,7 +32,7 @@ export const EventsSchema = gql`
   }
 
   type Event {
-    id: Int
+    id: ID!
     event_key: String
     name: String
     description: String
@@ -54,6 +54,8 @@ export const EventsSchema = gql`
     createdBy: User
     sub_categories: [EventSubCategory!]
     organization: Organization
+    access_types: [AccessType!]
+    owner_types: [OwnerType!]
   }
 
   type Query {

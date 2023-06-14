@@ -96,5 +96,21 @@ export const EventResolver = {
         where: { events: { some: { id } } },
       });
     },
+
+    access_types: async (
+      { id }: Event,
+      _: any,
+      { prisma }: IGraphqlContext
+    ) => {
+      return await prisma.accessType.findMany({
+        where: { event: { id } },
+      });
+    },
+
+    owner_types: async ({ id }: Event, _: any, { prisma }: IGraphqlContext) => {
+      return await prisma.ownerType.findMany({
+        where: { event: { some: { id } } },
+      });
+    },
   },
 };
