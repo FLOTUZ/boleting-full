@@ -13,3 +13,6 @@ export const TicketsPath = "/tickets";
 
 // =========== USERS ============
 export const UsersPath = "/users";
+
+// =========== CATEGORIES ============
+export const CreateCategories = "/events-categories/create";
