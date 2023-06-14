@@ -5,3 +5,4 @@ export * from "./events/events.resolver";
 export * from "./event-categories/event.category.resolver";
 export * from "./organization/organizations.resolver";
 export * from "./event-sub-categories/event-sub-categories.resolver";
+export * from "./tickets/tickets.resolver";
