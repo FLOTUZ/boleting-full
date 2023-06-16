@@ -12,6 +12,7 @@
       "import { Args } from '@/server/common';",
       "import { PrismaError } from '@/server/utils';",
       "import { $1 } from '@prisma/client';",
+      "import { validateData, Create$1Validator, Update$1Validator } from '@/validations';",
       "",
       "/*",
       "* Resolver de $0",
@@ -51,6 +52,7 @@
       "      { data }: { data: ${1/(.)(.*)/${1:/upcase}${2}/g} },",
       "      { prisma }: IGraphqlContext",
       "    ) => {",
+      "      await validateData({ schema: Create$1Validator, data });",
       "      try {",
       "        return await prisma.${1/(.)(.*)/${1:/downcase}${2}/g}.create({",
       "          data: { ...data },",
@@ -65,6 +67,7 @@
       "      { id, data }: { id: number; data: $1 },",
       "      { prisma }: IGraphqlContext",
       "    ) => {",
+      "      await validateData({ schema: Update$1Validator, data });",
       "      try {",
       "        return await prisma.${1/(.)(.*)/${1:/downcase}${2}/g}.update({",
       "          where: { id },",
@@ -132,5 +135,22 @@
       ""
     ],
     "description": "Create a Graphql schema for a model"
+  },
+
+  "Create yup validator": {
+    "prefix": "crtValidator",
+    "body": [
+      "import * as yup from 'yup';",
+      "",
+      "export const Create$1Validator = yup.object().shape({",
+      "  $0",
+      "});",
+
+      "export const Update$1Validator = yup.object().shape({",
+      "  $0",
+      "});",
+      ""
+    ],
+    "description": "Create a yup validator for a model"
   }
 }
