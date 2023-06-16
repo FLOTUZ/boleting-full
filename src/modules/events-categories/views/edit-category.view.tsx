@@ -9,8 +9,8 @@ import {
   Button,
 } from "@chakra-ui/react";
 
-const CreateCategoryView = () => {
-  const eventCategory = useFormik({
+const EditCategoryView = () => {
+  const eventCategoryEdit = useFormik({
     initialValues: {
       name: "",
       description: "",
@@ -22,9 +22,9 @@ const CreateCategoryView = () => {
   return (
     <>
       <Box m={4} p={4} rounded="md">
-        <form onSubmit={eventCategory.handleSubmit}>
+        <form onSubmit={eventCategoryEdit.handleSubmit}>
           <Box>
-            <FormLabel htmlFor="name">Nombre:</FormLabel>
+            <FormLabel htmlFor="name">Subcategoria</FormLabel>
             <Input
               required
               id="name"
@@ -33,20 +33,20 @@ const CreateCategoryView = () => {
               maxLength={50}
               isRequired={true}
               placeholder="Nombre"
-              onChange={eventCategory.handleChange}
-              value={eventCategory.values.name}
+              onChange={eventCategoryEdit.handleChange}
+              value={eventCategoryEdit.values.name}
             />
 
             <FormLabel htmlFor="description">
-              Detalles de la categoria:
+              Descripcion de la Subcategoria:
             </FormLabel>
             <Textarea
               name="description"
               variant={"filled"}
               maxLength={255}
               placeholder="Descripcion"
-              onChange={eventCategory.handleChange}
-              value={eventCategory.values.description}
+              onChange={eventCategoryEdit.handleChange}
+              value={eventCategoryEdit.values.description}
             />
           </Box>
 
@@ -61,4 +61,4 @@ const CreateCategoryView = () => {
   );
 };
 
-export default CreateCategoryView;
+export default EditCategoryView;
