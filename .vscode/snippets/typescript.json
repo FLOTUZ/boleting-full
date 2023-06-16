@@ -93,5 +93,44 @@
       ""
     ],
     "description": "Create a resolver for a model"
+  },
+
+  "Create a Graphql schema": {
+    "prefix": "crtSchema",
+    "body": [
+      "import { gql } from 'graphql-tag';",
+      "export const $1Schema = gql`",
+      "  input Create$1Input {",
+      "    $0",
+      "  }",
+      "",
+      "  input Update$1Input {",
+      "    $0",
+      "  }",
+      "",
+      "  type $1 {",
+      "    id: Int!",
+      "    $2",
+      "    createdAt: DateTime!",
+      "    updatedAt: DateTime",
+      "    deleted: Boolean!",
+      "    deletedAt: DateTime",
+      "    $3",
+      "  }",
+      "",
+      "  type Query {",
+      "    ${1/(.)(.*)/${1:/downcase}${2}/g}s(pagination: Pagination): [$1!]!",
+      "    ${1/(.)(.*)/${1:/downcase}${2}/g}(id: Int!): $1!",
+      "  }",
+      "",
+      "  type Mutation {",
+      "    create${1/(.)(.*)/${1:/upcase}${2}/g}(data: Create$1Input!): $1!",
+      "    update${1/(.)(.*)/${1:/upcase}${2}/g}(id: Int!, data: Update$1Input!): $1!",
+      "    delete${1/(.)(.*)/${1:/upcase}${2}/g}(id: Int!): $1!",
+      "  }",
+      "`;",
+      ""
+    ],
+    "description": "Create a Graphql schema for a model"
   }
 }
