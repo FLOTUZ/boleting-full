@@ -2,6 +2,12 @@
   "recommendations": [
     "esbenp.prettier-vscode",
     "apollographql.vscode-apollo",
-    "prisma.prisma"
+    "prisma.prisma",
+    "ms-vscode.vscode-typescript-next",
+    "visualstudioexptteam.intellicode-api-usage-examples",
+    "pkief.material-icon-theme",
+    "pulkitgangwar.nextjs-snippets",
+    "skyran.js-jsx-snippets",
+    "eamodio.gitlens"
   ]
 }
