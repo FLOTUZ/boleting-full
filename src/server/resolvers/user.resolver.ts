@@ -1,9 +1,9 @@
 import * as argon2 from "argon2";
 import { User } from "@prisma/client";
 
-import { Args } from "../../common";
-import { IGraphqlContext } from "../../common/graphql.context";
-import { PrismaError } from "../../utils";
+import { Args } from "../common";
+import { IGraphqlContext } from "../common/graphql.context";
+import { PrismaError } from "../utils";
 
 import {
   CreateUserSchema,

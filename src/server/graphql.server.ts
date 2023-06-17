@@ -3,8 +3,8 @@ import { apolloPlugins } from "./plugins";
 
 import { ArgsSchema, ScalarsSchema } from "./common";
 
-import * as schemas from "./modules/schemas";
-import * as resolvers from "./modules/resolvers";
+import * as schemas from "./schemas";
+import * as resolvers from "./resolvers";
 
 export const apolloServer = new ApolloServer({
   typeDefs: [ArgsSchema, ScalarsSchema, ...Object.values(schemas)],

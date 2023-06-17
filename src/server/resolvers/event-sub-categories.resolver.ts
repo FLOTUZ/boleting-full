@@ -1,8 +1,8 @@
 import { EventSubCategory } from "@prisma/client";
 
-import { Args } from "../../common";
-import { IGraphqlContext } from "../../common/graphql.context";
-import { PrismaError } from "../../utils";
+import { Args } from "../common";
+import { IGraphqlContext } from "../common/graphql.context";
+import { PrismaError } from "../utils";
 
 export const EventSubCategoryResolver = {
   Query: {

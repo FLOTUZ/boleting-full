@@ -1,8 +1,8 @@
 import { Event, EventCategory } from "@prisma/client";
 
-import { Args } from "../../common";
-import { IGraphqlContext } from "../../common/graphql.context";
-import { PrismaError } from "../../utils";
+import { Args } from "../common";
+import { IGraphqlContext } from "../common/graphql.context";
+import { PrismaError } from "../utils";
 
 import { validateData } from "@/validations";
 import {

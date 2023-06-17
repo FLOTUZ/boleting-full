@@ -2,7 +2,7 @@ import * as argon from "argon2";
 import jwt from "jsonwebtoken";
 
 import { User } from "@prisma/client";
-import { IGraphqlContext } from "../../common/graphql.context";
+import { IGraphqlContext } from "../common/graphql.context";
 import { AuthenticationError, NotFoundError } from "@/server/utils";
 import { LoginSchema, validateData } from "@/validations";
 

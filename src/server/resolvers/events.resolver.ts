@@ -1,8 +1,8 @@
 import { Event } from "@prisma/client";
 
-import { Args } from "../../common";
-import { IGraphqlContext } from "../../common/graphql.context";
-import { AuthenticationError, PrismaError } from "../../utils";
+import { Args } from "../common";
+import { IGraphqlContext } from "../common/graphql.context";
+import { AuthenticationError, PrismaError } from "../utils";
 
 import { validateData } from "@/validations";
 import { CreateEventSchema, UpdateEventSchema } from "@/validations";
@@ -109,7 +109,7 @@ export const EventResolver = {
 
     owner_types: async ({ id }: Event, _: any, { prisma }: IGraphqlContext) => {
       return await prisma.ownerType.findMany({
-        where: { event: { some: { id } } },
+        where: { event: { id } },
       });
     },
   },
