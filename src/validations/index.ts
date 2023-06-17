@@ -10,3 +10,4 @@ export * from "./owner-type.validations";
 export * from "./buy-cart.validations";
 export * from "./user-client.validations";
 export * from "./payment-method.validations";
+export * from "./payment-recibed.validations";
