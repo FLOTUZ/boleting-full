@@ -16,3 +16,4 @@ export * from "./payment-card/payment-card.resolver";
 export * from "./activity-log/activity-log.resolver";
 export * from "./application/application.resolver";
 export * from "./mail/mail.resolver";
+export * from "./notification/notification.resolver";

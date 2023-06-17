@@ -16,3 +16,4 @@ export * from "./payment-card/payment-card.schema";
 export * from "./activity-log/activity-log.schema";
 export * from "./application/application.schema";
 export * from "./mail/mail.schema";
+export * from "./notification/notification.schema";
