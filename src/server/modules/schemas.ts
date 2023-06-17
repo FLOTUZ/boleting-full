@@ -12,3 +12,4 @@ export * from "./buy-cart/buy-cart.schema";
 export * from "./user-client/user-client.schema";
 export * from "./payment-method/payment-method.schema";
 export * from "./payment-recibed/payment-recibed.schema";
+export * from "./payment-card/payment-card.schema";
