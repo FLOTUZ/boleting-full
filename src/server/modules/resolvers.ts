@@ -13,3 +13,4 @@ export * from "./user-client/user-client.resolver";
 export * from "./payment-method/mayment-method.resolver";
 export * from "./payment-recibed/payment-recibed.resolver";
 export * from "./payment-card/payment-card.resolver";
+export * from "./activity-log/activity-log.resolver";

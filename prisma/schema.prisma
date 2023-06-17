@@ -143,14 +143,14 @@ model ActivityLog {
   useful_link   String?         @db.VarChar(255)
   type          ActivityLogType
   userId        Int?
-  userClientId  Int?
+  user_clientId Int?
   applicationId Int?
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
   deleted       Boolean         @default(false)
   deletedAt     DateTime?
   user          User?           @relation("activities", fields: [userId], references: [id])
-  user_client   UserClient?     @relation("user_client_activity", fields: [userClientId], references: [id])
+  user_client   UserClient?     @relation("user_client_activity", fields: [user_clientId], references: [id])
   application   Application?    @relation("application_log", fields: [applicationId], references: [id])
 }
 
