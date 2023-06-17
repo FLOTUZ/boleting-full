@@ -26,7 +26,7 @@ export const PaymentRecibedResolver = {
       return rows;
     },
 
-    payment_recibed: async (
+    paymentRecibed: async (
       _: any,
       { id }: { id: number },
       { prisma }: IGraphqlContext

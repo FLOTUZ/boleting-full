@@ -35,8 +35,8 @@ export const NotificationSchema = gql`
   }
 
   type Query {
-    Notifications(pagination: Pagination): [Notification!]!
-    Notification(id: Int!): Notification!
+    notifications(pagination: Pagination): [Notification!]!
+    notification(id: Int!): Notification!
   }
 
   type Mutation {

@@ -26,7 +26,7 @@ export const ActivityLogResolver = {
       return rows;
     },
 
-    activity_log: async (
+    activityLog: async (
       _: any,
       { id }: { id: number },
       { prisma }: IGraphqlContext

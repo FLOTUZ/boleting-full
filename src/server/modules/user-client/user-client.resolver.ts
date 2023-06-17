@@ -26,7 +26,7 @@ export const UserClientResolver = {
       return rows;
     },
 
-    user_client: async (
+    userClient: async (
       _: any,
       { id }: { id: number },
       { prisma }: IGraphqlContext

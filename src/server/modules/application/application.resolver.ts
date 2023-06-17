@@ -26,7 +26,7 @@ export const ApplicationResolver = {
       return rows;
     },
 
-    Application: async (
+    application: async (
       _: any,
       { id }: { id: number },
       { prisma }: IGraphqlContext

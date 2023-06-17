@@ -26,7 +26,7 @@ export const NotificationResolver = {
       return rows;
     },
 
-    Notification: async (
+    notification: async (
       _: any,
       { id }: { id: number },
       { prisma }: IGraphqlContext

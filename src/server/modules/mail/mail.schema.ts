@@ -33,8 +33,8 @@ export const MailSchema = gql`
   }
 
   type Query {
-    Mails(pagination: Pagination): [Mail!]!
-    Mail(id: Int!): Mail!
+    mails(pagination: Pagination): [Mail!]!
+    mail(id: Int!): Mail!
   }
 
   type Mutation {

@@ -26,7 +26,7 @@ export const MailResolver = {
       return rows;
     },
 
-    Mail: async (
+    mail: async (
       _: any,
       { id }: { id: number },
       { prisma }: IGraphqlContext

@@ -26,7 +26,7 @@ export const PaymentCardResolver = {
       return rows;
     },
 
-    payment_card: async (
+    paymentCard: async (
       _: any,
       { id }: { id: number },
       { prisma }: IGraphqlContext
