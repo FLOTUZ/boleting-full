@@ -395,7 +395,7 @@ model PaymentCard {
   updatedAt        DateTime      @updatedAt
   deleted          Boolean       @default(false)
   deletedAt        DateTime?
-  payment_method   PaymentMethod @relation(fields: [payment_methodId], references: [id])
+  payment_method   PaymentMethod @relation("payment_way", fields: [payment_methodId], references: [id])
   user_client      UserClient    @relation(fields: [user_clientId], references: [id])
 }
 
@@ -416,7 +416,7 @@ model PaymentMethod {
   updatedAt         DateTime          @updatedAt
   deleted           Boolean           @default(false)
   deletedAt         DateTime?
-  payment_card      PaymentCard?
+  payment_card      PaymentCard?      @relation("payment_way")
   buy_cart          BuyCart[]         @relation("payment_method")
 }
 

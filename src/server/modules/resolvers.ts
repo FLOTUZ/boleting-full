@@ -10,3 +10,4 @@ export * from "./access-types/access-type.resolver";
 export * from "./owner-types/owner-types.resolver";
 export * from "./buy-cart/buy-cart.resolver";
 export * from "./user-client/user-client.resolver";
+export * from "./payment-method/mayment-method.resolver";
