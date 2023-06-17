@@ -15,3 +15,4 @@ export * from "./payment-recibed/payment-recibed.resolver";
 export * from "./payment-card/payment-card.resolver";
 export * from "./activity-log/activity-log.resolver";
 export * from "./application/application.resolver";
+export * from "./mail/mail.resolver";
