@@ -9,3 +9,4 @@ export * from "./tickets/tickets.schema";
 export * from "./access-types/access-type.schema";
 export * from "./owner-types/owner-types.schema";
 export * from "./buy-cart/buy-cart.schema";
+export * from "./user-client/user-client.schema";

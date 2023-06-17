@@ -8,3 +8,4 @@ export * from "./tickets.validations";
 export * from "./access-type.validations";
 export * from "./owner-type.validations";
 export * from "./buy-cart.validations";
+export * from "./user-client.validations";

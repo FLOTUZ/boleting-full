@@ -88,12 +88,12 @@ model UserClient {
   deleted              Boolean          @default(false)
   deletedAt            DateTime?
   atendee_of_events    Event[]          @relation("atendee_of_events")
-  buy_cart             BuyCart[]        @relation("buy_cart")
-  payment_card         PaymentCard[]
+  buy_carts            BuyCart[]        @relation("buy_cart")
+  payment_cards        PaymentCard[]
   cashless_mediums     Cashless[]       @relation("cashless_mediums")
-  cashless_refill      CashlessRefill[] @relation("cashless_refill")
+  cashless_refills     CashlessRefill[] @relation("cashless_refill")
   notifications        Notification[]   @relation("client_notifications")
-  mail                 Mail[]           @relation("client_recibed_mails")
+  mails                Mail[]           @relation("client_recibed_mails")
   user_client_activity ActivityLog[]    @relation("user_client_activity")
   role                 Role             @relation("user_client", fields: [roleId], references: [id])
 }
