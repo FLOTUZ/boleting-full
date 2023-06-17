@@ -34,7 +34,8 @@
       "      return rows;",
       "    },",
       "",
-      "    ${1/([A-Z][a-z]+)([A-Z][a-z]+)/${1:/downcase}_${2:/downcase}/g}: async (",
+      // Format $1 putting the first letter in lowercase
+      "    ${1/(.)(.*)/${1:/downcase}${2}/g}: async (",
       "      _: any,",
       "      { id }: { id: number },",
       "      { prisma }: IGraphqlContext",
@@ -145,7 +146,7 @@
       "export const Create$1Validator = yup.object().shape({",
       "  $0",
       "});",
-
+      "",
       "export const Update$1Validator = yup.object().shape({",
       "  $0",
       "});",
