@@ -13,3 +13,4 @@ export * from "./payment-method.validations";
 export * from "./payment-recibed.validations";
 export * from "./payment-card.validations";
 export * from "./activity-log.validations";
+export * from "./application.validations";
