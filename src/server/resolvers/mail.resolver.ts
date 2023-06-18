@@ -6,7 +6,7 @@ import {
   CreateMailValidator,
   UpdateMailValidator,
 } from "@/validations";
-import { MailService } from "../services/mail.service";
+import { MailService } from "../services";
 
 //
 // Resolver for Mail model

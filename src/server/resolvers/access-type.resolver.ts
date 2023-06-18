@@ -6,7 +6,7 @@ import {
   CreateAccessTypeValidator,
   UpdateAccessTypeValidator,
 } from "@/validations";
-import { AccessTypeService } from "../services/access-type.service";
+import { AccessTypeService } from "../services";
 
 //
 // Resolver for AccessType model

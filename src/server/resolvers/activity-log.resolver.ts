@@ -6,7 +6,7 @@ import {
   CreateActivityLogValidator,
   UpdateActivityLogValidator,
 } from "@/validations";
-import { ActivityLogService } from "../services/activity-log.service";
+import { ActivityLogService } from "../services";
 
 //
 // Resolver for ActivityLog model
