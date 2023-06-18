@@ -1,85 +1,60 @@
 import { IGraphqlContext } from "@/server";
 import { Args } from "@/server/common";
-import { PrismaError } from "@/server/utils";
 import { Notification } from "@prisma/client";
 import {
   validateData,
   CreateNotificationValidator,
   UpdateNotificationValidator,
 } from "@/validations";
+import { NotificationService } from "../services";
 
-/*
- * Resolver de Notification
- */
+//
+// Resolver for Notification model
+//
 export const NotificationResolver = {
   Query: {
     notifications: async (
       _: any,
       { pagination }: Args,
-      { prisma }: IGraphqlContext
+      __: IGraphqlContext
     ) => {
-      const rows = await prisma.notification.findMany({
-        skip: pagination?.skip,
-        take: pagination?.take,
-        where: { deleted: false },
-      });
-      return rows;
+      return await NotificationService.notifications(pagination);
     },
 
     notification: async (
       _: any,
       { id }: { id: number },
-      { prisma }: IGraphqlContext
+      __: IGraphqlContext
     ) => {
-      return await prisma.notification.findUnique({
-        where: { id },
-      });
+      return await NotificationService.notification(id);
     },
   },
+
   Mutation: {
     createNotification: async (
       _: any,
       { data }: { data: Notification },
-      { prisma }: IGraphqlContext
+      __: IGraphqlContext
     ) => {
       await validateData({ schema: CreateNotificationValidator, data });
-      try {
-        return await prisma.notification.create({
-          data: { ...data },
-        });
-      } catch (error) {
-        throw PrismaError.handle(error);
-      }
+      return await NotificationService.createNotification(data);
     },
 
     updateNotification: async (
       _: any,
       { id, data }: { id: number; data: Notification },
-      { prisma }: IGraphqlContext
+      __: IGraphqlContext
     ) => {
       await validateData({ schema: UpdateNotificationValidator, data });
-      try {
-        return await prisma.notification.update({
-          where: { id },
-          data: { ...data },
-        });
-      } catch (error) {
-        throw PrismaError.handle(error);
-      }
+      return NotificationService.updateNotification(id, data);
     },
 
     deleteNotification: async (
       _: any,
       { id }: { id: number },
-      { prisma }: IGraphqlContext
+      __: IGraphqlContext
     ) => {
-      return await prisma.notification.update({
-        where: { id },
-        data: {
-          deletedAt: new Date(),
-          deleted: true,
-        },
-      });
+      return await NotificationService.deleteNotification(id);
     },
   },
 };

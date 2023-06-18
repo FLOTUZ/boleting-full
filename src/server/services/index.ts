@@ -11,3 +11,4 @@ export * from "./buy-cart.service";
 export * from "./event-sub-categories.service";
 export * from "./event-category.service";
 export * from "./payment-method.service";
+export * from "./notification.service";
