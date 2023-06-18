@@ -1,91 +1,61 @@
 import { IGraphqlContext } from "@/server";
 import { Args } from "@/server/common";
-import { PrismaError } from "@/server/utils";
-import { Organization, Event } from "@prisma/client";
+import { Organization } from "@prisma/client";
+import { OrganizationService, UserService, EventService } from "../services";
+
+import { validateData } from "@/validations";
 
 export const OrganizationResolver = {
   Query: {
     organizations: async (
       _: any,
       { pagination }: Args,
-      { prisma }: IGraphqlContext
+      __: IGraphqlContext
     ) => {
-      return await prisma.organization.findMany({
-        ...pagination,
-        where: { deleted: false },
-      });
+      return await OrganizationService.organizations(pagination);
     },
 
     organization: async (
       _: any,
       { id }: { id: number },
-      { prisma }: IGraphqlContext
+      __: IGraphqlContext
     ) => {
-      return await prisma.organization.findUnique({
-        where: { id },
-      });
+      return await OrganizationService.organization(id);
     },
   },
   Mutation: {
     createOrganization: async (
       _: any,
       { data }: { data: Organization },
-      { prisma }: IGraphqlContext
+      __: IGraphqlContext
     ) => {
-      try {
-        return await prisma.organization.create({
-          data: { ...data },
-        });
-      } catch (error) {
-        throw PrismaError.handle(error);
-      }
+      return await OrganizationService.createOrganization(data);
     },
 
     updateOrganization: async (
       _: any,
       { id, data }: { id: number; data: Organization },
-      { prisma }: IGraphqlContext
+      __: IGraphqlContext
     ) => {
-      try {
-        return await prisma.organization.update({
-          where: { id },
-          data: { ...data },
-        });
-      } catch (error) {
-        throw PrismaError.handle(error);
-      }
+      return await OrganizationService.updateOrganization(id, data);
     },
 
     deleteOrganization: async (
       _: any,
       { id }: { id: number },
-      { prisma }: IGraphqlContext
+      __: IGraphqlContext
     ) => {
-      return await prisma.organization.update({
-        where: { id },
-        data: {
-          deletedAt: new Date(),
-          deleted: true,
-        },
-      });
+      return await OrganizationService.deleteOrganization(id);
     },
   },
 
   Organization: {
-    events: async (
-      { id }: Organization,
-      _: any,
-      { prisma }: IGraphqlContext
-    ) => {
-      return await prisma.event.findMany({
-        where: { organizationId: id },
-      });
+    events: async ({ id }: Organization, _: any, __: IGraphqlContext) => {
+      return await EventService.eventsByOrganization(id);
     },
 
-    users: async ({ id }: Event, _: any, { prisma }: IGraphqlContext) => {
-      return await prisma.user.findMany({
-        where: { organizationId: id },
-      });
+    users: async ({ id }: Organization, _: any, __: IGraphqlContext) => {
+      return await UserService.usersByOrganization(id);
     },
   },
 };

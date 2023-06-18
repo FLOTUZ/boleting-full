@@ -61,4 +61,10 @@ export const UserService = {
       where: { roles: { some: { id: role_id } } },
     });
   },
+
+  async usersByOrganization(id_organization: number) {
+    return await prisma.user.findMany({
+      where: { organizationId: id_organization },
+    });
+  },
 };
