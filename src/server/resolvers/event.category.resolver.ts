@@ -1,36 +1,32 @@
-import { Event, EventCategory } from "@prisma/client";
-
-import { Args } from "../common";
-import { IGraphqlContext } from "../common/graphql.context";
-import { PrismaError } from "../utils";
-
-import { validateData } from "@/validations";
+import { IGraphqlContext } from "@/server";
+import { Args } from "@/server/common";
+import { EventCategory } from "@prisma/client";
 import {
-  CreateEventCategorySchema,
-  UpdateEventCategorySchema,
+  validateData,
+  CreateEventCategoryValidator,
+  UpdateEventCategoryValidator,
 } from "@/validations";
+import { EventCategoryService, EventSubCategoryService } from "../services";
 
+//
+// Resolver for  model
+//
 export const EventCategoryResolver = {
   Query: {
-    eventCategories: async (
+    EventCategorys: async (
       _: any,
       { pagination }: Args,
-      { prisma }: IGraphqlContext
+      __: IGraphqlContext
     ) => {
-      const rows = await prisma.eventCategory.findMany({
-        skip: pagination?.skip,
-        take: pagination?.take,
-        where: { deleted: false },
-      });
-
-      return rows;
+      return await EventCategoryService.eventCategories(pagination);
     },
-    eventCategory: async (
+
+    EventCategory: async (
       _: any,
       { id }: { id: number },
-      { prisma }: IGraphqlContext
+      __: IGraphqlContext
     ) => {
-      return await prisma.eventCategory.findUnique({ where: { id } });
+      return await EventCategoryService.eventCategory(id);
     },
   },
 
@@ -38,22 +34,11 @@ export const EventCategoryResolver = {
     createEventCategory: async (
       _: any,
       { data }: { data: EventCategory & { sub_categories: number[] } },
-      { prisma }: IGraphqlContext
+      __: IGraphqlContext
     ) => {
-      await validateData({ schema: CreateEventCategorySchema, data });
+      await validateData({ schema: CreateEventCategoryValidator, data });
 
-      try {
-        return await prisma.eventCategory.create({
-          data: {
-            ...data,
-            sub_categories: {
-              connect: data.sub_categories.map((id) => ({ id })),
-            },
-          },
-        });
-      } catch (error: any) {
-        throw PrismaError.handle(error);
-      }
+      return await EventCategoryService.createEventCategory(data);
     },
 
     updateEventCategory: async (
@@ -62,29 +47,18 @@ export const EventCategoryResolver = {
         id,
         data,
       }: { id: number; data: EventCategory & { sub_categories: number[] } },
-      { prisma }: IGraphqlContext
+      __: IGraphqlContext
     ) => {
-      await validateData({ schema: UpdateEventCategorySchema, data });
-      return await prisma.eventCategory.update({
-        where: { id },
-        data: {
-          ...data,
-          sub_categories: {
-            connect: data.sub_categories.map((id) => ({ id })),
-          },
-        },
-      });
+      await validateData({ schema: UpdateEventCategoryValidator, data });
+      return await EventCategoryService.updateEventCategory(id, data);
     },
 
     deleteEventCategory: async (
       _: any,
-      { id }: EventCategory,
-      { prisma }: IGraphqlContext
+      { id }: { id: number },
+      __: IGraphqlContext
     ) => {
-      return await prisma.eventCategory.update({
-        where: { id },
-        data: { deleted: true },
-      });
+      return await EventCategoryService.deleteEventCategory(id);
     },
   },
 
@@ -92,11 +66,11 @@ export const EventCategoryResolver = {
     sub_categories: async (
       { id }: EventCategory,
       _: any,
-      { prisma }: IGraphqlContext
+      __: IGraphqlContext
     ) => {
-      return await prisma.eventSubCategory.findMany({
-        where: { parent_event_categoryId: id },
-      });
+      return await EventSubCategoryService.subCategoriesByCategoryEventParentId(
+        id
+      );
     },
   },
 };

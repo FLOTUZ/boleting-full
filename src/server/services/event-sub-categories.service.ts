@@ -45,4 +45,10 @@ export const EventSubCategoryService = {
   },
 
   // ======================= FOR ANOTHER RESOLVERS =======================
+
+  async subCategoriesByCategoryEventParentId(parent_event_categoryId: number) {
+    return await prisma.eventSubCategory.findMany({
+      where: { parent_event_categoryId },
+    });
+  },
 };
