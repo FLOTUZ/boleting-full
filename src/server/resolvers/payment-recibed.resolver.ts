@@ -1,85 +1,60 @@
 import { IGraphqlContext } from "@/server";
 import { Args } from "@/server/common";
-import { PrismaError } from "@/server/utils";
 import { PaymentRecibed } from "@prisma/client";
 import {
   validateData,
   CreatePaymentRecibedValidator,
   UpdatePaymentRecibedValidator,
 } from "@/validations";
+import { PaymentRecibedService } from "../services";
 
-/*
- * Resolver de PaymentRecibed
- */
+//
+// Resolver for PaymentRecibed model
+//
 export const PaymentRecibedResolver = {
   Query: {
     paymentRecibeds: async (
       _: any,
       { pagination }: Args,
-      { prisma }: IGraphqlContext
+      __: IGraphqlContext
     ) => {
-      const rows = await prisma.paymentRecibed.findMany({
-        skip: pagination?.skip,
-        take: pagination?.take,
-        where: { deleted: false },
-      });
-      return rows;
+      return await PaymentRecibedService.paymentRecibeds(pagination);
     },
 
     paymentRecibed: async (
       _: any,
       { id }: { id: number },
-      { prisma }: IGraphqlContext
+      __: IGraphqlContext
     ) => {
-      return await prisma.paymentRecibed.findUnique({
-        where: { id },
-      });
+      return await PaymentRecibedService.paymentRecibed(id);
     },
   },
+
   Mutation: {
     createPaymentRecibed: async (
       _: any,
       { data }: { data: PaymentRecibed },
-      { prisma }: IGraphqlContext
+      __: IGraphqlContext
     ) => {
       await validateData({ schema: CreatePaymentRecibedValidator, data });
-      try {
-        return await prisma.paymentRecibed.create({
-          data: { ...data },
-        });
-      } catch (error) {
-        throw PrismaError.handle(error);
-      }
+      return await PaymentRecibedService.createPaymentRecibed(data);
     },
 
     updatePaymentRecibed: async (
       _: any,
       { id, data }: { id: number; data: PaymentRecibed },
-      { prisma }: IGraphqlContext
+      __: IGraphqlContext
     ) => {
       await validateData({ schema: UpdatePaymentRecibedValidator, data });
-      try {
-        return await prisma.paymentRecibed.update({
-          where: { id },
-          data: { ...data },
-        });
-      } catch (error) {
-        throw PrismaError.handle(error);
-      }
+      return PaymentRecibedService.updatePaymentRecibed(id, data);
     },
 
     deletePaymentRecibed: async (
       _: any,
       { id }: { id: number },
-      { prisma }: IGraphqlContext
+      __: IGraphqlContext
     ) => {
-      return await prisma.paymentRecibed.update({
-        where: { id },
-        data: {
-          deletedAt: new Date(),
-          deleted: true,
-        },
-      });
+      return await PaymentRecibedService.deletePaymentRecibed(id);
     },
   },
 };
