@@ -1,85 +1,47 @@
 import { IGraphqlContext } from "@/server";
 import { Args } from "@/server/common";
-import { PrismaError } from "@/server/utils";
 import { Mail } from "@prisma/client";
 import {
   validateData,
   CreateMailValidator,
   UpdateMailValidator,
 } from "@/validations";
+import { MailService } from "../services/mail.service";
 
-/*
- * Resolver de Mail
- */
+//
+// Resolver for Mail model
+//
 export const MailResolver = {
   Query: {
-    mails: async (
-      _: any,
-      { pagination }: Args,
-      { prisma }: IGraphqlContext
-    ) => {
-      const rows = await prisma.mail.findMany({
-        skip: pagination?.skip,
-        take: pagination?.take,
-        where: { deleted: false },
-      });
-      return rows;
+    mails: async (_: any, { pagination }: Args, __: IGraphqlContext) => {
+      return await MailService.mails(pagination);
     },
 
-    mail: async (
-      _: any,
-      { id }: { id: number },
-      { prisma }: IGraphqlContext
-    ) => {
-      return await prisma.mail.findUnique({
-        where: { id },
-      });
+    mail: async (_: any, { id }: { id: number }, __: IGraphqlContext) => {
+      return await MailService.mail(id);
     },
   },
   Mutation: {
     createMail: async (
       _: any,
       { data }: { data: Mail },
-      { prisma }: IGraphqlContext
+      __: IGraphqlContext
     ) => {
       await validateData({ schema: CreateMailValidator, data });
-      try {
-        return await prisma.mail.create({
-          data: { ...data },
-        });
-      } catch (error) {
-        throw PrismaError.handle(error);
-      }
+      return await MailService.createMail(data);
     },
 
     updateMail: async (
       _: any,
       { id, data }: { id: number; data: Mail },
-      { prisma }: IGraphqlContext
+      __: IGraphqlContext
     ) => {
       await validateData({ schema: UpdateMailValidator, data });
-      try {
-        return await prisma.mail.update({
-          where: { id },
-          data: { ...data },
-        });
-      } catch (error) {
-        throw PrismaError.handle(error);
-      }
+      return MailService.updateMail(id, data);
     },
 
-    deleteMail: async (
-      _: any,
-      { id }: { id: number },
-      { prisma }: IGraphqlContext
-    ) => {
-      return await prisma.mail.update({
-        where: { id },
-        data: {
-          deletedAt: new Date(),
-          deleted: true,
-        },
-      });
+    deleteMail: async (_: any, { id }: { id: number }, __: IGraphqlContext) => {
+      return await MailService.deleteMail(id);
     },
   },
 };
