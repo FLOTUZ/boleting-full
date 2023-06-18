@@ -26,7 +26,7 @@ export class PrismaError extends Error {
     if (error.code === "P2025") {
       return new PrismaError({
         code: error.code,
-        message: `${error.meta.target} not found`,
+        message: `Record not found`,
       });
     }
   }

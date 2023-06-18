@@ -1,37 +1,24 @@
-import * as argon2 from "argon2";
 import { User } from "@prisma/client";
-
-import { Args } from "../common";
-import { IGraphqlContext } from "../common/graphql.context";
-import { PrismaError } from "../utils";
 
 import {
   CreateUserSchema,
   UpdateRoleSchema,
   validateData,
 } from "@/validations";
-import { autorizedAbilities } from "@/server/autorization";
+
+import { Args, IGraphqlContext } from "../common";
+import { OrganizationService, RoleService, UserService } from "../services";
+import { UnauthorizedError } from "../utils";
 
 export const UserResolver = {
   Query: {
-    users: async (
-      _: any,
-      { pagination }: Args,
-      { id_user, prisma }: IGraphqlContext
-    ) => {
-      return await prisma.user.findMany({
-        ...pagination,
-        where: { deleted: false },
-      });
+    users: async (_: any, { pagination }: Args, __: IGraphqlContext) => {
+      return await UserService.getAllUsers(pagination);
     },
 
-    currentUser: async (
-      _: any,
-      __: User,
-      { id_user, prisma }: IGraphqlContext
-    ) => {
+    currentUser: async (_: any, __: User, { id_user }: IGraphqlContext) => {
       if (!id_user) return null;
-      return await prisma.user.findUniqueOrThrow({ where: { id: id_user } });
+      return await UserService.currentUser(id_user);
     },
   },
 
@@ -39,56 +26,37 @@ export const UserResolver = {
     createUser: async (
       _: any,
       { data }: { data: User & { roles: number[] } },
-      { id_organization, prisma }: IGraphqlContext
+      { id_organization }: IGraphqlContext
     ) => {
       await validateData({ schema: CreateUserSchema, data });
-      console.log(data);
-      try {
-        const hash = await argon2.hash(data.password);
-        return await prisma.user.create({
-          data: {
-            ...data,
-            password: hash,
-            organizationId: id_organization!,
-            roles: {
-              connect: data.roles?.map((id) => ({ id })),
-            },
-          },
-        });
-      } catch (error: any) {
-        console.log(error);
-        throw PrismaError.handle(error);
-      }
+
+      if (id_organization === null)
+        throw new UnauthorizedError("Unauthorized organization");
+
+      return await UserService.createUser({ data, id_organization });
     },
 
     updateUser: async (
       _: any,
       { id, data }: { id: number; data: User },
-      { prisma }: IGraphqlContext
+      __: IGraphqlContext
     ) => {
       await validateData({ schema: UpdateRoleSchema, data });
-      return await prisma.user.update({ where: { id }, data });
+      return await UserService.updateUser({ id, data });
     },
 
-    deleteUser: async (_: any, { id }: User, { prisma }: IGraphqlContext) => {
-      return await prisma.user.update({
-        where: { id },
-        data: { deleted: true },
-      });
+    deleteUser: async (_: any, { id }: User, __: IGraphqlContext) => {
+      return await UserService.deleteUser(id);
     },
   },
 
   User: {
-    roles: async ({ id }: User, _: any, { prisma }: IGraphqlContext) => {
-      return await prisma.role.findMany({
-        where: { users: { some: { id } } },
-      });
+    roles: async ({ id }: User, _: any, __: IGraphqlContext) => {
+      return await RoleService.getUserRoles(id);
     },
 
-    organization: async ({ id }: User, _: any, { prisma }: IGraphqlContext) => {
-      return await prisma.organization.findFirst({
-        where: { users: { some: { id } } },
-      });
+    organization: async ({ id }: User, _: any, __: IGraphqlContext) => {
+      return await OrganizationService.userOrganizations(id);
     },
   },
 };
