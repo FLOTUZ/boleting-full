@@ -5,3 +5,4 @@ export * from "./events.service";
 export * from "./mail.service";
 export * from "./access-type.service";
 export * from "./activity-log.service";
+export * from "./application.service";

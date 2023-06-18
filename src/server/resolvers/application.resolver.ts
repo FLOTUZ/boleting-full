@@ -1,85 +1,56 @@
 import { IGraphqlContext } from "@/server";
 import { Args } from "@/server/common";
-import { PrismaError } from "@/server/utils";
 import { Application } from "@prisma/client";
 import {
   validateData,
   CreateApplicationValidator,
   UpdateApplicationValidator,
 } from "@/validations";
+import { ApplicationService } from "../services";
 
-/*
- * Resolver de Application
- */
+//
+// Resolver for Application model
+//
 export const ApplicationResolver = {
   Query: {
-    applications: async (
-      _: any,
-      { pagination }: Args,
-      { prisma }: IGraphqlContext
-    ) => {
-      const rows = await prisma.application.findMany({
-        skip: pagination?.skip,
-        take: pagination?.take,
-        where: { deleted: false },
-      });
-      return rows;
+    applications: async (_: any, { pagination }: Args, __: IGraphqlContext) => {
+      return await ApplicationService.applications(pagination);
     },
 
     application: async (
       _: any,
       { id }: { id: number },
-      { prisma }: IGraphqlContext
+      __: IGraphqlContext
     ) => {
-      return await prisma.application.findUnique({
-        where: { id },
-      });
+      return await ApplicationService.application(id);
     },
   },
+
   Mutation: {
     createApplication: async (
       _: any,
       { data }: { data: Application },
-      { prisma }: IGraphqlContext
+      __: IGraphqlContext
     ) => {
       await validateData({ schema: CreateApplicationValidator, data });
-      try {
-        return await prisma.application.create({
-          data: { ...data },
-        });
-      } catch (error) {
-        throw PrismaError.handle(error);
-      }
+      return await ApplicationService.createApplication(data);
     },
 
     updateApplication: async (
       _: any,
       { id, data }: { id: number; data: Application },
-      { prisma }: IGraphqlContext
+      __: IGraphqlContext
     ) => {
       await validateData({ schema: UpdateApplicationValidator, data });
-      try {
-        return await prisma.application.update({
-          where: { id },
-          data: { ...data },
-        });
-      } catch (error) {
-        throw PrismaError.handle(error);
-      }
+      return ApplicationService.updateApplication(id, data);
     },
 
     deleteApplication: async (
       _: any,
       { id }: { id: number },
-      { prisma }: IGraphqlContext
+      __: IGraphqlContext
     ) => {
-      return await prisma.application.update({
-        where: { id },
-        data: {
-          deletedAt: new Date(),
-          deleted: true,
-        },
-      });
+      return await ApplicationService.deleteApplication(id);
     },
   },
 };
