@@ -37,7 +37,7 @@ export const UserService = {
         },
       });
     } catch (error: any) {
-      console.log(error);
+      console.error(error);
       throw PrismaError.handle(error);
     }
   },
@@ -52,5 +52,13 @@ export const UserService = {
     } catch (error: any) {
       throw PrismaError.handle(error);
     }
+  },
+
+  // ============================================================
+
+  async usersByRole(role_id: number) {
+    return await prisma.user.findMany({
+      where: { roles: { some: { id: role_id } } },
+    });
   },
 };
