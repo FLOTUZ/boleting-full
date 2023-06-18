@@ -1,6 +1,6 @@
 import * as y from "yup";
 
-export const CreateOwnerTypeSchema = y.object().shape({
+export const CreateOwnerTypeValidator = y.object().shape({
   name: y.string().required().max(10),
   description: y.string().max(255),
   userId: y.number().required(),
@@ -8,7 +8,7 @@ export const CreateOwnerTypeSchema = y.object().shape({
   organizationId: y.number().required(),
 });
 
-export const UpdateOwnerTypeSchema = y.object().shape({
+export const UpdateOwnerTypeValidator = y.object().shape({
   name: y.string().max(10),
   description: y.string().max(255),
   userId: y.number(),
