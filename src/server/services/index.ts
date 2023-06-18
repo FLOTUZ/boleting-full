@@ -1,6 +1,6 @@
 export * from "./auth.service";
-export * from "./users.service";
-export * from "./roles.service";
+export * from "./user.service";
+export * from "./role.service";
 export * from "./organization.service";
 export * from "./events.service";
 export * from "./mail.service";
@@ -8,7 +8,7 @@ export * from "./access-type.service";
 export * from "./activity-log.service";
 export * from "./application.service";
 export * from "./buy-cart.service";
-export * from "./event-sub-categories.service";
+export * from "./event-sub-category.service";
 export * from "./event-category.service";
 export * from "./payment-method.service";
 export * from "./notification.service";

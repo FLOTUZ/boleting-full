@@ -28,20 +28,18 @@ export const EventSubCategoriesSchema = gql`
   }
 
   type Query {
-    eventsSubCategories(pagination: Pagination): [EventSubCategory]
+    eventSubCategories(pagination: Pagination): [EventSubCategory]
     eventSubCategory(id: Int!): EventSubCategory
   }
 
   type Mutation {
-    createEventSubCategories(
-      data: CreateEventSubCategoryInput!
-    ): EventSubCategory
+    createEventSubCategory(data: CreateEventSubCategoryInput!): EventSubCategory
 
-    updateEventSubCategories(
+    updateEventSubCategory(
       id: Int!
       data: UpdateEventSubCategoryInput!
     ): EventSubCategory
 
-    deleteEventSubCategories(id: Int!): EventSubCategory
+    deleteEventSubCategory(id: Int!): EventSubCategory
   }
 `;

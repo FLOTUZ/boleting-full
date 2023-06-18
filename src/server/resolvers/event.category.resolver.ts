@@ -13,7 +13,7 @@ import { EventCategoryService, EventSubCategoryService } from "../services";
 //
 export const EventCategoryResolver = {
   Query: {
-    EventCategorys: async (
+    eventCategories: async (
       _: any,
       { pagination }: Args,
       __: IGraphqlContext
@@ -21,7 +21,7 @@ export const EventCategoryResolver = {
       return await EventCategoryService.eventCategories(pagination);
     },
 
-    EventCategory: async (
+    eventCategory: async (
       _: any,
       { id }: { id: number },
       __: IGraphqlContext
