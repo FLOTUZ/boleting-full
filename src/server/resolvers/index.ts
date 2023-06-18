@@ -10,7 +10,7 @@ export * from "./access-type.resolver";
 export * from "./owner-types.resolver";
 export * from "./buy-cart.resolver";
 export * from "./user-client.resolver";
-export * from "./mayment-method.resolver";
+export * from "./payment-method.resolver";
 export * from "./payment-recibed.resolver";
 export * from "./payment-card.resolver";
 export * from "./activity-log.resolver";
