@@ -1,85 +1,56 @@
 import { IGraphqlContext } from "@/server";
 import { Args } from "@/server/common";
-import { PrismaError } from "@/server/utils";
 import { ActivityLog } from "@prisma/client";
 import {
   validateData,
   CreateActivityLogValidator,
   UpdateActivityLogValidator,
 } from "@/validations";
+import { ActivityLogService } from "../services/activity-log.service";
 
-/*
- * Resolver de ActivityLog
- */
+//
+// Resolver for ActivityLog model
+//
 export const ActivityLogResolver = {
   Query: {
-    activityLogs: async (
-      _: any,
-      { pagination }: Args,
-      { prisma }: IGraphqlContext
-    ) => {
-      const rows = await prisma.activityLog.findMany({
-        skip: pagination?.skip,
-        take: pagination?.take,
-        where: { deleted: false },
-      });
-      return rows;
+    activityLogs: async (_: any, { pagination }: Args, __: IGraphqlContext) => {
+      return await ActivityLogService.activityLogs(pagination);
     },
 
     activityLog: async (
       _: any,
       { id }: { id: number },
-      { prisma }: IGraphqlContext
+      __: IGraphqlContext
     ) => {
-      return await prisma.activityLog.findUnique({
-        where: { id },
-      });
+      return await ActivityLogService.activityLog(id);
     },
   },
+
   Mutation: {
     createActivityLog: async (
       _: any,
       { data }: { data: ActivityLog },
-      { prisma }: IGraphqlContext
+      __: IGraphqlContext
     ) => {
       await validateData({ schema: CreateActivityLogValidator, data });
-      try {
-        return await prisma.activityLog.create({
-          data: { ...data },
-        });
-      } catch (error) {
-        throw PrismaError.handle(error);
-      }
+      return await ActivityLogService.createActivityLog(data);
     },
 
     updateActivityLog: async (
       _: any,
       { id, data }: { id: number; data: ActivityLog },
-      { prisma }: IGraphqlContext
+      __: IGraphqlContext
     ) => {
       await validateData({ schema: UpdateActivityLogValidator, data });
-      try {
-        return await prisma.activityLog.update({
-          where: { id },
-          data: { ...data },
-        });
-      } catch (error) {
-        throw PrismaError.handle(error);
-      }
+      return ActivityLogService.updateActivityLog(id, data);
     },
 
     deleteActivityLog: async (
       _: any,
       { id }: { id: number },
-      { prisma }: IGraphqlContext
+      __: IGraphqlContext
     ) => {
-      return await prisma.activityLog.update({
-        where: { id },
-        data: {
-          deletedAt: new Date(),
-          deleted: true,
-        },
-      });
+      return await ActivityLogService.deleteActivityLog(id);
     },
   },
 };
