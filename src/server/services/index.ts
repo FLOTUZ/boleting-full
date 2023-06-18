@@ -8,3 +8,4 @@ export * from "./access-type.service";
 export * from "./activity-log.service";
 export * from "./application.service";
 export * from "./buy-cart.service";
+export * from "./event-sub-categories.service";
