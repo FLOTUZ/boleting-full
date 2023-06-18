@@ -1,85 +1,52 @@
 import { IGraphqlContext } from "@/server";
 import { Args } from "@/server/common";
-import { PrismaError } from "@/server/utils";
 import { UserClient } from "@prisma/client";
 import {
   validateData,
   CreateUserClientValidator,
   UpdateUserClientValidator,
 } from "@/validations";
+import { UserClientService } from "../services";
 
-/*
- * Resolver de UserClient
- */
+//
+// Resolver for UserClient model
+//
 export const UserClientResolver = {
   Query: {
-    userClients: async (
-      _: any,
-      { pagination }: Args,
-      { prisma }: IGraphqlContext
-    ) => {
-      const rows = await prisma.userClient.findMany({
-        skip: pagination?.skip,
-        take: pagination?.take,
-        where: { deleted: false },
-      });
-      return rows;
+    userClients: async (_: any, { pagination }: Args, __: IGraphqlContext) => {
+      return await UserClientService.userClients(pagination);
     },
 
-    userClient: async (
-      _: any,
-      { id }: { id: number },
-      { prisma }: IGraphqlContext
-    ) => {
-      return await prisma.userClient.findUnique({
-        where: { id },
-      });
+    userClient: async (_: any, { id }: { id: number }, __: IGraphqlContext) => {
+      return await UserClientService.userClient(id);
     },
   },
+
   Mutation: {
     createUserClient: async (
       _: any,
       { data }: { data: UserClient },
-      { prisma }: IGraphqlContext
+      __: IGraphqlContext
     ) => {
       await validateData({ schema: CreateUserClientValidator, data });
-      try {
-        return await prisma.userClient.create({
-          data: { ...data },
-        });
-      } catch (error) {
-        throw PrismaError.handle(error);
-      }
+      return await UserClientService.createUserClient(data);
     },
 
     updateUserClient: async (
       _: any,
       { id, data }: { id: number; data: UserClient },
-      { prisma }: IGraphqlContext
+      __: IGraphqlContext
     ) => {
       await validateData({ schema: UpdateUserClientValidator, data });
-      try {
-        return await prisma.userClient.update({
-          where: { id },
-          data: { ...data },
-        });
-      } catch (error) {
-        throw PrismaError.handle(error);
-      }
+      return UserClientService.updateUserClient(id, data);
     },
 
     deleteUserClient: async (
       _: any,
       { id }: { id: number },
-      { prisma }: IGraphqlContext
+      __: IGraphqlContext
     ) => {
-      return await prisma.userClient.update({
-        where: { id },
-        data: {
-          deletedAt: new Date(),
-          deleted: true,
-        },
-      });
+      return await UserClientService.deleteUserClient(id);
     },
   },
 };
