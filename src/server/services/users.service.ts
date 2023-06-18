@@ -56,6 +56,16 @@ export const UserService = {
 
   // ============================================================
 
+  async findUserByEmail(email: string) {
+    try {
+      return await prisma.user.findUnique({
+        where: { email: email },
+      });
+    } catch (error) {
+      throw PrismaError.handle(error);
+    }
+  },
+
   async usersByRole(role_id: number) {
     return await prisma.user.findMany({
       where: { roles: { some: { id: role_id } } },
