@@ -1,85 +1,56 @@
 import { IGraphqlContext } from "@/server";
 import { Args } from "@/server/common";
-import { PrismaError } from "@/server/utils";
 import { PaymentCard } from "@prisma/client";
 import {
   validateData,
   CreatePaymentCardValidator,
   UpdatePaymentCardValidator,
 } from "@/validations";
+import { PaymentCardService } from "../services";
 
-/*
- * Resolver de PaymentCard
- */
+//
+// Resolver for PaymentCard model
+//
 export const PaymentCardResolver = {
   Query: {
-    paymentCards: async (
-      _: any,
-      { pagination }: Args,
-      { prisma }: IGraphqlContext
-    ) => {
-      const rows = await prisma.paymentCard.findMany({
-        skip: pagination?.skip,
-        take: pagination?.take,
-        where: { deleted: false },
-      });
-      return rows;
+    paymentCards: async (_: any, { pagination }: Args, __: IGraphqlContext) => {
+      return await PaymentCardService.paymentCards(pagination);
     },
 
     paymentCard: async (
       _: any,
       { id }: { id: number },
-      { prisma }: IGraphqlContext
+      __: IGraphqlContext
     ) => {
-      return await prisma.paymentCard.findUnique({
-        where: { id },
-      });
+      return await PaymentCardService.paymentCard(id);
     },
   },
+
   Mutation: {
     createPaymentCard: async (
       _: any,
       { data }: { data: PaymentCard },
-      { prisma }: IGraphqlContext
+      __: IGraphqlContext
     ) => {
       await validateData({ schema: CreatePaymentCardValidator, data });
-      try {
-        return await prisma.paymentCard.create({
-          data: { ...data },
-        });
-      } catch (error) {
-        throw PrismaError.handle(error);
-      }
+      return await PaymentCardService.createPaymentCard(data);
     },
 
     updatePaymentCard: async (
       _: any,
       { id, data }: { id: number; data: PaymentCard },
-      { prisma }: IGraphqlContext
+      __: IGraphqlContext
     ) => {
       await validateData({ schema: UpdatePaymentCardValidator, data });
-      try {
-        return await prisma.paymentCard.update({
-          where: { id },
-          data: { ...data },
-        });
-      } catch (error) {
-        throw PrismaError.handle(error);
-      }
+      return PaymentCardService.updatePaymentCard(id, data);
     },
 
     deletePaymentCard: async (
       _: any,
       { id }: { id: number },
-      { prisma }: IGraphqlContext
+      __: IGraphqlContext
     ) => {
-      return await prisma.paymentCard.update({
-        where: { id },
-        data: {
-          deletedAt: new Date(),
-          deleted: true,
-        },
-      });
+      return await PaymentCardService.deletePaymentCard(id);
     },
   },
 };
