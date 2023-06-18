@@ -15,3 +15,4 @@ export * from "./notification.service";
 export * from "./owner-type.service";
 export * from "./payment-card.service";
 export * from "./payment-recibed.service";
+export * from "./ticket.service";

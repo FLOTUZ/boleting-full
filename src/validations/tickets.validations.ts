@@ -1,6 +1,6 @@
 import * as y from "yup";
 
-export const CreateTicketSchema = y.object().shape({
+export const CreateTicketValidator = y.object().shape({
   id: y.number().required(),
   note: y.string().required().max(50),
   serial_number: y.string().required().max(6),
@@ -14,7 +14,7 @@ export const CreateTicketSchema = y.object().shape({
   buy_cartId: y.number().required(),
 });
 
-export const UpdateTicketSchema = y.object().shape({
+export const UpdateTicketValidator = y.object().shape({
   id: y.number().required(),
   note: y.string().required().max(50),
   serial_number: y.string().required().max(6),

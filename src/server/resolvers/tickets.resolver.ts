@@ -1,35 +1,24 @@
-import { IGraphqlContext } from "@/server/common/graphql.context";
-import { PrismaError } from "@/server/utils";
+import { IGraphqlContext } from "@/server";
 import { Args } from "@/server/common";
 import { Ticket } from "@prisma/client";
 import {
   validateData,
-  CreateTicketSchema,
-  UpdateTicketSchema,
+  CreateTicketValidator,
+  UpdateTicketValidator,
 } from "@/validations";
+import { TicketService } from "../services";
 
-export const TicketsResolver = {
+//
+// Resolver for Ticket model
+//
+export const TicketResolver = {
   Query: {
-    tickets: async (
-      _: any,
-      { pagination }: Args,
-      { prisma }: IGraphqlContext
-    ) => {
-      return prisma.ticket.findMany({
-        take: pagination?.take || 10,
-        skip: pagination?.skip,
-        orderBy: {
-          id: "asc",
-        },
-      });
+    tickets: async (_: any, { pagination }: Args, __: IGraphqlContext) => {
+      return await TicketService.tickets(pagination);
     },
 
-    ticket: async (
-      _: any,
-      { id }: { id: number },
-      { prisma }: IGraphqlContext
-    ) => {
-      return prisma.ticket.findUnique({ where: { id } });
+    ticket: async (_: any, { id }: { id: number }, __: IGraphqlContext) => {
+      return await TicketService.ticket(id);
     },
   },
 
@@ -37,39 +26,27 @@ export const TicketsResolver = {
     createTicket: async (
       _: any,
       { data }: { data: Ticket },
-      { prisma }: IGraphqlContext
+      __: IGraphqlContext
     ) => {
-      await validateData({ schema: CreateTicketSchema, data });
-      try {
-        return await prisma.ticket.create({ data });
-      } catch (error: any) {
-        throw PrismaError.handle(error);
-      }
+      await validateData({ schema: CreateTicketValidator, data });
+      return await TicketService.createTicket(data);
     },
 
     updateTicket: async (
       _: any,
       { id, data }: { id: number; data: Ticket },
-      { prisma }: IGraphqlContext
+      __: IGraphqlContext
     ) => {
-      await validateData({ schema: UpdateTicketSchema, data });
-      try {
-        return await prisma.ticket.update({ where: { id }, data });
-      } catch (error: any) {
-        throw PrismaError.handle(error);
-      }
+      await validateData({ schema: UpdateTicketValidator, data });
+      return TicketService.updateTicket(id, data);
     },
 
     deleteTicket: async (
       _: any,
       { id }: { id: number },
-      { prisma }: IGraphqlContext
+      __: IGraphqlContext
     ) => {
-      try {
-        return await prisma.ticket.delete({ where: { id } });
-      } catch (error: any) {
-        throw PrismaError.handle(error);
-      }
+      return await TicketService.deleteTicket(id);
     },
   },
 };
