@@ -9,7 +9,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 
-const addOrganization = () => {
+const AddOrganization = () => {
   const formOrganization = useFormik({
     initialValues: {
       name: "",
@@ -44,6 +44,6 @@ const addOrganization = () => {
       </Box>
     </DesktopLayoutComponent>
   );
-}
+};
 
-export default addOrganization;
+export default AddOrganization;
