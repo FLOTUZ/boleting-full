@@ -195,7 +195,7 @@ model Event {
   sub_categories     EventSubCategory[] @relation("event_categories")
   staff              User[]             @relation("staff_of_events")
   ateendees          UserClient[]       @relation("atendee_of_events")
-  ticket             Ticket[]           @relation("tickets_in_event")
+  selled_tickets     Ticket[]           @relation("selled_tickets")
   event_social_media EventSocialMedia[] @relation("event_social_media")
   organization       Organization?      @relation("events_on_organization", fields: [organizationId], references: [id])
   access_types       AccessType[]       @relation("types_of_access_for_event")
@@ -289,7 +289,7 @@ model Ticket {
   updatedAt      DateTime    @updatedAt
   deleted        Boolean     @default(false)
   deletedAt      DateTime?
-  event          Event       @relation("tickets_in_event", fields: [eventId], references: [id])
+  event          Event       @relation("selled_tickets", fields: [eventId], references: [id])
   acces_type     AccessType? @relation("access_type", fields: [access_typeId], references: [id])
   ticket_type    OwnerType?  @relation("owner_types", fields: [owner_typeId], references: [id])
   buy_cart       BuyCart     @relation("buy_cart", fields: [buy_cartId], references: [id])

@@ -45,4 +45,11 @@ export const TicketService = {
   },
 
   // ======================= FOR ANOTHER RESOLVERS =======================
+
+  async selled_tickets_by_event(event_id: number, pagination?: Pagination) {
+    return await prisma.ticket.findMany({
+      ...pagination,
+      where: { event: { id: event_id } },
+    });
+  },
 };

@@ -1,6 +1,6 @@
 import DesktopLayoutComponent from "@/layouts/desktop-layout-component/desktop-layout.component";
+import ShowSelledByEventView from "@/modules/tickets/views/show-selled-by-event.view";
 import { SelledByEventPath, TicketsPath } from "@/routes";
-import { Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
 function SelledByEventRoute() {
@@ -22,7 +22,7 @@ function SelledByEventRoute() {
         },
       ]}
     >
-      <Text>Selled by event</Text>
+      <ShowSelledByEventView eventId={Number(id)} />
     </DesktopLayoutComponent>
   );
 }

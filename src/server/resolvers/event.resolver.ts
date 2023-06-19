@@ -6,6 +6,7 @@ import { AuthenticationError, PrismaError } from "../utils";
 
 import { validateData } from "@/validations";
 import { CreateEventSchema, UpdateEventSchema } from "@/validations";
+import { TicketService } from "../services";
 
 export const EventResolver = {
   Query: {
@@ -111,6 +112,10 @@ export const EventResolver = {
       return await prisma.ownerType.findMany({
         where: { event: { id } },
       });
+    },
+
+    selled_tickets: async ({ id }: Event, _: any, __: IGraphqlContext) => {
+      return await TicketService.selled_tickets_by_event(id);
     },
   },
 };

@@ -27,7 +27,7 @@ export const TicketSchema = gql`
   }
 
   type Ticket {
-    id: ID!
+    id: Int!
     note: String
     serial_number: String!
     price: Decimal!
@@ -50,7 +50,8 @@ export const TicketSchema = gql`
 
   type Query {
     ticket(id: Int!): Ticket
-    tickets(pagination: Pagination): [Ticket]
+    tickets(pagination: Pagination): [Ticket!]
+    selled_tickets_by_event(event_id: Int!, pagination: Pagination): [Ticket!]
   }
 
   type Mutation {

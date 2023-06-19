@@ -32,28 +32,29 @@ export const EventsSchema = gql`
   }
 
   type Event {
-    id: ID!
+    id: Int!
     event_key: String
-    name: String
+    name: String!
     description: String
-    event_location: String
-    event_location_url: String
-    start_date: DateTime
+    event_location: String!
+    event_location_url: String!
+    start_date: DateTime!
     end_date: DateTime
     start_time: String
     end_time: String
-    re_entry: Boolean
+    re_entry: Boolean!
     event_logo_url: String
     event_banner_url: String
-    userId: Int
-    organizationId: Int
-    createdAt: DateTime
-    updatedAt: DateTime
-    deleted: Boolean
+    userId: Int!
+    organizationId: Int!
+    createdAt: DateTime!
+    updatedAt: DateTime!
+    deleted: Boolean!
     deletedAt: DateTime
-    createdBy: User
+    createdBy: User!
     sub_categories: [EventSubCategory!]
-    organization: Organization
+    selled_tickets: [Ticket!]
+    organization: Organization!
     access_types: [AccessType!]
     owner_types: [OwnerType!]
   }
