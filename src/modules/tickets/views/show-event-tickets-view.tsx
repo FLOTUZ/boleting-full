@@ -10,6 +10,8 @@ import { Box, Button, HStack, SimpleGrid, Text } from "@chakra-ui/react";
 import { TbReload } from "react-icons/tb";
 import { HiSquares2X2 } from "react-icons/hi2";
 import { FaList } from "react-icons/fa";
+import ProgressLoaderComponent from "@/components/loaders/progress-loader.component";
+import IntroAnimationComponent from "@/components/animations/intro-animation.component";
 
 const ShowEventTicketsView = () => {
   const [toggle, setToggle] = useToggle(true);
@@ -47,35 +49,37 @@ const ShowEventTicketsView = () => {
   }, [eventsList]);
 
   if (eventsLoader) {
-    return <Text>Loading...</Text>;
+    return <ProgressLoaderComponent />;
   }
 
   return (
-    <Box p={4}>
-      <HStack spacing={4}>
-        <Button onClick={() => refetchEvents()}>
-          <TbReload />
-        </Button>
-        <Button onClick={() => setToggle()}>
-          {toggle ? <HiSquares2X2 /> : <FaList />}
-        </Button>
-      </HStack>
-      {toggle ? (
-        <SimpleGrid columns={[1, 2, 5]} pt={4}>
-          {events?.map((event: Event) => (
-            <TicketEventCard event={event} key={event.id} />
-          ))}
-        </SimpleGrid>
-      ) : (
-        <Box pt={4}>
-          <TicketEventsDatatable
-            loader={eventsLoader}
-            columns={columns}
-            data={events}
-          />
-        </Box>
-      )}
-    </Box>
+    <IntroAnimationComponent data>
+      <Box p={4}>
+        <HStack spacing={4}>
+          <Button onClick={() => refetchEvents()}>
+            <TbReload />
+          </Button>
+          <Button onClick={() => setToggle()}>
+            {toggle ? <HiSquares2X2 /> : <FaList />}
+          </Button>
+        </HStack>
+        {toggle ? (
+          <SimpleGrid columns={[1, 2, 5]} pt={4}>
+            {events?.map((event: Event) => (
+              <TicketEventCard event={event} key={event.id} />
+            ))}
+          </SimpleGrid>
+        ) : (
+          <Box pt={4}>
+            <TicketEventsDatatable
+              loader={eventsLoader}
+              columns={columns}
+              data={events}
+            />
+          </Box>
+        )}
+      </Box>
+    </IntroAnimationComponent>
   );
 };
 

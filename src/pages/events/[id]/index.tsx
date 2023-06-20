@@ -3,26 +3,25 @@ import ShowEventView from "@/modules/events/views/show-event.view";
 import { useRouter } from "next/router";
 
 const ShowEventRoute = () => {
-  const {
-    query: { id },
-    isReady: loading,
-  } = useRouter();
+  const router = useRouter();
 
-  if (!loading) {
-    return (
-      <DesktopLayoutComponent title={`Evento ${id}`}>
-        <div>Cargando...</div>
-      </DesktopLayoutComponent>
-    );
-  }
+  const { id } = router.query;
 
   return (
-    <DesktopLayoutComponent title={`Evento ${id}`}>
-      {id ? (
-        <ShowEventView id={parseInt(id as string)} />
-      ) : (
-        <div>Evento no encontrado</div>
-      )}
+    <DesktopLayoutComponent
+      title={`Evento ${id}`}
+      breadCrumbs={[
+        {
+          label: "Eventos",
+          href: "/events",
+        },
+        {
+          label: `Evento ${id}`,
+          href: `/events/${id}`,
+        },
+      ]}
+    >
+      <ShowEventView id={Number(id)} />
     </DesktopLayoutComponent>
   );
 };
