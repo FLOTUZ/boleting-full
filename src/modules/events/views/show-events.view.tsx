@@ -36,14 +36,17 @@ const ShowEventsView = () => {
       {
         name: "Nombre",
         selector: (row) => row.name!,
+        sortable: true,
       },
       {
         name: "Inicia",
         selector: (row) => new Date(row.start_date).toLocaleDateString(),
+        sortable: true,
       },
       {
         name: "Descripción",
         selector: (row) => row.description!,
+        sortable: true,
       },
     ];
 

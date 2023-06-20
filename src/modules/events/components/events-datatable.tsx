@@ -3,7 +3,7 @@ import DataTable, { TableColumn } from "react-data-table-component";
 import { Event } from "@/gql/generated";
 import { CgAddR } from "react-icons/cg";
 import { useRouter } from "next/router";
-import { CreateEventPath } from "@/routes";
+import { CreateEventPath, ShowEventPath } from "@/routes";
 
 interface EventsDatatable {
   columns: TableColumn<Event>[];
@@ -22,12 +22,12 @@ const EventsDatatable = ({ columns, data, loader }: EventsDatatable) => {
       theme={colorMode === "light" ? "light" : "dark"}
       progressPending={loader}
       progressComponent={<div>Loading...</div>}
-      selectableRows
       pointerOnHover
       persistTableHead
       highlightOnHover
       pagination
       subHeader
+      onSort={(column, direction) => console.log(column, direction)}
       subHeaderComponent={
         <Button onClick={() => router.push(CreateEventPath)}>
           <CgAddR />
@@ -35,7 +35,7 @@ const EventsDatatable = ({ columns, data, loader }: EventsDatatable) => {
         </Button>
       }
       noDataComponent={<div>No hay datos</div>}
-      onRowClicked={(e) => console.log(e)}
+      onRowClicked={(event) => router.push(ShowEventPath(String(event.id)))}
     />
   );
 };
