@@ -1,6 +1,7 @@
 import TicketEventCard from "../components/event-card";
 import TicketEventsDatatable from "../components/ticket-events.datatable";
 
+import { useRouter } from "next/router";
 import { Event, useShowEventTicketsQuery } from "@/gql/generated";
 import { useEffect, useState } from "react";
 import { useToggle } from "@/hooks";
@@ -14,6 +15,7 @@ import ProgressLoaderComponent from "@/components/loaders/progress-loader.compon
 import IntroAnimationComponent from "@/components/animations/intro-animation.component";
 
 const ShowEventTicketsView = () => {
+  const router = useRouter();
   const [toggle, setToggle] = useToggle(true);
   const [columns, setcolumns] = useState<TableColumn<Event>[]>([]);
   const [events, setEvents] = useState<Event[]>([]);
@@ -61,6 +63,12 @@ const ShowEventTicketsView = () => {
           </Button>
           <Button onClick={() => setToggle()}>
             {toggle ? <HiSquares2X2 /> : <FaList />}
+          </Button>
+          <Button
+            colorScheme="green"
+            onClick={() => router.push("/tickets/create")}
+          >
+            Crear evento
           </Button>
         </HStack>
         {toggle ? (
