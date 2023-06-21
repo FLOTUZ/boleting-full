@@ -38,10 +38,6 @@ const DefaultLayoutComponent = ({
       ],
     },
     {
-      label: "Tickets",
-      onClick: () => router.push("/tickets"),
-    },
-    {
       label: "Usuarios",
       onClick: () => router.push("/users"),
       icon: <IoPeopleCircleOutline size={30} />,

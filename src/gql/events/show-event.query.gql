@@ -25,4 +25,15 @@ query ShowEvent($eventId: Int!) {
       name
     }
   }
+
+  selled_tickets_by_event(event_id: $eventId) {
+    id
+    createdAt
+    serial_number
+    service_charge
+    is_paid
+    is_used
+    note
+    price
+  }
 }

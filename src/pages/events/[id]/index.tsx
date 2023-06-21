@@ -1,8 +1,9 @@
 import DesktopLayoutComponent from "@/layouts/desktop-layout-component/desktop-layout.component";
 import ShowEventView from "@/modules/events/views/show-event.view";
+import { ShowEventPath, EventsPath } from "@/routes";
 import { useRouter } from "next/router";
 
-const ShowEventRoute = () => {
+function ShowEventRoute() {
   const router = useRouter();
 
   const { id } = router.query;
@@ -13,17 +14,17 @@ const ShowEventRoute = () => {
       breadCrumbs={[
         {
           label: "Eventos",
-          href: "/events",
+          href: EventsPath,
         },
         {
           label: `Evento ${id}`,
-          href: `/events/${id}`,
+          href: ShowEventPath(String(id)),
         },
       ]}
     >
-      <ShowEventView id={Number(id)} />
+      <ShowEventView eventId={Number(id)} />
     </DesktopLayoutComponent>
   );
-};
+}
 
 export default ShowEventRoute;

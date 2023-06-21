@@ -26,7 +26,7 @@ import {
   BreadCrumbItem,
   DesktopHeaderComponent,
 } from "./desktop-header.component";
-import { OrganizationsPath, profilePath } from "@/routes";
+import { EventsPath, OrganizationsPath, profilePath } from "@/routes";
 
 interface DesktopLayoutComponentProps {
   title: string;
@@ -55,13 +55,8 @@ const DesktopLayoutComponent = ({
     },
     {
       label: "Eventos",
-      href: "/events",
+      href: EventsPath,
       icon: <TbBuildingCircus size={25} />,
-    },
-    {
-      label: "Tickets",
-      href: "/tickets",
-      icon: <GiTicket size={25} />,
     },
     {
       label: "Organizaciones",

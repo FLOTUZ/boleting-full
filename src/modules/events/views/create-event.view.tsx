@@ -1,3 +1,5 @@
+import IntroAnimationComponent from "@/components/animations/intro-animation.component";
+import ProgressLoaderComponent from "@/components/loaders/progress-loader.component";
 import {
   EventCategory,
   EventSubCategory,
@@ -90,8 +92,12 @@ const CreateEventView = () => {
     },
   });
 
+  if (loadingEventCategoriesList) {
+    return <ProgressLoaderComponent />;
+  }
+
   return (
-    <>
+    <IntroAnimationComponent data={eventCategories}>
       <Box m={4} p={4}>
         <form onSubmit={formCreateEvent.handleSubmit}>
           <Box>
@@ -324,7 +330,7 @@ const CreateEventView = () => {
           </HStack>
         </form>
       </Box>
-    </>
+    </IntroAnimationComponent>
   );
 };
 

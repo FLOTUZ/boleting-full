@@ -1,31 +1,29 @@
-import EventsDatatable from "../components/events-datatable";
+import Link from "next/link";
+import TicketEventCard from "../components/event-card";
+import TicketEventsDatatable from "../components/ticket-events.datatable";
+
+import { Event, useShowEventTicketsQuery } from "@/gql/generated";
 import { useEffect, useState } from "react";
 import { TableColumn } from "react-data-table-component";
-import { Event, useShowEventsQuery } from "@/gql/generated";
 
-import { useToggle } from "@/hooks/useToggle";
-import { Box, Button, HStack, SimpleGrid, Text, Image } from "@chakra-ui/react";
-
-import { FaList } from "react-icons/fa";
-import { HiSquares2X2 } from "react-icons/hi2";
+import { Box, Button, HStack, SimpleGrid } from "@chakra-ui/react";
 import { TbReload } from "react-icons/tb";
-import { ShowEventPath } from "@/routes";
-import { useRouter } from "next/router";
-import Link from "next/link";
+import { HiSquares2X2 } from "react-icons/hi2";
+import { FaList } from "react-icons/fa";
 import ProgressLoaderComponent from "@/components/loaders/progress-loader.component";
 import IntroAnimationComponent from "@/components/animations/intro-animation.component";
+import { CreateEventPath } from "@/routes";
 
 const ShowEventsView = () => {
-  const router = useRouter();
-  const [toogle, setToggle] = useToggle(true);
+  const [toggle, setToggle] = useState(false);
   const [columns, setcolumns] = useState<TableColumn<Event>[]>([]);
-  const [eventList, setEventList] = useState<Event[]>([]);
+  const [events, setEvents] = useState<Event[]>([]);
 
   const {
-    data,
+    data: eventsList,
     loading: eventsLoader,
     refetch: refetchEvents,
-  } = useShowEventsQuery({
+  } = useShowEventTicketsQuery({
     onError(error) {
       console.log(error);
     },
@@ -36,95 +34,54 @@ const ShowEventsView = () => {
       {
         name: "Nombre",
         selector: (row) => row.name!,
-        sortable: true,
       },
       {
         name: "Inicia",
         selector: (row) => new Date(row.start_date).toLocaleDateString(),
-        sortable: true,
       },
       {
         name: "Descripción",
         selector: (row) => row.description!,
-        sortable: true,
       },
     ];
 
     setcolumns(columns);
-    setEventList(data?.events as Event[]);
-  }, [data, eventList]);
+    setEvents(eventsList?.events! as Event[]);
+  }, [eventsList]);
 
   if (eventsLoader) {
     return <ProgressLoaderComponent />;
   }
 
   return (
-    <IntroAnimationComponent data={eventList}>
+    <IntroAnimationComponent data>
       <Box p={4}>
         <HStack spacing={4}>
           <Button onClick={() => refetchEvents()}>
             <TbReload />
           </Button>
-          <Button onClick={() => setToggle()}>
-            {toogle ? <HiSquares2X2 /> : <FaList />}
+          <Button onClick={() => setToggle(!toggle)}>
+            {toggle ? <HiSquares2X2 /> : <FaList />}
           </Button>
+          <Link href={CreateEventPath}>
+            <Button colorScheme="green">Crear evento</Button>
+          </Link>
         </HStack>
-        <Box mt={8}>
-          {toogle ? (
-            <EventsDatatable
-              columns={columns}
-              data={eventList}
+        {toggle ? (
+          <SimpleGrid columns={[1, 2, 5]} pt={4}>
+            {events?.map((event: Event) => (
+              <TicketEventCard event={event} key={event.id} />
+            ))}
+          </SimpleGrid>
+        ) : (
+          <Box pt={4}>
+            <TicketEventsDatatable
               loader={eventsLoader}
+              columns={columns}
+              data={events}
             />
-          ) : (
-            <SimpleGrid columns={5} spacing={4}>
-              {eventList != null &&
-                eventList.map((event: Event) => (
-                  <Link key={event.id} href={ShowEventPath(String(event.id))}>
-                    <Box
-                      p={4}
-                      boxShadow="sm"
-                      rounded="md"
-                      transition="all .2s ease-in-out"
-                      transform="scale(1)"
-                      height={250}
-                      _hover={{
-                        pointer: "cursor",
-                        boxShadow: "0 0 0 1px #e2e8f0",
-                        transition: "all .2s ease-in-out",
-                        transform: "scale(1.05)",
-                      }}
-                    >
-                      <HStack>
-                        {event.event_logo_url && (
-                          <Image
-                            height={50}
-                            src={event.event_logo_url}
-                            alt={event.description!}
-                            rounded="md"
-                            mb={4}
-                          />
-                        )}
-                        <Text as={"b"} color={"GrayText"} fontSize={"sm"}>
-                          {new Date(event.start_date).toLocaleDateString(
-                            "es-MX",
-                            {
-                              day: "numeric",
-                              month: "long",
-                            }
-                          )}
-                        </Text>
-                      </HStack>
-                      <Box fontWeight="bold">{event.name}</Box>
-                      <Box h="100px" overflow="hidden" textOverflow="ellipsis">
-                        <Text noOfLines={3}>{event.description}</Text>
-                      </Box>
-                    </Box>
-                  </Link>
-                ))}
-            </SimpleGrid>
-          )}
-        </Box>
+          </Box>
+        )}
       </Box>
     </IntroAnimationComponent>
   );

@@ -1267,12 +1267,17 @@ export type CreateEventMutationVariables = Exact<{
 
 export type CreateEventMutation = { __typename?: 'Mutation', createEvent?: { __typename?: 'Event', id: number, event_key?: string | null, name: string, description?: string | null, event_location: string, event_logo_url?: string | null, start_date: any, start_time?: string | null, end_time?: string | null, re_entry: boolean, userId: number, sub_categories?: Array<{ __typename?: 'EventSubCategory', id: string, name?: string | null }> | null } | null };
 
+export type ShowEventTicketsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ShowEventTicketsQuery = { __typename?: 'Query', events?: Array<{ __typename?: 'Event', id: number, name: string, start_date: any, event_logo_url?: string | null, event_location: string, event_key?: string | null, description?: string | null } | null> | null };
+
 export type ShowEventQueryVariables = Exact<{
   eventId: Scalars['Int']['input'];
 }>;
 
 
-export type ShowEventQuery = { __typename?: 'Query', event?: { __typename?: 'Event', id: number, event_key?: string | null, name: string, description?: string | null, event_location: string, event_logo_url?: string | null, event_banner_url?: string | null, event_location_url: string, start_date: any, start_time?: string | null, end_time?: string | null, re_entry: boolean, createdAt: any, updatedAt: any, deleted: boolean, createdBy: { __typename?: 'User', id: number, name?: string | null }, sub_categories?: Array<{ __typename?: 'EventSubCategory', id: string, name?: string | null }> | null } | null };
+export type ShowEventQuery = { __typename?: 'Query', event?: { __typename?: 'Event', id: number, event_key?: string | null, name: string, description?: string | null, event_location: string, event_logo_url?: string | null, event_banner_url?: string | null, event_location_url: string, start_date: any, start_time?: string | null, end_time?: string | null, re_entry: boolean, createdAt: any, updatedAt: any, deleted: boolean, createdBy: { __typename?: 'User', id: number, name?: string | null }, sub_categories?: Array<{ __typename?: 'EventSubCategory', id: string, name?: string | null }> | null } | null, selled_tickets_by_event?: Array<{ __typename?: 'Ticket', id: number, createdAt: any, serial_number: string, service_charge: any, is_paid: boolean, is_used?: boolean | null, note?: string | null, price: any }> | null };
 
 export type ShowEventsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1325,18 +1330,6 @@ export type RolesListQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type RolesListQuery = { __typename?: 'Query', roles?: Array<{ __typename?: 'Role', id: number, name?: string | null, description?: string | null, createdAt?: any | null, updatedAt?: any | null, deletedAt?: any | null } | null> | null };
-
-export type ShowEventTicketsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type ShowEventTicketsQuery = { __typename?: 'Query', events?: Array<{ __typename?: 'Event', id: number, name: string, start_date: any, event_logo_url?: string | null, event_location: string, event_key?: string | null, description?: string | null } | null> | null };
-
-export type ShowSelledByEventQueryVariables = Exact<{
-  eventId: Scalars['Int']['input'];
-}>;
-
-
-export type ShowSelledByEventQuery = { __typename?: 'Query', event?: { __typename?: 'Event', id: number, name: string, description?: string | null, event_logo_url?: string | null, event_location: string } | null, selled_tickets_by_event?: Array<{ __typename?: 'Ticket', id: number, createdAt: any, serial_number: string, service_charge: any, is_paid: boolean, is_used?: boolean | null, note?: string | null, price: any }> | null };
 
 export type CreateUserMutationVariables = Exact<{
   data: CreateUserInput;
@@ -1522,6 +1515,46 @@ export function useCreateEventMutation(baseOptions?: Apollo.MutationHookOptions<
 export type CreateEventMutationHookResult = ReturnType<typeof useCreateEventMutation>;
 export type CreateEventMutationResult = Apollo.MutationResult<CreateEventMutation>;
 export type CreateEventMutationOptions = Apollo.BaseMutationOptions<CreateEventMutation, CreateEventMutationVariables>;
+export const ShowEventTicketsDocument = gql`
+    query ShowEventTickets {
+  events {
+    id
+    name
+    start_date
+    event_logo_url
+    event_location
+    event_key
+    description
+  }
+}
+    `;
+
+/**
+ * __useShowEventTicketsQuery__
+ *
+ * To run a query within a React component, call `useShowEventTicketsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useShowEventTicketsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useShowEventTicketsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useShowEventTicketsQuery(baseOptions?: Apollo.QueryHookOptions<ShowEventTicketsQuery, ShowEventTicketsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ShowEventTicketsQuery, ShowEventTicketsQueryVariables>(ShowEventTicketsDocument, options);
+      }
+export function useShowEventTicketsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ShowEventTicketsQuery, ShowEventTicketsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ShowEventTicketsQuery, ShowEventTicketsQueryVariables>(ShowEventTicketsDocument, options);
+        }
+export type ShowEventTicketsQueryHookResult = ReturnType<typeof useShowEventTicketsQuery>;
+export type ShowEventTicketsLazyQueryHookResult = ReturnType<typeof useShowEventTicketsLazyQuery>;
+export type ShowEventTicketsQueryResult = Apollo.QueryResult<ShowEventTicketsQuery, ShowEventTicketsQueryVariables>;
 export const ShowEventDocument = gql`
     query ShowEvent($eventId: Int!) {
   event(id: $eventId) {
@@ -1549,6 +1582,16 @@ export const ShowEventDocument = gql`
       id
       name
     }
+  }
+  selled_tickets_by_event(event_id: $eventId) {
+    id
+    createdAt
+    serial_number
+    service_charge
+    is_paid
+    is_used
+    note
+    price
   }
 }
     `;
@@ -1904,95 +1947,6 @@ export function useRolesListLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<
 export type RolesListQueryHookResult = ReturnType<typeof useRolesListQuery>;
 export type RolesListLazyQueryHookResult = ReturnType<typeof useRolesListLazyQuery>;
 export type RolesListQueryResult = Apollo.QueryResult<RolesListQuery, RolesListQueryVariables>;
-export const ShowEventTicketsDocument = gql`
-    query ShowEventTickets {
-  events {
-    id
-    name
-    start_date
-    event_logo_url
-    event_location
-    event_key
-    description
-  }
-}
-    `;
-
-/**
- * __useShowEventTicketsQuery__
- *
- * To run a query within a React component, call `useShowEventTicketsQuery` and pass it any options that fit your needs.
- * When your component renders, `useShowEventTicketsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useShowEventTicketsQuery({
- *   variables: {
- *   },
- * });
- */
-export function useShowEventTicketsQuery(baseOptions?: Apollo.QueryHookOptions<ShowEventTicketsQuery, ShowEventTicketsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<ShowEventTicketsQuery, ShowEventTicketsQueryVariables>(ShowEventTicketsDocument, options);
-      }
-export function useShowEventTicketsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ShowEventTicketsQuery, ShowEventTicketsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<ShowEventTicketsQuery, ShowEventTicketsQueryVariables>(ShowEventTicketsDocument, options);
-        }
-export type ShowEventTicketsQueryHookResult = ReturnType<typeof useShowEventTicketsQuery>;
-export type ShowEventTicketsLazyQueryHookResult = ReturnType<typeof useShowEventTicketsLazyQuery>;
-export type ShowEventTicketsQueryResult = Apollo.QueryResult<ShowEventTicketsQuery, ShowEventTicketsQueryVariables>;
-export const ShowSelledByEventDocument = gql`
-    query ShowSelledByEvent($eventId: Int!) {
-  event(id: $eventId) {
-    id
-    name
-    description
-    event_logo_url
-    event_location
-  }
-  selled_tickets_by_event(event_id: $eventId) {
-    id
-    createdAt
-    serial_number
-    service_charge
-    is_paid
-    is_used
-    note
-    price
-  }
-}
-    `;
-
-/**
- * __useShowSelledByEventQuery__
- *
- * To run a query within a React component, call `useShowSelledByEventQuery` and pass it any options that fit your needs.
- * When your component renders, `useShowSelledByEventQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useShowSelledByEventQuery({
- *   variables: {
- *      eventId: // value for 'eventId'
- *   },
- * });
- */
-export function useShowSelledByEventQuery(baseOptions: Apollo.QueryHookOptions<ShowSelledByEventQuery, ShowSelledByEventQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<ShowSelledByEventQuery, ShowSelledByEventQueryVariables>(ShowSelledByEventDocument, options);
-      }
-export function useShowSelledByEventLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ShowSelledByEventQuery, ShowSelledByEventQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<ShowSelledByEventQuery, ShowSelledByEventQueryVariables>(ShowSelledByEventDocument, options);
-        }
-export type ShowSelledByEventQueryHookResult = ReturnType<typeof useShowSelledByEventQuery>;
-export type ShowSelledByEventLazyQueryHookResult = ReturnType<typeof useShowSelledByEventLazyQuery>;
-export type ShowSelledByEventQueryResult = Apollo.QueryResult<ShowSelledByEventQuery, ShowSelledByEventQueryVariables>;
 export const CreateUserDocument = gql`
     mutation CreateUser($data: CreateUserInput!) {
   createUser(data: $data) {

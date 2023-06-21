@@ -1,7 +1,7 @@
 import { Box, HStack, Image, Text } from "@chakra-ui/react";
 import { Event } from "@/gql/generated";
 import Link from "next/link";
-import { SelledByEventPath } from "@/routes";
+import { ShowEventPath } from "@/routes";
 
 interface TicketEventCardProps {
   event: Event;
@@ -9,7 +9,7 @@ interface TicketEventCardProps {
 
 const TicketEventCard = ({ event }: TicketEventCardProps) => {
   return (
-    <Link key={event.id} href={SelledByEventPath(event.id!)}>
+    <Link key={event.id} href={ShowEventPath(String(event.id))}>
       <Box
         p={4}
         boxShadow="sm"
