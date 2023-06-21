@@ -13,7 +13,7 @@ import EditEventForm from "../components/edit-event-form";
 import Link from "next/link";
 
 const ShowEventView = ({ eventId }: { eventId: number }) => {
-  const [toggle, setToggle] = useToggle(false);
+  const [toggle, setToggle] = useState(true);
 
   const [event, setEvent] = useState<Event>();
   const [selledTickets, setSelledTickets] = useState<Ticket[]>([]);
@@ -70,12 +70,11 @@ const ShowEventView = ({ eventId }: { eventId: number }) => {
   return (
     <IntroAnimationComponent data>
       <Box p={4}>
-        <Button mb={4} onClick={() => setToggle()}>
+        <Button mb={4} onClick={() => setToggle(!toggle)}>
           Editar
         </Button>
-        {toggle == false ? (
-          <EditEventForm event={event!} />
-        ) : (
+
+        {toggle ? (
           <>
             <Card mb={4} p={4}>
               <Box>
@@ -126,6 +125,8 @@ const ShowEventView = ({ eventId }: { eventId: number }) => {
               refetch={refetchSelledByEvent}
             />
           </>
+        ) : (
+          <EditEventForm event={event!} />
         )}
       </Box>
     </IntroAnimationComponent>

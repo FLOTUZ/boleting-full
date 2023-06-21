@@ -1,9 +1,8 @@
 import { Event } from "@/gql/generated";
-import { CreateEventPath } from "@/routes";
-import { Button, useColorMode } from "@chakra-ui/react";
+import { ShowEventPath } from "@/routes";
+import { useColorMode } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import DataTable, { TableColumn } from "react-data-table-component";
-import { CgAddR } from "react-icons/cg";
 
 interface TicketEventsDatatableProps {
   columns: TableColumn<Event>[];
@@ -16,8 +15,8 @@ const TicketEventsDatatable = ({
   columns,
   data,
 }: TicketEventsDatatableProps) => {
-  const { colorMode } = useColorMode();
   const router = useRouter();
+  const { colorMode } = useColorMode();
   return (
     <DataTable
       title="Eventos"
@@ -34,7 +33,7 @@ const TicketEventsDatatable = ({
       subHeader
       subHeaderComponent={null}
       noDataComponent={<div>No hay datos</div>}
-      onRowClicked={(e) => console.log(e)}
+      onRowClicked={(event) => router.push(ShowEventPath(String(event.id)))}
     />
   );
 };

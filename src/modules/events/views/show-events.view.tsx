@@ -1,13 +1,12 @@
+import Link from "next/link";
 import TicketEventCard from "../components/event-card";
 import TicketEventsDatatable from "../components/ticket-events.datatable";
 
-import { useRouter } from "next/router";
 import { Event, useShowEventTicketsQuery } from "@/gql/generated";
 import { useEffect, useState } from "react";
-import { useToggle } from "@/hooks";
 import { TableColumn } from "react-data-table-component";
 
-import { Box, Button, HStack, SimpleGrid, Text } from "@chakra-ui/react";
+import { Box, Button, HStack, SimpleGrid } from "@chakra-ui/react";
 import { TbReload } from "react-icons/tb";
 import { HiSquares2X2 } from "react-icons/hi2";
 import { FaList } from "react-icons/fa";
@@ -16,8 +15,7 @@ import IntroAnimationComponent from "@/components/animations/intro-animation.com
 import { CreateEventPath } from "@/routes";
 
 const ShowEventsView = () => {
-  const router = useRouter();
-  const [toggle, setToggle] = useToggle(true);
+  const [toggle, setToggle] = useState(false);
   const [columns, setcolumns] = useState<TableColumn<Event>[]>([]);
   const [events, setEvents] = useState<Event[]>([]);
 
@@ -62,15 +60,12 @@ const ShowEventsView = () => {
           <Button onClick={() => refetchEvents()}>
             <TbReload />
           </Button>
-          <Button onClick={() => setToggle()}>
+          <Button onClick={() => setToggle(!toggle)}>
             {toggle ? <HiSquares2X2 /> : <FaList />}
           </Button>
-          <Button
-            colorScheme="green"
-            onClick={() => router.push(CreateEventPath)}
-          >
-            Crear evento
-          </Button>
+          <Link href={CreateEventPath}>
+            <Button colorScheme="green">Crear evento</Button>
+          </Link>
         </HStack>
         {toggle ? (
           <SimpleGrid columns={[1, 2, 5]} pt={4}>
