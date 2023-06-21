@@ -100,7 +100,7 @@ model UserClient {
 
 model Notification {
   id            Int         @id @unique @default(autoincrement())
-  tittle        String      @unique @db.VarChar(50)
+  title         String      @unique @db.VarChar(50)
   description   String?     @db.VarChar(255)
   redirect_url  String?     @db.VarChar(255)
   is_read       Boolean     @default(false)

@@ -324,6 +324,7 @@ export type Mail = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  clearNotifications: Scalars['Boolean']['output'];
   createAccessType: AccessType;
   createActivityLog: ActivityLog;
   createApplication: Application;
@@ -379,6 +380,12 @@ export type Mutation = {
   updateTicket?: Maybe<Ticket>;
   updateUser?: Maybe<User>;
   updateUserClient: UserClient;
+};
+
+
+export type MutationClearNotificationsArgs = {
+  userId?: InputMaybe<Scalars['Int']['input']>;
+  user_clientId?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -1292,6 +1299,23 @@ export type UpdateEventMutationVariables = Exact<{
 
 export type UpdateEventMutation = { __typename?: 'Mutation', updateEvent?: { __typename?: 'Event', id: number, event_key?: string | null, name: string, description?: string | null, event_location: string, event_logo_url?: string | null, start_date: any, start_time?: string | null, end_time?: string | null, re_entry: boolean, userId: number, sub_categories?: Array<{ __typename?: 'EventSubCategory', name?: string | null }> | null } | null };
 
+export type ClearnotificationsMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ClearnotificationsMutation = { __typename?: 'Mutation', clearNotifications: boolean };
+
+export type DeleteNotificationMutationVariables = Exact<{
+  deleteNotificationId: Scalars['Int']['input'];
+}>;
+
+
+export type DeleteNotificationMutation = { __typename?: 'Mutation', deleteNotification: { __typename?: 'Notification', id: number, title: string } };
+
+export type NotificationsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type NotificationsQuery = { __typename?: 'Query', notifications: Array<{ __typename?: 'Notification', id: number, title: string, description?: string | null, createdAt: any, user?: { __typename?: 'User', id: number, name?: string | null } | null }> };
+
 export type CreateOrganizationMutationVariables = Exact<{
   data: CreateOrganizationInput;
 }>;
@@ -1717,6 +1741,111 @@ export function useUpdateEventMutation(baseOptions?: Apollo.MutationHookOptions<
 export type UpdateEventMutationHookResult = ReturnType<typeof useUpdateEventMutation>;
 export type UpdateEventMutationResult = Apollo.MutationResult<UpdateEventMutation>;
 export type UpdateEventMutationOptions = Apollo.BaseMutationOptions<UpdateEventMutation, UpdateEventMutationVariables>;
+export const ClearnotificationsDocument = gql`
+    mutation Clearnotifications {
+  clearNotifications
+}
+    `;
+export type ClearnotificationsMutationFn = Apollo.MutationFunction<ClearnotificationsMutation, ClearnotificationsMutationVariables>;
+
+/**
+ * __useClearnotificationsMutation__
+ *
+ * To run a mutation, you first call `useClearnotificationsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useClearnotificationsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [clearnotificationsMutation, { data, loading, error }] = useClearnotificationsMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useClearnotificationsMutation(baseOptions?: Apollo.MutationHookOptions<ClearnotificationsMutation, ClearnotificationsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ClearnotificationsMutation, ClearnotificationsMutationVariables>(ClearnotificationsDocument, options);
+      }
+export type ClearnotificationsMutationHookResult = ReturnType<typeof useClearnotificationsMutation>;
+export type ClearnotificationsMutationResult = Apollo.MutationResult<ClearnotificationsMutation>;
+export type ClearnotificationsMutationOptions = Apollo.BaseMutationOptions<ClearnotificationsMutation, ClearnotificationsMutationVariables>;
+export const DeleteNotificationDocument = gql`
+    mutation DeleteNotification($deleteNotificationId: Int!) {
+  deleteNotification(id: $deleteNotificationId) {
+    id
+    title
+  }
+}
+    `;
+export type DeleteNotificationMutationFn = Apollo.MutationFunction<DeleteNotificationMutation, DeleteNotificationMutationVariables>;
+
+/**
+ * __useDeleteNotificationMutation__
+ *
+ * To run a mutation, you first call `useDeleteNotificationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteNotificationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteNotificationMutation, { data, loading, error }] = useDeleteNotificationMutation({
+ *   variables: {
+ *      deleteNotificationId: // value for 'deleteNotificationId'
+ *   },
+ * });
+ */
+export function useDeleteNotificationMutation(baseOptions?: Apollo.MutationHookOptions<DeleteNotificationMutation, DeleteNotificationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteNotificationMutation, DeleteNotificationMutationVariables>(DeleteNotificationDocument, options);
+      }
+export type DeleteNotificationMutationHookResult = ReturnType<typeof useDeleteNotificationMutation>;
+export type DeleteNotificationMutationResult = Apollo.MutationResult<DeleteNotificationMutation>;
+export type DeleteNotificationMutationOptions = Apollo.BaseMutationOptions<DeleteNotificationMutation, DeleteNotificationMutationVariables>;
+export const NotificationsDocument = gql`
+    query Notifications {
+  notifications {
+    id
+    title
+    description
+    user {
+      id
+      name
+    }
+    createdAt
+  }
+}
+    `;
+
+/**
+ * __useNotificationsQuery__
+ *
+ * To run a query within a React component, call `useNotificationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useNotificationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useNotificationsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useNotificationsQuery(baseOptions?: Apollo.QueryHookOptions<NotificationsQuery, NotificationsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<NotificationsQuery, NotificationsQueryVariables>(NotificationsDocument, options);
+      }
+export function useNotificationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<NotificationsQuery, NotificationsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<NotificationsQuery, NotificationsQueryVariables>(NotificationsDocument, options);
+        }
+export type NotificationsQueryHookResult = ReturnType<typeof useNotificationsQuery>;
+export type NotificationsLazyQueryHookResult = ReturnType<typeof useNotificationsLazyQuery>;
+export type NotificationsQueryResult = Apollo.QueryResult<NotificationsQuery, NotificationsQueryVariables>;
 export const CreateOrganizationDocument = gql`
     mutation CreateOrganization($data: CreateOrganizationInput!) {
   createOrganization(data: $data) {

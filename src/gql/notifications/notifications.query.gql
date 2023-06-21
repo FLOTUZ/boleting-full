@@ -1,0 +1,12 @@
+query Notifications {
+  notifications {
+    id
+    title
+    description
+    user {
+      id
+      name
+    }
+    createdAt
+  }
+}

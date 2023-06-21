@@ -6,7 +6,7 @@ import {
   CreateNotificationValidator,
   UpdateNotificationValidator,
 } from "@/validations";
-import { NotificationService } from "../services";
+import { NotificationService, UserService } from "../services";
 
 //
 // Resolver for Notification model
@@ -16,9 +16,9 @@ export const NotificationResolver = {
     notifications: async (
       _: any,
       { pagination }: Args,
-      __: IGraphqlContext
+      { id_user }: IGraphqlContext
     ) => {
-      return await NotificationService.notifications(pagination);
+      return await NotificationService.notifications(id_user!, pagination);
     },
 
     notification: async (
@@ -55,6 +55,22 @@ export const NotificationResolver = {
       __: IGraphqlContext
     ) => {
       return await NotificationService.deleteNotification(id);
+    },
+
+    clearNotifications: async (
+      _: any,
+      __: Args,
+      { id_user }: IGraphqlContext
+    ) => {
+      return await NotificationService.clearNotifications(id_user!);
+    },
+  },
+
+  Notification: {
+    user: async (notification: Notification, _: any, __: IGraphqlContext) => {
+      return notification.userId != null
+        ? await UserService.getUserById(notification.userId)
+        : null;
     },
   },
 };

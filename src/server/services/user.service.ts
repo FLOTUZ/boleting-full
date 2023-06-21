@@ -13,6 +13,10 @@ export const UserService = {
     });
   },
 
+  async getUserById(id: number) {
+    return await prisma.user.findUnique({ where: { id } });
+  },
+
   async currentUser(id_user: number) {
     return await prisma.user.findUniqueOrThrow({ where: { id: id_user } });
   },
