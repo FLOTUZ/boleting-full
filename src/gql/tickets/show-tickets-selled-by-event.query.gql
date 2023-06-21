@@ -1,10 +1,29 @@
 query ShowSelledByEvent($eventId: Int!) {
   event(id: $eventId) {
     id
+    event_key
     name
     description
-    event_logo_url
     event_location
+    event_logo_url
+    event_banner_url
+    event_location_url
+    start_date
+    start_time
+    end_time
+    re_entry
+    event_logo_url
+    createdAt
+    updatedAt
+    deleted
+    createdBy {
+      id
+      name
+    }
+    sub_categories {
+      id
+      name
+    }
   }
 
   selled_tickets_by_event(event_id: $eventId) {

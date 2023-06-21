@@ -7,10 +7,15 @@ import ProgressLoaderComponent from "@/components/loaders/progress-loader.compon
 import SelledTicketsByEventDatatable from "../components/selled-tickets-by-event.datatable";
 
 import { Event, Ticket, useShowSelledByEventQuery } from "@/gql/generated";
-import { Box, Card, Heading, Image, Text } from "@chakra-ui/react";
+import { Box, Button, Card, Heading, Image, Text } from "@chakra-ui/react";
+import { useToggle } from "@/hooks";
+import EditEventForm from "../components/edit-event-form";
+import Link from "next/link";
 
 const ShowSelledByEventView = ({ eventId }: { eventId: number }) => {
-  const [event, setEvent] = useState<Event | null>(null);
+  const [toggle, setToggle] = useToggle(false);
+
+  const [event, setEvent] = useState<Event>();
   const [selledTickets, setSelledTickets] = useState<Ticket[]>([]);
 
   const {
@@ -65,29 +70,63 @@ const ShowSelledByEventView = ({ eventId }: { eventId: number }) => {
   return (
     <IntroAnimationComponent data>
       <Box p={4}>
-        <Card mb={4} p={4}>
-          <Box>
-            {event?.event_logo_url && (
-              <Image
-                src={event?.event_logo_url}
-                alt={event?.name!}
-                height={100}
-              />
-            )}
-          </Box>
+        <Button mb={4} onClick={() => setToggle()}>
+          Editar
+        </Button>
+        {toggle == false ? (
+          <EditEventForm event={event!} />
+        ) : (
+          <>
+            <Card mb={4} p={4}>
+              <Box>
+                {event?.event_logo_url && (
+                  <Image
+                    src={event?.event_logo_url}
+                    alt={event?.name!}
+                    height={100}
+                  />
+                )}
+              </Box>
 
-          <Heading>{event?.name}</Heading>
-          <Text as={"b"}>Descripcion</Text>
-          <Text>{event?.description}</Text>
-          <Text as={"b"}>Entradas vendidas:</Text>
-        </Card>
+              <Heading>{event?.name}</Heading>
+              <Text as={"b"}>{event?.event_location}</Text>
 
-        <SelledTicketsByEventDatatable
-          columns={columns}
-          progressPending={selledByEventLoader}
-          data={selledTickets}
-          refetch={refetchSelledByEvent}
-        />
+              <Text as={"b"}>Descripcion</Text>
+              <Text>{event?.description}</Text>
+
+              <Text as={"b"}>Fecha</Text>
+              <Text as={"p"} fontSize={"lg"}>
+                {new Date(event?.start_date).toLocaleDateString("es-MX", {
+                  day: "numeric",
+                  month: "long",
+                }) || "Sin fecha inicial"}{" "}
+                -{event?.end_date || "Sin fecha final"}
+              </Text>
+
+              {event?.event_location_url != null && (
+                <Text as={"p"} fontSize={"lg"}>
+                  {event?.event_location}
+                  <Link href={event?.event_location_url} target="_blank">
+                    {"🗺"}
+                    Ver en mapa
+                  </Link>
+                </Text>
+              )}
+
+              <Text as={"b"}>Creado por</Text>
+              <Text as={"p"} fontSize={"lg"}>
+                {event?.createdBy?.name}
+              </Text>
+            </Card>
+
+            <SelledTicketsByEventDatatable
+              columns={columns}
+              progressPending={selledByEventLoader}
+              data={selledTickets}
+              refetch={refetchSelledByEvent}
+            />
+          </>
+        )}
       </Box>
     </IntroAnimationComponent>
   );

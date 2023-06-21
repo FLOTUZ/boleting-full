@@ -1336,7 +1336,7 @@ export type ShowSelledByEventQueryVariables = Exact<{
 }>;
 
 
-export type ShowSelledByEventQuery = { __typename?: 'Query', event?: { __typename?: 'Event', id: number, name: string, description?: string | null, event_logo_url?: string | null, event_location: string } | null, selled_tickets_by_event?: Array<{ __typename?: 'Ticket', id: number, createdAt: any, serial_number: string, service_charge: any, is_paid: boolean, is_used?: boolean | null, note?: string | null, price: any }> | null };
+export type ShowSelledByEventQuery = { __typename?: 'Query', event?: { __typename?: 'Event', id: number, event_key?: string | null, name: string, description?: string | null, event_location: string, event_logo_url?: string | null, event_banner_url?: string | null, event_location_url: string, start_date: any, start_time?: string | null, end_time?: string | null, re_entry: boolean, createdAt: any, updatedAt: any, deleted: boolean, createdBy: { __typename?: 'User', id: number, name?: string | null }, sub_categories?: Array<{ __typename?: 'EventSubCategory', id: string, name?: string | null }> | null } | null, selled_tickets_by_event?: Array<{ __typename?: 'Ticket', id: number, createdAt: any, serial_number: string, service_charge: any, is_paid: boolean, is_used?: boolean | null, note?: string | null, price: any }> | null };
 
 export type CreateUserMutationVariables = Exact<{
   data: CreateUserInput;
@@ -1948,10 +1948,29 @@ export const ShowSelledByEventDocument = gql`
     query ShowSelledByEvent($eventId: Int!) {
   event(id: $eventId) {
     id
+    event_key
     name
     description
-    event_logo_url
     event_location
+    event_logo_url
+    event_banner_url
+    event_location_url
+    start_date
+    start_time
+    end_time
+    re_entry
+    event_logo_url
+    createdAt
+    updatedAt
+    deleted
+    createdBy {
+      id
+      name
+    }
+    sub_categories {
+      id
+      name
+    }
   }
   selled_tickets_by_event(event_id: $eventId) {
     id
