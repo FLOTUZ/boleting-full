@@ -15,7 +15,7 @@ import ProgressLoaderComponent from "@/components/loaders/progress-loader.compon
 import IntroAnimationComponent from "@/components/animations/intro-animation.component";
 import { CreateEventPath } from "@/routes";
 
-const ShowEventTicketsView = () => {
+const ShowEventsView = () => {
   const router = useRouter();
   const [toggle, setToggle] = useToggle(true);
   const [columns, setcolumns] = useState<TableColumn<Event>[]>([]);
@@ -92,4 +92,4 @@ const ShowEventTicketsView = () => {
   );
 };
 
-export default ShowEventTicketsView;
+export default ShowEventsView;

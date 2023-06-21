@@ -1,5 +1,5 @@
 import DesktopLayoutComponent from "@/layouts/desktop-layout-component/desktop-layout.component";
-import ShoeEventView from "@/modules/events/views/show-event.view";
+import ShowEventView from "@/modules/events/views/show-event.view";
 import { ShowEventPath, EventsPath } from "@/routes";
 import { useRouter } from "next/router";
 
@@ -22,7 +22,7 @@ function ShowEventRoute() {
         },
       ]}
     >
-      <ShoeEventView eventId={Number(id)} />
+      <ShowEventView eventId={Number(id)} />
     </DesktopLayoutComponent>
   );
 }

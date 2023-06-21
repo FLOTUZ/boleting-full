@@ -12,7 +12,7 @@ import { useToggle } from "@/hooks";
 import EditEventForm from "../components/edit-event-form";
 import Link from "next/link";
 
-const ShoeEventView = ({ eventId }: { eventId: number }) => {
+const ShowEventView = ({ eventId }: { eventId: number }) => {
   const [toggle, setToggle] = useToggle(false);
 
   const [event, setEvent] = useState<Event>();
@@ -132,4 +132,4 @@ const ShoeEventView = ({ eventId }: { eventId: number }) => {
   );
 };
 
-export default ShoeEventView;
+export default ShowEventView;

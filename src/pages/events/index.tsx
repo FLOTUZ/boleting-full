@@ -1,7 +1,7 @@
 import DesktopLayoutComponent from "@/layouts/desktop-layout-component/desktop-layout.component";
 import { UserProvider } from "@/contexts/user.context";
 import { Box } from "@chakra-ui/react";
-import ShowEventTicketsView from "@/modules/events/views/show-event-tickets-view";
+import ShowEventsView from "@/modules/events/views/show-events.view";
 import { EventsPath } from "@/routes";
 
 const EventsRoute = () => {
@@ -17,7 +17,7 @@ const EventsRoute = () => {
     >
       <UserProvider>
         <Box>
-          <ShowEventTicketsView />
+          <ShowEventsView />
         </Box>
       </UserProvider>
     </DesktopLayoutComponent>
