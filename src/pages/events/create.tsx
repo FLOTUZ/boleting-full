@@ -1,6 +1,6 @@
 import DesktopLayoutComponent from "@/layouts/desktop-layout-component/desktop-layout.component";
-import CreateEventView from "@/modules/tickets/views/create-event.view";
-import { CreateTicketPath, TicketsPath } from "@/routes";
+import CreateEventView from "@/modules/events/views/create-event.view";
+import { CreateEventPath, EventsPath } from "@/routes";
 import React from "react";
 
 const CreateEventRoute = () => {
@@ -10,11 +10,11 @@ const CreateEventRoute = () => {
       breadCrumbs={[
         {
           label: "Eventos",
-          href: TicketsPath,
+          href: EventsPath,
         },
         {
           label: "Crear evento",
-          href: CreateTicketPath,
+          href: CreateEventPath,
         },
       ]}
     >

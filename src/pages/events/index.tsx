@@ -1,16 +1,17 @@
 import DesktopLayoutComponent from "@/layouts/desktop-layout-component/desktop-layout.component";
 import { UserProvider } from "@/contexts/user.context";
 import { Box } from "@chakra-ui/react";
-import ShowEventTicketsView from "@/modules/tickets/views/show-event-tickets-view";
+import ShowEventTicketsView from "@/modules/events/views/show-event-tickets-view";
+import { EventsPath } from "@/routes";
 
-const TicketsRoute = () => {
+const EventsRoute = () => {
   return (
     <DesktopLayoutComponent
-      title={"Tickets"}
+      title={"Eventos"}
       breadCrumbs={[
         {
-          label: "Tickets",
-          href: "/tickets",
+          label: "Eventos",
+          href: EventsPath,
         },
       ]}
     >
@@ -23,4 +24,4 @@ const TicketsRoute = () => {
   );
 };
 
-export default TicketsRoute;
+export default EventsRoute;

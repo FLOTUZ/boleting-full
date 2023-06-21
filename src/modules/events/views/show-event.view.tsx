@@ -6,13 +6,13 @@ import ProgressLoaderComponent from "@/components/loaders/progress-loader.compon
 
 import SelledTicketsByEventDatatable from "../components/selled-tickets-by-event.datatable";
 
-import { Event, Ticket, useShowSelledByEventQuery } from "@/gql/generated";
+import { Event, Ticket, useShowEventQuery } from "@/gql/generated";
 import { Box, Button, Card, Heading, Image, Text } from "@chakra-ui/react";
 import { useToggle } from "@/hooks";
 import EditEventForm from "../components/edit-event-form";
 import Link from "next/link";
 
-const ShowSelledByEventView = ({ eventId }: { eventId: number }) => {
+const ShoeEventView = ({ eventId }: { eventId: number }) => {
   const [toggle, setToggle] = useToggle(false);
 
   const [event, setEvent] = useState<Event>();
@@ -22,7 +22,7 @@ const ShowSelledByEventView = ({ eventId }: { eventId: number }) => {
     data,
     loading: selledByEventLoader,
     refetch: refetchSelledByEvent,
-  } = useShowSelledByEventQuery({
+  } = useShowEventQuery({
     variables: {
       eventId,
     },
@@ -132,4 +132,4 @@ const ShowSelledByEventView = ({ eventId }: { eventId: number }) => {
   );
 };
 
-export default ShowSelledByEventView;
+export default ShoeEventView;

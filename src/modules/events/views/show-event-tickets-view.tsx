@@ -13,6 +13,7 @@ import { HiSquares2X2 } from "react-icons/hi2";
 import { FaList } from "react-icons/fa";
 import ProgressLoaderComponent from "@/components/loaders/progress-loader.component";
 import IntroAnimationComponent from "@/components/animations/intro-animation.component";
+import { CreateEventPath } from "@/routes";
 
 const ShowEventTicketsView = () => {
   const router = useRouter();
@@ -66,7 +67,7 @@ const ShowEventTicketsView = () => {
           </Button>
           <Button
             colorScheme="green"
-            onClick={() => router.push("/tickets/create")}
+            onClick={() => router.push(CreateEventPath)}
           >
             Crear evento
           </Button>
