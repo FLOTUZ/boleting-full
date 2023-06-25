@@ -1,5 +1,5 @@
 import { Event } from "@/gql/generated";
-import { UpdateEventSchema } from "@/validations";
+import { UpdateEventValidator } from "@/validations";
 import { useFormik } from "formik";
 import { FormLabel, Input, Text } from "@chakra-ui/react";
 
@@ -8,7 +8,7 @@ interface EditEventForm {
 }
 const EditEventForm = ({ event }: EditEventForm) => {
   const formEvent = useFormik({
-    validationSchema: UpdateEventSchema,
+    validationSchema: UpdateEventValidator,
     enableReinitialize: true,
     initialValues: {
       name: event?.name,
