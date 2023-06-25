@@ -67,30 +67,29 @@ const CreateEventView = () => {
       values.start_date = new Date(values.start_date).toISOString();
       values.end_date = new Date(values.end_date).toISOString();
 
-      console.log(values);
-      // await createEvent({
-      //   variables: {
-      //     input: {
-      //       ...values,
-      //     },
-      //   },
-      //   onCompleted() {
-      //     toast({
-      //       title: "Evento guardado",
-      //       description: "El evento se guardó con exito",
-      //       status: "success",
-      //       duration: 8000,
-      //     });
-      //   },
-      //   onError(error) {
-      //     toast({
-      //       title: "Error",
-      //       description: error.message,
-      //       status: "error",
-      //       duration: 8000,
-      //     });
-      //   },
-      // });
+      await createEvent({
+        variables: {
+          input: {
+            ...values,
+          },
+        },
+        onCompleted() {
+          toast({
+            title: "Evento guardado",
+            description: "El evento se guardó con exito",
+            status: "success",
+            duration: 8000,
+          });
+        },
+        onError(error) {
+          toast({
+            title: "Error",
+            description: error.message,
+            status: "error",
+            duration: 8000,
+          });
+        },
+      });
     },
   });
 
