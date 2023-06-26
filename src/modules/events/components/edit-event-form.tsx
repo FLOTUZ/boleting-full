@@ -15,19 +15,26 @@ import {
   Button,
   Checkbox,
   FormLabel,
+  HStack,
   Input,
+  Spacer,
   Switch,
   Text,
+  Textarea,
   useToast,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { ShowEventPath } from "@/routes";
 
 interface EditEventForm {
-  event: Event;
+  event?: Event;
 }
 
 const EditEventForm = ({ event }: EditEventForm) => {
+  const router = useRouter();
   const toast = useToast();
+
   const [categories, setCategories] = useState<EventCategory[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
 
@@ -55,17 +62,17 @@ const EditEventForm = ({ event }: EditEventForm) => {
     validationSchema: UpdateEventValidator,
     enableReinitialize: true,
     initialValues: {
-      name: event.name,
-      description: event.description,
-      event_location: event.event_location,
-      event_location_url: event.event_location_url,
-      start_date: moment(event.start_date).format("YYYY-MM-DD"),
-      end_date: moment(event.end_date).format("YYYY-MM-DD"),
-      start_time: event.start_time,
-      end_time: event.end_time,
-      re_entry: event.re_entry,
-      event_logo_url: event.event_logo_url,
-      event_banner_url: event.event_banner_url,
+      name: event?.name,
+      description: event?.description,
+      event_location: event?.event_location,
+      event_location_url: event?.event_location_url,
+      start_date: moment(event?.start_date).format("YYYY-MM-DD"),
+      end_date: moment(event?.end_date).format("YYYY-MM-DD"),
+      start_time: event?.start_time,
+      end_time: event?.end_time,
+      re_entry: event?.re_entry,
+      event_logo_url: event?.event_logo_url,
+      event_banner_url: event?.event_banner_url,
       sub_categories: selectedSubCategories.map(
         (subCategory) => subCategory.id!
       ),
@@ -76,7 +83,7 @@ const EditEventForm = ({ event }: EditEventForm) => {
 
       await updateEvent({
         variables: {
-          updateEventId: event.id,
+          updateEventId: event!.id,
           input: {
             ...values,
           },
@@ -88,6 +95,7 @@ const EditEventForm = ({ event }: EditEventForm) => {
             description: "El evento se actualizó con exito",
             status: "success",
           });
+          router.replace(ShowEventPath(event!.id.toString()));
         },
 
         onError(error) {
@@ -128,19 +136,19 @@ const EditEventForm = ({ event }: EditEventForm) => {
           name="name"
           type="text"
           onChange={form.handleChange}
-          defaultValue={event.name}
+          defaultValue={event?.name}
         />
         {form.errors.name && form.touched.name && (
           <Text color="red">{form.errors.name}</Text>
         )}
 
         <FormLabel htmlFor="description">Descripción del evento:</FormLabel>
-        <Input
+        <Textarea
           name="description"
-          type="text"
           onChange={form.handleChange}
-          defaultValue={event.description ?? ""}
+          defaultValue={event?.description ?? ""}
         />
+
         {form.errors.description && form.touched.description && (
           <Text color="red">{form.errors.description}</Text>
         )}
@@ -150,7 +158,7 @@ const EditEventForm = ({ event }: EditEventForm) => {
           name="event_location"
           type="text"
           onChange={form.handleChange}
-          defaultValue={event.event_location ?? ""}
+          defaultValue={event?.event_location ?? ""}
         />
         {form.errors.event_location && form.touched.event_location && (
           <Text color="red">{form.errors.event_location}</Text>
@@ -199,7 +207,7 @@ const EditEventForm = ({ event }: EditEventForm) => {
 
         <FormLabel htmlFor="event_sub_categories">Sub categorias:</FormLabel>
 
-        {event.sub_categories?.length == 0 ? (
+        {event?.sub_categories?.length == 0 ? (
           <Box p={2} bgColor={"brand.semiTransparentContainer"}>
             <Text>Para ver las subcategorias, selecciona una categoria</Text>
           </Box>
@@ -252,7 +260,7 @@ const EditEventForm = ({ event }: EditEventForm) => {
           name="event_location_url"
           type="text"
           onChange={form.handleChange}
-          defaultValue={event.event_location_url ?? ""}
+          defaultValue={event?.event_location_url ?? ""}
         />
         {form.errors.sub_categories && form.touched.sub_categories && (
           <Text color="red">{form.errors.sub_categories}</Text>
@@ -288,7 +296,7 @@ const EditEventForm = ({ event }: EditEventForm) => {
           type="time"
           w={"fit-content"}
           onChange={form.handleChange}
-          defaultValue={event.start_time ?? undefined}
+          defaultValue={event?.start_time ?? undefined}
         />
         {form.errors.start_time && form.touched.start_time && (
           <Text color="red">{form.errors.start_time}</Text>
@@ -300,7 +308,7 @@ const EditEventForm = ({ event }: EditEventForm) => {
           type="time"
           w={"fit-content"}
           onChange={form.handleChange}
-          defaultValue={event.end_time ?? undefined}
+          defaultValue={event?.end_time ?? undefined}
         />
         {form.errors.end_time && form.touched.end_time && (
           <Text color="red">{form.errors.end_time.toString()}</Text>
@@ -310,9 +318,10 @@ const EditEventForm = ({ event }: EditEventForm) => {
         <Switch
           name="re_entry"
           size={"lg"}
+          isChecked={form.values.re_entry ?? false}
           onChange={form.handleChange}
-          defaultChecked={event.re_entry}
         />
+
         {form.errors.re_entry && form.touched.re_entry && (
           <Text color="red">{form.errors.re_entry}</Text>
         )}
@@ -340,13 +349,16 @@ const EditEventForm = ({ event }: EditEventForm) => {
           <Text color="red">{form.errors.event_banner_url}</Text>
         )}
 
-        <Button
-          type="submit"
-          onClick={form.submitForm}
-          isLoading={loadingUpdateEvent}
-        >
-          Actualizar
-        </Button>
+        <HStack mt={4} mb={16}>
+          <Spacer />
+          <Button
+            type="submit"
+            onClick={form.submitForm}
+            isLoading={loadingUpdateEvent}
+          >
+            Actualizar
+          </Button>
+        </HStack>
       </form>
     </FormikProvider>
   );

@@ -15,6 +15,11 @@ const components = {
       variant: "filled",
     },
   },
+  Textarea: {
+    defaultProps: {
+      variant: "filled",
+    },
+  },
 };
 
 export const theme = extendTheme({

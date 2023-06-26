@@ -12,6 +12,7 @@ export const ShowOrganizationPath = (id: string) => `/organizations/${id}`;
 export const EventsPath = "/events";
 export const CreateEventPath = "/events/create";
 export const ShowEventPath = (id: string) => `/events/${id}`;
+export const EditEventPath = (id: number) => `/events/${id}/edit`;
 
 // =========== USERS ============
 export const UsersPath = "/users";
