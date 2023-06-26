@@ -45,4 +45,10 @@ export const AccessTypeService = {
   },
 
   // ======================= FOR ANOTHER RESOLVERS =======================
+
+  async accessTypesByEventId(eventId: number) {
+    return await prisma.accessType.findMany({
+      where: { event: { id: eventId } },
+    });
+  },
 };

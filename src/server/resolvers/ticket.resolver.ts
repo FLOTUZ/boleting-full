@@ -27,7 +27,7 @@ export const TicketResolver = {
       { event_id }: { event_id: number },
       __: IGraphqlContext
     ) => {
-      return await TicketService.selled_tickets_by_event(event_id, pagination);
+      return await TicketService.selledTicketsByEvent(event_id, pagination);
     },
   },
 

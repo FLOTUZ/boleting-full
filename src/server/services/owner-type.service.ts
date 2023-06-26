@@ -45,4 +45,10 @@ export const OwnerTypeService = {
   },
 
   // ======================= FOR ANOTHER RESOLVERS =======================
+
+  async ownerTypesOfEvent(eventId: number) {
+    return await prisma.ownerType.findMany({
+      where: { event: { id: eventId } },
+    });
+  },
 };
