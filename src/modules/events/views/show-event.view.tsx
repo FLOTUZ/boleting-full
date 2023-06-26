@@ -7,13 +7,21 @@ import ProgressLoaderComponent from "@/components/loaders/progress-loader.compon
 import SelledTicketsByEventDatatable from "../components/selled-tickets-by-event.datatable";
 
 import { Event, Ticket, useShowEventQuery } from "@/gql/generated";
-import { Box, Button, Card, Heading, Image, Text } from "@chakra-ui/react";
-import { useToggle } from "@/hooks";
+import {
+  Badge,
+  Box,
+  Button,
+  Card,
+  Heading,
+  Image,
+  Text,
+} from "@chakra-ui/react";
 import EditEventForm from "../components/edit-event-form";
 import Link from "next/link";
+import { IoArrowBackOutline } from "react-icons/io5";
 
 const ShowEventView = ({ eventId }: { eventId: number }) => {
-  const [toggle, setToggle] = useState(true);
+  const [showEditEvent, setShowEditEvent] = useState(false);
 
   const [event, setEvent] = useState<Event>();
   const [selledTickets, setSelledTickets] = useState<Ticket[]>([]);
@@ -70,11 +78,20 @@ const ShowEventView = ({ eventId }: { eventId: number }) => {
   return (
     <IntroAnimationComponent data>
       <Box p={4}>
-        <Button mb={4} onClick={() => setToggle(!toggle)}>
-          Editar
+        <Button mb={4} onClick={() => setShowEditEvent(!showEditEvent)}>
+          {showEditEvent ? (
+            <>
+              <IoArrowBackOutline />
+              Ver evento
+            </>
+          ) : (
+            "Editar evento"
+          )}
         </Button>
 
-        {toggle ? (
+        {showEditEvent ? (
+          <EditEventForm event={event!} />
+        ) : (
           <>
             <Card mb={4} p={4}>
               <Box>
@@ -88,7 +105,17 @@ const ShowEventView = ({ eventId }: { eventId: number }) => {
               </Box>
 
               <Heading>{event?.name}</Heading>
-              <Text as={"b"}>{event?.event_location}</Text>
+              {event?.event_location_url != null && (
+                <Text as={"p"} fontSize={"lg"}>
+                  {event?.event_location}
+
+                  <Link href={event?.event_location_url} target="_blank">
+                    <Badge ml={2} p={1}>
+                      Ver en mapa
+                    </Badge>
+                  </Link>
+                </Text>
+              )}
 
               <Text as={"b"}>Descripcion</Text>
               <Text>{event?.description}</Text>
@@ -101,16 +128,6 @@ const ShowEventView = ({ eventId }: { eventId: number }) => {
                 }) || "Sin fecha inicial"}{" "}
                 -{event?.end_date || "Sin fecha final"}
               </Text>
-
-              {event?.event_location_url != null && (
-                <Text as={"p"} fontSize={"lg"}>
-                  {event?.event_location}
-                  <Link href={event?.event_location_url} target="_blank">
-                    {"🗺"}
-                    Ver en mapa
-                  </Link>
-                </Text>
-              )}
 
               <Text as={"b"}>Creado por</Text>
               <Text as={"p"} fontSize={"lg"}>
@@ -125,8 +142,6 @@ const ShowEventView = ({ eventId }: { eventId: number }) => {
               refetch={refetchSelledByEvent}
             />
           </>
-        ) : (
-          <EditEventForm event={event!} />
         )}
       </Box>
     </IntroAnimationComponent>
