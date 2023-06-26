@@ -9,4 +9,15 @@ const colors = {
   },
 };
 
-export const theme = extendTheme({ colors });
+const components = {
+  Input: {
+    defaultProps: {
+      variant: "filled",
+    },
+  },
+};
+
+export const theme = extendTheme({
+  colors,
+  components,
+});
