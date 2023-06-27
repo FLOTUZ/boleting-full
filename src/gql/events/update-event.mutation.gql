@@ -13,6 +13,7 @@ mutation UpdateEvent($updateEventId: Int!, $input: UpdateEventInput!) {
     event_logo_url
     userId
     sub_categories {
+      id
       name
     }
   }

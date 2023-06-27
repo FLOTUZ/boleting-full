@@ -23,7 +23,7 @@ import {
   useToast,
   Checkbox,
 } from "@chakra-ui/react";
-import { Field, FieldArray, FormikProvider, useFormik } from "formik";
+import { FormikProvider, useFormik } from "formik";
 import { useState } from "react";
 
 const CreateEventView = () => {
@@ -309,7 +309,7 @@ const CreateEventView = () => {
                 </Box>
               </SimpleGrid>
 
-              <FormLabel htmlFor="re_entry">Admitir reentrada:</FormLabel>
+              <FormLabel htmlFor="re_entry">Permitir reingreso:</FormLabel>
               <Switch
                 size={"lg"}
                 name="re_entry"
