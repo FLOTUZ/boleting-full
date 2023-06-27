@@ -9,7 +9,7 @@ interface TicketEventCardProps {
 
 const TicketEventCard = ({ event }: TicketEventCardProps) => {
   return (
-    <Link key={event.id} href={ShowEventPath(String(event.id))}>
+    <Link key={event.id} passHref href={ShowEventPath(String(event.id))}>
       <Box
         p={4}
         boxShadow="sm"

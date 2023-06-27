@@ -76,7 +76,7 @@ const ShowEventView = ({ eventId }: { eventId: number }) => {
   return (
     <IntroAnimationComponent data>
       <Box p={4}>
-        <Link href={EditEventPath(event?.id as number)}>
+        <Link passHref href={EditEventPath(event?.id as number)}>
           <Button mb={4}> Editar evento </Button>
         </Link>
 
@@ -96,7 +96,7 @@ const ShowEventView = ({ eventId }: { eventId: number }) => {
             <Text as={"p"} fontSize={"lg"}>
               {event?.event_location}
 
-              <Link href={event?.event_location_url} target="_blank">
+              <Link passHref href={event?.event_location_url} target="_blank">
                 <Badge ml={2} p={1}>
                   Ver en mapa
                 </Badge>
