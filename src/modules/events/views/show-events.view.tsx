@@ -57,7 +57,7 @@ const ShowEventsView = () => {
     <IntroAnimationComponent data>
       <Box p={4}>
         <HStack spacing={4}>
-          <Link href={CreateEventPath}>
+          <Link passHref href={CreateEventPath}>
             <Button colorScheme="green">Crear evento</Button>
           </Link>
           <Button onClick={() => refetchEvents()}>

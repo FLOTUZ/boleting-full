@@ -90,7 +90,7 @@ const DesktopLayoutComponent = ({
           <Box w={"100%"} mt={100} pos={"inherit"} top={0} right={0}>
             {menuItems.map((item, index) => {
               return (
-                <Link href={item.href} key={index} replace={true}>
+                <Link href={item.href} key={index} replace={true} passHref>
                   <Box
                     justifyContent={"center"}
                     cursor={"pointer"}
@@ -137,7 +137,7 @@ const DesktopLayoutComponent = ({
                   {user?.name + " " + user?.last_name}
                 </Text>
                 <MenuDivider />
-                <Link href={profilePath}>
+                <Link href={profilePath} passHref>
                   <MenuItem>Perfil</MenuItem>
                 </Link>
                 <MenuItem onClick={logout}>Cerrar sesión</MenuItem>
