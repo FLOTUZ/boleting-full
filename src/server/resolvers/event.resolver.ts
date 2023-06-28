@@ -12,6 +12,7 @@ import {
   EventSubCategoryService,
   OwnerTypeService,
   TicketService,
+  UserService,
 } from "../services";
 
 export const EventResolver = {
@@ -71,6 +72,10 @@ export const EventResolver = {
 
     selled_tickets: async ({ id }: Event, _: any, __: IGraphqlContext) => {
       return await TicketService.selledTicketsByEvent(id);
+    },
+
+    staff: async ({ id }: Event, _: any, __: IGraphqlContext) => {
+      return await UserService.staffByEvent(id);
     },
   },
 };

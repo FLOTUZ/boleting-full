@@ -10,7 +10,7 @@ export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' |
 const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: { input: string | number; output: string; }
+  ID: { input: string; output: string; }
   String: { input: string; output: string; }
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
@@ -263,6 +263,7 @@ export type Event = {
   owner_types?: Maybe<Array<OwnerType>>;
   re_entry: Scalars['Boolean']['output'];
   selled_tickets?: Maybe<Array<Ticket>>;
+  staff?: Maybe<Array<User>>;
   start_date: Scalars['DateTime']['output'];
   start_time?: Maybe<Scalars['String']['output']>;
   sub_categories?: Maybe<Array<EventSubCategory>>;
@@ -1276,13 +1277,20 @@ export type CreateEventMutationVariables = Exact<{
 
 export type CreateEventMutation = { __typename?: 'Mutation', createEvent?: { __typename?: 'Event', id: number, event_key?: string | null, name: string, description?: string | null, event_location: string, event_logo_url?: string | null, start_date: any, start_time?: string | null, end_time?: string | null, re_entry: boolean, userId: number, sub_categories?: Array<{ __typename?: 'EventSubCategory', id: number, name: string }> | null } | null };
 
+export type ShowEventStaffQueryVariables = Exact<{
+  eventId: Scalars['Int'];
+}>;
+
+
+export type ShowEventStaffQuery = { __typename?: 'Query', event?: { __typename?: 'Event', staff?: Array<{ __typename?: 'User', id: number, name?: string | null, last_name?: string | null, createdAt?: any | null, roles?: Array<{ __typename?: 'Role', name?: string | null }> | null }> | null } | null };
+
 export type ShowEventTicketsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type ShowEventTicketsQuery = { __typename?: 'Query', events?: Array<{ __typename?: 'Event', id: number, name: string, start_date: any, event_logo_url?: string | null, event_location: string, event_key?: string | null, description?: string | null } | null> | null };
 
 export type ShowEventQueryVariables = Exact<{
-  eventId: Scalars['Int']['input'];
+  eventId: Scalars['Int'];
 }>;
 
 
@@ -1294,7 +1302,7 @@ export type ShowEventsQueryVariables = Exact<{ [key: string]: never; }>;
 export type ShowEventsQuery = { __typename?: 'Query', events?: Array<{ __typename?: 'Event', id: number, event_logo_url?: string | null, event_location: string, event_key?: string | null, name: string, description?: string | null, start_date: any, deleted: boolean, event_banner_url?: string | null, sub_categories?: Array<{ __typename?: 'EventSubCategory', id: number, name: string }> | null } | null> | null };
 
 export type UpdateEventMutationVariables = Exact<{
-  updateEventId: Scalars['Int']['input'];
+  updateEventId: Scalars['Int'];
   input: UpdateEventInput;
 }>;
 
@@ -1307,7 +1315,7 @@ export type ClearnotificationsMutationVariables = Exact<{ [key: string]: never; 
 export type ClearnotificationsMutation = { __typename?: 'Mutation', clearNotifications: boolean };
 
 export type DeleteNotificationMutationVariables = Exact<{
-  deleteNotificationId: Scalars['Int']['input'];
+  deleteNotificationId: Scalars['Int'];
 }>;
 
 
@@ -1326,14 +1334,14 @@ export type CreateOrganizationMutationVariables = Exact<{
 export type CreateOrganizationMutation = { __typename?: 'Mutation', createOrganization?: { __typename?: 'Organization', id: string, name?: string | null } | null };
 
 export type DeleteOrganizationMutationVariables = Exact<{
-  deleteOrganizationId: Scalars['Int']['input'];
+  deleteOrganizationId: Scalars['Int'];
 }>;
 
 
 export type DeleteOrganizationMutation = { __typename?: 'Mutation', deleteOrganization?: { __typename?: 'Organization', id: string, name?: string | null, deleted?: boolean | null, deletedAt?: any | null } | null };
 
 export type EditOrganizationsMutationVariables = Exact<{
-  updateOrganizationId: Scalars['Int']['input'];
+  updateOrganizationId: Scalars['Int'];
   data: UpdateOrganizationInput;
 }>;
 
@@ -1341,7 +1349,7 @@ export type EditOrganizationsMutationVariables = Exact<{
 export type EditOrganizationsMutation = { __typename?: 'Mutation', updateOrganization?: { __typename?: 'Organization', id: string, name?: string | null, createdAt?: any | null, updatedAt?: any | null } | null };
 
 export type ShowOrganizationQueryVariables = Exact<{
-  organizationId: Scalars['Int']['input'];
+  organizationId: Scalars['Int'];
 }>;
 
 
@@ -1541,6 +1549,49 @@ export function useCreateEventMutation(baseOptions?: Apollo.MutationHookOptions<
 export type CreateEventMutationHookResult = ReturnType<typeof useCreateEventMutation>;
 export type CreateEventMutationResult = Apollo.MutationResult<CreateEventMutation>;
 export type CreateEventMutationOptions = Apollo.BaseMutationOptions<CreateEventMutation, CreateEventMutationVariables>;
+export const ShowEventStaffDocument = gql`
+    query ShowEventStaff($eventId: Int!) {
+  event(id: $eventId) {
+    staff {
+      id
+      name
+      last_name
+      createdAt
+      roles {
+        name
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useShowEventStaffQuery__
+ *
+ * To run a query within a React component, call `useShowEventStaffQuery` and pass it any options that fit your needs.
+ * When your component renders, `useShowEventStaffQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useShowEventStaffQuery({
+ *   variables: {
+ *      eventId: // value for 'eventId'
+ *   },
+ * });
+ */
+export function useShowEventStaffQuery(baseOptions: Apollo.QueryHookOptions<ShowEventStaffQuery, ShowEventStaffQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ShowEventStaffQuery, ShowEventStaffQueryVariables>(ShowEventStaffDocument, options);
+      }
+export function useShowEventStaffLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ShowEventStaffQuery, ShowEventStaffQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ShowEventStaffQuery, ShowEventStaffQueryVariables>(ShowEventStaffDocument, options);
+        }
+export type ShowEventStaffQueryHookResult = ReturnType<typeof useShowEventStaffQuery>;
+export type ShowEventStaffLazyQueryHookResult = ReturnType<typeof useShowEventStaffLazyQuery>;
+export type ShowEventStaffQueryResult = Apollo.QueryResult<ShowEventStaffQuery, ShowEventStaffQueryVariables>;
 export const ShowEventTicketsDocument = gql`
     query ShowEventTickets {
   events {

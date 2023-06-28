@@ -81,4 +81,10 @@ export const UserService = {
       where: { organizationId: id_organization },
     });
   },
+
+  async staffByEvent(id_event: number) {
+    return await prisma.user.findMany({
+      where: { staff_of_events: { some: { id: id_event } } },
+    });
+  },
 };

@@ -18,7 +18,7 @@ import {
   Image,
   Text,
 } from "@chakra-ui/react";
-import { EditEventPath } from "@/routes";
+import { EditEventPath, ShowEventStaffIdPath } from "@/routes";
 
 const ShowEventView = ({ eventId }: { eventId: number }) => {
   const [event, setEvent] = useState<Event>();
@@ -78,6 +78,11 @@ const ShowEventView = ({ eventId }: { eventId: number }) => {
       <Box p={4}>
         <Link passHref href={EditEventPath(event?.id as number)}>
           <Button mb={4}> Editar evento </Button>
+        </Link>
+        <Link passHref href={ShowEventStaffIdPath(event?.id as number)}>
+          <Button mb={4} ml={4}>
+            Staff
+          </Button>
         </Link>
 
         <Card mb={4} p={4}>
