@@ -328,6 +328,8 @@ export type Mail = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  assignManyStaff?: Maybe<Array<Maybe<User>>>;
+  assignStaff?: Maybe<User>;
   clearNotifications: Scalars['Boolean']['output'];
   createAccessType: AccessType;
   createActivityLog: ActivityLog;
@@ -366,6 +368,8 @@ export type Mutation = {
   deleteUser?: Maybe<User>;
   deleteUserClient: UserClient;
   login: LoginResponse;
+  unassignManyStaff?: Maybe<Array<Maybe<User>>>;
+  unassignStaff?: Maybe<User>;
   updateAccessType: AccessType;
   updateActivityLog: ActivityLog;
   updateApplication: Application;
@@ -384,6 +388,18 @@ export type Mutation = {
   updateTicket?: Maybe<Ticket>;
   updateUser?: Maybe<User>;
   updateUserClient: UserClient;
+};
+
+
+export type MutationAssignManyStaffArgs = {
+  eventId: Scalars['Int']['input'];
+  userIds: Array<Scalars['Int']['input']>;
+};
+
+
+export type MutationAssignStaffArgs = {
+  eventId: Scalars['Int']['input'];
+  userId: Scalars['Int']['input'];
 };
 
 
@@ -575,6 +591,18 @@ export type MutationDeleteUserClientArgs = {
 
 export type MutationLoginArgs = {
   data: LoginInput;
+};
+
+
+export type MutationUnassignManyStaffArgs = {
+  eventId: Scalars['Int']['input'];
+  userIds: Array<Scalars['Int']['input']>;
+};
+
+
+export type MutationUnassignStaffArgs = {
+  eventId: Scalars['Int']['input'];
+  userId: Scalars['Int']['input'];
 };
 
 
@@ -1365,10 +1393,42 @@ export type RolesListQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type RolesListQuery = { __typename?: 'Query', roles?: Array<{ __typename?: 'Role', id: number, name?: string | null, description?: string | null, createdAt?: any | null, updatedAt?: any | null, deletedAt?: any | null } | null> | null };
 
+export type AssignManyStaffMutationVariables = Exact<{
+  eventId: Scalars['Int'];
+  userIds: Array<Scalars['Int']> | Scalars['Int'];
+}>;
+
+
+export type AssignManyStaffMutation = { __typename?: 'Mutation', assignManyStaff?: Array<{ __typename?: 'User', id: number, name?: string | null, last_name?: string | null, roles?: Array<{ __typename?: 'Role', id: number, name?: string | null }> | null } | null> | null };
+
+export type AssignStaffMutationVariables = Exact<{
+  userId: Scalars['Int'];
+  eventId: Scalars['Int'];
+}>;
+
+
+export type AssignStaffMutation = { __typename?: 'Mutation', assignStaff?: { __typename?: 'User', id: number, name?: string | null, last_name?: string | null, roles?: Array<{ __typename?: 'Role', id: number, name?: string | null }> | null } | null };
+
 export type ShowStaffQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type ShowStaffQuery = { __typename?: 'Query', users?: Array<{ __typename?: 'User', id: number, name?: string | null, last_name?: string | null, roles?: Array<{ __typename?: 'Role', id: number, name?: string | null }> | null } | null> | null };
+
+export type UnassignManyStaffMutationVariables = Exact<{
+  eventId: Scalars['Int'];
+  userIds: Array<Scalars['Int']> | Scalars['Int'];
+}>;
+
+
+export type UnassignManyStaffMutation = { __typename?: 'Mutation', unassignManyStaff?: Array<{ __typename?: 'User', id: number, name?: string | null, last_name?: string | null, email?: string | null, roles?: Array<{ __typename?: 'Role', id: number, name?: string | null }> | null } | null> | null };
+
+export type UnassignStaffMutationVariables = Exact<{
+  userId: Scalars['Int'];
+  eventId: Scalars['Int'];
+}>;
+
+
+export type UnassignStaffMutation = { __typename?: 'Mutation', unassignStaff?: { __typename?: 'User', id: number, name?: string | null, last_name?: string | null, email?: string | null, roles?: Array<{ __typename?: 'Role', id: number, name?: string | null }> | null } | null };
 
 export type CreateUserMutationVariables = Exact<{
   data: CreateUserInput;
@@ -2136,6 +2196,86 @@ export function useRolesListLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<
 export type RolesListQueryHookResult = ReturnType<typeof useRolesListQuery>;
 export type RolesListLazyQueryHookResult = ReturnType<typeof useRolesListLazyQuery>;
 export type RolesListQueryResult = Apollo.QueryResult<RolesListQuery, RolesListQueryVariables>;
+export const AssignManyStaffDocument = gql`
+    mutation AssignManyStaff($eventId: Int!, $userIds: [Int!]!) {
+  assignManyStaff(eventId: $eventId, userIds: $userIds) {
+    id
+    name
+    last_name
+    roles {
+      id
+      name
+    }
+  }
+}
+    `;
+export type AssignManyStaffMutationFn = Apollo.MutationFunction<AssignManyStaffMutation, AssignManyStaffMutationVariables>;
+
+/**
+ * __useAssignManyStaffMutation__
+ *
+ * To run a mutation, you first call `useAssignManyStaffMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAssignManyStaffMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [assignManyStaffMutation, { data, loading, error }] = useAssignManyStaffMutation({
+ *   variables: {
+ *      eventId: // value for 'eventId'
+ *      userIds: // value for 'userIds'
+ *   },
+ * });
+ */
+export function useAssignManyStaffMutation(baseOptions?: Apollo.MutationHookOptions<AssignManyStaffMutation, AssignManyStaffMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AssignManyStaffMutation, AssignManyStaffMutationVariables>(AssignManyStaffDocument, options);
+      }
+export type AssignManyStaffMutationHookResult = ReturnType<typeof useAssignManyStaffMutation>;
+export type AssignManyStaffMutationResult = Apollo.MutationResult<AssignManyStaffMutation>;
+export type AssignManyStaffMutationOptions = Apollo.BaseMutationOptions<AssignManyStaffMutation, AssignManyStaffMutationVariables>;
+export const AssignStaffDocument = gql`
+    mutation AssignStaff($userId: Int!, $eventId: Int!) {
+  assignStaff(userId: $userId, eventId: $eventId) {
+    id
+    name
+    last_name
+    roles {
+      id
+      name
+    }
+  }
+}
+    `;
+export type AssignStaffMutationFn = Apollo.MutationFunction<AssignStaffMutation, AssignStaffMutationVariables>;
+
+/**
+ * __useAssignStaffMutation__
+ *
+ * To run a mutation, you first call `useAssignStaffMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAssignStaffMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [assignStaffMutation, { data, loading, error }] = useAssignStaffMutation({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *      eventId: // value for 'eventId'
+ *   },
+ * });
+ */
+export function useAssignStaffMutation(baseOptions?: Apollo.MutationHookOptions<AssignStaffMutation, AssignStaffMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AssignStaffMutation, AssignStaffMutationVariables>(AssignStaffDocument, options);
+      }
+export type AssignStaffMutationHookResult = ReturnType<typeof useAssignStaffMutation>;
+export type AssignStaffMutationResult = Apollo.MutationResult<AssignStaffMutation>;
+export type AssignStaffMutationOptions = Apollo.BaseMutationOptions<AssignStaffMutation, AssignStaffMutationVariables>;
 export const ShowStaffDocument = gql`
     query ShowStaff {
   users {
@@ -2176,6 +2316,88 @@ export function useShowStaffLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<
 export type ShowStaffQueryHookResult = ReturnType<typeof useShowStaffQuery>;
 export type ShowStaffLazyQueryHookResult = ReturnType<typeof useShowStaffLazyQuery>;
 export type ShowStaffQueryResult = Apollo.QueryResult<ShowStaffQuery, ShowStaffQueryVariables>;
+export const UnassignManyStaffDocument = gql`
+    mutation UnassignManyStaff($eventId: Int!, $userIds: [Int!]!) {
+  unassignManyStaff(eventId: $eventId, userIds: $userIds) {
+    id
+    name
+    last_name
+    email
+    roles {
+      id
+      name
+    }
+  }
+}
+    `;
+export type UnassignManyStaffMutationFn = Apollo.MutationFunction<UnassignManyStaffMutation, UnassignManyStaffMutationVariables>;
+
+/**
+ * __useUnassignManyStaffMutation__
+ *
+ * To run a mutation, you first call `useUnassignManyStaffMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUnassignManyStaffMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [unassignManyStaffMutation, { data, loading, error }] = useUnassignManyStaffMutation({
+ *   variables: {
+ *      eventId: // value for 'eventId'
+ *      userIds: // value for 'userIds'
+ *   },
+ * });
+ */
+export function useUnassignManyStaffMutation(baseOptions?: Apollo.MutationHookOptions<UnassignManyStaffMutation, UnassignManyStaffMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UnassignManyStaffMutation, UnassignManyStaffMutationVariables>(UnassignManyStaffDocument, options);
+      }
+export type UnassignManyStaffMutationHookResult = ReturnType<typeof useUnassignManyStaffMutation>;
+export type UnassignManyStaffMutationResult = Apollo.MutationResult<UnassignManyStaffMutation>;
+export type UnassignManyStaffMutationOptions = Apollo.BaseMutationOptions<UnassignManyStaffMutation, UnassignManyStaffMutationVariables>;
+export const UnassignStaffDocument = gql`
+    mutation UnassignStaff($userId: Int!, $eventId: Int!) {
+  unassignStaff(userId: $userId, eventId: $eventId) {
+    id
+    name
+    last_name
+    email
+    roles {
+      id
+      name
+    }
+  }
+}
+    `;
+export type UnassignStaffMutationFn = Apollo.MutationFunction<UnassignStaffMutation, UnassignStaffMutationVariables>;
+
+/**
+ * __useUnassignStaffMutation__
+ *
+ * To run a mutation, you first call `useUnassignStaffMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUnassignStaffMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [unassignStaffMutation, { data, loading, error }] = useUnassignStaffMutation({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *      eventId: // value for 'eventId'
+ *   },
+ * });
+ */
+export function useUnassignStaffMutation(baseOptions?: Apollo.MutationHookOptions<UnassignStaffMutation, UnassignStaffMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UnassignStaffMutation, UnassignStaffMutationVariables>(UnassignStaffDocument, options);
+      }
+export type UnassignStaffMutationHookResult = ReturnType<typeof useUnassignStaffMutation>;
+export type UnassignStaffMutationResult = Apollo.MutationResult<UnassignStaffMutation>;
+export type UnassignStaffMutationOptions = Apollo.BaseMutationOptions<UnassignStaffMutation, UnassignStaffMutationVariables>;
 export const CreateUserDocument = gql`
     mutation CreateUser($data: CreateUserInput!) {
   createUser(data: $data) {

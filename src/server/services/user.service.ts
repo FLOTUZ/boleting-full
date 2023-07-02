@@ -3,7 +3,7 @@ import { prisma } from "@/server";
 import { User } from "@prisma/client";
 
 import { Pagination } from "../common";
-import { PrismaError } from "../utils";
+import { NotFoundError, PrismaError, UnauthorizedError } from "../utils";
 
 export const UserService = {
   async getAllUsers(pagination?: Pagination, id_organization?: number) {
@@ -56,6 +56,86 @@ export const UserService = {
     } catch (error: any) {
       throw PrismaError.handle(error);
     }
+  },
+
+  async assignStaff(userId: number, eventId: number, organizationId: number) {
+    const users = await prisma.user.findUnique({
+      where: { id: userId },
+      include: { organization: true },
+    });
+
+    // Check if user to assign exists
+    if (!users) throw new NotFoundError("User to assign not found");
+
+    // Check if user belongs to organization of event
+    if (users.organizationId !== organizationId) {
+      throw new UnauthorizedError(
+        "This user does not belong to organization of event"
+      );
+    }
+
+    // Check if user to assign belongs to the same organization
+    if (users.organizationId !== organizationId) {
+      throw new UnauthorizedError(
+        "No permission to assign staff to this organization"
+      );
+    }
+
+    return await prisma.user.update({
+      where: { id: userId },
+      data: { staff_of_events: { connect: { id: eventId } } },
+    });
+  },
+
+  async assignManyStaff(
+    eventId: number,
+    userIds: number[],
+    organizationId: number
+  ) {
+    const users = await prisma.user.findMany({
+      where: { id: { in: userIds } },
+      include: { organization: true },
+    });
+
+    // Check if all users in list to assign exist
+    if (users.length !== userIds.length)
+      throw new NotFoundError("Some user in list to assign not found");
+
+    // Check if all users in list to assign belong to the same organization
+    if (users.some((u) => u.organizationId !== organizationId)) {
+      throw new UnauthorizedError(
+        "No permission to assign staff to this organization"
+      );
+    }
+
+    // Assign staff to event
+    const assignedUsers: Promise<User>[] = userIds.map(async (userId) => {
+      return await prisma.user.update({
+        where: { id: userId },
+        data: { staff_of_events: { connect: { id: eventId } } },
+      });
+    });
+
+    return await Promise.all(assignedUsers);
+  },
+
+  async unassignStaff(userId: number, eventId: number) {
+    return await prisma.user.update({
+      where: { id: userId },
+      data: { staff_of_events: { disconnect: { id: eventId } } },
+    });
+  },
+
+  async unassignManyStaff(eventId: number, userIds: number[]) {
+    const result: Promise<User>[] = userIds.map(
+      async (userId) =>
+        await prisma.user.update({
+          where: { id: userId },
+          data: { staff_of_events: { disconnect: { id: eventId } } },
+        })
+    );
+
+    return await Promise.all(result);
   },
 
   // ============================================================

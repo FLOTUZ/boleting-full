@@ -54,6 +54,42 @@ export const UserResolver = {
     deleteUser: async (_: any, { id }: User, __: IGraphqlContext) => {
       return await UserService.deleteUser(id);
     },
+
+    assignStaff: async (
+      _: any,
+      { userId, eventId }: { userId: number; eventId: number },
+      { id_organization }: IGraphqlContext
+    ) => {
+      return await UserService.assignStaff(userId, eventId, id_organization!);
+    },
+
+    assignManyStaff: async (
+      _: any,
+      { eventId, userIds }: { eventId: number; userIds: number[] },
+      { id_organization }: IGraphqlContext
+    ) => {
+      return await UserService.assignManyStaff(
+        eventId,
+        userIds,
+        id_organization!
+      );
+    },
+
+    unassignStaff: async (
+      _: any,
+      { userId, eventId }: { userId: number; eventId: number },
+      __: IGraphqlContext
+    ) => {
+      return await UserService.unassignStaff(userId, eventId);
+    },
+
+    unassignManyStaff: async (
+      _: any,
+      { eventId, userIds }: { eventId: number; userIds: number[] },
+      __: IGraphqlContext
+    ) => {
+      return await UserService.unassignManyStaff(eventId, userIds);
+    },
   },
 
   User: {

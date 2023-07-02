@@ -40,5 +40,10 @@ export const UserSchema = gql`
     createUser(data: CreateUserInput!): User
     updateUser(id: Int!, data: UpdateUserInput!): User
     deleteUser(id: Int!): User
+    # Staff assignment
+    assignStaff(userId: Int!, eventId: Int!): User
+    assignManyStaff(eventId: Int!, userIds: [Int!]!): [User]
+    unassignStaff(userId: Int!, eventId: Int!): User
+    unassignManyStaff(eventId: Int!, userIds: [Int!]!): [User]
   }
 `;
