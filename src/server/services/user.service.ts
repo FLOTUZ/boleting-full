@@ -6,10 +6,10 @@ import { Pagination } from "../common";
 import { PrismaError } from "../utils";
 
 export const UserService = {
-  async getAllUsers(pagination?: Pagination) {
+  async getAllUsers(pagination?: Pagination, id_organization?: number) {
     return await prisma.user.findMany({
       ...pagination,
-      where: { deleted: false },
+      where: { deleted: false, organizationId: id_organization },
     });
   },
 

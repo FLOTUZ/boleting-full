@@ -1,15 +1,20 @@
 import DesktopLayoutComponent from "@/layouts/desktop-layout-component/desktop-layout.component";
-import ShowEventStaffView from "@/modules/staff/show-event-staff.view";
-import { EventsPath, ShowEventPath, ShowEventStaffIdPath } from "@/routes";
+import CreateStaffView from "@/modules/staff/views/create-staff.view";
+import {
+  CreateEventStaffPath,
+  EventsPath,
+  ShowEventPath,
+  ShowEventStaffIdPath,
+} from "@/routes";
 import { useRouter } from "next/router";
 
-const ShowStaffsRoute = () => {
+const CreateEventStaffRoute = () => {
   const router = useRouter();
   const { id } = router.query;
 
   return (
     <DesktopLayoutComponent
-      title={"Staff del evento"}
+      title={"Selecciona Staff"}
       breadCrumbs={[
         {
           label: "Eventos",
@@ -23,11 +28,15 @@ const ShowStaffsRoute = () => {
           label: "Staff",
           href: ShowEventStaffIdPath(Number(id)),
         },
+        {
+          label: "Selecciona Staff",
+          href: CreateEventStaffPath(Number(id)),
+        },
       ]}
     >
-      <ShowEventStaffView />
+      <CreateStaffView eventId={Number(id)} />
     </DesktopLayoutComponent>
   );
 };
 
-export default ShowStaffsRoute;
+export default CreateEventStaffRoute;

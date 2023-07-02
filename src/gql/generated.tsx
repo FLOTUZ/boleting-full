@@ -1365,6 +1365,11 @@ export type RolesListQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type RolesListQuery = { __typename?: 'Query', roles?: Array<{ __typename?: 'Role', id: number, name?: string | null, description?: string | null, createdAt?: any | null, updatedAt?: any | null, deletedAt?: any | null } | null> | null };
 
+export type ShowStaffQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ShowStaffQuery = { __typename?: 'Query', users?: Array<{ __typename?: 'User', id: number, name?: string | null, last_name?: string | null, roles?: Array<{ __typename?: 'Role', id: number, name?: string | null }> | null } | null> | null };
+
 export type CreateUserMutationVariables = Exact<{
   data: CreateUserInput;
 }>;
@@ -2131,6 +2136,46 @@ export function useRolesListLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<
 export type RolesListQueryHookResult = ReturnType<typeof useRolesListQuery>;
 export type RolesListLazyQueryHookResult = ReturnType<typeof useRolesListLazyQuery>;
 export type RolesListQueryResult = Apollo.QueryResult<RolesListQuery, RolesListQueryVariables>;
+export const ShowStaffDocument = gql`
+    query ShowStaff {
+  users {
+    id
+    name
+    last_name
+    roles {
+      id
+      name
+    }
+  }
+}
+    `;
+
+/**
+ * __useShowStaffQuery__
+ *
+ * To run a query within a React component, call `useShowStaffQuery` and pass it any options that fit your needs.
+ * When your component renders, `useShowStaffQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useShowStaffQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useShowStaffQuery(baseOptions?: Apollo.QueryHookOptions<ShowStaffQuery, ShowStaffQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ShowStaffQuery, ShowStaffQueryVariables>(ShowStaffDocument, options);
+      }
+export function useShowStaffLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ShowStaffQuery, ShowStaffQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ShowStaffQuery, ShowStaffQueryVariables>(ShowStaffDocument, options);
+        }
+export type ShowStaffQueryHookResult = ReturnType<typeof useShowStaffQuery>;
+export type ShowStaffLazyQueryHookResult = ReturnType<typeof useShowStaffLazyQuery>;
+export type ShowStaffQueryResult = Apollo.QueryResult<ShowStaffQuery, ShowStaffQueryVariables>;
 export const CreateUserDocument = gql`
     mutation CreateUser($data: CreateUserInput!) {
   createUser(data: $data) {

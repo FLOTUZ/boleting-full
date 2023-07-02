@@ -12,8 +12,14 @@ import { UnauthorizedError } from "../utils";
 
 export const UserResolver = {
   Query: {
-    users: async (_: any, { pagination }: Args, __: IGraphqlContext) => {
-      return await UserService.getAllUsers(pagination);
+    users: async (
+      _: any,
+      { pagination }: Args,
+      { id_organization }: IGraphqlContext
+    ) => {
+      if (id_organization === null)
+        throw new UnauthorizedError("Unauthorized organization");
+      return await UserService.getAllUsers(pagination, id_organization!);
     },
 
     currentUser: async (_: any, __: User, { id_user }: IGraphqlContext) => {

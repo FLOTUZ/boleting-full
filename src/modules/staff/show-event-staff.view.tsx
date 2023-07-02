@@ -9,14 +9,20 @@ import { useEffect, useState } from "react";
 import EventStaffDatatable from "./components/staff.datatable";
 import Link from "next/link";
 import { CreateEventStaffPath } from "@/routes";
+import { useRouter } from "next/router";
 
-interface ShowStaffViewProps {
-  eventId: number;
-}
-const ShowEventStaffView = ({ eventId }: ShowStaffViewProps) => {
+const ShowEventStaffView = () => {
+  const router = useRouter();
+  const { id } = router.query;
   const [eventStaff, setEventStaff] = useState<User[]>([]);
 
   const [getStaff, { data, loading }] = useShowEventStaffLazyQuery({
+    variables: {
+      // i dont know why but ts is not recognizing eventId as a number
+      // so i have to use ts-ignore
+      // @ts-ignore
+      eventId: Number(id),
+    },
     onError(error) {
       console.log(error);
     },
@@ -29,20 +35,15 @@ const ShowEventStaffView = ({ eventId }: ShowStaffViewProps) => {
   }, [data]);
 
   useEffect(() => {
-    getStaff({
-      variables: {
-        // i dont know why but ts is not recognizing eventId as a number
-        // so i have to use ts-ignore
-        // @ts-ignore
-        eventId,
-      },
-    });
-  }, [eventId, getStaff]);
+    getStaff();
+  }, [getStaff]);
+
+  if (!id) return null;
 
   return (
-    <IntroAnimationComponent data={data}>
+    <IntroAnimationComponent data={eventStaff}>
       <Box p={4}>
-        <Link passHref href={CreateEventStaffPath(eventId)}>
+        <Link passHref href={CreateEventStaffPath(Number(id))}>
           <Button>Agregar staff</Button>
         </Link>
         <Box mt={4}>
