@@ -15,3 +15,7 @@ export const ShowEventPath = (id: string) => `/events/${id}`;
 
 // =========== USERS ============
 export const UsersPath = "/users";
+
+// =========== CATEGORIES ============
+export const CategoriesPath = "/categories";
+export const CreateCategoriesPath = "/categories/create";
