@@ -1312,7 +1312,7 @@ export type CreateEventMutationVariables = Exact<{
 export type CreateEventMutation = { __typename?: 'Mutation', createEvent?: { __typename?: 'Event', id: number, event_key?: string | null, name: string, description?: string | null, event_location: string, event_logo_url?: string | null, start_date: any, start_time?: string | null, end_time?: string | null, re_entry: boolean, userId: number, sub_categories?: Array<{ __typename?: 'EventSubCategory', id: number, name: string }> | null } | null };
 
 export type ShowEventStaffQueryVariables = Exact<{
-  eventId: Scalars['Int'];
+  eventId: Scalars['Int']['input'];
 }>;
 
 
@@ -1324,7 +1324,7 @@ export type ShowEventTicketsQueryVariables = Exact<{ [key: string]: never; }>;
 export type ShowEventTicketsQuery = { __typename?: 'Query', events?: Array<{ __typename?: 'Event', id: number, name: string, start_date: any, event_logo_url?: string | null, event_location: string, event_key?: string | null, description?: string | null } | null> | null };
 
 export type ShowEventQueryVariables = Exact<{
-  eventId: Scalars['Int'];
+  eventId: Scalars['Int']['input'];
 }>;
 
 
@@ -1336,7 +1336,7 @@ export type ShowEventsQueryVariables = Exact<{ [key: string]: never; }>;
 export type ShowEventsQuery = { __typename?: 'Query', events?: Array<{ __typename?: 'Event', id: number, event_logo_url?: string | null, event_location: string, event_key?: string | null, name: string, description?: string | null, start_date: any, deleted: boolean, event_banner_url?: string | null, sub_categories?: Array<{ __typename?: 'EventSubCategory', id: number, name: string }> | null } | null> | null };
 
 export type UpdateEventMutationVariables = Exact<{
-  updateEventId: Scalars['Int'];
+  updateEventId: Scalars['Int']['input'];
   input: UpdateEventInput;
 }>;
 
@@ -1349,7 +1349,7 @@ export type ClearnotificationsMutationVariables = Exact<{ [key: string]: never; 
 export type ClearnotificationsMutation = { __typename?: 'Mutation', clearNotifications: boolean };
 
 export type DeleteNotificationMutationVariables = Exact<{
-  deleteNotificationId: Scalars['Int'];
+  deleteNotificationId: Scalars['Int']['input'];
 }>;
 
 
@@ -1368,14 +1368,14 @@ export type CreateOrganizationMutationVariables = Exact<{
 export type CreateOrganizationMutation = { __typename?: 'Mutation', createOrganization?: { __typename?: 'Organization', id: string, name?: string | null } | null };
 
 export type DeleteOrganizationMutationVariables = Exact<{
-  deleteOrganizationId: Scalars['Int'];
+  deleteOrganizationId: Scalars['Int']['input'];
 }>;
 
 
 export type DeleteOrganizationMutation = { __typename?: 'Mutation', deleteOrganization?: { __typename?: 'Organization', id: string, name?: string | null, deleted?: boolean | null, deletedAt?: any | null } | null };
 
 export type EditOrganizationsMutationVariables = Exact<{
-  updateOrganizationId: Scalars['Int'];
+  updateOrganizationId: Scalars['Int']['input'];
   data: UpdateOrganizationInput;
 }>;
 
@@ -1383,7 +1383,7 @@ export type EditOrganizationsMutationVariables = Exact<{
 export type EditOrganizationsMutation = { __typename?: 'Mutation', updateOrganization?: { __typename?: 'Organization', id: string, name?: string | null, createdAt?: any | null, updatedAt?: any | null } | null };
 
 export type ShowOrganizationQueryVariables = Exact<{
-  organizationId: Scalars['Int'];
+  organizationId: Scalars['Int']['input'];
 }>;
 
 
@@ -1400,39 +1400,39 @@ export type RolesListQueryVariables = Exact<{ [key: string]: never; }>;
 export type RolesListQuery = { __typename?: 'Query', roles?: Array<{ __typename?: 'Role', id: number, name?: string | null, description?: string | null, createdAt?: any | null, updatedAt?: any | null, deletedAt?: any | null } | null> | null };
 
 export type AssignManyStaffMutationVariables = Exact<{
-  eventId: Scalars['Int'];
-  userIds: Array<Scalars['Int']> | Scalars['Int'];
+  eventId: Scalars['Int']['input'];
+  userIds: Array<Scalars['Int']['input']> | Scalars['Int']['input'];
 }>;
 
 
 export type AssignManyStaffMutation = { __typename?: 'Mutation', assignManyStaff?: Array<{ __typename?: 'User', id: number, name?: string | null, last_name?: string | null, roles?: Array<{ __typename?: 'Role', id: number, name?: string | null }> | null } | null> | null };
 
 export type AssignStaffMutationVariables = Exact<{
-  userId: Scalars['Int'];
-  eventId: Scalars['Int'];
+  userId: Scalars['Int']['input'];
+  eventId: Scalars['Int']['input'];
 }>;
 
 
 export type AssignStaffMutation = { __typename?: 'Mutation', assignStaff?: { __typename?: 'User', id: number, name?: string | null, last_name?: string | null, roles?: Array<{ __typename?: 'Role', id: number, name?: string | null }> | null } | null };
 
 export type ShowAvailableEventStaffQueryVariables = Exact<{
-  eventId: Scalars['Int'];
+  eventId: Scalars['Int']['input'];
 }>;
 
 
 export type ShowAvailableEventStaffQuery = { __typename?: 'Query', availableStaff?: Array<{ __typename?: 'User', id: number, name?: string | null, last_name?: string | null, roles?: Array<{ __typename?: 'Role', id: number, name?: string | null }> | null } | null> | null };
 
 export type UnassignManyStaffMutationVariables = Exact<{
-  eventId: Scalars['Int'];
-  userIds: Array<Scalars['Int']> | Scalars['Int'];
+  eventId: Scalars['Int']['input'];
+  userIds: Array<Scalars['Int']['input']> | Scalars['Int']['input'];
 }>;
 
 
 export type UnassignManyStaffMutation = { __typename?: 'Mutation', unassignManyStaff?: Array<{ __typename?: 'User', id: number, name?: string | null, last_name?: string | null, email?: string | null, roles?: Array<{ __typename?: 'Role', id: number, name?: string | null }> | null } | null> | null };
 
 export type UnassignStaffMutationVariables = Exact<{
-  userId: Scalars['Int'];
-  eventId: Scalars['Int'];
+  userId: Scalars['Int']['input'];
+  eventId: Scalars['Int']['input'];
 }>;
 
 
