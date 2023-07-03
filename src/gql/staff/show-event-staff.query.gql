@@ -1,0 +1,11 @@
+query ShowAvailableEventStaff($eventId: Int!) {
+  availableStaff(eventId: $eventId) {
+    id
+    name
+    last_name
+    roles {
+      id
+      name
+    }
+  }
+}

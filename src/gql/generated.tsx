@@ -822,6 +822,7 @@ export type Query = {
   activityLogs: Array<ActivityLog>;
   application: Application;
   applications: Array<Application>;
+  availableStaff?: Maybe<Array<Maybe<User>>>;
   buyCart?: Maybe<BuyCart>;
   buyCarts: Array<BuyCart>;
   currentUser?: Maybe<User>;
@@ -885,6 +886,11 @@ export type QueryApplicationArgs = {
 
 export type QueryApplicationsArgs = {
   pagination?: InputMaybe<Pagination>;
+};
+
+
+export type QueryAvailableStaffArgs = {
+  eventId: Scalars['Int']['input'];
 };
 
 
@@ -1409,10 +1415,12 @@ export type AssignStaffMutationVariables = Exact<{
 
 export type AssignStaffMutation = { __typename?: 'Mutation', assignStaff?: { __typename?: 'User', id: number, name?: string | null, last_name?: string | null, roles?: Array<{ __typename?: 'Role', id: number, name?: string | null }> | null } | null };
 
-export type ShowStaffQueryVariables = Exact<{ [key: string]: never; }>;
+export type ShowAvailableEventStaffQueryVariables = Exact<{
+  eventId: Scalars['Int'];
+}>;
 
 
-export type ShowStaffQuery = { __typename?: 'Query', users?: Array<{ __typename?: 'User', id: number, name?: string | null, last_name?: string | null, roles?: Array<{ __typename?: 'Role', id: number, name?: string | null }> | null } | null> | null };
+export type ShowAvailableEventStaffQuery = { __typename?: 'Query', availableStaff?: Array<{ __typename?: 'User', id: number, name?: string | null, last_name?: string | null, roles?: Array<{ __typename?: 'Role', id: number, name?: string | null }> | null } | null> | null };
 
 export type UnassignManyStaffMutationVariables = Exact<{
   eventId: Scalars['Int'];
@@ -2276,9 +2284,9 @@ export function useAssignStaffMutation(baseOptions?: Apollo.MutationHookOptions<
 export type AssignStaffMutationHookResult = ReturnType<typeof useAssignStaffMutation>;
 export type AssignStaffMutationResult = Apollo.MutationResult<AssignStaffMutation>;
 export type AssignStaffMutationOptions = Apollo.BaseMutationOptions<AssignStaffMutation, AssignStaffMutationVariables>;
-export const ShowStaffDocument = gql`
-    query ShowStaff {
-  users {
+export const ShowAvailableEventStaffDocument = gql`
+    query ShowAvailableEventStaff($eventId: Int!) {
+  availableStaff(eventId: $eventId) {
     id
     name
     last_name
@@ -2291,31 +2299,32 @@ export const ShowStaffDocument = gql`
     `;
 
 /**
- * __useShowStaffQuery__
+ * __useShowAvailableEventStaffQuery__
  *
- * To run a query within a React component, call `useShowStaffQuery` and pass it any options that fit your needs.
- * When your component renders, `useShowStaffQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useShowAvailableEventStaffQuery` and pass it any options that fit your needs.
+ * When your component renders, `useShowAvailableEventStaffQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useShowStaffQuery({
+ * const { data, loading, error } = useShowAvailableEventStaffQuery({
  *   variables: {
+ *      eventId: // value for 'eventId'
  *   },
  * });
  */
-export function useShowStaffQuery(baseOptions?: Apollo.QueryHookOptions<ShowStaffQuery, ShowStaffQueryVariables>) {
+export function useShowAvailableEventStaffQuery(baseOptions: Apollo.QueryHookOptions<ShowAvailableEventStaffQuery, ShowAvailableEventStaffQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<ShowStaffQuery, ShowStaffQueryVariables>(ShowStaffDocument, options);
+        return Apollo.useQuery<ShowAvailableEventStaffQuery, ShowAvailableEventStaffQueryVariables>(ShowAvailableEventStaffDocument, options);
       }
-export function useShowStaffLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ShowStaffQuery, ShowStaffQueryVariables>) {
+export function useShowAvailableEventStaffLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ShowAvailableEventStaffQuery, ShowAvailableEventStaffQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<ShowStaffQuery, ShowStaffQueryVariables>(ShowStaffDocument, options);
+          return Apollo.useLazyQuery<ShowAvailableEventStaffQuery, ShowAvailableEventStaffQueryVariables>(ShowAvailableEventStaffDocument, options);
         }
-export type ShowStaffQueryHookResult = ReturnType<typeof useShowStaffQuery>;
-export type ShowStaffLazyQueryHookResult = ReturnType<typeof useShowStaffLazyQuery>;
-export type ShowStaffQueryResult = Apollo.QueryResult<ShowStaffQuery, ShowStaffQueryVariables>;
+export type ShowAvailableEventStaffQueryHookResult = ReturnType<typeof useShowAvailableEventStaffQuery>;
+export type ShowAvailableEventStaffLazyQueryHookResult = ReturnType<typeof useShowAvailableEventStaffLazyQuery>;
+export type ShowAvailableEventStaffQueryResult = Apollo.QueryResult<ShowAvailableEventStaffQuery, ShowAvailableEventStaffQueryVariables>;
 export const UnassignManyStaffDocument = gql`
     mutation UnassignManyStaff($eventId: Int!, $userIds: [Int!]!) {
   unassignManyStaff(eventId: $eventId, userIds: $userIds) {

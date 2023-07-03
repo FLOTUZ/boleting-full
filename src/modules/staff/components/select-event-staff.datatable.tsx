@@ -1,21 +1,41 @@
-import { User } from "@/gql/generated";
-import { Button, useColorMode } from "@chakra-ui/react";
+import { User, useAssignManyStaffMutation } from "@/gql/generated";
+import {
+  Button,
+  Center,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  useColorMode,
+  useDisclosure,
+  useToast,
+} from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useCallback, useMemo, useState } from "react";
 import DataTable, { TableColumn } from "react-data-table-component";
+import { IoPersonAdd } from "react-icons/io5";
 
 interface SelectStaffForEventProps {
   data: User[];
   loader: boolean;
+  refetch: () => void;
 }
 
 const SelectEventStaffDatatable = ({
   data,
   loader,
+  refetch,
 }: SelectStaffForEventProps) => {
   const router = useRouter();
-  const { id, staffId } = router.query;
+  const toast = useToast();
+  const { id } = router.query;
+
   const [selectedRows, setselectedRows] = useState<User[]>([]);
+  const [toggleCleared, setToggleCleared] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { colorMode } = useColorMode();
   const columns: TableColumn<User>[] = [
@@ -38,47 +58,109 @@ const SelectEventStaffDatatable = ({
     },
   ];
 
-  const handleRowSelected = useCallback(
-    (state: {
-      allSelected: boolean;
-      selectedCount: number;
-      selectedRows: User[];
-    }) => {
-      setselectedRows(state.selectedRows);
+  const [
+    assignManyStaf,
+    { data: dataAssignmanyStaff, loading: loadingAssignManyStaff },
+  ] = useAssignManyStaffMutation({
+    variables: {
+      // @ts-ignore
+      eventId: Number(id),
+      // @ts-ignore
+      userIds: selectedRows.map((row) => row.id),
     },
-    []
-  );
+    onCompleted() {
+      toast({
+        title: "Staff asignado",
+        description: "El staff ha sido asignado correctamente",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+        position: "top-right",
+      });
+      setselectedRows([]);
+      setToggleCleared(!toggleCleared);
+      onClose();
+      refetch();
+      router.back();
+    },
+    onError(error) {
+      toast({
+        title: "Error",
+        description: error.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "top-right",
+      });
+      setselectedRows([]);
+      setToggleCleared(!toggleCleared);
+      onClose();
+    },
+  });
 
   const contextActions = useMemo(() => {
-    const getSelectedRows = () => {
-      console.log(selectedRows);
-    };
-
     return (
-      <Button key="select-button" onClick={getSelectedRows} colorScheme="green">
-        Seleccionar
+      <Button key="select-button" onClick={onOpen} colorScheme="green">
+        <IoPersonAdd /> Asignar staff
       </Button>
     );
-  }, [selectedRows]);
+  }, [onOpen]);
+
   return (
-    <DataTable
-      title="Staff de tu organización"
-      columns={columns}
-      data={data}
-      theme={colorMode === "light" ? "light" : "dark"}
-      progressPending={loader}
-      progressComponent={<div>Loading...</div>}
-      selectableRows
-      pointerOnHover
-      persistTableHead
-      highlightOnHover
-      pagination
-      subHeader
-      subHeaderComponent={null}
-      noDataComponent={<div>No hay datos</div>}
-      contextActions={contextActions}
-      onSelectedRowsChange={(e) => handleRowSelected(e)}
-    />
+    <>
+      <DataTable
+        title="Usuarios de tu organización"
+        columns={columns}
+        data={data}
+        theme={colorMode === "light" ? "light" : "dark"}
+        progressPending={loader}
+        progressComponent={<div>Loading...</div>}
+        clearSelectedRows={toggleCleared}
+        selectableRows
+        pointerOnHover
+        persistTableHead
+        highlightOnHover
+        pagination
+        subHeader
+        subHeaderComponent={null}
+        noDataComponent={<div>No existen usuarios disponibles</div>}
+        contextActions={contextActions}
+        onSelectedRowsChange={(state) => setselectedRows(state.selectedRows)}
+      />
+
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Confirma tu asignación</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            Confirma que deseas asignar a los siguientes usuarios:
+            <Center>
+              <ul>
+                {selectedRows.map((row) => (
+                  <li key={row.id}>
+                    {row.name} {row.last_name}
+                  </li>
+                ))}
+              </ul>
+            </Center>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme="red" mr={3} onClick={onClose}>
+              Cancelar
+            </Button>
+            <Button
+              colorScheme="green"
+              isLoading={loadingAssignManyStaff}
+              onClick={() => assignManyStaf()}
+            >
+              Aceptar
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
   );
 };
 

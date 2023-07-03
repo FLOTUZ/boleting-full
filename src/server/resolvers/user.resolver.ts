@@ -26,6 +26,14 @@ export const UserResolver = {
       if (!id_user) return null;
       return await UserService.currentUser(id_user);
     },
+
+    availableStaff: async (
+      _: any,
+      { eventId }: { eventId: number },
+      { id_organization }: IGraphqlContext
+    ) => {
+      return await UserService.availableStaff(eventId, id_organization!);
+    },
   },
 
   Mutation: {

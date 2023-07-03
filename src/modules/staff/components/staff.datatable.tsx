@@ -1,10 +1,15 @@
 import DataTable, { TableColumn } from "react-data-table-component";
-import { User } from "@/gql/generated";
+import {
+  User,
+  useUnassignManyStaffMutation,
+  useUnassignStaffMutation,
+} from "@/gql/generated";
 import { useRouter } from "next/router";
 import {
   Avatar,
   Box,
   Button,
+  Center,
   HStack,
   Modal,
   ModalBody,
@@ -17,48 +22,90 @@ import {
   Tooltip,
   useColorMode,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 
-import { AiFillEdit } from "react-icons/ai";
 import { IoPersonRemove } from "react-icons/io5";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 interface EventStaffDatatableProps {
+  columns: TableColumn<User>[];
   data: User[];
   loader: boolean;
+  refetch?: () => void;
 }
 
-const EventStaffDatatable = ({ data, loader }: EventStaffDatatableProps) => {
+const EventStaffDatatable = ({
+  columns,
+  data,
+  loader,
+  refetch,
+}: EventStaffDatatableProps) => {
   const { colorMode } = useColorMode();
+  const toast = useToast();
 
   const router = useRouter();
-  const { id, staffId } = router.query;
-
-  const [staff, setStaff] = useState<User[]>([]);
+  const { id: eventId } = router.query;
 
   const [selectedRows, setSelectedRows] = useState<User[]>([]);
   const [toggleCleared, setToggleCleared] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const columns: TableColumn<User>[] = [
-    {
-      name: "Nombre",
-      selector: (row) => row.name!,
-      sortable: true,
-    },
-    {
-      name: "Apellido",
-      selector: (row) => row.last_name!,
-      sortable: true,
-    },
-    {
-      name: "Rol",
-      selector: (row) => {
-        const role = row.roles?.map((role) => role.name).join(", ");
-        return role ? role : "Sin rol";
+  const [unassignStaffMutation, { loading: unassingStaffLoader }] =
+    useUnassignStaffMutation({
+      onCompleted() {
+        toast({
+          title: "Staff desasignado",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+        refetch && refetch();
       },
-    },
-  ];
+      onError(errors) {
+        toast({
+          title: "Error al desasignar staff",
+          description: JSON.stringify(errors),
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+      },
+    });
+
+  const [unassignManyStaff, { loading: unassignManyStaffLoader }] =
+    useUnassignManyStaffMutation({
+      variables: {
+        // @ts-ignore
+        eventId: Number(eventId),
+        // @ts-ignore
+        userIds: selectedRows.map((row) => row.id),
+      },
+      onCompleted() {
+        toast({
+          title: "Staff desasignado",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+        refetch && refetch();
+        setToggleCleared(!toggleCleared);
+        setSelectedRows([]);
+        onClose();
+      },
+      onError(errors) {
+        toast({
+          title: "Error al desasignar staff",
+          description: JSON.stringify(errors),
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+        setToggleCleared(!toggleCleared);
+        setSelectedRows([]);
+        onClose();
+      },
+    });
 
   const contextActions = useMemo(() => {
     return (
@@ -68,36 +115,12 @@ const EventStaffDatatable = ({ data, loader }: EventStaffDatatableProps) => {
     );
   }, [onOpen]);
 
-  const handleRowSelected = useCallback(
-    (state: {
-      allSelected: boolean;
-      selectedCount: number;
-      selectedRows: User[];
-    }) => {
-      setSelectedRows(state.selectedRows);
-    },
-    []
-  );
-
-  const handleDelete = () => {
-    setStaff((prev) => prev.filter((staff) => !selectedRows.includes(staff)));
-    setSelectedRows([]);
-    setToggleCleared(!toggleCleared);
-    onClose();
-  };
-
-  useEffect(() => {
-    if (data) {
-      setStaff(data);
-    }
-  }, [data]);
-
   return (
     <Box>
       <DataTable
         title="Staff de tu evento"
         columns={columns}
-        data={staff}
+        data={data}
         theme={colorMode === "light" ? "light" : "dark"}
         progressPending={loader}
         progressComponent={<div>Loading...</div>}
@@ -108,7 +131,7 @@ const EventStaffDatatable = ({ data, loader }: EventStaffDatatableProps) => {
         subHeader
         selectableRows
         contextActions={contextActions}
-        onSelectedRowsChange={(state) => handleRowSelected(state)}
+        onSelectedRowsChange={(state) => setSelectedRows(state.selectedRows)}
         clearSelectedRows={toggleCleared}
         expandableRows
         expandOnRowClicked
@@ -124,13 +147,21 @@ const EventStaffDatatable = ({ data, loader }: EventStaffDatatableProps) => {
                 "Sin rol"}
             </Text>
             <HStack mt={4}>
-              <Tooltip label="Editar">
-                <Button onClick={() => console.log(row.data)}>
-                  <AiFillEdit />
-                </Button>
-              </Tooltip>
               <Tooltip label="Quitar del evento">
-                <Button colorScheme="red" onClick={() => console.log(row.data)}>
+                <Button
+                  colorScheme="red"
+                  isLoading={unassingStaffLoader}
+                  onClick={() =>
+                    unassignStaffMutation({
+                      variables: {
+                        // @ts-ignore
+                        eventId: parseInt(eventId as string),
+                        // @ts-ignore
+                        userId: row.data.id,
+                      },
+                    })
+                  }
+                >
                   <IoPersonRemove />
                 </Button>
               </Tooltip>
@@ -147,21 +178,27 @@ const EventStaffDatatable = ({ data, loader }: EventStaffDatatableProps) => {
           <ModalCloseButton />
           <ModalBody>
             Confirma que deseas desasignar a los siguientes usuarios:
-            <ul>
-              {selectedRows.map((row) => (
-                <li key={row.id}>
-                  {row.name} {row.last_name}
-                </li>
-              ))}
-            </ul>
+            <Center>
+              <ul>
+                {selectedRows.map((row) => (
+                  <li key={row.id}>
+                    {row.name} {row.last_name}
+                  </li>
+                ))}
+              </ul>
+            </Center>
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
+            <Button colorScheme="red" mr={3} onClick={onClose}>
               Cancelar
             </Button>
-            <Button variant="ghost" onClick={handleDelete}>
-              Desasignar
+            <Button
+              colorScheme="green"
+              isLoading={unassignManyStaffLoader}
+              onClick={() => unassignManyStaff()}
+            >
+              Aceptar
             </Button>
           </ModalFooter>
         </ModalContent>

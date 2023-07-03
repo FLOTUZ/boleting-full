@@ -14,7 +14,7 @@ const CreateEventStaffRoute = () => {
 
   return (
     <DesktopLayoutComponent
-      title={"Selecciona Staff"}
+      title={"Asignación de Staff"}
       breadCrumbs={[
         {
           label: "Eventos",
@@ -34,7 +34,7 @@ const CreateEventStaffRoute = () => {
         },
       ]}
     >
-      <CreateStaffView eventId={Number(id)} />
+      <CreateStaffView />
     </DesktopLayoutComponent>
   );
 };

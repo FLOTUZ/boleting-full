@@ -34,6 +34,7 @@ export const UserSchema = gql`
     users(pagination: Pagination): [User]
     user(id: Int!): User
     currentUser: User
+    availableStaff(eventId: Int!): [User]
   }
 
   type Mutation {

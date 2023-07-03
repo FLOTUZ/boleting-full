@@ -1,46 +1,53 @@
-import { User, useShowStaffQuery } from "@/gql/generated";
-import { CreateUserSchema } from "@/validations";
-import { Box, Heading } from "@chakra-ui/react";
-import { useFormik } from "formik";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { User, useShowAvailableEventStaffQuery } from "@/gql/generated";
+
 import SelectEventStaffDatatable from "../components/select-event-staff.datatable";
+import ProgressLoaderComponent from "@/components/loaders/progress-loader.component";
+import IntroAnimationComponent from "@/components/animations/intro-animation.component";
 
-interface CreateStaffViewProps {
-  eventId: number;
-}
+import { Box, Button, Heading } from "@chakra-ui/react";
+import { BiRefresh } from "react-icons/bi";
 
-const CreateStaffView = ({ eventId }: CreateStaffViewProps) => {
+const CreateStaffView = () => {
+  const router = useRouter();
+  const { id } = router.query;
+
   const [staffList, setStaffList] = useState<User[]>([]);
-  const { data, loading } = useShowStaffQuery({
+  const { data, loading, refetch } = useShowAvailableEventStaffQuery({
+    variables: {
+      // @ts-ignore
+      eventId: Number(id),
+    },
     onError(error) {
       console.log(error);
     },
   });
 
-  const form = useFormik({
-    validationSchema: CreateUserSchema,
-    initialValues: {
-      name: "",
-    },
-    onSubmit: (values) => {
-      console.log(values);
-    },
-  });
-
   useEffect(() => {
-    if (data?.users) {
-      setStaffList(data.users as User[]);
+    if (data?.availableStaff) {
+      setStaffList(data.availableStaff as User[]);
     }
   }, [data]);
 
-  return (
-    <Box p={4}>
-      <Heading mb={4} size="lg">
-        Seleccione staff
-      </Heading>
+  if (loading) {
+    return <ProgressLoaderComponent />;
+  }
 
-      <SelectEventStaffDatatable loader={loading} data={staffList} />
-    </Box>
+  return (
+    <IntroAnimationComponent data={staffList}>
+      <Box p={4}>
+        <Button mb={4} onClick={() => refetch()}>
+          <BiRefresh size={20} />
+        </Button>
+
+        <SelectEventStaffDatatable
+          loader={loading}
+          data={staffList}
+          refetch={refetch}
+        />
+      </Box>
+    </IntroAnimationComponent>
   );
 };
 

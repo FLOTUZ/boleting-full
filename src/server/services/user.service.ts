@@ -58,6 +58,15 @@ export const UserService = {
     }
   },
 
+  async availableStaff(eventId: number, organizationId: number) {
+    return await prisma.user.findMany({
+      where: {
+        organizationId: organizationId,
+        staff_of_events: { none: { id: eventId } },
+      },
+    });
+  },
+
   async assignStaff(userId: number, eventId: number, organizationId: number) {
     const users = await prisma.user.findUnique({
       where: { id: userId },
