@@ -21,9 +21,6 @@ const ShowEventStaffView = () => {
 
   const [getStaff, { loading, refetch }] = useShowEventStaffLazyQuery({
     variables: {
-      // i dont know why but ts is not recognizing eventId as a number
-      // so i have to use ts-ignore
-      // @ts-ignore
       eventId: Number(id),
     },
     onCompleted(data) {

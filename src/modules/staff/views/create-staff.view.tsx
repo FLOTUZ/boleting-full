@@ -16,7 +16,6 @@ const CreateStaffView = () => {
   const [staffList, setStaffList] = useState<User[]>([]);
   const { data, loading, refetch } = useShowAvailableEventStaffQuery({
     variables: {
-      // @ts-ignore
       eventId: Number(id),
     },
     onError(error) {

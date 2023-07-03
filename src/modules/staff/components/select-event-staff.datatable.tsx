@@ -63,9 +63,7 @@ const SelectEventStaffDatatable = ({
     { data: dataAssignmanyStaff, loading: loadingAssignManyStaff },
   ] = useAssignManyStaffMutation({
     variables: {
-      // @ts-ignore
       eventId: Number(id),
-      // @ts-ignore
       userIds: selectedRows.map((row) => row.id),
     },
     onCompleted() {

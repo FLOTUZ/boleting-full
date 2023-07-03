@@ -76,9 +76,7 @@ const EventStaffDatatable = ({
   const [unassignManyStaff, { loading: unassignManyStaffLoader }] =
     useUnassignManyStaffMutation({
       variables: {
-        // @ts-ignore
         eventId: Number(eventId),
-        // @ts-ignore
         userIds: selectedRows.map((row) => row.id),
       },
       onCompleted() {
@@ -154,9 +152,7 @@ const EventStaffDatatable = ({
                   onClick={() =>
                     unassignStaffMutation({
                       variables: {
-                        // @ts-ignore
                         eventId: parseInt(eventId as string),
-                        // @ts-ignore
                         userId: row.data.id,
                       },
                     })
