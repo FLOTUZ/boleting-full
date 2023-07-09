@@ -1,0 +1,11 @@
+mutation AssignManyStaff($eventId: Int!, $userIds: [Int!]!) {
+  assignManyStaff(eventId: $eventId, userIds: $userIds) {
+    id
+    name
+    last_name
+    roles {
+      id
+      name
+    }
+  }
+}

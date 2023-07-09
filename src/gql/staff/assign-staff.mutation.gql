@@ -1,0 +1,11 @@
+mutation AssignStaff($userId: Int!, $eventId: Int!) {
+  assignStaff(userId: $userId, eventId: $eventId) {
+    id
+    name
+    last_name
+    roles {
+      id
+      name
+    }
+  }
+}

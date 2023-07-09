@@ -56,6 +56,7 @@ export const EventsSchema = gql`
     organization: Organization!
     access_types: [AccessType!]
     owner_types: [OwnerType!]
+    staff: [User!]
   }
 
   type Query {

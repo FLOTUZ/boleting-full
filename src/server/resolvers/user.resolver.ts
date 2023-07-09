@@ -12,13 +12,27 @@ import { UnauthorizedError } from "../utils";
 
 export const UserResolver = {
   Query: {
-    users: async (_: any, { pagination }: Args, __: IGraphqlContext) => {
-      return await UserService.getAllUsers(pagination);
+    users: async (
+      _: any,
+      { pagination }: Args,
+      { id_organization }: IGraphqlContext
+    ) => {
+      if (id_organization === null)
+        throw new UnauthorizedError("Unauthorized organization");
+      return await UserService.getAllUsers(pagination, id_organization!);
     },
 
     currentUser: async (_: any, __: User, { id_user }: IGraphqlContext) => {
       if (!id_user) return null;
       return await UserService.currentUser(id_user);
+    },
+
+    availableStaff: async (
+      _: any,
+      { eventId }: { eventId: number },
+      { id_organization }: IGraphqlContext
+    ) => {
+      return await UserService.availableStaff(eventId, id_organization!);
     },
   },
 
@@ -47,6 +61,42 @@ export const UserResolver = {
 
     deleteUser: async (_: any, { id }: User, __: IGraphqlContext) => {
       return await UserService.deleteUser(id);
+    },
+
+    assignStaff: async (
+      _: any,
+      { userId, eventId }: { userId: number; eventId: number },
+      { id_organization }: IGraphqlContext
+    ) => {
+      return await UserService.assignStaff(userId, eventId, id_organization!);
+    },
+
+    assignManyStaff: async (
+      _: any,
+      { eventId, userIds }: { eventId: number; userIds: number[] },
+      { id_organization }: IGraphqlContext
+    ) => {
+      return await UserService.assignManyStaff(
+        eventId,
+        userIds,
+        id_organization!
+      );
+    },
+
+    unassignStaff: async (
+      _: any,
+      { userId, eventId }: { userId: number; eventId: number },
+      __: IGraphqlContext
+    ) => {
+      return await UserService.unassignStaff(userId, eventId);
+    },
+
+    unassignManyStaff: async (
+      _: any,
+      { eventId, userIds }: { eventId: number; userIds: number[] },
+      __: IGraphqlContext
+    ) => {
+      return await UserService.unassignManyStaff(eventId, userIds);
     },
   },
 

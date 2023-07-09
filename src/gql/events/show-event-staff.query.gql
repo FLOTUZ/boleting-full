@@ -1,0 +1,13 @@
+query ShowEventStaff($eventId: Int!) {
+  event(id: $eventId) {
+    staff {
+      id
+      name
+      last_name
+      createdAt
+      roles {
+        name
+      }
+    }
+  }
+}
