@@ -43,19 +43,15 @@ const EditEventForm = ({ event }: EditEventForm) => {
     EventSubCategory[]
   >([]);
 
-  const { loading: loadingCategoriesList } = useEventCategoriesQuery({
-    onError(error) {
-      console.log(error);
-    },
-    onCompleted(data) {
-      setCategories(data.eventCategories as EventCategory[]);
-    },
-  });
+  const { data: eventCategoriesData, loading: loadingCategoriesList } =
+    useEventCategoriesQuery({
+      onError(error) {
+        console.log(error);
+      },
+    });
 
   const [updateEvent, { loading: loadingUpdateEvent }] = useUpdateEventMutation(
-    {
-      fetchPolicy: "no-cache",
-    }
+    { fetchPolicy: "no-cache" }
   );
 
   const form = useFormik({
@@ -122,7 +118,11 @@ const EditEventForm = ({ event }: EditEventForm) => {
         ...(event.sub_categories as EventSubCategory[]),
       ]);
     }
-  }, [event]);
+
+    if (eventCategoriesData?.eventCategories) {
+      setCategories(eventCategoriesData?.eventCategories as EventCategory[]);
+    }
+  }, [event, eventCategoriesData]);
 
   if (loadingCategoriesList) {
     return <ProgressLoaderComponent />;
@@ -166,48 +166,53 @@ const EditEventForm = ({ event }: EditEventForm) => {
 
         <FormLabel htmlFor="categories">Categorias:</FormLabel>
         <Box p={4}>
-          {categories.map((category, index) => (
-            <Checkbox
-              key={index}
-              ps={2}
-              value={category.id!}
-              isChecked={selectedCategories.includes(category.id!)}
-              onChange={(e) => {
-                if (e.target.checked) {
-                  // Check category
-                  setSelectedCategories([...selectedCategories, category.id!]);
+          {categories != null &&
+            categories.map((category, index) => (
+              <Checkbox
+                key={index}
+                ps={2}
+                value={category.id!}
+                isChecked={selectedCategories.includes(category.id!)}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    // Check category
+                    setSelectedCategories([
+                      ...selectedCategories,
+                      category.id!,
+                    ]);
 
-                  // Add sub categories of the category
-                  setSubCategories([
-                    ...subCategories,
-                    ...(category.sub_categories! as EventSubCategory[]),
-                  ]);
-                } else {
-                  // Uncheck category
-                  setSelectedCategories(
-                    selectedCategories.filter(
-                      (selectedCategory) => selectedCategory !== category.id!
-                    )
-                  );
+                    // Add sub categories of the category
+                    setSubCategories([
+                      ...subCategories,
+                      ...(category.sub_categories! as EventSubCategory[]),
+                    ]);
+                  } else {
+                    // Uncheck category
+                    setSelectedCategories(
+                      selectedCategories.filter(
+                        (selectedCategory) => selectedCategory !== category.id!
+                      )
+                    );
 
-                  // Unmount sub categories where parent_event_categoryId is equal to category.id
-                  setSubCategories(
-                    subCategories.filter(
-                      (subCategory) =>
-                        subCategory.parent_event_categoryId !== category.id!
-                    )
-                  );
-                }
-              }}
-            >
-              {category.name}
-            </Checkbox>
-          ))}
+                    // Unmount sub categories where parent_event_categoryId is equal to category.id
+                    setSubCategories(
+                      subCategories.filter(
+                        (subCategory) =>
+                          subCategory.parent_event_categoryId !== category.id!
+                      )
+                    );
+                  }
+                }}
+              >
+                {category.name}
+              </Checkbox>
+            ))}
         </Box>
 
         <FormLabel htmlFor="event_sub_categories">Sub categorias:</FormLabel>
 
-        {event?.sub_categories?.length == 0 ? (
+        {event?.sub_categories?.length == 0 &&
+        selectedCategories.length == 0 ? (
           <Box p={2} bgColor={"brand.semiTransparentContainer"}>
             <Text>Para ver las subcategorias, selecciona una categoria</Text>
           </Box>
