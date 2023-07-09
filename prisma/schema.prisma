@@ -205,7 +205,7 @@ model Event {
 
 model EventSocialMedia {
   id          Int       @id @unique @default(autoincrement())
-  name        String    @unique @db.VarChar(20)
+  name        String    @db.VarChar(20)
   description String?   @db.VarChar(255)
   url         String    @db.VarChar(255)
   eventId     Int

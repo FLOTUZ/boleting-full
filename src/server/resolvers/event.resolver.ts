@@ -17,8 +17,12 @@ import {
 
 export const EventResolver = {
   Query: {
-    events: async (_: any, { pagination }: Args, __: IGraphqlContext) => {
-      return await EventService.events(pagination);
+    events: async (
+      _: any,
+      { pagination }: Args,
+      { id_organization }: IGraphqlContext
+    ) => {
+      return await EventService.events(pagination, id_organization!);
     },
 
     event: async (_: any, { id }: { id: number }, __: IGraphqlContext) => {

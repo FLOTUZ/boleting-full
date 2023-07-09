@@ -1,3 +1,4 @@
+import { faker } from "@faker-js/faker";
 import { PrismaClient } from "@prisma/client";
 import * as argon2 from "argon2";
 
@@ -10,13 +11,19 @@ async function main() {
         name: "ADMIN",
       },
       {
-        name: "DEVELOPER",
+        name: "DESARROLLADOR",
       },
       {
         name: "MANAGER",
       },
       {
-        name: "ATTENDEE",
+        name: "ASISTENTE",
+      },
+      {
+        name: "CAJERO",
+      },
+      {
+        name: "SPONSOR",
       },
     ],
   });
@@ -24,6 +31,12 @@ async function main() {
   await prisma.organization.create({
     data: {
       name: "The Core Events",
+    },
+  });
+
+  await prisma.organization.create({
+    data: {
+      name: "Test Organization",
     },
   });
 
@@ -84,23 +97,32 @@ async function main() {
     },
   });
 
-  await prisma.user.create({
+  await prisma.userClient.create({
     data: {
       name: "Asistente",
-      last_name: "Attendee",
+      last_name: "Asistente",
       email: "asistente@thecore.events",
       password: await argon2.hash("asistente"),
-      roles: {
+      role: {
         connect: {
-          name: "ATTENDEE",
-        },
-      },
-      organization: {
-        connect: {
-          name: "The Core Events",
+          name: "ASISTENTE",
         },
       },
     },
+  });
+
+  const fakeUserClients = Array.from({ length: 100 }).map(async () => {
+    return {
+      name: faker.person.firstName(),
+      last_name: faker.person.lastName(),
+      email: faker.internet.email(),
+      password: await argon2.hash("asistente"),
+      roleId: roles.find((role) => role.name === "ASISTENTE")?.id!,
+    };
+  });
+
+  await prisma.userClient.createMany({
+    data: await Promise.all(fakeUserClients),
   });
 
   await prisma.eventCategory.createMany({
@@ -181,6 +203,59 @@ async function main() {
         create: {
           name: "Facebook",
           url: "https://www.facebook.com/tomorrowland/",
+        },
+      },
+    },
+  });
+
+  await prisma.event.create({
+    data: {
+      name: "Electric Daisy Carnival",
+      description:
+        "Electric Daisy Carnival es un festival de música electrónica",
+      organizationId: 1,
+      event_location: "CDMX, México",
+      start_date: new Date("2024-02-26"),
+      end_date: new Date("2024-02-28"),
+      start_time: "14:00",
+      end_time: "23:00",
+      event_logo_url:
+        "https://d3vhc53cl8e8km.cloudfront.net/hello-staging/wp-content/uploads/2017/11/12181722/edc_2020_web_our_world_tile_1080x1080_r01v2.jpg",
+      event_banner_url:
+        "https://majomontemayor.com/wp-content/uploads/2019/08/EDCLV2019_0517_193353-1603_CCW.jpg",
+      event_location_url: "https://goo.gl/maps/G2JymRFzCGzKbgeF7",
+      re_entry: true,
+      userId: 1,
+      event_social_media: {
+        create: {
+          name: "Facebook",
+          url: "https://www.facebook.com/ElectricDaisyCarnivalMexico",
+        },
+      },
+    },
+  });
+
+  await prisma.event.create({
+    data: {
+      name: "Blackpink",
+      description: "Blackpink es un grupo de K-pop",
+      organizationId: 2,
+      event_location: "CDMX, México",
+      start_date: new Date("2021-12-02"),
+      end_date: new Date("2021-12-02"),
+      start_time: "20:00",
+      end_time: "23:00",
+      event_logo_url:
+        "https://i.pinimg.com/originals/7e/82/80/7e8280cc0fd26eeb00d17821a4e6f0e2.jpg",
+      event_banner_url:
+        "https://kpopvip.com/wp-content/uploads/2022/04/Blackpink-este-2022-1024x650.jpg",
+      event_location_url: "https://goo.gl/maps/G2JymRFzCGzKbgeF7",
+      re_entry: false,
+      userId: 1,
+      event_social_media: {
+        create: {
+          name: "Facebook",
+          url: "https://www.facebook.com/BLACKPINKOFFICIAL",
         },
       },
     },

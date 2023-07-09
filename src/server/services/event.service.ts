@@ -8,11 +8,11 @@ import { Event } from "@prisma/client";
 // Service for Event model
 //
 export const EventService = {
-  async events(pagination?: Pagination) {
+  async events(pagination?: Pagination, id_organization?: number) {
     return await prisma.event.findMany({
       skip: pagination?.skip,
       take: pagination?.take,
-      where: { deleted: false },
+      where: { deleted: false, organizationId: id_organization },
     });
   },
 
