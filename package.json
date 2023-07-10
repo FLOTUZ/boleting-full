@@ -41,7 +41,7 @@
     "react": "18.2.0",
     "react-data-table-component": "^7.5.3",
     "react-dom": "18.2.0",
-    "react-icons": "^4.9.0",
+    "react-icons": "^4.10.1",
     "styled-components": "^5.3.11",
     "yup": "^1.2.0"
   },
