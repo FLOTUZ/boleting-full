@@ -247,7 +247,6 @@ model AccessType {
   name                  String       @unique @db.VarChar(15)
   description           String?      @db.VarChar(255)
   enter_and_exit_option Boolean?     @default(false)
-  userId                Int
   createdAt             DateTime     @default(now())
   updatedAt             DateTime     @updatedAt
   deleted               Boolean      @default(false)
