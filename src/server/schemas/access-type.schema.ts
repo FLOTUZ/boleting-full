@@ -39,12 +39,13 @@ export const AccessTypeSchema = gql`
 
   type Query {
     accessTypes(pagination: Pagination): [AccessType!]!
-    accessType(id: ID!): AccessType!
+    accessType(id: Int!): AccessType!
+    accessTypesByEventId(eventId: Int!): [AccessType!]!
   }
 
   type Mutation {
     createAccessType(data: CreateAccessTypeInput!): AccessType!
-    updateAccessType(id: ID!, data: UpdateAccessTypeInput!): AccessType!
-    deleteAccessType(id: ID!): AccessType!
+    updateAccessType(id: Int!, data: UpdateAccessTypeInput!): AccessType!
+    deleteAccessType(id: Int!): AccessType!
   }
 `;

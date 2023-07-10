@@ -500,7 +500,7 @@ export type MutationCreateUserClientArgs = {
 
 
 export type MutationDeleteAccessTypeArgs = {
-  id: Scalars['ID']['input'];
+  id: Scalars['Int']['input'];
 };
 
 
@@ -608,7 +608,7 @@ export type MutationUnassignStaffArgs = {
 
 export type MutationUpdateAccessTypeArgs = {
   data: UpdateAccessTypeInput;
-  id: Scalars['ID']['input'];
+  id: Scalars['Int']['input'];
 };
 
 
@@ -818,6 +818,7 @@ export type Query = {
   __typename?: 'Query';
   accessType: AccessType;
   accessTypes: Array<AccessType>;
+  accessTypesByEventId: Array<AccessType>;
   activityLog: ActivityLog;
   activityLogs: Array<ActivityLog>;
   application: Application;
@@ -860,12 +861,17 @@ export type Query = {
 
 
 export type QueryAccessTypeArgs = {
-  id: Scalars['ID']['input'];
+  id: Scalars['Int']['input'];
 };
 
 
 export type QueryAccessTypesArgs = {
   pagination?: InputMaybe<Pagination>;
+};
+
+
+export type QueryAccessTypesByEventIdArgs = {
+  eventId: Scalars['Int']['input'];
 };
 
 
@@ -1287,6 +1293,13 @@ export type UserClient = {
   user_client_activity?: Maybe<Array<ActivityLog>>;
 };
 
+export type AccessTypesByEventQueryVariables = Exact<{
+  eventId: Scalars['Int']['input'];
+}>;
+
+
+export type AccessTypesByEventQuery = { __typename?: 'Query', accessTypesByEventId: Array<{ __typename?: 'AccessType', id: string, name: string, description: string, enter_and_exit_option: boolean, createdAt: any, updatedAt: any }> };
+
 export type LoginMutationVariables = Exact<{
   data: LoginInput;
 }>;
@@ -1451,6 +1464,46 @@ export type GetUserQueryVariables = Exact<{ [key: string]: never; }>;
 export type GetUserQuery = { __typename?: 'Query', users?: Array<{ __typename?: 'User', id: number, name?: string | null } | null> | null };
 
 
+export const AccessTypesByEventDocument = gql`
+    query AccessTypesByEvent($eventId: Int!) {
+  accessTypesByEventId(eventId: $eventId) {
+    id
+    name
+    description
+    enter_and_exit_option
+    createdAt
+    updatedAt
+  }
+}
+    `;
+
+/**
+ * __useAccessTypesByEventQuery__
+ *
+ * To run a query within a React component, call `useAccessTypesByEventQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAccessTypesByEventQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAccessTypesByEventQuery({
+ *   variables: {
+ *      eventId: // value for 'eventId'
+ *   },
+ * });
+ */
+export function useAccessTypesByEventQuery(baseOptions: Apollo.QueryHookOptions<AccessTypesByEventQuery, AccessTypesByEventQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AccessTypesByEventQuery, AccessTypesByEventQueryVariables>(AccessTypesByEventDocument, options);
+      }
+export function useAccessTypesByEventLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AccessTypesByEventQuery, AccessTypesByEventQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AccessTypesByEventQuery, AccessTypesByEventQueryVariables>(AccessTypesByEventDocument, options);
+        }
+export type AccessTypesByEventQueryHookResult = ReturnType<typeof useAccessTypesByEventQuery>;
+export type AccessTypesByEventLazyQueryHookResult = ReturnType<typeof useAccessTypesByEventLazyQuery>;
+export type AccessTypesByEventQueryResult = Apollo.QueryResult<AccessTypesByEventQuery, AccessTypesByEventQueryVariables>;
 export const LoginDocument = gql`
     mutation Login($data: LoginInput!) {
   login(data: $data) {

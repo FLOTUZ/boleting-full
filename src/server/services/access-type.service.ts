@@ -8,10 +8,10 @@ import { AccessType } from "@prisma/client";
 // Service for AccessType model
 //
 export const AccessTypeService = {
-  async accessTypes(pagination?: Pagination) {
+  async accessTypes(pagination?: Pagination, organizationId?: number) {
     return prisma.accessType.findMany({
       ...pagination,
-      where: { deleted: false },
+      where: { deleted: false, organizationId },
     });
   },
 
