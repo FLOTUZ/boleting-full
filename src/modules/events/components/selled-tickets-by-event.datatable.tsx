@@ -1,10 +1,8 @@
 import { Ticket } from "@/gql/generated";
 import { Button, useColorMode } from "@chakra-ui/react";
 import DataTable, { TableColumn } from "react-data-table-component";
-import { TbReload } from "react-icons/tb";
-
+import { IoReload } from "react-icons/io5";
 interface TicketsDatatable {
-  columns: TableColumn<Ticket>[];
   data: Ticket[];
   progressPending: boolean;
   refetch: () => void;
@@ -13,11 +11,39 @@ interface TicketsDatatable {
 const SelledTicketsByEventDatatable = (props: TicketsDatatable) => {
   const { colorMode } = useColorMode();
 
+  const columns: TableColumn<Ticket>[] = [
+    {
+      name: "ID",
+      selector: (row) => row.id,
+      sortable: true,
+    },
+    {
+      name: "Serial",
+      selector: (row) => row.serial_number,
+      sortable: true,
+    },
+    {
+      name: "Precio",
+      selector: (row) => row.price,
+      sortable: true,
+    },
+    {
+      name: "Fecha de venta",
+      selector: (row) => row.createdAt,
+      sortable: true,
+    },
+    {
+      name: "Usado",
+      selector: (row) => (row.is_used ? "Si" : "No"),
+    },
+  ];
+
   return (
     <DataTable
       {...props}
+      columns={columns}
       theme={colorMode === "light" ? "light" : "dark"}
-      title="Tickets vendidos"
+      title={`Tickets vendidos`}
       progressComponent={<div>Cargando entradas...</div>}
       selectableRows
       pointerOnHover
@@ -27,7 +53,7 @@ const SelledTicketsByEventDatatable = (props: TicketsDatatable) => {
       subHeader
       subHeaderComponent={
         <Button onClick={() => props.refetch()}>
-          <TbReload />
+          <IoReload />
         </Button>
       }
       noDataComponent={<div>Aún no hay tickets vendidos</div>}

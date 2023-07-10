@@ -35,33 +35,6 @@ const ShowEventView = ({ eventId }: { eventId: number }) => {
     fetchPolicy: "network-only",
   });
 
-  const columns: TableColumn<Ticket>[] = [
-    {
-      name: "ID",
-      selector: (row) => row.id,
-      sortable: true,
-    },
-    {
-      name: "Serial",
-      selector: (row) => row.serial_number,
-      sortable: true,
-    },
-    {
-      name: "Precio",
-      selector: (row) => row.price,
-      sortable: true,
-    },
-    {
-      name: "Fecha de venta",
-      selector: (row) => row.createdAt,
-      sortable: true,
-    },
-    {
-      name: "Usado",
-      selector: (row) => (row.is_used ? "Si" : "No"),
-    },
-  ];
-
   useEffect(() => {
     if (data) {
       setEvent(data.event as Event);
@@ -128,7 +101,6 @@ const ShowEventView = ({ eventId }: { eventId: number }) => {
         </Card>
 
         <SelledTicketsByEventDatatable
-          columns={columns}
           progressPending={selledByEventLoader}
           data={selledTickets}
           refetch={refetchSelledByEvent}
