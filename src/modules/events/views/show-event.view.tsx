@@ -18,7 +18,9 @@ import {
   Image,
   Text,
 } from "@chakra-ui/react";
-import { EditEventPath, ShowEventStaffIdPath } from "@/routes";
+import { AccessTypesPath, EditEventPath, ShowEventStaffIdPath } from "@/routes";
+import { IoTicketSharp } from "react-icons/io5";
+import { PiUsersFourFill } from "react-icons/pi";
 
 const ShowEventView = ({ eventId }: { eventId: number }) => {
   const [event, setEvent] = useState<Event>();
@@ -55,6 +57,18 @@ const ShowEventView = ({ eventId }: { eventId: number }) => {
         <Link passHref href={ShowEventStaffIdPath(event?.id as number)}>
           <Button mb={4} ml={4}>
             Staff
+            <Box pl={2}>
+              <PiUsersFourFill />
+            </Box>
+          </Button>
+        </Link>
+
+        <Link href={AccessTypesPath(event?.id as number)}>
+          <Button mb={4} ml={4}>
+            Tipos de acceso
+            <Box pl={2}>
+              <IoTicketSharp />
+            </Box>
           </Button>
         </Link>
 

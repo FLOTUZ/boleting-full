@@ -14,7 +14,6 @@ export const CreateEventPath = "/events/create";
 export const ShowEventPath = (id: string) => `/events/${id}`;
 export const EditEventPath = (id: number) => `/events/${id}/edit`;
 
-// ============ Staff ============
 export const ShowEventStaffIdPath = (id: number) => `/events/${id}/staff`;
 
 export const ShowEventStaffPath = (id: number, staffId: number) =>
@@ -25,6 +24,8 @@ export const CreateEventStaffPath = (id: number) =>
 
 export const EditEventStaffPath = (id: number, staffId: number) =>
   `/events/${id}/staff/${staffId}/edit`;
+
+export const AccessTypesPath = (id: number) => `/events/${id}/access-types`;
 
 export // =========== USERS ============
 const UsersPath = "/users";
