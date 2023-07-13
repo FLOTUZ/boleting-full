@@ -14,6 +14,13 @@ export const CreateEventPath = "/events/create";
 export const ShowEventPath = (id: string) => `/events/${id}`;
 export const EditEventPath = (id: number) => `/events/${id}/edit`;
 
+// =========== USERS ============
+export const UsersPath = "/users";
+
+// =========== CATEGORIES ============
+export const CategoriesPath = "/categories";
+export const CreateCategoriesPath = "/categories/create";
+
 // ============ Staff ============
 export const ShowEventStaffIdPath = (id: number) => `/events/${id}/staff`;
 
@@ -25,6 +32,3 @@ export const CreateEventStaffPath = (id: number) =>
 
 export const EditEventStaffPath = (id: number, staffId: number) =>
   `/events/${id}/staff/${staffId}/edit`;
-
-export // =========== USERS ============
-const UsersPath = "/users";
