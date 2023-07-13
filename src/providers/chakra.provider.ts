@@ -5,7 +5,24 @@ const colors = {
     900: "#1a365d",
     800: "#153e75",
     700: "#2a69ac",
+    semiTransparentContainer: "#ffffff1a",
   },
 };
 
-export const theme = extendTheme({ colors });
+const components = {
+  Input: {
+    defaultProps: {
+      variant: "filled",
+    },
+  },
+  Textarea: {
+    defaultProps: {
+      variant: "filled",
+    },
+  },
+};
+
+export const theme = extendTheme({
+  colors,
+  components,
+});

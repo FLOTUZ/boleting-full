@@ -6,7 +6,7 @@ import { Event, useShowEventTicketsQuery } from "@/gql/generated";
 import { useEffect, useState } from "react";
 import { TableColumn } from "react-data-table-component";
 
-import { Box, Button, HStack, SimpleGrid } from "@chakra-ui/react";
+import { Box, Button, HStack, SimpleGrid, Spacer } from "@chakra-ui/react";
 import { TbReload } from "react-icons/tb";
 import { HiSquares2X2 } from "react-icons/hi2";
 import { FaList } from "react-icons/fa";
@@ -15,7 +15,7 @@ import IntroAnimationComponent from "@/components/animations/intro-animation.com
 import { CreateEventPath } from "@/routes";
 
 const ShowEventsView = () => {
-  const [toggle, setToggle] = useState(false);
+  const [toggle, setToggle] = useState(true);
   const [columns, setcolumns] = useState<TableColumn<Event>[]>([]);
   const [events, setEvents] = useState<Event[]>([]);
 
@@ -57,15 +57,16 @@ const ShowEventsView = () => {
     <IntroAnimationComponent data>
       <Box p={4}>
         <HStack spacing={4}>
+          <Link passHref href={CreateEventPath}>
+            <Button colorScheme="green">Crear evento</Button>
+          </Link>
           <Button onClick={() => refetchEvents()}>
             <TbReload />
           </Button>
+          <Spacer />
           <Button onClick={() => setToggle(!toggle)}>
-            {toggle ? <HiSquares2X2 /> : <FaList />}
+            {toggle ? <FaList /> : <HiSquares2X2 />}
           </Button>
-          <Link href={CreateEventPath}>
-            <Button colorScheme="green">Crear evento</Button>
-          </Link>
         </HStack>
         {toggle ? (
           <SimpleGrid columns={[1, 2, 5]} pt={4}>

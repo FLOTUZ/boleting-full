@@ -18,11 +18,14 @@ export const EventSubCategoriesSchema = gql`
   }
 
   type EventSubCategory {
-    id: ID!
-    name: String
+    id: Int!
+    name: String!
     description: String
-    parent_event_categoryId: Int
-    createdAt: DateTime
+    parent_event_categoryId: Int!
+    createdAt: DateTime!
+    updatedAt: DateTime
+    deleted: Boolean!
+    deletedAt: DateTime
     parent_event_category: [EventCategory!]
     events: [Event!]
   }

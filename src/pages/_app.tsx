@@ -6,15 +6,18 @@ import { ApolloProvider } from "@apollo/client";
 
 //Chackra UI
 import { ChakraProvider } from "@chakra-ui/react";
+import { NotificationsProvider } from "@/contexts/notifications.context";
 
 // Import react context
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <ApolloProvider client={apolloClient}>
-      <ChakraProvider theme={theme}>
-        <Component {...pageProps} />
-      </ChakraProvider>
+      <NotificationsProvider>
+        <ChakraProvider theme={theme}>
+          <Component {...pageProps} />
+        </ChakraProvider>
+      </NotificationsProvider>
     </ApolloProvider>
   );
 }

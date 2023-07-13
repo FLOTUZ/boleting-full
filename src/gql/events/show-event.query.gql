@@ -23,6 +23,7 @@ query ShowEvent($eventId: Int!) {
     sub_categories {
       id
       name
+      parent_event_categoryId
     }
   }
 

@@ -100,7 +100,7 @@ model UserClient {
 
 model Notification {
   id            Int         @id @unique @default(autoincrement())
-  tittle        String      @unique @db.VarChar(50)
+  title         String      @unique @db.VarChar(50)
   description   String?     @db.VarChar(255)
   redirect_url  String?     @db.VarChar(255)
   is_read       Boolean     @default(false)
@@ -200,11 +200,12 @@ model Event {
   organization       Organization?      @relation("events_on_organization", fields: [organizationId], references: [id])
   access_types       AccessType[]       @relation("types_of_access_for_event")
   owner_types        OwnerType[]        @relation("owner_types_for_event")
+  dealers            AuthorizedDealer[] @relation("dealer_of_event")
 }
 
 model EventSocialMedia {
   id          Int       @id @unique @default(autoincrement())
-  name        String    @unique @db.VarChar(20)
+  name        String    @db.VarChar(20)
   description String?   @db.VarChar(255)
   url         String    @db.VarChar(255)
   eventId     Int
@@ -468,6 +469,7 @@ model AuthorizedDealer {
   deletedAt        DateTime?
   user             User?            @relation("authorized_dealers", fields: [userId], references: [id])
   recibed_payments PaymentRecibed[] @relation("dealer_recibed_payments")
+  events           Event[]          @relation("dealer_of_event")
 }
 
 enum CashLessType {

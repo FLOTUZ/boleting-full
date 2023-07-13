@@ -8,10 +8,10 @@ import { Notification } from "@prisma/client";
 // Service for Notification model
 //
 export const NotificationService = {
-  async notifications(pagination?: Pagination) {
+  async notifications(userId: number, pagination?: Pagination) {
     return prisma.notification.findMany({
-      ...pagination,
-      where: { deleted: false },
+      ...(pagination ? { ...pagination } : { take: 20 }),
+      where: { deleted: false, userId },
     });
   },
 
@@ -42,6 +42,18 @@ export const NotificationService = {
     return await prisma.notification.delete({
       where: { id },
     });
+  },
+
+  async clearNotifications(userId?: number) {
+    try {
+      await prisma.notification.deleteMany({
+        where: { userId },
+      });
+
+      return true;
+    } catch (error) {
+      throw PrismaError.handle(error);
+    }
   },
 
   // ======================= FOR ANOTHER RESOLVERS =======================

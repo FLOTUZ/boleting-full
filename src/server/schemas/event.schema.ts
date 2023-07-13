@@ -20,14 +20,13 @@ export const EventsSchema = gql`
     description: String
     event_location: String
     event_location_url: String
-    date: DateTime
     start_date: DateTime
     end_date: DateTime
+    start_time: String
     end_time: String
     re_entry: Boolean
     event_logo_url: String
     event_banner_url: String
-    userId: Int
     sub_categories: [Int]
   }
 
@@ -57,6 +56,7 @@ export const EventsSchema = gql`
     organization: Organization!
     access_types: [AccessType!]
     owner_types: [OwnerType!]
+    staff: [User!]
   }
 
   type Query {

@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { useEffect, useState } from "react";
 import { TableColumn } from "react-data-table-component";
 
@@ -7,14 +9,18 @@ import ProgressLoaderComponent from "@/components/loaders/progress-loader.compon
 import SelledTicketsByEventDatatable from "../components/selled-tickets-by-event.datatable";
 
 import { Event, Ticket, useShowEventQuery } from "@/gql/generated";
-import { Box, Button, Card, Heading, Image, Text } from "@chakra-ui/react";
-import { useToggle } from "@/hooks";
-import EditEventForm from "../components/edit-event-form";
-import Link from "next/link";
+import {
+  Badge,
+  Box,
+  Button,
+  Card,
+  Heading,
+  Image,
+  Text,
+} from "@chakra-ui/react";
+import { EditEventPath, ShowEventStaffIdPath } from "@/routes";
 
 const ShowEventView = ({ eventId }: { eventId: number }) => {
-  const [toggle, setToggle] = useState(true);
-
   const [event, setEvent] = useState<Event>();
   const [selledTickets, setSelledTickets] = useState<Ticket[]>([]);
 
@@ -70,64 +76,63 @@ const ShowEventView = ({ eventId }: { eventId: number }) => {
   return (
     <IntroAnimationComponent data>
       <Box p={4}>
-        <Button mb={4} onClick={() => setToggle(!toggle)}>
-          Editar
-        </Button>
+        <Link passHref href={EditEventPath(event?.id as number)}>
+          <Button mb={4}> Editar evento </Button>
+        </Link>
+        <Link passHref href={ShowEventStaffIdPath(event?.id as number)}>
+          <Button mb={4} ml={4}>
+            Staff
+          </Button>
+        </Link>
 
-        {toggle ? (
-          <>
-            <Card mb={4} p={4}>
-              <Box>
-                {event?.event_logo_url && (
-                  <Image
-                    src={event?.event_logo_url}
-                    alt={event?.name!}
-                    height={100}
-                  />
-                )}
-              </Box>
+        <Card mb={4} p={4}>
+          <Box>
+            {event?.event_logo_url && (
+              <Image
+                src={event?.event_logo_url}
+                alt={event?.name!}
+                height={100}
+              />
+            )}
+          </Box>
 
-              <Heading>{event?.name}</Heading>
-              <Text as={"b"}>{event?.event_location}</Text>
+          <Heading>{event?.name}</Heading>
+          {event?.event_location_url != null && (
+            <Text as={"p"} fontSize={"lg"}>
+              {event?.event_location}
 
-              <Text as={"b"}>Descripcion</Text>
-              <Text>{event?.description}</Text>
+              <Link passHref href={event?.event_location_url} target="_blank">
+                <Badge ml={2} p={1}>
+                  Ver en mapa
+                </Badge>
+              </Link>
+            </Text>
+          )}
 
-              <Text as={"b"}>Fecha</Text>
-              <Text as={"p"} fontSize={"lg"}>
-                {new Date(event?.start_date).toLocaleDateString("es-MX", {
-                  day: "numeric",
-                  month: "long",
-                }) || "Sin fecha inicial"}{" "}
-                -{event?.end_date || "Sin fecha final"}
-              </Text>
+          <Text as={"b"}>Descripcion</Text>
+          <Text>{event?.description}</Text>
 
-              {event?.event_location_url != null && (
-                <Text as={"p"} fontSize={"lg"}>
-                  {event?.event_location}
-                  <Link href={event?.event_location_url} target="_blank">
-                    {"🗺"}
-                    Ver en mapa
-                  </Link>
-                </Text>
-              )}
+          <Text as={"b"}>Fecha</Text>
+          <Text as={"p"} fontSize={"lg"}>
+            {new Date(event?.start_date).toLocaleDateString("es-MX", {
+              day: "numeric",
+              month: "long",
+            }) || "Sin fecha inicial"}{" "}
+            -{event?.end_date || "Sin fecha final"}
+          </Text>
 
-              <Text as={"b"}>Creado por</Text>
-              <Text as={"p"} fontSize={"lg"}>
-                {event?.createdBy?.name}
-              </Text>
-            </Card>
+          <Text as={"b"}>Creado por</Text>
+          <Text as={"p"} fontSize={"lg"}>
+            {event?.createdBy?.name}
+          </Text>
+        </Card>
 
-            <SelledTicketsByEventDatatable
-              columns={columns}
-              progressPending={selledByEventLoader}
-              data={selledTickets}
-              refetch={refetchSelledByEvent}
-            />
-          </>
-        ) : (
-          <EditEventForm event={event!} />
-        )}
+        <SelledTicketsByEventDatatable
+          columns={columns}
+          progressPending={selledByEventLoader}
+          data={selledTickets}
+          refetch={refetchSelledByEvent}
+        />
       </Box>
     </IntroAnimationComponent>
   );

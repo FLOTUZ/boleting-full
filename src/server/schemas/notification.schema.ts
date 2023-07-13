@@ -43,5 +43,6 @@ export const NotificationSchema = gql`
     createNotification(data: CreateNotificationInput!): Notification!
     updateNotification(id: Int!, data: UpdateNotificationInput!): Notification!
     deleteNotification(id: Int!): Notification!
+    clearNotifications(userId: Int, user_clientId: Int): Boolean!
   }
 `;

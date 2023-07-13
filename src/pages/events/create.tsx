@@ -6,7 +6,7 @@ import React from "react";
 const CreateEventRoute = () => {
   return (
     <DesktopLayoutComponent
-      title={"Mis eventos"}
+      title={"Crear evento"}
       breadCrumbs={[
         {
           label: "Eventos",

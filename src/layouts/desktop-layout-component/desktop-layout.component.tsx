@@ -27,6 +27,7 @@ import {
   DesktopHeaderComponent,
 } from "./desktop-header.component";
 import { EventsPath, OrganizationsPath, profilePath } from "@/routes";
+import { useRouter } from "next/router";
 
 interface DesktopLayoutComponentProps {
   title: string;
@@ -46,6 +47,7 @@ const DesktopLayoutComponent = ({
   children,
   breadCrumbs,
 }: DesktopLayoutComponentProps) => {
+  const router = useRouter();
   const { user, logout } = useSession();
   const menuItems: MenuItem[] = [
     {
@@ -90,19 +92,21 @@ const DesktopLayoutComponent = ({
           <Box w={"100%"} mt={100} pos={"inherit"} top={0} right={0}>
             {menuItems.map((item, index) => {
               return (
-                <Link href={item.href} key={index} replace={true}>
+                <Link href={item.href} key={index} replace={true} passHref>
                   <Box
                     justifyContent={"center"}
                     cursor={"pointer"}
                     h={"auto"}
                     p={"0.5rem"}
-                    transition="all .2s ease-in-out"
-                    left={"-0.5rem"}
+                    transition="all .1s ease-in-out"
+                    color={
+                      router.pathname.split("/")[1] === item.href.split("/")[1]
+                        ? "white"
+                        : "gray.500"
+                    }
                     _hover={{
-                      position: "relative",
-                      boxShadow: "lg",
-                      left: "0.5rem",
-                      borderRadius: "md",
+                      transform: "scale(1.1)",
+                      color: "white",
                     }}
                   >
                     <HStack>
@@ -137,7 +141,7 @@ const DesktopLayoutComponent = ({
                   {user?.name + " " + user?.last_name}
                 </Text>
                 <MenuDivider />
-                <Link href={profilePath}>
+                <Link href={profilePath} passHref>
                   <MenuItem>Perfil</MenuItem>
                 </Link>
                 <MenuItem onClick={logout}>Cerrar sesión</MenuItem>
