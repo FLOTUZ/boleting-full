@@ -5,15 +5,8 @@ import {
   FormLabel,
   HStack,
   Input,
-  Card,
   Box,
   Textarea,
-  SimpleGrid,
-  Switch,
-  Select,
-  useToast,
-  Checkbox,
-  Skeleton,
 } from "@chakra-ui/react";
 
 const CreateCategoryView = () => {

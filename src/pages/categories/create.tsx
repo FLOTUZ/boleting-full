@@ -1,5 +1,5 @@
 import DesktopLayoutComponent from "@/layouts/desktop-layout-component/desktop-layout.component";
-import CreateCategoryView from "@/modules/categories/create-category.view";
+import CreateCategoryView from "@/modules/categories/views/create-category.view";
 import { CategoriesPath, CreateCategoriesPath } from "@/routes";
 
 const CreateCategoryRoute = () => {

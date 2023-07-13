@@ -11,9 +11,7 @@ const CreateCategoryRoute = () => {
           href: CategoriesPath,
         },
       ]}
-    >
-      {/* Here we put the views of our categories with the button and link to send to create*/}
-    </DesktopLayoutComponent>
+    ></DesktopLayoutComponent>
   );
 };
 
