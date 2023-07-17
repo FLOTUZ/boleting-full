@@ -5,16 +5,18 @@ import { AccessType, useAccessTypesByEventLazyQuery } from "@/gql/generated";
 
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Box } from "@chakra-ui/react";
+import { BiRefresh } from "react-icons/bi";
+import { Box, Button } from "@chakra-ui/react";
 
 const ShowAccessTypesView = () => {
   const [accessTypes, setAccessTypes] = useState<AccessType[]>([]);
   const router = useRouter();
   const { id } = router.query;
 
-  const [fetchAccessTypes, { data, loading }] = useAccessTypesByEventLazyQuery({
-    fetchPolicy: "no-cache",
-  });
+  const [fetchAccessTypes, { data, loading, refetch }] =
+    useAccessTypesByEventLazyQuery({
+      fetchPolicy: "network-only",
+    });
 
   useEffect(() => {
     if (id) {
@@ -39,6 +41,12 @@ const ShowAccessTypesView = () => {
   return (
     <IntroAnimationComponent data={data}>
       <Box p={4}>
+        <Box mb={4}>
+          <Button onClick={() => refetch()}>
+            <BiRefresh />
+          </Button>
+          <Button ml={4}>Crear tipo de acceso</Button>
+        </Box>
         <AccessTypeDatatable data={accessTypes} />
       </Box>
     </IntroAnimationComponent>
