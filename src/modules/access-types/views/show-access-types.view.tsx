@@ -1,12 +1,14 @@
 import IntroAnimationComponent from "@/components/animations/intro-animation.component";
 import ProgressLoaderComponent from "@/components/loaders/progress-loader.component";
-import AccessTypeDatatable from "./components/access-types-datatable.component";
+import AccessTypeDatatable from "../components/access-types-datatable.component";
 import { AccessType, useAccessTypesByEventLazyQuery } from "@/gql/generated";
 
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { BiRefresh } from "react-icons/bi";
 import { Box, Button } from "@chakra-ui/react";
+import Link from "next/link";
+import { CreateAccessTypePath } from "@/routes";
 
 const ShowAccessTypesView = () => {
   const [accessTypes, setAccessTypes] = useState<AccessType[]>([]);
@@ -45,7 +47,9 @@ const ShowAccessTypesView = () => {
           <Button onClick={() => refetch()}>
             <BiRefresh />
           </Button>
-          <Button ml={4}>Crear tipo de acceso</Button>
+          <Link href={CreateAccessTypePath(Number(id))}>
+            <Button ml={4}>Crear tipo de acceso</Button>
+          </Link>
         </Box>
         <AccessTypeDatatable data={accessTypes} />
       </Box>

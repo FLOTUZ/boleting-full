@@ -1,5 +1,5 @@
 import DesktopLayoutComponent from "@/layouts/desktop-layout-component/desktop-layout.component";
-import ShowAccessTypesView from "@/modules/access-types/show-access-types.view";
+import ShowAccessTypesView from "@/modules/access-types/views/show-access-types.view";
 import { AccessTypesPath, EventsPath, ShowEventPath } from "@/routes";
 import { useRouter } from "next/router";
 
