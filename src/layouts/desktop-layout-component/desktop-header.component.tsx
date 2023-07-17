@@ -1,5 +1,7 @@
 import SearcherComponent from "./searcher.component";
 import NotificationsComponent from "./notifications.component";
+import UsersComponent from "./user-list.component";
+
 import {
   Button,
   HStack,
@@ -106,6 +108,7 @@ export const DesktopHeaderComponent = ({
           {colorMode === "light" ? <TbMoonFilled /> : <BsSunFill />}
         </Button>
         <NotificationsComponent />
+        <UsersComponent />
       </HStack>
     </SimpleGrid>
   );
