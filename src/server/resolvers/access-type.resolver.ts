@@ -38,8 +38,9 @@ export const AccessTypeResolver = {
     createAccessType: async (
       _: any,
       { data }: { data: AccessType },
-      __: IGraphqlContext
+      { id_organization }: IGraphqlContext
     ) => {
+      data.organizationId = id_organization!;
       await validateData({ schema: CreateAccessTypeValidator, data });
       return await AccessTypeService.createAccessType(data);
     },

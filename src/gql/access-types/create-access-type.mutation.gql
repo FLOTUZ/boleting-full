@@ -1,0 +1,12 @@
+mutation CreateAccessType($data: CreateAccessTypeInput!) {
+  createAccessType(data: $data) {
+    id
+    name
+    description
+    enter_and_exit_option
+    organizationId
+    price
+    createdAt
+    updatedAt
+  }
+}

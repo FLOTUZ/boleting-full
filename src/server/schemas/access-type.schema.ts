@@ -5,8 +5,7 @@ export const AccessTypeSchema = gql`
     name: String!
     description: String
     enter_and_exit_option: Boolean
-    userId: Int!
-    organizationId: Int!
+    price: Decimal!
     eventId: Int!
   }
 
@@ -14,18 +13,18 @@ export const AccessTypeSchema = gql`
     name: String
     description: String
     enter_and_exit_option: Boolean
-    userId: Int
+    price: Decimal
     organizationId: Int
     eventId: Int
     deleted: Boolean
   }
 
   type AccessType {
-    id: ID!
+    id: Int!
     name: String!
     description: String!
     enter_and_exit_option: Boolean!
-    userId: Int!
+    price: Decimal!
     createdAt: DateTime!
     updatedAt: DateTime!
     deleted: Boolean!

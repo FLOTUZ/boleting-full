@@ -45,7 +45,7 @@ const ShowAccessTypesView = () => {
       <Box p={4}>
         <Box mb={4}>
           <Button onClick={() => refetch()}>
-            <BiRefresh />
+            <BiRefresh size={24} />
           </Button>
           <Link href={CreateAccessTypePath(Number(id))}>
             <Button ml={4}>Crear tipo de acceso</Button>

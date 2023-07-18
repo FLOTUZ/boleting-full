@@ -44,14 +44,14 @@ const AccessTypeDatatable = ({ data }: AccessTypeDatatableProps) => {
   return (
     <DataTable
       theme={colorMode === "light" ? "light" : "dark"}
-      title="Tipos de ticket"
-      progressComponent={<div>Cargando tipos de ticket...</div>}
+      title="Tipos de acceso"
+      progressComponent={<div>Cargando tipos de acceso...</div>}
       selectableRows
       pointerOnHover
       persistTableHead
       highlightOnHover
       subHeader
-      noDataComponent={<div>No se han configurado tipos de ticket</div>}
+      noDataComponent={<div>No se han configurado tipos de acceso</div>}
       onRowClicked={(e) => console.log(e)}
       columns={columns}
       data={data}
