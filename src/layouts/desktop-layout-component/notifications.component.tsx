@@ -27,7 +27,7 @@ const NotificationsComponent = () => {
   return (
     <>
       <Button onClick={onOpen}>
-        <HiBell />
+        <HiBell size={24} />
       </Button>
       <Drawer placement={"right"} onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />

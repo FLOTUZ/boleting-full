@@ -103,7 +103,11 @@ export const DesktopHeaderComponent = ({
       <HStack w={"100%"} placeContent={"end"}>
         <SearcherComponent />
         <Button onClick={toggleColorMode}>
-          {colorMode === "light" ? <TbMoonFilled /> : <BsSunFill />}
+          {colorMode === "light" ? (
+            <TbMoonFilled size={24} />
+          ) : (
+            <BsSunFill size={24} />
+          )}
         </Button>
         <NotificationsComponent />
       </HStack>
