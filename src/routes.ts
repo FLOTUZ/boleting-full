@@ -28,6 +28,3 @@ export const EditEventStaffPath = (id: number, staffId: number) =>
 export const AccessTypesPath = (id: number) => `/events/${id}/access-types`;
 export const CreateAccessTypePath = (id: number) =>
   `/events/${id}/access-types/create`;
-
-export // =========== USERS ============
-const UsersPath = "/users";
