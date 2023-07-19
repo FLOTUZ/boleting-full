@@ -5,8 +5,7 @@ export const AccessTypeSchema = gql`
     name: String!
     description: String
     enter_and_exit_option: Boolean
-    userId: Int!
-    organizationId: Int!
+    price: Decimal!
     eventId: Int!
   }
 
@@ -14,18 +13,18 @@ export const AccessTypeSchema = gql`
     name: String
     description: String
     enter_and_exit_option: Boolean
-    userId: Int
+    price: Decimal
     organizationId: Int
     eventId: Int
     deleted: Boolean
   }
 
   type AccessType {
-    id: ID!
+    id: Int!
     name: String!
     description: String!
     enter_and_exit_option: Boolean!
-    userId: Int!
+    price: Decimal!
     createdAt: DateTime!
     updatedAt: DateTime!
     deleted: Boolean!
@@ -39,12 +38,13 @@ export const AccessTypeSchema = gql`
 
   type Query {
     accessTypes(pagination: Pagination): [AccessType!]!
-    accessType(id: ID!): AccessType!
+    accessType(id: Int!): AccessType!
+    accessTypesByEventId(eventId: Int!): [AccessType!]!
   }
 
   type Mutation {
     createAccessType(data: CreateAccessTypeInput!): AccessType!
-    updateAccessType(id: ID!, data: UpdateAccessTypeInput!): AccessType!
-    deleteAccessType(id: ID!): AccessType!
+    updateAccessType(id: Int!, data: UpdateAccessTypeInput!): AccessType!
+    deleteAccessType(id: Int!): AccessType!
   }
 `;

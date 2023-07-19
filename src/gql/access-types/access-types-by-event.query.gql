@@ -1,0 +1,10 @@
+query AccessTypesByEvent($eventId: Int!) {
+  accessTypesByEventId(eventId: $eventId) {
+    id
+    name
+    description
+    enter_and_exit_option
+    createdAt
+    updatedAt
+  }
+}

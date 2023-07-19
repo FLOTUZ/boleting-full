@@ -245,9 +245,9 @@ model EventSubCategory {
 model AccessType {
   id                    Int          @id @unique @default(autoincrement())
   name                  String       @unique @db.VarChar(15)
-  description           String?      @db.VarChar(255)
+  description           String?      @db.VarChar(1000)
   enter_and_exit_option Boolean?     @default(false)
-  userId                Int
+  price                 Decimal      @db.Money
   createdAt             DateTime     @default(now())
   updatedAt             DateTime     @updatedAt
   deleted               Boolean      @default(false)

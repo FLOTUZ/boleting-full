@@ -13,12 +13,24 @@ import { AccessTypeService } from "../services";
 //
 export const AccessTypeResolver = {
   Query: {
-    accessTypes: async (_: any, { pagination }: Args, __: IGraphqlContext) => {
-      return await AccessTypeService.accessTypes(pagination);
+    accessTypes: async (
+      _: any,
+      { pagination }: Args,
+      { id_organization }: IGraphqlContext
+    ) => {
+      return await AccessTypeService.accessTypes(pagination, id_organization!);
     },
 
     accessType: async (_: any, { id }: { id: number }, __: IGraphqlContext) => {
       return await AccessTypeService.accessType(id);
+    },
+
+    accessTypesByEventId: async (
+      _: any,
+      { eventId }: { eventId: number },
+      __: IGraphqlContext
+    ) => {
+      return await AccessTypeService.accessTypesByEventId(eventId);
     },
   },
 
@@ -26,8 +38,9 @@ export const AccessTypeResolver = {
     createAccessType: async (
       _: any,
       { data }: { data: AccessType },
-      __: IGraphqlContext
+      { id_organization }: IGraphqlContext
     ) => {
+      data.organizationId = id_organization!;
       await validateData({ schema: CreateAccessTypeValidator, data });
       return await AccessTypeService.createAccessType(data);
     },

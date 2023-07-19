@@ -28,13 +28,13 @@ export type AccessType = {
   enter_and_exit_option: Scalars['Boolean']['output'];
   event: Event;
   eventId: Scalars['Int']['output'];
-  id: Scalars['ID']['output'];
+  id: Scalars['Int']['output'];
   name: Scalars['String']['output'];
   organization: Organization;
   organizationId: Scalars['Int']['output'];
+  price: Scalars['Decimal']['output'];
   tickets: Array<Ticket>;
   updatedAt: Scalars['DateTime']['output'];
-  userId: Scalars['Int']['output'];
 };
 
 export type ActivityLog = {
@@ -95,8 +95,7 @@ export type CreateAccessTypeInput = {
   enter_and_exit_option?: InputMaybe<Scalars['Boolean']['input']>;
   eventId: Scalars['Int']['input'];
   name: Scalars['String']['input'];
-  organizationId: Scalars['Int']['input'];
-  userId: Scalars['Int']['input'];
+  price: Scalars['Decimal']['input'];
 };
 
 export type CreateActivityLogInput = {
@@ -500,7 +499,7 @@ export type MutationCreateUserClientArgs = {
 
 
 export type MutationDeleteAccessTypeArgs = {
-  id: Scalars['ID']['input'];
+  id: Scalars['Int']['input'];
 };
 
 
@@ -608,7 +607,7 @@ export type MutationUnassignStaffArgs = {
 
 export type MutationUpdateAccessTypeArgs = {
   data: UpdateAccessTypeInput;
-  id: Scalars['ID']['input'];
+  id: Scalars['Int']['input'];
 };
 
 
@@ -818,6 +817,7 @@ export type Query = {
   __typename?: 'Query';
   accessType: AccessType;
   accessTypes: Array<AccessType>;
+  accessTypesByEventId: Array<AccessType>;
   activityLog: ActivityLog;
   activityLogs: Array<ActivityLog>;
   application: Application;
@@ -860,12 +860,17 @@ export type Query = {
 
 
 export type QueryAccessTypeArgs = {
-  id: Scalars['ID']['input'];
+  id: Scalars['Int']['input'];
 };
 
 
 export type QueryAccessTypesArgs = {
   pagination?: InputMaybe<Pagination>;
+};
+
+
+export type QueryAccessTypesByEventIdArgs = {
+  eventId: Scalars['Int']['input'];
 };
 
 
@@ -1096,7 +1101,7 @@ export type UpdateAccessTypeInput = {
   eventId?: InputMaybe<Scalars['Int']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   organizationId?: InputMaybe<Scalars['Int']['input']>;
-  userId?: InputMaybe<Scalars['Int']['input']>;
+  price?: InputMaybe<Scalars['Decimal']['input']>;
 };
 
 export type UpdateActivityLogInput = {
@@ -1287,6 +1292,20 @@ export type UserClient = {
   user_client_activity?: Maybe<Array<ActivityLog>>;
 };
 
+export type AccessTypesByEventQueryVariables = Exact<{
+  eventId: Scalars['Int']['input'];
+}>;
+
+
+export type AccessTypesByEventQuery = { __typename?: 'Query', accessTypesByEventId: Array<{ __typename?: 'AccessType', id: number, name: string, description: string, enter_and_exit_option: boolean, createdAt: any, updatedAt: any }> };
+
+export type CreateAccessTypeMutationVariables = Exact<{
+  data: CreateAccessTypeInput;
+}>;
+
+
+export type CreateAccessTypeMutation = { __typename?: 'Mutation', createAccessType: { __typename?: 'AccessType', id: number, name: string, description: string, enter_and_exit_option: boolean, organizationId: number, price: any, createdAt: any, updatedAt: any } };
+
 export type LoginMutationVariables = Exact<{
   data: LoginInput;
 }>;
@@ -1451,6 +1470,86 @@ export type GetUserQueryVariables = Exact<{ [key: string]: never; }>;
 export type GetUserQuery = { __typename?: 'Query', users?: Array<{ __typename?: 'User', id: number, name?: string | null } | null> | null };
 
 
+export const AccessTypesByEventDocument = gql`
+    query AccessTypesByEvent($eventId: Int!) {
+  accessTypesByEventId(eventId: $eventId) {
+    id
+    name
+    description
+    enter_and_exit_option
+    createdAt
+    updatedAt
+  }
+}
+    `;
+
+/**
+ * __useAccessTypesByEventQuery__
+ *
+ * To run a query within a React component, call `useAccessTypesByEventQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAccessTypesByEventQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAccessTypesByEventQuery({
+ *   variables: {
+ *      eventId: // value for 'eventId'
+ *   },
+ * });
+ */
+export function useAccessTypesByEventQuery(baseOptions: Apollo.QueryHookOptions<AccessTypesByEventQuery, AccessTypesByEventQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AccessTypesByEventQuery, AccessTypesByEventQueryVariables>(AccessTypesByEventDocument, options);
+      }
+export function useAccessTypesByEventLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AccessTypesByEventQuery, AccessTypesByEventQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AccessTypesByEventQuery, AccessTypesByEventQueryVariables>(AccessTypesByEventDocument, options);
+        }
+export type AccessTypesByEventQueryHookResult = ReturnType<typeof useAccessTypesByEventQuery>;
+export type AccessTypesByEventLazyQueryHookResult = ReturnType<typeof useAccessTypesByEventLazyQuery>;
+export type AccessTypesByEventQueryResult = Apollo.QueryResult<AccessTypesByEventQuery, AccessTypesByEventQueryVariables>;
+export const CreateAccessTypeDocument = gql`
+    mutation CreateAccessType($data: CreateAccessTypeInput!) {
+  createAccessType(data: $data) {
+    id
+    name
+    description
+    enter_and_exit_option
+    organizationId
+    price
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export type CreateAccessTypeMutationFn = Apollo.MutationFunction<CreateAccessTypeMutation, CreateAccessTypeMutationVariables>;
+
+/**
+ * __useCreateAccessTypeMutation__
+ *
+ * To run a mutation, you first call `useCreateAccessTypeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateAccessTypeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createAccessTypeMutation, { data, loading, error }] = useCreateAccessTypeMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useCreateAccessTypeMutation(baseOptions?: Apollo.MutationHookOptions<CreateAccessTypeMutation, CreateAccessTypeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateAccessTypeMutation, CreateAccessTypeMutationVariables>(CreateAccessTypeDocument, options);
+      }
+export type CreateAccessTypeMutationHookResult = ReturnType<typeof useCreateAccessTypeMutation>;
+export type CreateAccessTypeMutationResult = Apollo.MutationResult<CreateAccessTypeMutation>;
+export type CreateAccessTypeMutationOptions = Apollo.BaseMutationOptions<CreateAccessTypeMutation, CreateAccessTypeMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($data: LoginInput!) {
   login(data: $data) {

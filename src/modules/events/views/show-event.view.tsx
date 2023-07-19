@@ -18,7 +18,9 @@ import {
   Image,
   Text,
 } from "@chakra-ui/react";
-import { EditEventPath, ShowEventStaffIdPath } from "@/routes";
+import { AccessTypesPath, EditEventPath, ShowEventStaffIdPath } from "@/routes";
+import { IoTicketSharp } from "react-icons/io5";
+import { PiUsersFourFill } from "react-icons/pi";
 
 const ShowEventView = ({ eventId }: { eventId: number }) => {
   const [event, setEvent] = useState<Event>();
@@ -34,33 +36,6 @@ const ShowEventView = ({ eventId }: { eventId: number }) => {
     },
     fetchPolicy: "network-only",
   });
-
-  const columns: TableColumn<Ticket>[] = [
-    {
-      name: "ID",
-      selector: (row) => row.id,
-      sortable: true,
-    },
-    {
-      name: "Serial",
-      selector: (row) => row.serial_number,
-      sortable: true,
-    },
-    {
-      name: "Precio",
-      selector: (row) => row.price,
-      sortable: true,
-    },
-    {
-      name: "Fecha de venta",
-      selector: (row) => row.createdAt,
-      sortable: true,
-    },
-    {
-      name: "Usado",
-      selector: (row) => (row.is_used ? "Si" : "No"),
-    },
-  ];
 
   useEffect(() => {
     if (data) {
@@ -82,6 +57,18 @@ const ShowEventView = ({ eventId }: { eventId: number }) => {
         <Link passHref href={ShowEventStaffIdPath(event?.id as number)}>
           <Button mb={4} ml={4}>
             Staff
+            <Box pl={2}>
+              <PiUsersFourFill />
+            </Box>
+          </Button>
+        </Link>
+
+        <Link href={AccessTypesPath(event?.id as number)}>
+          <Button mb={4} ml={4}>
+            Tipos de acceso
+            <Box pl={2}>
+              <IoTicketSharp />
+            </Box>
           </Button>
         </Link>
 
@@ -128,7 +115,6 @@ const ShowEventView = ({ eventId }: { eventId: number }) => {
         </Card>
 
         <SelledTicketsByEventDatatable
-          columns={columns}
           progressPending={selledByEventLoader}
           data={selledTickets}
           refetch={refetchSelledByEvent}

@@ -8,10 +8,11 @@ import { AccessType } from "@prisma/client";
 // Service for AccessType model
 //
 export const AccessTypeService = {
-  async accessTypes(pagination?: Pagination) {
+  async accessTypes(pagination?: Pagination, organizationId?: number) {
     return prisma.accessType.findMany({
       ...pagination,
-      where: { deleted: false },
+      where: { deleted: false, organizationId },
+      orderBy: { id: "asc" },
     });
   },
 
@@ -21,7 +22,9 @@ export const AccessTypeService = {
 
   async createAccessType(data: AccessType) {
     try {
-      return await prisma.accessType.create({ data: { ...data } });
+      return await prisma.accessType.create({
+        data: { ...data },
+      });
     } catch (error) {
       throw PrismaError.handle(error);
     }
@@ -49,6 +52,7 @@ export const AccessTypeService = {
   async accessTypesByEventId(eventId: number) {
     return await prisma.accessType.findMany({
       where: { event: { id: eventId } },
+      orderBy: { id: "asc" },
     });
   },
 };

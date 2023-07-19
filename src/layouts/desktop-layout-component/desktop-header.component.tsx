@@ -55,10 +55,27 @@ export const DesktopHeaderComponent = ({
           textOverflow={"ellipsis"}
           paddingStart={4}
           paddingEnd={4}
-          sx={{
-            // Hide scrollbar
+          // make unselectable text
+          userSelect={"none"}
+          // If scroll is needed, put the scrollbar scroll to the end
+          scrollBehavior={"smooth"}
+          // Hide the scrollbar but keep it scrollable and style it
+          css={{
             "&::-webkit-scrollbar": {
-              display: "none",
+              width: "0px",
+              height: "0.4em",
+            },
+            "&::-webkit-scrollbar-track": {
+              boxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+              webkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+            },
+            "&::-webkit-scrollbar-thumb": {
+              // color gray light
+              backgroundColor: "#a0a0a0",
+              borderRadius: "10px",
+            },
+            "&:hover::-webkit-scrollbar-thumb": {
+              backgroundColor: "#d4d4d4",
             },
           }}
         >
