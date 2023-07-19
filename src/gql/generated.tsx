@@ -1292,6 +1292,13 @@ export type UserClient = {
   user_client_activity?: Maybe<Array<ActivityLog>>;
 };
 
+export type ShowAccessTypeQueryVariables = Exact<{
+  accessTypeId: Scalars['Int']['input'];
+}>;
+
+
+export type ShowAccessTypeQuery = { __typename?: 'Query', accessType: { __typename?: 'AccessType', id: number, name: string, description: string, enter_and_exit_option: boolean, createdAt: any, updatedAt: any, deleted: boolean, deletedAt?: any | null } };
+
 export type AccessTypesByEventQueryVariables = Exact<{
   eventId: Scalars['Int']['input'];
 }>;
@@ -1470,6 +1477,48 @@ export type GetUserQueryVariables = Exact<{ [key: string]: never; }>;
 export type GetUserQuery = { __typename?: 'Query', users?: Array<{ __typename?: 'User', id: number, name?: string | null } | null> | null };
 
 
+export const ShowAccessTypeDocument = gql`
+    query ShowAccessType($accessTypeId: Int!) {
+  accessType(id: $accessTypeId) {
+    id
+    name
+    description
+    enter_and_exit_option
+    createdAt
+    updatedAt
+    deleted
+    deletedAt
+  }
+}
+    `;
+
+/**
+ * __useShowAccessTypeQuery__
+ *
+ * To run a query within a React component, call `useShowAccessTypeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useShowAccessTypeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useShowAccessTypeQuery({
+ *   variables: {
+ *      accessTypeId: // value for 'accessTypeId'
+ *   },
+ * });
+ */
+export function useShowAccessTypeQuery(baseOptions: Apollo.QueryHookOptions<ShowAccessTypeQuery, ShowAccessTypeQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ShowAccessTypeQuery, ShowAccessTypeQueryVariables>(ShowAccessTypeDocument, options);
+      }
+export function useShowAccessTypeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ShowAccessTypeQuery, ShowAccessTypeQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ShowAccessTypeQuery, ShowAccessTypeQueryVariables>(ShowAccessTypeDocument, options);
+        }
+export type ShowAccessTypeQueryHookResult = ReturnType<typeof useShowAccessTypeQuery>;
+export type ShowAccessTypeLazyQueryHookResult = ReturnType<typeof useShowAccessTypeLazyQuery>;
+export type ShowAccessTypeQueryResult = Apollo.QueryResult<ShowAccessTypeQuery, ShowAccessTypeQueryVariables>;
 export const AccessTypesByEventDocument = gql`
     query AccessTypesByEvent($eventId: Int!) {
   accessTypesByEventId(eventId: $eventId) {
