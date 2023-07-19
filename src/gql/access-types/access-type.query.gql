@@ -1,0 +1,12 @@
+query ShowAccessType($accessTypeId: Int!) {
+  accessType(id: $accessTypeId) {
+    id
+    name
+    description
+    enter_and_exit_option
+    createdAt
+    updatedAt
+    deleted
+    deletedAt
+  }
+}

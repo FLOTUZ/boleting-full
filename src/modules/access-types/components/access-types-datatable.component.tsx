@@ -1,5 +1,7 @@
 import { AccessType } from "@/gql/generated";
+import { ShowAccessTypePath } from "@/routes";
 import { useColorMode } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import DataTable, { TableColumn } from "react-data-table-component";
 
 interface AccessTypeDatatableProps {
@@ -8,6 +10,8 @@ interface AccessTypeDatatableProps {
 
 const AccessTypeDatatable = ({ data }: AccessTypeDatatableProps) => {
   const { colorMode } = useColorMode();
+  const router = useRouter();
+  const { id } = router.query;
   const columns: TableColumn<AccessType>[] = [
     {
       name: "ID",
@@ -52,7 +56,9 @@ const AccessTypeDatatable = ({ data }: AccessTypeDatatableProps) => {
       highlightOnHover
       subHeader
       noDataComponent={<div>No se han configurado tipos de acceso</div>}
-      onRowClicked={(e) => console.log(e)}
+      onRowClicked={(accessType) =>
+        router.push(ShowAccessTypePath(Number(id), accessType.id))
+      }
       columns={columns}
       data={data}
     />

@@ -21,7 +21,7 @@ export const UsersPath = "/users";
 export const CategoriesPath = "/categories";
 export const CreateCategoriesPath = "/categories/create";
 
-// ============ Staff ============
+// ============ EVENTS ============
 export const ShowEventStaffIdPath = (id: number) => `/events/${id}/staff`;
 
 export const ShowEventStaffPath = (id: number, staffId: number) =>
@@ -36,3 +36,5 @@ export const EditEventStaffPath = (id: number, staffId: number) =>
 export const AccessTypesPath = (id: number) => `/events/${id}/access-types`;
 export const CreateAccessTypePath = (id: number) =>
   `/events/${id}/access-types/create`;
+export const ShowAccessTypePath = (id: number, accessTypeId: number) =>
+  `/events/${id}/access-types/${accessTypeId}`;
