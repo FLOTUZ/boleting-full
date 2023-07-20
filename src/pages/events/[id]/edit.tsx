@@ -13,18 +13,18 @@ const EditEventRoute = () => {
 
   return (
     <DesktopLayoutComponent
-      title={"Editar evento"}
+      title={`Editar evento ${id}`}
       breadCrumbs={[
         {
           label: "Eventos",
           href: EventsPath,
         },
         {
-          label: `Evento ${id}`,
+          label: `${id}`,
           href: ShowEventPath(id as string),
         },
         {
-          label: "Editar evento",
+          label: "Editar",
           href: EditEventPath(Number(id)),
         },
       ]}

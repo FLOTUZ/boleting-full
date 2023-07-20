@@ -17,15 +17,15 @@ const CreateAccessTypeRoute = () => {
       breadCrumbs={[
         { label: "Eventos", href: EventsPath },
         {
-          label: `Evento ${id}`,
+          label: `${id}`,
           href: ShowEventPath(id as string),
         },
         {
-          label: "Configurar accesos",
+          label: "Accesos",
           href: AccessTypesPath(Number(id)),
         },
         {
-          label: "Crear acceso",
+          label: "Crear",
           href: CreateAccessTypePath(Number(id)),
         },
       ]}

@@ -17,7 +17,7 @@ function ShowEventRoute() {
           href: EventsPath,
         },
         {
-          label: `Evento ${id}`,
+          label: `${id}`,
           href: ShowEventPath(String(id)),
         },
       ]}

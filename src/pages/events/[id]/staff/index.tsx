@@ -9,14 +9,14 @@ const ShowStaffsRoute = () => {
 
   return (
     <DesktopLayoutComponent
-      title={"Staff del evento"}
+      title={`Staff del evento ${id}`}
       breadCrumbs={[
         {
           label: "Eventos",
           href: EventsPath,
         },
         {
-          label: `Evento ${id}`,
+          label: `${id}`,
           href: ShowEventPath(id as string),
         },
         {

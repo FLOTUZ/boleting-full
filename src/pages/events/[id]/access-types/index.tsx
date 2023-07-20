@@ -8,11 +8,11 @@ const AccessTypesRoute = () => {
   const { id } = router.query;
   return (
     <DesktopLayoutComponent
-      title={"Configurar Accesos"}
+      title={"Accesos"}
       breadCrumbs={[
         { label: "Eventos", href: EventsPath },
-        { label: `Evento ${id}`, href: ShowEventPath(String(id)) },
-        { label: "Configurar Accesos", href: AccessTypesPath(Number(id)) },
+        { label: `${id}`, href: ShowEventPath(String(id)) },
+        { label: "Accesos", href: AccessTypesPath(Number(id)) },
       ]}
     >
       <ShowAccessTypesView />

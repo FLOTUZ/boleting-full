@@ -13,7 +13,7 @@ const CreateEventRoute = () => {
           href: EventsPath,
         },
         {
-          label: "Crear evento",
+          label: "Crear",
           href: CreateEventPath,
         },
       ]}

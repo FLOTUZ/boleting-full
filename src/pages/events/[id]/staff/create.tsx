@@ -21,7 +21,7 @@ const CreateEventStaffRoute = () => {
           href: EventsPath,
         },
         {
-          label: `Evento ${id}`,
+          label: `${id}`,
           href: ShowEventPath(id as string),
         },
         {
@@ -29,7 +29,7 @@ const CreateEventStaffRoute = () => {
           href: ShowEventStaffIdPath(Number(id)),
         },
         {
-          label: "Selecciona Staff",
+          label: "Asignar",
           href: CreateEventStaffPath(Number(id)),
         },
       ]}

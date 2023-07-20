@@ -38,3 +38,5 @@ export const CreateAccessTypePath = (id: number) =>
   `/events/${id}/access-types/create`;
 export const ShowAccessTypePath = (id: number, accessTypeId: number) =>
   `/events/${id}/access-types/${accessTypeId}`;
+export const EditAccessTypePath = (id: number, accessTypeId: number) =>
+  `/events/${id}/access-types/${accessTypeId}/edit`;
