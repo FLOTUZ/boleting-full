@@ -20,13 +20,18 @@ import { GiTicket } from "react-icons/gi";
 import { IoBusiness } from "react-icons/io5";
 import { MdDashboard } from "react-icons/md";
 import { TbBuildingCircus } from "react-icons/tb";
-import { FaChevronCircleDown } from "react-icons/fa";
+import { FaChevronCircleDown, FaUserAlt } from "react-icons/fa";
 import { useSession } from "@/hooks/useSession";
 import {
   BreadCrumbItem,
   DesktopHeaderComponent,
 } from "./desktop-header.component";
-import { EventsPath, OrganizationsPath, profilePath } from "@/routes";
+import {
+  EventsPath,
+  OrganizationsPath,
+  UsersPath,
+  profilePath,
+} from "@/routes";
 import { useRouter } from "next/router";
 
 interface DesktopLayoutComponentProps {
@@ -64,6 +69,11 @@ const DesktopLayoutComponent = ({
       label: "Organizaciones",
       href: OrganizationsPath,
       icon: <IoBusiness size={25} />,
+    },
+    {
+      label: "Usuarios",
+      href: UsersPath,
+      icon: <FaUserAlt size={25} />,
     },
   ];
   return (
