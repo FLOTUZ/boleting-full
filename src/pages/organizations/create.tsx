@@ -1,5 +1,5 @@
 import DesktopLayoutComponent from "@/layouts/desktop-layout-component/desktop-layout.component";
-import AddOrganizationView from "@/modules/organizations/views/create-organization.view.tsx";
+import CreateOrganizationView from "@/modules/organizations/views/create-organization.view.tsx";
 import { OrganizationsPath, CreateOrganizationPath } from "@/routes";
 import React from "react";
 
@@ -18,7 +18,7 @@ const CreateOrganizationRoute = () => {
         },
       ]}
     >
-      <AddOrganizationView />
+      <CreateOrganizationView />
     </DesktopLayoutComponent>
   );
 };

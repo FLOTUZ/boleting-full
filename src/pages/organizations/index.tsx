@@ -12,7 +12,9 @@ const OrganizationsRoute = () => {
           href: OrganizationsPath,
         },
       ]}
-    ></DesktopLayoutComponent>
+    >
+      <Box>TODO: Aqui se mostraran las organizaciones que se agregaron</Box>
+    </DesktopLayoutComponent>
   );
 };
 

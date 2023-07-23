@@ -8,7 +8,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 
-const AddOrganizationView = () => {
+const CreateOrganizationView = () => {
   const formOrganization = useFormik({
     initialValues: {
       name: "",
@@ -43,4 +43,4 @@ const AddOrganizationView = () => {
   );
 };
 
-export default AddOrganizationView;
+export default CreateOrganizationView;
