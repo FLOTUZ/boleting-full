@@ -1,16 +1,20 @@
-import { PrismaClient } from "@prisma/client";
 import { UnauthorizedError } from "../utils/unautorized.error";
+import { prisma } from "../prisma.instance";
 
 interface AuthorizedAbilities {
   authorized_abilities: string[];
   id_user: number | null;
-  prisma: PrismaClient;
 }
 
+// * @description
+// * Check if user have abilities for this action
+// *
+// * @param {AuthorizedAbilities} { authorized_abilities, id_user }
+// * @returns {Promise<void>}
+// *
 export const autorizedAbilities = async ({
   authorized_abilities,
   id_user,
-  prisma,
 }: AuthorizedAbilities) => {
   if (authorized_abilities.length === 0) return;
   const userAbilities = await prisma.abilities.findMany({
@@ -35,6 +39,6 @@ export const autorizedAbilities = async ({
   );
 
   if (isAuthorized) {
-    throw new UnauthorizedError("You not have ability for this action");
+    throw new UnauthorizedError("No tienes permisos para realizar esta acción");
   }
 };
