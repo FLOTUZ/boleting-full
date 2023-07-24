@@ -1,6 +1,6 @@
 import DesktopLayoutComponent from "@/layouts/desktop-layout-component/desktop-layout.component";
+import ShowOrganizationsView from "@/modules/organizations/views/show-organizations.view";
 import { OrganizationsPath } from "@/routes";
-import { Box, Button } from "@chakra-ui/react";
 
 const OrganizationsRoute = () => {
   return (
@@ -13,7 +13,7 @@ const OrganizationsRoute = () => {
         },
       ]}
     >
-      <Box>TODO: Aqui se mostraran las organizaciones que se agregaron</Box>
+      <ShowOrganizationsView />
     </DesktopLayoutComponent>
   );
 };
