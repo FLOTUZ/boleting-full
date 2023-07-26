@@ -22,8 +22,8 @@ export const OrganizationSchema = gql`
     updatedAt: DateTime
     deleted: Boolean
     deletedAt: DateTime
-    events: [Event]
-    users: [User]
+    events: [Event!]
+    users: [User!]
   }
 
   type Query {

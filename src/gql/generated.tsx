@@ -734,11 +734,11 @@ export type Organization = {
   createdAt?: Maybe<Scalars['DateTime']['output']>;
   deleted?: Maybe<Scalars['Boolean']['output']>;
   deletedAt?: Maybe<Scalars['DateTime']['output']>;
-  events?: Maybe<Array<Maybe<Event>>>;
+  events?: Maybe<Array<Event>>;
   id: Scalars['ID']['output'];
   name?: Maybe<Scalars['String']['output']>;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
-  users?: Maybe<Array<Maybe<User>>>;
+  users?: Maybe<Array<User>>;
 };
 
 export type OwnerType = {
@@ -1413,12 +1413,12 @@ export type ShowOrganizationQueryVariables = Exact<{
 }>;
 
 
-export type ShowOrganizationQuery = { __typename?: 'Query', organization?: { __typename?: 'Organization', id: string, name?: string | null, createdAt?: any | null, deleted?: boolean | null, deletedAt?: any | null } | null };
+export type ShowOrganizationQuery = { __typename?: 'Query', organization?: { __typename?: 'Organization', id: string, name?: string | null, createdAt?: any | null, deleted?: boolean | null, deletedAt?: any | null, events?: Array<{ __typename?: 'Event', id: number, name: string, description?: string | null, event_location: string, start_date: any, end_date?: any | null }> | null } | null };
 
 export type ShowOrganizationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ShowOrganizationsQuery = { __typename?: 'Query', organizations?: Array<{ __typename?: 'Organization', id: string, name?: string | null, createdAt?: any | null, events?: Array<{ __typename?: 'Event', id: number, name: string } | null> | null, users?: Array<{ __typename?: 'User', id: number, name?: string | null, last_name?: string | null } | null> | null } | null> | null };
+export type ShowOrganizationsQuery = { __typename?: 'Query', organizations?: Array<{ __typename?: 'Organization', id: string, name?: string | null, createdAt?: any | null, events?: Array<{ __typename?: 'Event', id: number, name: string }> | null, users?: Array<{ __typename?: 'User', id: number, name?: string | null, last_name?: string | null }> | null } | null> | null };
 
 export type RolesListQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2237,6 +2237,14 @@ export const ShowOrganizationDocument = gql`
     createdAt
     deleted
     deletedAt
+    events {
+      id
+      name
+      description
+      event_location
+      start_date
+      end_date
+    }
   }
 }
     `;
