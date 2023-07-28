@@ -1,0 +1,10 @@
+query ShowUser($userId: Int!) {
+  user(id: $userId) {
+    id
+    name
+    last_name
+    email
+    createdAt
+    updatedAt
+  }
+}
