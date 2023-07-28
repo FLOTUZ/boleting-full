@@ -1,9 +1,10 @@
 import IntroAnimationComponent from "@/components/animations/intro-animation.component";
-import { Organization, useShowOrganizationLazyQuery } from "@/gql/generated";
+import ShowOrganizationEventsDatatable from "../components/organization-events-datatable.component";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Box, Heading, Text } from "@chakra-ui/react";
-import ShowOrganizationEventsDatatable from "../components/organization-events-datatable.component";
+import { Organization, useShowOrganizationLazyQuery } from "@/gql/generated";
+import { IoReload } from "react-icons/io5";
+import { Box, Button, HStack, Heading, Text } from "@chakra-ui/react";
 
 const ShowOrganizationView = () => {
   const router = useRouter();
@@ -33,6 +34,11 @@ const ShowOrganizationView = () => {
   return (
     <IntroAnimationComponent data={data}>
       <Box m={4}>
+        <HStack>
+          <Button onClick={() => refetch()}>
+            <IoReload />
+          </Button>
+        </HStack>
         <Heading size="sm" mt={4}>
           Organización
         </Heading>

@@ -1,9 +1,8 @@
 import { Event } from "@/gql/generated";
 import { ShowEventPath, ShowOrganizationPath } from "@/routes";
-import { Button, useColorMode } from "@chakra-ui/react";
+import { useColorMode } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import DataTable, { TableColumn } from "react-data-table-component";
-import { IoReload } from "react-icons/io5";
 
 interface ShowOrganizationEventsDatatableProps {
   data: Event[];
@@ -55,11 +54,6 @@ const ShowOrganizationEventsDatatable = (
       persistTableHead
       highlightOnHover
       subHeader
-      subHeaderComponent={
-        <Button onClick={() => props.refetch()}>
-          <IoReload />
-        </Button>
-      }
       noDataComponent={<div>No existen eventos en la organizacion </div>}
       onRowClicked={(event) => router.push(ShowEventPath(String(event.id)))}
     />
