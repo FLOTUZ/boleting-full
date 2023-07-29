@@ -1,14 +1,12 @@
-import { Organization, Ticket } from "@/gql/generated";
+import { Organization } from "@/gql/generated";
 import { ShowOrganizationPath } from "@/routes";
-import { Button, useColorMode } from "@chakra-ui/react";
+import { useColorMode } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import DataTable, { TableColumn } from "react-data-table-component";
-import { IoReload } from "react-icons/io5";
 
 interface ShowOrganizationsDatatableProps {
   data: Organization[];
   progressPending: boolean;
-  refetch: () => void;
 }
 
 const ShowOrganizationsDatatable = (props: ShowOrganizationsDatatableProps) => {
@@ -49,11 +47,6 @@ const ShowOrganizationsDatatable = (props: ShowOrganizationsDatatableProps) => {
       persistTableHead
       highlightOnHover
       subHeader
-      subHeaderComponent={
-        <Button onClick={() => props.refetch()}>
-          <IoReload />
-        </Button>
-      }
       noDataComponent={<div>No existen organizaciones </div>}
       onRowClicked={(organization) =>
         router.push(ShowOrganizationPath(String(organization.id)))

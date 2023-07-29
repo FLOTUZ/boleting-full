@@ -1,9 +1,10 @@
 import IntroAnimationComponent from "@/components/animations/intro-animation.component";
 import { Organization, useShowOrganizationsQuery } from "@/gql/generated";
 import { useEffect, useState } from "react";
-import { Box } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import ShowOrganizationsDatatable from "../components/show-organizations-datatable.component";
 import ProgressLoaderComponent from "@/components/loaders/progress-loader.component";
+import { IoReload } from "react-icons/io5";
 
 const ShowOrganizationsView = () => {
   const [organizationsList, setOrganizationsList] = useState<Organization[]>(
@@ -34,10 +35,12 @@ const ShowOrganizationsView = () => {
   return (
     <IntroAnimationComponent data={data}>
       <Box m={4}>
+        <Button mb={4} onClick={() => refetch()}>
+          <IoReload />
+        </Button>
         <ShowOrganizationsDatatable
           data={organizationsList}
           progressPending={loading}
-          refetch={refetch}
         />
       </Box>
     </IntroAnimationComponent>
