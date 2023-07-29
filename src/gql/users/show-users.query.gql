@@ -1,0 +1,10 @@
+query ShowUsers {
+  users {
+    id
+    name
+    last_name
+    email
+    createdAt
+    updatedAt
+  }
+}

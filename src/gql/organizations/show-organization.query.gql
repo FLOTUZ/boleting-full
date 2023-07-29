@@ -5,5 +5,13 @@ query ShowOrganization($organizationId: Int!) {
     createdAt
     deleted
     deletedAt
+    events {
+      id
+      name
+      description
+      event_location
+      start_date
+      end_date
+    }
   }
 }

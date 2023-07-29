@@ -3,15 +3,19 @@ import { Args } from "@/server/common";
 import { Organization } from "@prisma/client";
 import { OrganizationService, UserService, EventService } from "../services";
 
-import { validateData } from "@/validations";
+import { autorizedAbilities } from "../autorization";
 
 export const OrganizationResolver = {
   Query: {
     organizations: async (
       _: any,
       { pagination }: Args,
-      __: IGraphqlContext
+      { id_user }: IGraphqlContext
     ) => {
+      await autorizedAbilities({
+        authorized_abilities: ["read.organizations"],
+        id_user: id_user,
+      });
       return await OrganizationService.organizations(pagination);
     },
 

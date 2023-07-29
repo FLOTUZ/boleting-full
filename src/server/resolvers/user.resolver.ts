@@ -22,6 +22,10 @@ export const UserResolver = {
       return await UserService.getAllUsers(pagination, id_organization!);
     },
 
+    user: async (_: any, { id }: User, __: IGraphqlContext) => {
+      return await UserService.getUserById(id);
+    },
+
     currentUser: async (_: any, __: User, { id_user }: IGraphqlContext) => {
       if (!id_user) return null;
       return await UserService.currentUser(id_user);
