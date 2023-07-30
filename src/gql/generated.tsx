@@ -1073,7 +1073,7 @@ export type Role = {
 
 export type Ticket = {
   __typename?: 'Ticket';
-  acces_type?: Maybe<AccessType>;
+  access_type?: Maybe<AccessType>;
   access_typeId?: Maybe<Scalars['Int']['output']>;
   buy_cart: BuyCart;
   buy_cartId: Scalars['Int']['output'];

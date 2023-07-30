@@ -43,7 +43,7 @@ export const TicketSchema = gql`
     deleted: Boolean!
     deletedAt: DateTime
     event: Event!
-    acces_type: AccessType
+    access_type: AccessType
     ticket_type: OwnerType
     buy_cart: BuyCart!
   }

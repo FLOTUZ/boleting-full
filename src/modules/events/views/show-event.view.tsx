@@ -1,7 +1,6 @@
 import Link from "next/link";
 
 import { useEffect, useState } from "react";
-import { TableColumn } from "react-data-table-component";
 
 import IntroAnimationComponent from "@/components/animations/intro-animation.component";
 import ProgressLoaderComponent from "@/components/loaders/progress-loader.component";
@@ -18,9 +17,15 @@ import {
   Image,
   Text,
 } from "@chakra-ui/react";
-import { AccessTypesPath, EditEventPath, ShowEventStaffIdPath } from "@/routes";
+import {
+  AccessTypesPath,
+  EditEventPath,
+  ShowEventStaffIdPath,
+  ShowCourtecyTicketsPath,
+} from "@/routes";
 import { IoTicketSharp } from "react-icons/io5";
 import { PiUsersFourFill } from "react-icons/pi";
+import { FaGift } from "react-icons/fa";
 
 const ShowEventView = ({ eventId }: { eventId: number }) => {
   const [event, setEvent] = useState<Event>();
@@ -68,6 +73,15 @@ const ShowEventView = ({ eventId }: { eventId: number }) => {
             Tipos de acceso
             <Box pl={2}>
               <IoTicketSharp />
+            </Box>
+          </Button>
+        </Link>
+
+        <Link passHref href={ShowCourtecyTicketsPath(String(event?.id))}>
+          <Button mb={4} ml={4}>
+            Cortesías
+            <Box pl={2}>
+              <FaGift />
             </Box>
           </Button>
         </Link>
