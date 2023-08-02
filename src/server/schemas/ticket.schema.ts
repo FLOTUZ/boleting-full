@@ -10,7 +10,16 @@ export const TicketSchema = gql`
     eventId: Int!
     access_typeId: Int
     owner_typeId: Int
-    buy_cartId: Int!
+    buy_cartId: Int
+  }
+
+  input CreateCourtessyTicketInput {
+    note: String!
+    price: Decimal!
+    is_paid: Boolean!
+    eventId: Int!
+    access_typeId: Int!
+    owner_typeId: Int!
   }
 
   input UpdateTicketInput {
@@ -45,7 +54,7 @@ export const TicketSchema = gql`
     event: Event!
     access_type: AccessType
     ticket_type: OwnerType
-    buy_cart: BuyCart!
+    buy_cart: BuyCart
   }
 
   type Query {
@@ -56,6 +65,7 @@ export const TicketSchema = gql`
 
   type Mutation {
     createTicket(input: CreateTicketInput!): Ticket
+    createCourtesyTicket(data: CreateCourtessyTicketInput!): Ticket
     updateTicket(id: Int!, data: UpdateTicketInput!): Ticket
     deleteTicket(id: Int!): Ticket
   }

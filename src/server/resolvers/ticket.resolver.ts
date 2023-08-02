@@ -5,8 +5,10 @@ import {
   validateData,
   CreateTicketValidator,
   UpdateTicketValidator,
+  CreateCourtesyTicketValidator,
 } from "@/validations";
 import { TicketService } from "../services";
+import { autorizedAbilities } from "../autorization";
 
 //
 // Resolver for Ticket model
@@ -39,6 +41,19 @@ export const TicketResolver = {
     ) => {
       await validateData({ schema: CreateTicketValidator, data });
       return await TicketService.createTicket(data);
+    },
+
+    createCourtesyTicket: async (
+      _: any,
+      { data }: { data: Ticket },
+      { id_user }: IGraphqlContext
+    ) => {
+      await autorizedAbilities({
+        id_user,
+        authorized_abilities: ["create:courtesy-ticket"],
+      });
+      await validateData({ schema: CreateCourtesyTicketValidator, data });
+      return await TicketService.createCourtesyTicket(id_user!, data);
     },
 
     updateTicket: async (
