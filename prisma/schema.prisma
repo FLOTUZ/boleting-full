@@ -22,15 +22,14 @@ model Abilities {
 }
 
 model Organization {
-  id        Int         @id @default(autoincrement())
-  name      String      @unique @db.VarChar(50)
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
-  deleted   Boolean     @default(false)
+  id        Int       @id @default(autoincrement())
+  name      String    @unique @db.VarChar(50)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deleted   Boolean   @default(false)
   deletedAt DateTime?
-  events    Event[]     @relation("events_on_organization")
-  users     User[]      @relation("users_on_organization")
-  OwnerType OwnerType[] @relation("created_owner_types")
+  events    Event[]   @relation("events_on_organization")
+  users     User[]    @relation("users_on_organization")
 }
 
 model Role {
@@ -257,18 +256,17 @@ model AccessType {
 }
 
 model OwnerType {
-  id             Int           @id @unique @default(autoincrement())
-  name           String        @unique @db.VarChar(10)
-  description    String?       @db.VarChar(255)
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @updatedAt
-  deleted        Boolean       @default(false)
+  id             Int       @id @unique @default(autoincrement())
+  name           String    @db.VarChar(50)
+  description    String?   @db.VarChar(255)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  deleted        Boolean   @default(false)
   deletedAt      DateTime?
   eventId        Int
   organizationId Int
-  event          Event         @relation("owner_types_for_event", fields: [eventId], references: [id])
-  organization   Organization? @relation("created_owner_types", fields: [organizationId], references: [id])
-  ticket         Ticket[]      @relation("owner_types")
+  event          Event     @relation("owner_types_for_event", fields: [eventId], references: [id])
+  ticket         Ticket[]  @relation("owner_types")
 }
 
 model Ticket {

@@ -6,7 +6,6 @@ export const OwnerTypeSchema = gql`
     description: String
     userId: Int!
     eventId: Int!
-    organizationId: Int!
   }
 
   input UpdateOwnerTypeInput {
@@ -14,7 +13,6 @@ export const OwnerTypeSchema = gql`
     description: String
     userId: Int
     eventId: Int
-    organizationId: Int
     deleted: Boolean
   }
 
@@ -30,7 +28,6 @@ export const OwnerTypeSchema = gql`
     organizationId: Int!
     eventId: Int!
     event: Event!
-    organization: Organization!
     tickets: [Ticket!]
   }
 

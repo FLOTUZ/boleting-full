@@ -14,7 +14,6 @@ export const AccessTypeSchema = gql`
     description: String
     enter_and_exit_option: Boolean
     price: Decimal
-    organizationId: Int
     eventId: Int
     deleted: Boolean
   }
@@ -29,11 +28,9 @@ export const AccessTypeSchema = gql`
     updatedAt: DateTime!
     deleted: Boolean!
     deletedAt: DateTime
-    organizationId: Int!
     eventId: Int!
     event: Event!
     tickets: [Ticket!]!
-    organization: Organization!
   }
 
   type Query {

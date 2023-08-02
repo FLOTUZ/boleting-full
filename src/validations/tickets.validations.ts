@@ -1,5 +1,14 @@
 import * as y from "yup";
 
+export const CreateCourtesyTicketValidator = y.object().shape({
+  note: y.string().required().min(1).max(50),
+  price: y.number().required().default(0),
+  eventId: y.number().required(),
+  access_typeId: y.number(),
+  owner_typeId: y.number(),
+  is_paid: y.boolean().required().default(false),
+});
+
 export const CreateTicketValidator = y.object().shape({
   id: y.number().required(),
   note: y.string().required().max(50),
@@ -11,7 +20,7 @@ export const CreateTicketValidator = y.object().shape({
   eventId: y.number().required(),
   access_typeId: y.number(),
   owner_typeId: y.number(),
-  buy_cartId: y.number().required(),
+  buy_cartId: y.number(),
 });
 
 export const UpdateTicketValidator = y.object().shape({
@@ -25,5 +34,5 @@ export const UpdateTicketValidator = y.object().shape({
   eventId: y.number().required(),
   access_typeId: y.number(),
   owner_typeId: y.number(),
-  buy_cartId: y.number().required(),
+  buy_cartId: y.number(),
 });
