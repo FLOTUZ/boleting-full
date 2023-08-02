@@ -1,5 +1,6 @@
 import { Ticket } from "@/gql/generated";
 import { useColorMode } from "@chakra-ui/react";
+import moment from "moment";
 import DataTable, { TableColumn } from "react-data-table-component";
 
 interface CourtecyTicketsDatatableProps {
@@ -17,17 +18,17 @@ const CourtecyTicketsDatatable = (props: CourtecyTicketsDatatableProps) => {
       sortable: true,
     },
     {
-      name: "Serial",
-      selector: (row) => row.serial_number,
+      name: "Nota",
+      selector: (row) => row.note,
       sortable: true,
     },
     {
-      name: "Fecha de creación",
-      selector: (row) => row.createdAt,
+      name: "Tipo de acceso",
+      selector: (row) => row.access_type?.name,
       sortable: true,
     },
     {
-      name: "Tipo de ticket",
+      name: "Tipo de dueño",
       selector: (row) => row.ticket_type?.name,
       sortable: true,
     },
@@ -37,8 +38,18 @@ const CourtecyTicketsDatatable = (props: CourtecyTicketsDatatableProps) => {
       sortable: true,
     },
     {
-      name: "Nota",
-      selector: (row) => row.note,
+      name: "Precio",
+      selector: (row) => row.price,
+      sortable: true,
+    },
+    {
+      name: "Cargo por servicio",
+      selector: (row) => row.service_charge,
+      sortable: true,
+    },
+    {
+      name: "Fecha de creación",
+      selector: (row) => moment(row.createdAt).format("DD/MM/YYYY HH:mm:ss"),
       sortable: true,
     },
   ];

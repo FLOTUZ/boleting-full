@@ -11,6 +11,9 @@ async function main() {
         name: "read:organizations",
       },
       {
+        name: "read:courtesy-ticket",
+      },
+      {
         name: "create:courtesy-ticket",
       },
     ],
@@ -39,7 +42,11 @@ async function main() {
     ],
   });
 
-  const adminHabilities = ["read:organizations", "create:courtesy-ticket"];
+  const adminHabilities = [
+    "read:organizations",
+    "create:courtesy-ticket",
+    "read:courtesy-ticket",
+  ];
   await prisma.role.update({
     where: { name: "ADMIN" },
     data: {

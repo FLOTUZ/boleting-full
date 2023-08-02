@@ -52,6 +52,7 @@ export const TicketSchema = gql`
     deleted: Boolean!
     deletedAt: DateTime
     event: Event!
+    is_courtesy: Boolean!
     access_type: AccessType
     ticket_type: OwnerType
     buy_cart: BuyCart
@@ -60,6 +61,7 @@ export const TicketSchema = gql`
   type Query {
     ticket(id: Int!): Ticket
     tickets(pagination: Pagination): [Ticket!]
+    courtecy_tickets(eventId: Int!, pagination: Pagination): [Ticket!]
     selled_tickets_by_event(event_id: Int!, pagination: Pagination): [Ticket!]
   }
 

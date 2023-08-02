@@ -13,7 +13,7 @@ const CrateTicket = () => {
   const { id } = router.query;
   return (
     <DesktopLayoutComponent
-      title={`Crear ticket ${id}`}
+      title={`Nueva Cortesía`}
       breadCrumbs={[
         {
           label: "Eventos",
@@ -24,11 +24,11 @@ const CrateTicket = () => {
           href: ShowEventPath(id as string),
         },
         {
-          label: "Tickets",
+          label: "Cortesías",
           href: ShowCourtecyTicketsPath(String(id)),
         },
         {
-          label: "Crear",
+          label: "Nueva Cortesía",
           href: CreateCourtecyTicketPath(String(id)),
         },
       ]}

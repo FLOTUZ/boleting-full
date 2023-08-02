@@ -21,6 +21,13 @@ export const TicketService = {
     return await prisma.ticket.findUnique({ where: { id } });
   },
 
+  async courtecyTickets(pagination?: Pagination, eventId?: number) {
+    return await prisma.ticket.findMany({
+      ...pagination,
+      where: { deleted: false, eventId, is_courtesy: true },
+    });
+  },
+
   async createTicket(data: Ticket) {
     try {
       return await prisma.ticket.create({ data: { ...data } });
@@ -48,8 +55,8 @@ export const TicketService = {
         data: {
           ...data,
           serial_number: uuidv4(),
-          is_paid: true,
           service_charge: 0,
+          is_courtesy: true,
         },
       });
     } catch (error) {

@@ -18,7 +18,7 @@ export const autorizedAbilities = async ({
   id_user,
 }: AuthorizedAbilities) => {
   if (authorized_abilities.length === 0) return;
-  if (!id_user) {
+  if (id_user === null || id_user === undefined) {
     throw new UnauthorizedError(
       "Acción no autorizada - Usuario no autenticado"
     );

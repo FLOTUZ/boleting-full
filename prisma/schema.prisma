@@ -281,6 +281,7 @@ model Ticket {
   access_typeId  Int?
   owner_typeId   Int?
   buy_cartId     Int?
+  is_courtesy    Boolean     @default(false)
   createdAt      DateTime    @default(now())
   updatedAt      DateTime    @updatedAt
   deleted        Boolean     @default(false)

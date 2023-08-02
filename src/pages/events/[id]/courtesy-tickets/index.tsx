@@ -8,7 +8,7 @@ const ShowCourtecyTicketsRoute = () => {
   const { id } = router.query;
   return (
     <DesktopLayoutComponent
-      title={`Tickets ${id}`}
+      title={`Cortesías ${id}`}
       breadCrumbs={[
         {
           label: "Eventos",
@@ -19,7 +19,7 @@ const ShowCourtecyTicketsRoute = () => {
           href: ShowEventPath(id as string),
         },
         {
-          label: "Tickets",
+          label: "Cortesías",
           href: ShowCourtecyTicketsPath(String(id)),
         },
       ]}

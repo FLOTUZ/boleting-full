@@ -3,9 +3,9 @@ import * as y from "yup";
 export const CreateCourtesyTicketValidator = y.object().shape({
   note: y.string().required().min(1).max(50),
   price: y.number().default(0),
+  is_paid: y.boolean(),
   access_typeId: y.number(),
   owner_typeId: y.number(),
-  is_paid: y.boolean(),
 });
 
 export const CreateTicketValidator = y.object().shape({
