@@ -20,6 +20,16 @@ const components = {
       variant: "filled",
     },
   },
+  Select: {
+    defaultProps: {
+      variant: "filled",
+    },
+  },
+  Switch: {
+    defaultProps: {
+      size: "lg",
+    },
+  },
 };
 
 export const theme = extendTheme({

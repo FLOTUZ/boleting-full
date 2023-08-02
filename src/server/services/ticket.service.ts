@@ -42,12 +42,7 @@ export const TicketService = {
         "You are not authorized to create a courtesy ticket for this event"
       );
     }
-    console.log({
-      ...data,
-      serial_number: uuidv4(),
-      is_paid: true,
-      service_charge: 0,
-    });
+
     try {
       return await prisma.ticket.create({
         data: {
