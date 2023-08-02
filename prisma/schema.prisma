@@ -22,16 +22,15 @@ model Abilities {
 }
 
 model Organization {
-  id                   Int          @id @default(autoincrement())
-  name                 String       @unique @db.VarChar(50)
-  createdAt            DateTime     @default(now())
-  updatedAt            DateTime     @updatedAt
-  deleted              Boolean      @default(false)
-  deletedAt            DateTime?
-  events               Event[]      @relation("events_on_organization")
-  users                User[]       @relation("users_on_organization")
-  created_access_types AccessType[] @relation("created_access_types")
-  OwnerType            OwnerType[]  @relation("created_owner_types")
+  id        Int         @id @default(autoincrement())
+  name      String      @unique @db.VarChar(50)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  deleted   Boolean     @default(false)
+  deletedAt DateTime?
+  events    Event[]     @relation("events_on_organization")
+  users     User[]      @relation("users_on_organization")
+  OwnerType OwnerType[] @relation("created_owner_types")
 }
 
 model Role {
@@ -243,20 +242,18 @@ model EventSubCategory {
 //===================================== TICKETING =====================================
 
 model AccessType {
-  id                    Int          @id @unique @default(autoincrement())
-  name                  String       @unique @db.VarChar(15)
-  description           String?      @db.VarChar(1000)
-  enter_and_exit_option Boolean?     @default(false)
-  price                 Decimal      @db.Money
-  createdAt             DateTime     @default(now())
-  updatedAt             DateTime     @updatedAt
-  deleted               Boolean      @default(false)
+  id                    Int       @id @unique @default(autoincrement())
+  name                  String    @db.VarChar(15)
+  description           String?   @db.VarChar(1000)
+  enter_and_exit_option Boolean?  @default(false)
+  price                 Decimal   @db.Money
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+  deleted               Boolean   @default(false)
   deletedAt             DateTime?
-  organizationId        Int
   eventId               Int
-  event                 Event        @relation("types_of_access_for_event", fields: [eventId], references: [id])
-  tickets               Ticket[]     @relation("access_type")
-  organization          Organization @relation("created_access_types", fields: [organizationId], references: [id])
+  event                 Event     @relation("types_of_access_for_event", fields: [eventId], references: [id])
+  tickets               Ticket[]  @relation("access_type")
 }
 
 model OwnerType {
@@ -277,7 +274,7 @@ model OwnerType {
 model Ticket {
   id             Int         @id @unique @default(autoincrement())
   note           String?     @db.VarChar(50)
-  serial_number  String      @unique @db.VarChar(6)
+  serial_number  String      @unique @db.VarChar(40)
   price          Decimal     @db.Money
   is_paid        Boolean     @default(false)
   is_used        Boolean?    @default(false)
@@ -285,7 +282,7 @@ model Ticket {
   eventId        Int
   access_typeId  Int?
   owner_typeId   Int?
-  buy_cartId     Int
+  buy_cartId     Int?
   createdAt      DateTime    @default(now())
   updatedAt      DateTime    @updatedAt
   deleted        Boolean     @default(false)
@@ -293,7 +290,7 @@ model Ticket {
   event          Event       @relation("selled_tickets", fields: [eventId], references: [id])
   access_type    AccessType? @relation("access_type", fields: [access_typeId], references: [id])
   ticket_type    OwnerType?  @relation("owner_types", fields: [owner_typeId], references: [id])
-  buy_cart       BuyCart     @relation("buy_cart", fields: [buy_cartId], references: [id])
+  buy_cart       BuyCart?    @relation("buy_cart", fields: [buy_cartId], references: [id])
 }
 
 // ================================ SEATING ================================
