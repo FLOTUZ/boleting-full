@@ -7,7 +7,11 @@ import {
   UpdateTicketValidator,
   CreateCourtesyTicketValidator,
 } from "@/validations";
-import { TicketService } from "../services";
+import {
+  AccessTypeService,
+  OwnerTypeService,
+  TicketService,
+} from "../services";
 import { autorizedAbilities } from "../autorization";
 
 //
@@ -71,6 +75,16 @@ export const TicketResolver = {
       __: IGraphqlContext
     ) => {
       return await TicketService.deleteTicket(id);
+    },
+  },
+
+  Ticket: {
+    access_type: async (ticket: Ticket, _: any, __: IGraphqlContext) => {
+      return await AccessTypeService.accessType(ticket.eventId);
+    },
+
+    ticket_type: async (ticket: Ticket, _: any, __: IGraphqlContext) => {
+      return await OwnerTypeService.ownerType(ticket.eventId);
     },
   },
 };

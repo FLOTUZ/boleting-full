@@ -18,8 +18,8 @@ export const TicketSchema = gql`
     price: Decimal!
     is_paid: Boolean!
     eventId: Int!
-    access_typeId: Int!
-    owner_typeId: Int!
+    access_typeId: Int
+    owner_typeId: Int
   }
 
   input UpdateTicketInput {
