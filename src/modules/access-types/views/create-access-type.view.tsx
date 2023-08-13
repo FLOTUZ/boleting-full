@@ -14,15 +14,13 @@ import {
 } from "@chakra-ui/react";
 import { CreateAccessTypeValidatorForm } from "@/validations";
 import { useRouter } from "next/router";
-import {
-  CreateAccessTypeInput,
-  useCreateAccessTypeMutation,
-} from "@/gql/generated";
+import { useCreateAccessTypeMutation } from "@/gql/generated";
+import { log } from "console";
 
 const CreateAccessTypeView = () => {
   const router = useRouter();
   const toast = useToast();
-  const { id } = router.query;
+  const { id: eventId } = router.query;
 
   const [createAccessType, { loading }] = useCreateAccessTypeMutation({
     onCompleted: (data) => {
@@ -36,7 +34,13 @@ const CreateAccessTypeView = () => {
       router.back();
     },
     onError: (error) => {
-      console.log(error);
+      toast({
+        title: "Error",
+        description: "Ocurrió un error al crear el tipo de acceso",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
     },
   });
 
@@ -48,7 +52,7 @@ const CreateAccessTypeView = () => {
       description: "",
       price: 0,
       enter_and_exit_option: false,
-      eventId: id,
+      eventId: eventId,
     },
     onSubmit: async (values) => {
       await createAccessType({

@@ -8,7 +8,7 @@ const ShowCourtecyTicketsRoute = () => {
   const { id } = router.query;
   return (
     <DesktopLayoutComponent
-      title={`Cortesías ${id}`}
+      title={`Cortesías`}
       breadCrumbs={[
         {
           label: "Eventos",

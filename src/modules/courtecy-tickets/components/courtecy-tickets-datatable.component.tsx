@@ -1,7 +1,11 @@
-import { Ticket } from "@/gql/generated";
-import { useColorMode } from "@chakra-ui/react";
 import moment from "moment";
+import { useRouter } from "next/router";
 import DataTable, { TableColumn } from "react-data-table-component";
+
+import { Ticket } from "@/gql/generated";
+import { ShowCourtecyTicketPath } from "@/routes";
+
+import { useColorMode } from "@chakra-ui/react";
 
 interface CourtecyTicketsDatatableProps {
   data: Ticket[];
@@ -10,6 +14,8 @@ interface CourtecyTicketsDatatableProps {
 
 const CourtecyTicketsDatatable = (props: CourtecyTicketsDatatableProps) => {
   const { colorMode } = useColorMode();
+  const router = useRouter();
+  const { id: eventId } = router.query;
 
   const columns: TableColumn<Ticket>[] = [
     {
@@ -67,7 +73,9 @@ const CourtecyTicketsDatatable = (props: CourtecyTicketsDatatableProps) => {
       pagination
       subHeader
       noDataComponent={<div>Aún no hay tickets de cortesía</div>}
-      onRowClicked={(e) => console.log(e)}
+      onRowClicked={(ticket) =>
+        router.push(ShowCourtecyTicketPath(String(eventId), String(ticket.id)))
+      }
     />
   );
 };

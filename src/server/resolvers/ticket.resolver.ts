@@ -9,6 +9,7 @@ import {
 } from "@/validations";
 import {
   AccessTypeService,
+  EventService,
   OwnerTypeService,
   TicketService,
 } from "../services";
@@ -98,7 +99,9 @@ export const TicketResolver = {
     access_type: async (ticket: Ticket, _: any, __: IGraphqlContext) => {
       return await AccessTypeService.accessType(ticket.eventId);
     },
-
+    event: async (ticket: Ticket, _: any, __: IGraphqlContext) => {
+      return await EventService.event(ticket.eventId);
+    },
     ticket_type: async (ticket: Ticket, _: any, __: IGraphqlContext) => {
       return await OwnerTypeService.ownerType(ticket.eventId);
     },

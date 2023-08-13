@@ -14,6 +14,7 @@ export const TicketService = {
     return prisma.ticket.findMany({
       ...pagination,
       where: { deleted: false },
+      orderBy: { createdAt: "desc" },
     });
   },
 
@@ -25,6 +26,7 @@ export const TicketService = {
     return await prisma.ticket.findMany({
       ...pagination,
       where: { deleted: false, eventId, is_courtesy: true },
+      orderBy: { createdAt: "desc" },
     });
   },
 

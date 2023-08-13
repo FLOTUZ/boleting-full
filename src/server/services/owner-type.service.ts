@@ -19,6 +19,12 @@ export const OwnerTypeService = {
     return await prisma.ownerType.findUnique({ where: { id } });
   },
 
+  async ownerTypeByEvent(eventId: number) {
+    return await prisma.ownerType.findMany({
+      where: { event: { id: eventId } },
+    });
+  },
+
   async createOwnerType(data: OwnerType) {
     try {
       return await prisma.ownerType.create({ data: { ...data } });

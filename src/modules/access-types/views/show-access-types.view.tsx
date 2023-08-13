@@ -15,7 +15,7 @@ const ShowAccessTypesView = () => {
   const router = useRouter();
   const { id } = router.query;
 
-  const [fetchAccessTypes, { data, loading, refetch }] =
+  const [fetchAccessTypes, { data, loading, error, refetch }] =
     useAccessTypesByEventLazyQuery({
       fetchPolicy: "network-only",
     });
@@ -38,6 +38,10 @@ const ShowAccessTypesView = () => {
 
   if (loading) {
     return <ProgressLoaderComponent />;
+  }
+
+  if (error) {
+    return <div>{error.graphQLErrors.map((error) => error.message)}</div>;
   }
 
   return (

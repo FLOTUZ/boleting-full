@@ -46,3 +46,5 @@ export const ShowCourtecyTicketsPath = (id: string) =>
   `/events/${id}/courtesy-tickets`;
 export const CreateCourtecyTicketPath = (id: string) =>
   `/events/${id}/courtesy-tickets/create`;
+export const ShowCourtecyTicketPath = (id: string, courtesyId: string) =>
+  `/events/${id}/courtesy-tickets/${courtesyId}`;

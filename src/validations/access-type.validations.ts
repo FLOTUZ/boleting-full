@@ -13,7 +13,6 @@ export const CreateAccessTypeValidator = y.object().shape({
   description: y.string().required().max(1000),
   enter_and_exit_option: y.boolean(),
   price: y.number().required().min(0),
-  organizationId: y.number().required(),
   eventId: y.number().required(),
 });
 
@@ -22,7 +21,6 @@ export const UpdateAccessTypeValidator = y.object().shape({
   description: y.string().max(1000),
   enter_and_exit_option: y.boolean(),
   userId: y.number(),
-  organizationId: y.number(),
   eventId: y.number(),
   deleted: y.boolean(),
 });

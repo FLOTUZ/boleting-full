@@ -6,7 +6,7 @@ import {
   CreateOwnerTypeValidator,
   UpdateOwnerTypeValidator,
 } from "@/validations";
-import { OwnerTypeService } from "../services";
+import { EventService, OwnerTypeService } from "../services";
 
 //
 // Resolver for OwnerType model
@@ -19,6 +19,13 @@ export const OwnerTypeResolver = {
 
     ownerType: async (_: any, { id }: { id: number }, __: IGraphqlContext) => {
       return await OwnerTypeService.ownerType(id);
+    },
+    ownerTypeByEvent: async (
+      _: any,
+      { eventId }: { eventId: number },
+      __: IGraphqlContext
+    ) => {
+      return await OwnerTypeService.ownerTypeByEvent(eventId);
     },
   },
 
@@ -47,6 +54,12 @@ export const OwnerTypeResolver = {
       __: IGraphqlContext
     ) => {
       return await OwnerTypeService.deleteOwnerType(id);
+    },
+  },
+
+  OwnerType: {
+    event: async (parent: OwnerType, _: any, __: IGraphqlContext) => {
+      return await EventService.event(parent.eventId);
     },
   },
 };

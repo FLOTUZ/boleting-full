@@ -1,0 +1,12 @@
+query ShowOwnerTypes {
+  ownerTypes {
+    id
+    name
+    event {
+      id
+      name
+    }
+    createdAt
+    updatedAt
+  }
+}

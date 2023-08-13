@@ -21,7 +21,7 @@ export const AccessTypeSchema = gql`
   type AccessType {
     id: Int!
     name: String!
-    description: String!
+    description: String
     enter_and_exit_option: Boolean!
     price: Decimal!
     createdAt: DateTime!
