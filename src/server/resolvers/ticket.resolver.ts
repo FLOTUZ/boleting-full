@@ -96,14 +96,26 @@ export const TicketResolver = {
   },
 
   Ticket: {
-    access_type: async (ticket: Ticket, _: any, __: IGraphqlContext) => {
-      return await AccessTypeService.accessType(ticket.eventId);
+    event: async ({ eventId }: Ticket, _: any, __: IGraphqlContext) => {
+      return await EventService.event(eventId);
     },
-    event: async (ticket: Ticket, _: any, __: IGraphqlContext) => {
-      return await EventService.event(ticket.eventId);
+
+    access_type: async (
+      { access_typeId }: Ticket,
+      _: any,
+      __: IGraphqlContext
+    ) => {
+      if (!access_typeId) return null;
+      return await AccessTypeService.accessType(access_typeId);
     },
-    ticket_type: async (ticket: Ticket, _: any, __: IGraphqlContext) => {
-      return await OwnerTypeService.ownerType(ticket.eventId);
+
+    ticket_type: async (
+      { owner_typeId }: Ticket,
+      _: any,
+      __: IGraphqlContext
+    ) => {
+      if (!owner_typeId) return null;
+      return await OwnerTypeService.ownerType(owner_typeId);
     },
   },
 };

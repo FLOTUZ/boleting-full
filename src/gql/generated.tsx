@@ -1107,7 +1107,7 @@ export type Ticket = {
   id: Scalars['Int']['output'];
   is_courtesy: Scalars['Boolean']['output'];
   is_paid: Scalars['Boolean']['output'];
-  is_used?: Maybe<Scalars['Boolean']['output']>;
+  is_used: Scalars['Boolean']['output'];
   note?: Maybe<Scalars['String']['output']>;
   owner_typeId?: Maybe<Scalars['Int']['output']>;
   price: Scalars['Decimal']['output'];
@@ -1374,7 +1374,7 @@ export type ShowEventQueryVariables = Exact<{
 }>;
 
 
-export type ShowEventQuery = { __typename?: 'Query', event?: { __typename?: 'Event', id: number, event_key?: string | null, name: string, description?: string | null, event_location: string, event_logo_url?: string | null, event_banner_url?: string | null, event_location_url: string, start_date: any, start_time?: string | null, end_time?: string | null, re_entry: boolean, createdAt: any, updatedAt: any, deleted: boolean, createdBy: { __typename?: 'User', id: number, name?: string | null }, sub_categories?: Array<{ __typename?: 'EventSubCategory', id: number, name: string, parent_event_categoryId: number }> | null } | null, selled_tickets_by_event?: Array<{ __typename?: 'Ticket', id: number, createdAt: any, serial_number: string, service_charge: any, is_paid: boolean, is_used?: boolean | null, note?: string | null, price: any }> | null };
+export type ShowEventQuery = { __typename?: 'Query', event?: { __typename?: 'Event', id: number, event_key?: string | null, name: string, description?: string | null, event_location: string, event_logo_url?: string | null, event_banner_url?: string | null, event_location_url: string, start_date: any, start_time?: string | null, end_time?: string | null, re_entry: boolean, createdAt: any, updatedAt: any, deleted: boolean, createdBy: { __typename?: 'User', id: number, name?: string | null }, sub_categories?: Array<{ __typename?: 'EventSubCategory', id: number, name: string, parent_event_categoryId: number }> | null } | null, selled_tickets_by_event?: Array<{ __typename?: 'Ticket', id: number, createdAt: any, serial_number: string, service_charge: any, is_paid: boolean, is_used: boolean, note?: string | null, price: any }> | null };
 
 export type ShowEventsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1503,19 +1503,27 @@ export type CreateCourtesyMutationVariables = Exact<{
 
 export type CreateCourtesyMutation = { __typename?: 'Mutation', createCourtesyTicket?: { __typename?: 'Ticket', id: number, note?: string | null, service_charge: any, createdAt: any, access_type?: { __typename?: 'AccessType', id: number, name: string } | null } | null };
 
+export type EditTicketMutationVariables = Exact<{
+  updateTicketId: Scalars['Int']['input'];
+  data: UpdateTicketInput;
+}>;
+
+
+export type EditTicketMutation = { __typename?: 'Mutation', updateTicket?: { __typename?: 'Ticket', id: number, note?: string | null, is_used: boolean, price: any, service_charge: any, access_typeId?: number | null, owner_typeId?: number | null, createdAt: any, updatedAt?: any | null, access_type?: { __typename?: 'AccessType', id: number, name: string } | null, ticket_type?: { __typename?: 'OwnerType', id: string, name: string } | null, event: { __typename?: 'Event', id: number, name: string } } | null };
+
 export type ShowCourtesyTicketsQueryVariables = Exact<{
   eventId: Scalars['Int']['input'];
 }>;
 
 
-export type ShowCourtesyTicketsQuery = { __typename?: 'Query', courtecy_tickets?: Array<{ __typename?: 'Ticket', id: number, note?: string | null, access_typeId?: number | null, price: any, service_charge: any, is_used?: boolean | null, createdAt: any, ticket_type?: { __typename?: 'OwnerType', id: string, name: string } | null, access_type?: { __typename?: 'AccessType', id: number, name: string } | null }> | null };
+export type ShowCourtesyTicketsQuery = { __typename?: 'Query', courtecy_tickets?: Array<{ __typename?: 'Ticket', id: number, note?: string | null, access_typeId?: number | null, price: any, service_charge: any, is_used: boolean, createdAt: any, ticket_type?: { __typename?: 'OwnerType', id: string, name: string } | null, access_type?: { __typename?: 'AccessType', id: number, name: string } | null }> | null };
 
 export type ShowCourtesyTicketQueryVariables = Exact<{
   ticketId: Scalars['Int']['input'];
 }>;
 
 
-export type ShowCourtesyTicketQuery = { __typename?: 'Query', ticket?: { __typename?: 'Ticket', id: number, note?: string | null, is_used?: boolean | null, price: any, service_charge: any, createdAt: any, updatedAt?: any | null, access_type?: { __typename?: 'AccessType', id: number, name: string } | null, ticket_type?: { __typename?: 'OwnerType', id: string, name: string } | null, event: { __typename?: 'Event', id: number, name: string } } | null };
+export type ShowCourtesyTicketQuery = { __typename?: 'Query', ticket?: { __typename?: 'Ticket', id: number, note?: string | null, is_used: boolean, price: any, service_charge: any, access_typeId?: number | null, owner_typeId?: number | null, createdAt: any, updatedAt?: any | null, access_type?: { __typename?: 'AccessType', id: number, name: string } | null, ticket_type?: { __typename?: 'OwnerType', id: string, name: string } | null, event: { __typename?: 'Event', id: number, name: string } } | null };
 
 export type CreateUserMutationVariables = Exact<{
   data: CreateUserInput;
@@ -2745,6 +2753,60 @@ export function useCreateCourtesyMutation(baseOptions?: Apollo.MutationHookOptio
 export type CreateCourtesyMutationHookResult = ReturnType<typeof useCreateCourtesyMutation>;
 export type CreateCourtesyMutationResult = Apollo.MutationResult<CreateCourtesyMutation>;
 export type CreateCourtesyMutationOptions = Apollo.BaseMutationOptions<CreateCourtesyMutation, CreateCourtesyMutationVariables>;
+export const EditTicketDocument = gql`
+    mutation EditTicket($updateTicketId: Int!, $data: UpdateTicketInput!) {
+  updateTicket(id: $updateTicketId, data: $data) {
+    id
+    note
+    is_used
+    price
+    service_charge
+    access_typeId
+    owner_typeId
+    access_type {
+      id
+      name
+    }
+    ticket_type {
+      id
+      name
+    }
+    event {
+      id
+      name
+    }
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export type EditTicketMutationFn = Apollo.MutationFunction<EditTicketMutation, EditTicketMutationVariables>;
+
+/**
+ * __useEditTicketMutation__
+ *
+ * To run a mutation, you first call `useEditTicketMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditTicketMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [editTicketMutation, { data, loading, error }] = useEditTicketMutation({
+ *   variables: {
+ *      updateTicketId: // value for 'updateTicketId'
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useEditTicketMutation(baseOptions?: Apollo.MutationHookOptions<EditTicketMutation, EditTicketMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<EditTicketMutation, EditTicketMutationVariables>(EditTicketDocument, options);
+      }
+export type EditTicketMutationHookResult = ReturnType<typeof useEditTicketMutation>;
+export type EditTicketMutationResult = Apollo.MutationResult<EditTicketMutation>;
+export type EditTicketMutationOptions = Apollo.BaseMutationOptions<EditTicketMutation, EditTicketMutationVariables>;
 export const ShowCourtesyTicketsDocument = gql`
     query ShowCourtesyTickets($eventId: Int!) {
   courtecy_tickets(eventId: $eventId) {
@@ -2802,6 +2864,8 @@ export const ShowCourtesyTicketDocument = gql`
     is_used
     price
     service_charge
+    access_typeId
+    owner_typeId
     access_type {
       id
       name

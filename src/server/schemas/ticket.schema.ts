@@ -41,7 +41,7 @@ export const TicketSchema = gql`
     serial_number: String!
     price: Decimal!
     is_paid: Boolean!
-    is_used: Boolean
+    is_used: Boolean!
     service_charge: Decimal!
     eventId: Int!
     access_typeId: Int

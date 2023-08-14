@@ -7,6 +7,7 @@ import {
   useCreateCourtesyMutation,
   useOwnerTypeByEventLazyQuery,
 } from "@/gql/generated";
+import { ShowCourtecyTicketPath } from "@/routes";
 import { CreateCourtesyTicketValidator } from "@/validations";
 import {
   Box,
@@ -58,7 +59,12 @@ const CreateCourtecyTicketView = () => {
         description: "El boleto de cortesía ha sido creado exitosamente",
         status: "success",
       });
-      router.back();
+      router.replace(
+        ShowCourtecyTicketPath(
+          String(eventId),
+          String(data.createCourtesyTicket?.id)
+        )
+      );
     },
     onError(error) {
       toast({

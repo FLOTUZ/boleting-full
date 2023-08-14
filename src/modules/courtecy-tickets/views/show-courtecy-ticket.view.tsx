@@ -7,7 +7,9 @@ import ProgressLoaderComponent from "@/components/loaders/progress-loader.compon
 import { EditCourtecyTicketPath } from "@/routes";
 import { Ticket, useShowCourtesyTicketLazyQuery } from "@/gql/generated";
 
-import { Box, Button, HStack, Heading, Text } from "@chakra-ui/react";
+import SendCourtecyTicketToEmailModal from "../components/send-courtecy-ticket-to-email-modal";
+
+import { Box, Button, HStack, Text } from "@chakra-ui/react";
 
 const ShowCourtecyTicketView = () => {
   const router = useRouter();
@@ -44,6 +46,7 @@ const ShowCourtecyTicketView = () => {
           >
             <Button>Editar cortesía</Button>
           </Link>
+          <SendCourtecyTicketToEmailModal />
         </HStack>
 
         <Text as={"b"}>Nota</Text>
@@ -65,6 +68,9 @@ const ShowCourtecyTicketView = () => {
 
         <Text as={"b"}>Tipo de acceso</Text>
         <Box mb={4}>{ticket?.access_type?.name}</Box>
+
+        <Text as={"b"}>Tipo de dueño</Text>
+        <Box mb={4}>{ticket?.ticket_type?.name}</Box>
 
         <Text as={"b"}>Fecha de creación</Text>
         <Box mb={4}>{new Date(ticket?.createdAt).toLocaleString()}</Box>

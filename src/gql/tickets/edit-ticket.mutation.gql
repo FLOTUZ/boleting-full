@@ -1,5 +1,5 @@
-query ShowCourtesyTicket($ticketId: Int!) {
-  ticket(id: $ticketId) {
+mutation EditTicket($updateTicketId: Int!, $data: UpdateTicketInput!) {
+  updateTicket(id: $updateTicketId, data: $data) {
     id
     note
     is_used
