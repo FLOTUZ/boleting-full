@@ -1,0 +1,25 @@
+query ShowCourtesyTicket($ticketId: Int!) {
+  ticket(id: $ticketId) {
+    id
+    note
+    is_used
+    price
+    service_charge
+    access_typeId
+    owner_typeId
+    access_type {
+      id
+      name
+    }
+    ticket_type {
+      id
+      name
+    }
+    event {
+      id
+      name
+    }
+    createdAt
+    updatedAt
+  }
+}

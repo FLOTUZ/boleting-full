@@ -5,6 +5,20 @@ import * as argon2 from "argon2";
 const prisma = new PrismaClient();
 
 async function main() {
+  await prisma.abilities.createMany({
+    data: [
+      {
+        name: "read:organizations",
+      },
+      {
+        name: "read:courtesy-ticket",
+      },
+      {
+        name: "create:courtesy-ticket",
+      },
+    ],
+  });
+
   await prisma.role.createMany({
     data: [
       {
@@ -26,6 +40,20 @@ async function main() {
         name: "SPONSOR",
       },
     ],
+  });
+
+  const adminHabilities = [
+    "read:organizations",
+    "create:courtesy-ticket",
+    "read:courtesy-ticket",
+  ];
+  await prisma.role.update({
+    where: { name: "ADMIN" },
+    data: {
+      abilities: {
+        connect: adminHabilities.map((ability) => ({ name: ability })),
+      },
+    },
   });
 
   await prisma.organization.create({
@@ -208,6 +236,14 @@ async function main() {
     },
   });
 
+  await prisma.accessType.createMany({
+    data: [
+      { name: "GA", price: 1000, eventId: 1 },
+      { name: "VIP", price: 1000, eventId: 1 },
+      { name: "PATREON", price: 1000, eventId: 1 },
+    ],
+  });
+
   await prisma.event.create({
     data: {
       name: "Electric Daisy Carnival",
@@ -235,6 +271,10 @@ async function main() {
     },
   });
 
+  await prisma.accessType.createMany({
+    data: [{ name: "GA", price: 1000, eventId: 2 }],
+  });
+
   await prisma.event.create({
     data: {
       name: "Blackpink",
@@ -259,6 +299,12 @@ async function main() {
         },
       },
     },
+  });
+  await prisma.accessType.createMany({
+    data: [
+      { name: "GENERAL A", price: 1000, eventId: 3 },
+      { name: "GENERAL B", price: 1000, eventId: 3 },
+    ],
   });
 }
 

@@ -13,7 +13,7 @@ export const OrganizationResolver = {
       { id_user }: IGraphqlContext
     ) => {
       await autorizedAbilities({
-        authorized_abilities: ["read.organizations"],
+        authorized_abilities: ["read:organizations"],
         id_user: id_user,
       });
       return await OrganizationService.organizations(pagination);

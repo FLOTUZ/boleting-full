@@ -1,0 +1,12 @@
+mutation CreateCourtesy($data: CreateCourtessyTicketInput!) {
+  createCourtesyTicket(data: $data) {
+    id
+    note
+    service_charge
+    access_type {
+      id
+      name
+    }
+    createdAt
+  }
+}

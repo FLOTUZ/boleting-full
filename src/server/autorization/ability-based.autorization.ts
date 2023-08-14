@@ -6,17 +6,23 @@ interface AuthorizedAbilities {
   id_user: number | null;
 }
 
-// * @description
-// * Check if user have abilities for this action
-// *
-// * @param {AuthorizedAbilities} { authorized_abilities, id_user }
-// * @returns {Promise<void>}
-// *
+/**
+@description
+Check if user have abilities for this action
+@param {authorized_abilities: string[]}
+@param {id_user: number | null}
+@returns {Promise<void>}
+**/
 export const autorizedAbilities = async ({
   authorized_abilities,
   id_user,
 }: AuthorizedAbilities) => {
   if (authorized_abilities.length === 0) return;
+  if (id_user === null || id_user === undefined) {
+    throw new UnauthorizedError(
+      "Acción no autorizada - Usuario no autenticado"
+    );
+  }
   const userAbilities = await prisma.abilities.findMany({
     select: { name: true },
     where: {

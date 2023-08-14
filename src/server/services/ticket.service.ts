@@ -1,8 +1,10 @@
 import { prisma } from "@/server";
 
 import { Pagination } from "../common";
-import { PrismaError } from "../utils";
+import { PrismaError, UnauthorizedError } from "../utils";
 import { Ticket } from "@prisma/client";
+
+import { v4 as uuidv4 } from "uuid";
 
 //
 // Service for Ticket model
@@ -12,6 +14,7 @@ export const TicketService = {
     return prisma.ticket.findMany({
       ...pagination,
       where: { deleted: false },
+      orderBy: { createdAt: "desc" },
     });
   },
 
@@ -19,9 +22,45 @@ export const TicketService = {
     return await prisma.ticket.findUnique({ where: { id } });
   },
 
+  async courtecyTickets(pagination?: Pagination, eventId?: number) {
+    return await prisma.ticket.findMany({
+      ...pagination,
+      where: { deleted: false, eventId, is_courtesy: true },
+      orderBy: { createdAt: "desc" },
+    });
+  },
+
   async createTicket(data: Ticket) {
     try {
       return await prisma.ticket.create({ data: { ...data } });
+    } catch (error) {
+      throw PrismaError.handle(error);
+    }
+  },
+
+  async createCourtesyTicket(userId: number, data: Ticket) {
+    // Verify if user belongs to organization of event
+
+    const event = await prisma.event.findUnique({
+      where: { id: data.eventId },
+      include: { organization: true, createdBy: true },
+    });
+
+    if (event?.createdBy?.id !== userId) {
+      throw new UnauthorizedError(
+        "You are not authorized to create a courtesy ticket for this event"
+      );
+    }
+
+    try {
+      return await prisma.ticket.create({
+        data: {
+          ...data,
+          serial_number: uuidv4(),
+          service_charge: 0,
+          is_courtesy: true,
+        },
+      });
     } catch (error) {
       throw PrismaError.handle(error);
     }

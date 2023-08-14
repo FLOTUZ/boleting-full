@@ -5,8 +5,15 @@ import {
   validateData,
   CreateTicketValidator,
   UpdateTicketValidator,
+  CreateCourtesyTicketValidator,
 } from "@/validations";
-import { TicketService } from "../services";
+import {
+  AccessTypeService,
+  EventService,
+  OwnerTypeService,
+  TicketService,
+} from "../services";
+import { autorizedAbilities } from "../autorization";
 
 //
 // Resolver for Ticket model
@@ -19,6 +26,22 @@ export const TicketResolver = {
 
     ticket: async (_: any, { id }: { id: number }, __: IGraphqlContext) => {
       return await TicketService.ticket(id);
+    },
+
+    courtecy_tickets: async (
+      _: any,
+      {
+        event_id,
+        pagination,
+      }: { event_id: number; pagination: Args["pagination"] },
+      { id_user }: IGraphqlContext
+    ) => {
+      await autorizedAbilities({
+        id_user,
+        authorized_abilities: ["read:courtesy-ticket"],
+      });
+
+      return await TicketService.courtecyTickets(pagination, event_id);
     },
 
     selled_tickets_by_event: async (
@@ -41,6 +64,19 @@ export const TicketResolver = {
       return await TicketService.createTicket(data);
     },
 
+    createCourtesyTicket: async (
+      _: any,
+      { data }: { data: Ticket },
+      { id_user }: IGraphqlContext
+    ) => {
+      await autorizedAbilities({
+        id_user,
+        authorized_abilities: ["create:courtesy-ticket"],
+      });
+      await validateData({ schema: CreateCourtesyTicketValidator, data });
+      return await TicketService.createCourtesyTicket(id_user!, data);
+    },
+
     updateTicket: async (
       _: any,
       { id, data }: { id: number; data: Ticket },
@@ -56,6 +92,30 @@ export const TicketResolver = {
       __: IGraphqlContext
     ) => {
       return await TicketService.deleteTicket(id);
+    },
+  },
+
+  Ticket: {
+    event: async ({ eventId }: Ticket, _: any, __: IGraphqlContext) => {
+      return await EventService.event(eventId);
+    },
+
+    access_type: async (
+      { access_typeId }: Ticket,
+      _: any,
+      __: IGraphqlContext
+    ) => {
+      if (!access_typeId) return null;
+      return await AccessTypeService.accessType(access_typeId);
+    },
+
+    ticket_type: async (
+      { owner_typeId }: Ticket,
+      _: any,
+      __: IGraphqlContext
+    ) => {
+      if (!owner_typeId) return null;
+      return await OwnerTypeService.ownerType(owner_typeId);
     },
   },
 };

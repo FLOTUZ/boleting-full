@@ -1,0 +1,12 @@
+query OwnerTypeByEvent($eventId: Int!) {
+  ownerTypeByEvent(eventId: $eventId) {
+    id
+    name
+    event {
+      id
+      name
+    }
+    createdAt
+    updatedAt
+  }
+}

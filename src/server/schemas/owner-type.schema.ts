@@ -4,17 +4,13 @@ export const OwnerTypeSchema = gql`
   input CreateOwnerTypeInput {
     name: String!
     description: String
-    userId: Int!
     eventId: Int!
-    organizationId: Int!
   }
 
   input UpdateOwnerTypeInput {
     name: String
     description: String
-    userId: Int
     eventId: Int
-    organizationId: Int
     deleted: Boolean
   }
 
@@ -22,7 +18,6 @@ export const OwnerTypeSchema = gql`
     id: ID!
     name: String!
     description: String
-    userId: Int!
     createdAt: DateTime!
     updatedAt: DateTime
     deleted: Boolean!
@@ -30,18 +25,18 @@ export const OwnerTypeSchema = gql`
     organizationId: Int!
     eventId: Int!
     event: Event!
-    organization: Organization!
     tickets: [Ticket!]
   }
 
   type Query {
     ownerTypes(pagination: Pagination): [OwnerType!]!
-    ownerType(id: ID!): OwnerType
+    ownerType(id: Int!): OwnerType
+    ownerTypeByEvent(eventId: Int!): [OwnerType!]!
   }
 
   type Mutation {
     createOwnerType(data: CreateOwnerTypeInput!): OwnerType!
-    updateOwnerType(id: ID!, data: UpdateOwnerTypeInput!): OwnerType
-    deleteOwnerType(id: ID!): OwnerType
+    updateOwnerType(id: Int!, data: UpdateOwnerTypeInput!): OwnerType
+    deleteOwnerType(id: Int!): OwnerType
   }
 `;

@@ -4,7 +4,6 @@ mutation CreateAccessType($data: CreateAccessTypeInput!) {
     name
     description
     enter_and_exit_option
-    organizationId
     price
     createdAt
     updatedAt

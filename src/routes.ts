@@ -41,3 +41,12 @@ export const ShowAccessTypePath = (id: number, accessTypeId: number) =>
   `/events/${id}/access-types/${accessTypeId}`;
 export const EditAccessTypePath = (id: number, accessTypeId: number) =>
   `/events/${id}/access-types/${accessTypeId}/edit`;
+
+export const ShowCourtecyTicketsPath = (id: string) =>
+  `/events/${id}/courtesy-tickets`;
+export const CreateCourtecyTicketPath = (id: string) =>
+  `/events/${id}/courtesy-tickets/create`;
+export const ShowCourtecyTicketPath = (id: string, courtesyId: string) =>
+  `/events/${id}/courtesy-tickets/${courtesyId}`;
+export const EditCourtecyTicketPath = (id: string, courtesyId: string) =>
+  `/events/${id}/courtesy-tickets/${courtesyId}/edit`;

@@ -1,0 +1,25 @@
+mutation EditTicket($updateTicketId: Int!, $data: UpdateTicketInput!) {
+  updateTicket(id: $updateTicketId, data: $data) {
+    id
+    note
+    is_used
+    price
+    service_charge
+    access_typeId
+    owner_typeId
+    access_type {
+      id
+      name
+    }
+    ticket_type {
+      id
+      name
+    }
+    event {
+      id
+      name
+    }
+    createdAt
+    updatedAt
+  }
+}
