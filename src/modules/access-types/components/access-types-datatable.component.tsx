@@ -25,7 +25,7 @@ const AccessTypeDatatable = ({ data }: AccessTypeDatatableProps) => {
     },
     {
       name: "Descripción",
-      selector: (row) => row.description,
+      selector: (row) => row.description ?? "Sin descripción",
       sortable: true,
     },
     {
