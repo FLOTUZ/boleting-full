@@ -1317,7 +1317,7 @@ export type ShowAccessTypeQueryVariables = Exact<{
 }>;
 
 
-export type ShowAccessTypeQuery = { __typename?: 'Query', accessType: { __typename?: 'AccessType', id: number, name: string, description?: string | null, enter_and_exit_option: boolean, createdAt: any, updatedAt: any, deleted: boolean, deletedAt?: any | null } };
+export type ShowAccessTypeQuery = { __typename?: 'Query', accessType: { __typename?: 'AccessType', id: number, name: string, description?: string | null, enter_and_exit_option: boolean, price: any, createdAt: any, updatedAt: any, deleted: boolean, deletedAt?: any | null } };
 
 export type AccessTypesByEventQueryVariables = Exact<{
   eventId: Scalars['Int']['input'];
@@ -1332,6 +1332,14 @@ export type CreateAccessTypeMutationVariables = Exact<{
 
 
 export type CreateAccessTypeMutation = { __typename?: 'Mutation', createAccessType: { __typename?: 'AccessType', id: number, name: string, description?: string | null, enter_and_exit_option: boolean, price: any, createdAt: any, updatedAt: any } };
+
+export type EditAccessTypeMutationVariables = Exact<{
+  updateAccessTypeId: Scalars['Int']['input'];
+  data: UpdateAccessTypeInput;
+}>;
+
+
+export type EditAccessTypeMutation = { __typename?: 'Mutation', updateAccessType: { __typename?: 'AccessType', id: number, description?: string | null, enter_and_exit_option: boolean, price: any } };
 
 export type LoginMutationVariables = Exact<{
   data: LoginInput;
@@ -1552,6 +1560,7 @@ export const ShowAccessTypeDocument = gql`
     name
     description
     enter_and_exit_option
+    price
     createdAt
     updatedAt
     deleted
@@ -1666,6 +1675,43 @@ export function useCreateAccessTypeMutation(baseOptions?: Apollo.MutationHookOpt
 export type CreateAccessTypeMutationHookResult = ReturnType<typeof useCreateAccessTypeMutation>;
 export type CreateAccessTypeMutationResult = Apollo.MutationResult<CreateAccessTypeMutation>;
 export type CreateAccessTypeMutationOptions = Apollo.BaseMutationOptions<CreateAccessTypeMutation, CreateAccessTypeMutationVariables>;
+export const EditAccessTypeDocument = gql`
+    mutation EditAccessType($updateAccessTypeId: Int!, $data: UpdateAccessTypeInput!) {
+  updateAccessType(id: $updateAccessTypeId, data: $data) {
+    id
+    description
+    enter_and_exit_option
+    price
+  }
+}
+    `;
+export type EditAccessTypeMutationFn = Apollo.MutationFunction<EditAccessTypeMutation, EditAccessTypeMutationVariables>;
+
+/**
+ * __useEditAccessTypeMutation__
+ *
+ * To run a mutation, you first call `useEditAccessTypeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditAccessTypeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [editAccessTypeMutation, { data, loading, error }] = useEditAccessTypeMutation({
+ *   variables: {
+ *      updateAccessTypeId: // value for 'updateAccessTypeId'
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useEditAccessTypeMutation(baseOptions?: Apollo.MutationHookOptions<EditAccessTypeMutation, EditAccessTypeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<EditAccessTypeMutation, EditAccessTypeMutationVariables>(EditAccessTypeDocument, options);
+      }
+export type EditAccessTypeMutationHookResult = ReturnType<typeof useEditAccessTypeMutation>;
+export type EditAccessTypeMutationResult = Apollo.MutationResult<EditAccessTypeMutation>;
+export type EditAccessTypeMutationOptions = Apollo.BaseMutationOptions<EditAccessTypeMutation, EditAccessTypeMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($data: LoginInput!) {
   login(data: $data) {
