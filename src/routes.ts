@@ -21,6 +21,10 @@ export const ShowUserPath = (id: string) => `/users/${id}`;
 // =========== CATEGORIES ============
 export const CategoriesPath = "/categories";
 export const CreateCategoriesPath = "/categories/create";
+export const ShowCategoryPath = (categoryId: string) =>
+  `/categories/${categoryId}`;
+export const EditCategoryPath = (categoryId: number) =>
+  `/categories/${categoryId}/edit`;
 
 // ============ EVENTS ============
 export const ShowEventStaffIdPath = (id: number) => `/events/${id}/staff`;
