@@ -4,6 +4,7 @@ query ShowAccessType($accessTypeId: Int!) {
     name
     description
     enter_and_exit_option
+    price
     createdAt
     updatedAt
     deleted

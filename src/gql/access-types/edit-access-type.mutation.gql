@@ -1,0 +1,11 @@
+mutation EditAccessType(
+  $updateAccessTypeId: Int!
+  $data: UpdateAccessTypeInput!
+) {
+  updateAccessType(id: $updateAccessTypeId, data: $data) {
+    id
+    description
+    enter_and_exit_option
+    price
+  }
+}
