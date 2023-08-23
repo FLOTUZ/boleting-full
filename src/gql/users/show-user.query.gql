@@ -4,6 +4,10 @@ query ShowUser($userId: Int!) {
     name
     last_name
     email
+    roles {
+      id
+      name
+    }
     createdAt
     updatedAt
   }

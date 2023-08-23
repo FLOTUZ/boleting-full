@@ -23,7 +23,7 @@ export const RoleSchema = gql`
   }
 
   type Query {
-    roles(pagination: Pagination): [Role]
+    roles(pagination: Pagination): [Role!]
     role(id: Int!): Role
   }
 

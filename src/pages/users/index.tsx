@@ -1,8 +1,8 @@
 import DesktopLayoutComponent from "@/layouts/desktop-layout-component/desktop-layout.component";
-import UserListView from "@/modules/users/views/user-list.view";
+import ShowUsersView from "@/modules/users/views/show-users.view";
 import { UsersPath } from "@/routes";
 
-const UsersListRoute = () => {
+const ShowUsersRoute = () => {
   return (
     <DesktopLayoutComponent
       title={"Usuarios"}
@@ -13,9 +13,9 @@ const UsersListRoute = () => {
         },
       ]}
     >
-      <UserListView />
+      <ShowUsersView />
     </DesktopLayoutComponent>
   );
 };
 
-export default UsersListRoute;
+export default ShowUsersRoute;

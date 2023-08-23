@@ -8,7 +8,7 @@ import { User, useShowUsersLazyQuery } from "@/gql/generated";
 import { Box, Button, HStack } from "@chakra-ui/react";
 import { IoReload } from "react-icons/io5";
 
-const UserListView = () => {
+const ShowUsersView = () => {
   const [users, setusers] = useState<User[]>([]);
 
   const [fetchUsers, { data, loading, error, refetch }] = useShowUsersLazyQuery(
@@ -52,4 +52,4 @@ const UserListView = () => {
   );
 };
 
-export default UserListView;
+export default ShowUsersView;

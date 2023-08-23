@@ -859,7 +859,7 @@ export type Query = {
   paymentRecibed: PaymentRecibed;
   paymentRecibeds: Array<PaymentRecibed>;
   role?: Maybe<Role>;
-  roles?: Maybe<Array<Maybe<Role>>>;
+  roles?: Maybe<Array<Role>>;
   selled_tickets_by_event?: Maybe<Array<Ticket>>;
   ticket?: Maybe<Ticket>;
   tickets?: Maybe<Array<Ticket>>;
@@ -1121,7 +1121,6 @@ export type UpdateAccessTypeInput = {
   deleted?: InputMaybe<Scalars['Boolean']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   enter_and_exit_option?: InputMaybe<Scalars['Boolean']['input']>;
-  eventId?: InputMaybe<Scalars['Int']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   price?: InputMaybe<Scalars['Decimal']['input']>;
 };
@@ -1463,7 +1462,7 @@ export type ShowOwnerTypesQuery = { __typename?: 'Query', ownerTypes: Array<{ __
 export type RolesListQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type RolesListQuery = { __typename?: 'Query', roles?: Array<{ __typename?: 'Role', id: number, name?: string | null, description?: string | null, createdAt?: any | null, updatedAt?: any | null, deletedAt?: any | null } | null> | null };
+export type RolesListQuery = { __typename?: 'Query', roles?: Array<{ __typename?: 'Role', id: number, name?: string | null, description?: string | null, createdAt?: any | null, updatedAt?: any | null, deletedAt?: any | null }> | null };
 
 export type AssignManyStaffMutationVariables = Exact<{
   eventId: Scalars['Int']['input'];
@@ -1540,17 +1539,32 @@ export type CreateUserMutationVariables = Exact<{
 
 export type CreateUserMutation = { __typename?: 'Mutation', createUser?: { __typename?: 'User', id: number, name?: string | null, last_name?: string | null, createdAt?: any | null, roles?: Array<{ __typename?: 'Role', id: number, name?: string | null }> | null } | null };
 
+export type EditUserMutationVariables = Exact<{
+  updateUserId: Scalars['Int']['input'];
+  data: UpdateUserInput;
+}>;
+
+
+export type EditUserMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'User', id: number, name?: string | null, last_name?: string | null, email?: string | null, createdAt?: any | null, updatedAt?: any | null, roles?: Array<{ __typename?: 'Role', id: number, name?: string | null }> | null } | null };
+
+export type RemoveUserMutationVariables = Exact<{
+  deleteUserId: Scalars['Int']['input'];
+}>;
+
+
+export type RemoveUserMutation = { __typename?: 'Mutation', deleteUser?: { __typename?: 'User', id: number, name?: string | null, last_name?: string | null, email?: string | null, createdAt?: any | null, updatedAt?: any | null, roles?: Array<{ __typename?: 'Role', id: number, name?: string | null }> | null } | null };
+
 export type ShowUserQueryVariables = Exact<{
   userId: Scalars['Int']['input'];
 }>;
 
 
-export type ShowUserQuery = { __typename?: 'Query', user?: { __typename?: 'User', id: number, name?: string | null, last_name?: string | null, email?: string | null, createdAt?: any | null, updatedAt?: any | null } | null };
+export type ShowUserQuery = { __typename?: 'Query', user?: { __typename?: 'User', id: number, name?: string | null, last_name?: string | null, email?: string | null, createdAt?: any | null, updatedAt?: any | null, roles?: Array<{ __typename?: 'Role', id: number, name?: string | null }> | null } | null };
 
 export type ShowUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ShowUsersQuery = { __typename?: 'Query', users?: Array<{ __typename?: 'User', id: number, name?: string | null, last_name?: string | null, email?: string | null, createdAt?: any | null, updatedAt?: any | null } | null> | null };
+export type ShowUsersQuery = { __typename?: 'Query', users?: Array<{ __typename?: 'User', id: number, name?: string | null, last_name?: string | null, email?: string | null, createdAt?: any | null, updatedAt?: any | null, roles?: Array<{ __typename?: 'Role', id: number, name?: string | null }> | null } | null> | null };
 
 
 export const ShowAccessTypeDocument = gql`
@@ -2997,6 +3011,91 @@ export function useCreateUserMutation(baseOptions?: Apollo.MutationHookOptions<C
 export type CreateUserMutationHookResult = ReturnType<typeof useCreateUserMutation>;
 export type CreateUserMutationResult = Apollo.MutationResult<CreateUserMutation>;
 export type CreateUserMutationOptions = Apollo.BaseMutationOptions<CreateUserMutation, CreateUserMutationVariables>;
+export const EditUserDocument = gql`
+    mutation EditUser($updateUserId: Int!, $data: UpdateUserInput!) {
+  updateUser(id: $updateUserId, data: $data) {
+    id
+    name
+    last_name
+    email
+    roles {
+      id
+      name
+    }
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export type EditUserMutationFn = Apollo.MutationFunction<EditUserMutation, EditUserMutationVariables>;
+
+/**
+ * __useEditUserMutation__
+ *
+ * To run a mutation, you first call `useEditUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [editUserMutation, { data, loading, error }] = useEditUserMutation({
+ *   variables: {
+ *      updateUserId: // value for 'updateUserId'
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useEditUserMutation(baseOptions?: Apollo.MutationHookOptions<EditUserMutation, EditUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<EditUserMutation, EditUserMutationVariables>(EditUserDocument, options);
+      }
+export type EditUserMutationHookResult = ReturnType<typeof useEditUserMutation>;
+export type EditUserMutationResult = Apollo.MutationResult<EditUserMutation>;
+export type EditUserMutationOptions = Apollo.BaseMutationOptions<EditUserMutation, EditUserMutationVariables>;
+export const RemoveUserDocument = gql`
+    mutation RemoveUser($deleteUserId: Int!) {
+  deleteUser(id: $deleteUserId) {
+    id
+    name
+    last_name
+    email
+    roles {
+      id
+      name
+    }
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export type RemoveUserMutationFn = Apollo.MutationFunction<RemoveUserMutation, RemoveUserMutationVariables>;
+
+/**
+ * __useRemoveUserMutation__
+ *
+ * To run a mutation, you first call `useRemoveUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeUserMutation, { data, loading, error }] = useRemoveUserMutation({
+ *   variables: {
+ *      deleteUserId: // value for 'deleteUserId'
+ *   },
+ * });
+ */
+export function useRemoveUserMutation(baseOptions?: Apollo.MutationHookOptions<RemoveUserMutation, RemoveUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RemoveUserMutation, RemoveUserMutationVariables>(RemoveUserDocument, options);
+      }
+export type RemoveUserMutationHookResult = ReturnType<typeof useRemoveUserMutation>;
+export type RemoveUserMutationResult = Apollo.MutationResult<RemoveUserMutation>;
+export type RemoveUserMutationOptions = Apollo.BaseMutationOptions<RemoveUserMutation, RemoveUserMutationVariables>;
 export const ShowUserDocument = gql`
     query ShowUser($userId: Int!) {
   user(id: $userId) {
@@ -3004,6 +3103,10 @@ export const ShowUserDocument = gql`
     name
     last_name
     email
+    roles {
+      id
+      name
+    }
     createdAt
     updatedAt
   }
@@ -3044,6 +3147,10 @@ export const ShowUsersDocument = gql`
     name
     last_name
     email
+    roles {
+      id
+      name
+    }
     createdAt
     updatedAt
   }
