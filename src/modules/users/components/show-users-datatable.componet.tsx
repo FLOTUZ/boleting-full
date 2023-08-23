@@ -26,12 +26,27 @@ const ShowUsersDatatable = (props: ShowUsersDatatableProps) => {
       sortable: true,
     },
     {
+      name: "Apellido",
+      selector: (row) => row.last_name!,
+      sortable: true,
+    },
+    {
+      name: "Email",
+      selector: (row) => row.email!,
+      sortable: true,
+    },
+    {
+      name: "Roles",
+      selector: (row) => row.roles!.map((role) => role.name).join(", "),
+      sortable: true,
+    },
+    {
       name: "Creación",
       selector: (row) => moment(row.createdAt).format("DD/MM/YYYY HH:mm"),
       sortable: true,
     },
     {
-      name: "Actualización",
+      name: "Ultima actualización",
       selector: (row) =>
         row.updatedAt
           ? moment(row.updatedAt).format("DD/MM/YYYY HH:mm")
@@ -51,6 +66,7 @@ const ShowUsersDatatable = (props: ShowUsersDatatableProps) => {
       persistTableHead
       highlightOnHover
       subHeader
+      pagination
       noDataComponent={<div>No existen usuarios </div>}
       onRowClicked={(user) => router.push(ShowUserPath(String(user.id)))}
     />

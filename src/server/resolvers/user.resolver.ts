@@ -2,7 +2,7 @@ import { User } from "@prisma/client";
 
 import {
   CreateUserSchema,
-  UpdateRoleSchema,
+  UpdateUserSchema,
   validateData,
 } from "@/validations";
 
@@ -56,11 +56,11 @@ export const UserResolver = {
 
     updateUser: async (
       _: any,
-      { id, data }: { id: number; data: User },
+      { id, data }: { id: number; data: User & { roles: number[] } },
       __: IGraphqlContext
     ) => {
-      await validateData({ schema: UpdateRoleSchema, data });
-      return await UserService.updateUser({ id, data });
+      await validateData({ schema: UpdateUserSchema, data });
+      return await UserService.updateUser({ id, data, roles: data.roles });
     },
 
     deleteUser: async (_: any, { id }: User, __: IGraphqlContext) => {

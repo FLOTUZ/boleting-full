@@ -1,5 +1,5 @@
-query ShowUsers {
-  users {
+mutation RemoveUser($deleteUserId: Int!) {
+  deleteUser(id: $deleteUserId) {
     id
     name
     last_name

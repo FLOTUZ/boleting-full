@@ -1,22 +1,24 @@
+import { useRouter } from "next/router";
+
 import DesktopLayoutComponent from "@/layouts/desktop-layout-component/desktop-layout.component";
 import ShowUserView from "@/modules/users/views/show-user.view";
+
 import { ShowUserPath, UsersPath } from "@/routes";
-import { useRouter } from "next/router";
 
 const ShowUserRoute = () => {
   const router = useRouter();
-  const { id } = router.query;
+  const { userId } = router.query;
   return (
     <DesktopLayoutComponent
-      title={`Usuario ${id}`}
+      title={`Usuario ${userId}`}
       breadCrumbs={[
         {
           href: UsersPath,
           label: "Usuarios",
         },
         {
-          href: ShowUserPath(String(id)),
-          label: `${id}`,
+          href: ShowUserPath(String(userId)),
+          label: `${userId}`,
         },
       ]}
     >

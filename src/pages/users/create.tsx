@@ -1,7 +1,7 @@
 import { UserProvider } from "@/contexts/user.context";
 import CreateUserView from "@/modules/users/views/create-user.view";
 
-function CreateUsersRoute() {
+function CreateUserRoute() {
   return (
     <UserProvider>
       <CreateUserView />
@@ -9,4 +9,4 @@ function CreateUsersRoute() {
   );
 }
 
-export default CreateUsersRoute;
+export default CreateUserRoute;

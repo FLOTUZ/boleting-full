@@ -46,8 +46,24 @@ export const UserService = {
     }
   },
 
-  async updateUser({ id, data }: { id: number; data: User }) {
-    return await prisma.user.update({ where: { id }, data });
+  async updateUser({
+    id,
+    data,
+    roles,
+  }: {
+    id: number;
+    data: User;
+    roles: number[];
+  }) {
+    return await prisma.user.update({
+      where: { id },
+      data: {
+        ...data,
+        roles: {
+          set: roles.map((id) => ({ id })),
+        },
+      },
+    });
   },
 
   async deleteUser(id: number) {
