@@ -18,8 +18,6 @@ import {
   SimpleGrid,
   Container,
 } from "@chakra-ui/react";
-import DesktopLayoutComponent from "@/layouts/desktop-layout-component/desktop-layout.component";
-import { UsersPath } from "@/routes";
 import { useRouter } from "next/router";
 
 const CreateUserView = () => {
