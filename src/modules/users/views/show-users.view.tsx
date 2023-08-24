@@ -8,7 +8,7 @@ import { User, useShowUsersLazyQuery } from "@/gql/generated";
 import { Box, Button, HStack } from "@chakra-ui/react";
 import { IoReload } from "react-icons/io5";
 import Link from "next/link";
-import { CreateUsersPath } from "@/routes";
+import { CreateUsersPath, ShowRolesPath } from "@/routes";
 
 const ShowUsersView = () => {
   const [users, setusers] = useState<User[]>([]);
@@ -50,6 +50,10 @@ const ShowUsersView = () => {
 
           <Link href={CreateUsersPath}>
             <Button>Nuevo usuario</Button>
+          </Link>
+
+          <Link href={ShowRolesPath}>
+            <Button>Roles</Button>
           </Link>
         </HStack>
         <ShowUsersDatatable data={users} progressPending={loading} />

@@ -20,6 +20,9 @@ export const ShowUserPath = (id: string) => `/users/${id}`;
 export const EditUserPath = (userId: string) => `/users/${userId}/edit`;
 export const CreateUsersPath = "/users/create";
 
+// =========== ROLES ============
+export const ShowRolesPath = "/users/roles";
+
 // =========== CATEGORIES ============
 export const CategoriesPath = "/categories";
 export const CreateCategoriesPath = "/categories/create";
