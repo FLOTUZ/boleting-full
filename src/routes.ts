@@ -18,6 +18,7 @@ export const EditEventPath = (id: number) => `/events/${id}/edit`;
 export const UsersPath = "/users";
 export const ShowUserPath = (id: string) => `/users/${id}`;
 export const EditUserPath = (userId: string) => `/users/${userId}/edit`;
+export const CreateUsersPath = "/users/create";
 
 // =========== CATEGORIES ============
 export const CategoriesPath = "/categories";

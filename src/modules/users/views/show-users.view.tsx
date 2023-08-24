@@ -7,6 +7,8 @@ import ShowUsersDatatable from "../components/show-users-datatable.componet";
 import { User, useShowUsersLazyQuery } from "@/gql/generated";
 import { Box, Button, HStack } from "@chakra-ui/react";
 import { IoReload } from "react-icons/io5";
+import Link from "next/link";
+import { CreateUsersPath } from "@/routes";
 
 const ShowUsersView = () => {
   const [users, setusers] = useState<User[]>([]);
@@ -45,6 +47,10 @@ const ShowUsersView = () => {
           <Button onClick={() => refetch()}>
             <IoReload />
           </Button>
+
+          <Link href={CreateUsersPath}>
+            <Button>Nuevo usuario</Button>
+          </Link>
         </HStack>
         <ShowUsersDatatable data={users} progressPending={loading} />
       </Box>
