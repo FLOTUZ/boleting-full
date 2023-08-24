@@ -1,11 +1,9 @@
 import IntroAnimationComponent from "@/components/animations/intro-animation.component";
 import ProgressLoaderComponent from "@/components/loaders/progress-loader.component";
-import { CreateRolePath } from "@/routes";
-import { Box, Button, HStack } from "@chakra-ui/react";
-import Link from "next/link";
+import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
-const ShowRolesView = () => {
+const CreateRoleView = () => {
   const router = useRouter();
 
   if (router.isFallback) {
@@ -15,17 +13,10 @@ const ShowRolesView = () => {
   return (
     <IntroAnimationComponent data={true}>
       <Box m={4}>
-        <HStack mb={4}>
-          <Link href={CreateRolePath}>
-            <Button>Nuevo rol</Button>
-          </Link>
-        </HStack>
-      </Box>
-      <Box m={4}>
-        <h1>Listado de roles</h1>
+        <h1>Crear rol</h1>
       </Box>
     </IntroAnimationComponent>
   );
 };
 
-export default ShowRolesView;
+export default CreateRoleView;

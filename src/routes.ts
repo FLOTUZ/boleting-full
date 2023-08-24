@@ -22,6 +22,9 @@ export const CreateUsersPath = "/users/create";
 
 // =========== ROLES ============
 export const ShowRolesPath = "/users/roles";
+export const CreateRolePath = "/users/roles/create";
+export const ShowRolePath = (id: string) => `/users/roles/${id}`;
+export const EditRolePath = (id: string) => `/users/roles/${id}/edit`;
 
 // =========== CATEGORIES ============
 export const CategoriesPath = "/categories";
