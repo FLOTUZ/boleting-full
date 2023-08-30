@@ -5,7 +5,7 @@ import {
   UpdateRoleSchema,
   validateData,
 } from "@/validations";
-import { RoleService, UserService } from "../services";
+import { AbilityService, RoleService, UserService } from "../services";
 
 export const RolesResolver = {
   Query: {
@@ -45,6 +45,9 @@ export const RolesResolver = {
   Role: {
     users: async ({ id }: Role, _: any, __: IGraphqlContext) => {
       return await UserService.usersByRole(id);
+    },
+    abilities: async ({ id }: Role, _: any, __: IGraphqlContext) => {
+      return await AbilityService.abilitiesByRole(id);
     },
   },
 };

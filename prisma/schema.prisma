@@ -10,7 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Abilities {
+model Ability {
   id          Int       @id @unique @default(autoincrement())
   name        String    @unique @db.VarChar(50)
   description String?   @db.VarChar(255)
@@ -40,7 +40,7 @@ model Role {
   updatedAt               DateTime      @updatedAt
   deleted                 Boolean       @default(false)
   deletedAt               DateTime?
-  abilities               Abilities[]
+  abilities               Ability[]
   users                   User[]        @relation("users")
   user_clients            UserClient[]  @relation("user_client")
   application_permissions Application[] @relation("application_roles")

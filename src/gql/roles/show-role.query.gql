@@ -1,5 +1,5 @@
-query RolesList {
-  roles {
+query ShowRole($roleId: Int!) {
+  role(id: $roleId) {
     id
     name
     description

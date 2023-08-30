@@ -13,13 +13,14 @@ export const RoleSchema = gql`
 
   type Role {
     id: Int!
-    name: String
+    name: String!
     description: String
     createdAt: DateTime
     updatedAt: DateTime
     deleted: Boolean
     deletedAt: DateTime
-    users: [User]
+    users: [User!]
+    abilities: [Ability!]
   }
 
   type Query {

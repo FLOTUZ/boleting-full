@@ -1,5 +1,6 @@
 import DesktopLayoutComponent from "@/layouts/desktop-layout-component/desktop-layout.component";
-import ShowRolesView from "@/modules/roles/show-roles.view";
+import ShowRolesView from "@/modules/roles/views/show-roles.view";
+
 import { ShowRolesPath } from "@/routes";
 
 function ShowRolesRoute() {

@@ -19,6 +19,18 @@ export type Scalars = {
   Decimal: { input: any; output: any; }
 };
 
+export type Ability = {
+  __typename?: 'Ability';
+  createdAt: Scalars['DateTime']['output'];
+  deleted: Scalars['Boolean']['output'];
+  deletedAt?: Maybe<Scalars['DateTime']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  roles?: Maybe<Array<Role>>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+};
+
 export type AccessType = {
   __typename?: 'AccessType';
   createdAt: Scalars['DateTime']['output'];
@@ -86,6 +98,11 @@ export type BuyCart = {
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
   user_client: UserClient;
   user_clientId: Scalars['Int']['output'];
+};
+
+export type CreateAbilityInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  name: Scalars['String']['input'];
 };
 
 export type CreateAccessTypeInput = {
@@ -335,6 +352,7 @@ export type Mutation = {
   assignManyStaff?: Maybe<Array<Maybe<User>>>;
   assignStaff?: Maybe<User>;
   clearNotifications: Scalars['Boolean']['output'];
+  createAbility: Ability;
   createAccessType: AccessType;
   createActivityLog: ActivityLog;
   createApplication: Application;
@@ -354,6 +372,7 @@ export type Mutation = {
   createTicket?: Maybe<Ticket>;
   createUser?: Maybe<User>;
   createUserClient: UserClient;
+  deleteAbility: Ability;
   deleteAccessType: AccessType;
   deleteActivityLog: ActivityLog;
   deleteApplication: Application;
@@ -375,6 +394,7 @@ export type Mutation = {
   login: LoginResponse;
   unassignManyStaff?: Maybe<Array<Maybe<User>>>;
   unassignStaff?: Maybe<User>;
+  updateAbility: Ability;
   updateAccessType: AccessType;
   updateActivityLog: ActivityLog;
   updateApplication: Application;
@@ -411,6 +431,11 @@ export type MutationAssignStaffArgs = {
 export type MutationClearNotificationsArgs = {
   userId?: InputMaybe<Scalars['Int']['input']>;
   user_clientId?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type MutationCreateAbilityArgs = {
+  data: CreateAbilityInput;
 };
 
 
@@ -506,6 +531,11 @@ export type MutationCreateUserArgs = {
 
 export type MutationCreateUserClientArgs = {
   data: CreateUserClientInput;
+};
+
+
+export type MutationDeleteAbilityArgs = {
+  id: Scalars['Int']['input'];
 };
 
 
@@ -613,6 +643,12 @@ export type MutationUnassignManyStaffArgs = {
 export type MutationUnassignStaffArgs = {
   eventId: Scalars['Int']['input'];
   userId: Scalars['Int']['input'];
+};
+
+
+export type MutationUpdateAbilityArgs = {
+  data: UpdateAbilityInput;
+  id: Scalars['Int']['input'];
 };
 
 
@@ -824,6 +860,8 @@ export type PaymentRecibed = {
 
 export type Query = {
   __typename?: 'Query';
+  ability: Ability;
+  abilitys: Array<Ability>;
   accessType: AccessType;
   accessTypes: Array<AccessType>;
   accessTypesByEventId: Array<AccessType>;
@@ -867,6 +905,16 @@ export type Query = {
   userClient: UserClient;
   userClients: Array<UserClient>;
   users?: Maybe<Array<Maybe<User>>>;
+};
+
+
+export type QueryAbilityArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type QueryAbilitysArgs = {
+  pagination?: InputMaybe<Pagination>;
 };
 
 
@@ -1083,14 +1131,15 @@ export type QueryUsersArgs = {
 
 export type Role = {
   __typename?: 'Role';
+  abilities?: Maybe<Array<Ability>>;
   createdAt?: Maybe<Scalars['DateTime']['output']>;
   deleted?: Maybe<Scalars['Boolean']['output']>;
   deletedAt?: Maybe<Scalars['DateTime']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   id: Scalars['Int']['output'];
-  name?: Maybe<Scalars['String']['output']>;
+  name: Scalars['String']['output'];
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
-  users?: Maybe<Array<Maybe<User>>>;
+  users?: Maybe<Array<User>>;
 };
 
 export type Ticket = {
@@ -1115,6 +1164,11 @@ export type Ticket = {
   service_charge: Scalars['Decimal']['output'];
   ticket_type?: Maybe<OwnerType>;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
+};
+
+export type UpdateAbilityInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type UpdateAccessTypeInput = {
@@ -1350,7 +1404,7 @@ export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'Lo
 export type WhoAMiQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type WhoAMiQuery = { __typename?: 'Query', currentUser?: { __typename?: 'User', id: number, name?: string | null, last_name?: string | null, email?: string | null, createdAt?: any | null, updatedAt?: any | null, roles?: Array<{ __typename?: 'Role', id: number, name?: string | null }> | null } | null };
+export type WhoAMiQuery = { __typename?: 'Query', currentUser?: { __typename?: 'User', id: number, name?: string | null, last_name?: string | null, email?: string | null, createdAt?: any | null, updatedAt?: any | null, roles?: Array<{ __typename?: 'Role', id: number, name: string }> | null } | null };
 
 export type EventCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1369,7 +1423,7 @@ export type ShowEventStaffQueryVariables = Exact<{
 }>;
 
 
-export type ShowEventStaffQuery = { __typename?: 'Query', event?: { __typename?: 'Event', staff?: Array<{ __typename?: 'User', id: number, name?: string | null, last_name?: string | null, createdAt?: any | null, roles?: Array<{ __typename?: 'Role', name?: string | null }> | null }> | null } | null };
+export type ShowEventStaffQuery = { __typename?: 'Query', event?: { __typename?: 'Event', staff?: Array<{ __typename?: 'User', id: number, name?: string | null, last_name?: string | null, createdAt?: any | null, roles?: Array<{ __typename?: 'Role', name: string }> | null }> | null } | null };
 
 export type ShowEventTicketsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1462,7 +1516,14 @@ export type ShowOwnerTypesQuery = { __typename?: 'Query', ownerTypes: Array<{ __
 export type RolesListQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type RolesListQuery = { __typename?: 'Query', roles?: Array<{ __typename?: 'Role', id: number, name?: string | null, description?: string | null, createdAt?: any | null, updatedAt?: any | null, deletedAt?: any | null }> | null };
+export type RolesListQuery = { __typename?: 'Query', roles?: Array<{ __typename?: 'Role', id: number, name: string, description?: string | null, createdAt?: any | null, updatedAt?: any | null, deletedAt?: any | null, abilities?: Array<{ __typename?: 'Ability', id: number, name: string }> | null }> | null };
+
+export type ShowRoleQueryVariables = Exact<{
+  roleId: Scalars['Int']['input'];
+}>;
+
+
+export type ShowRoleQuery = { __typename?: 'Query', role?: { __typename?: 'Role', id: number, name: string, description?: string | null, createdAt?: any | null, updatedAt?: any | null, deletedAt?: any | null, abilities?: Array<{ __typename?: 'Ability', id: number, name: string }> | null } | null };
 
 export type AssignManyStaffMutationVariables = Exact<{
   eventId: Scalars['Int']['input'];
@@ -1470,7 +1531,7 @@ export type AssignManyStaffMutationVariables = Exact<{
 }>;
 
 
-export type AssignManyStaffMutation = { __typename?: 'Mutation', assignManyStaff?: Array<{ __typename?: 'User', id: number, name?: string | null, last_name?: string | null, roles?: Array<{ __typename?: 'Role', id: number, name?: string | null }> | null } | null> | null };
+export type AssignManyStaffMutation = { __typename?: 'Mutation', assignManyStaff?: Array<{ __typename?: 'User', id: number, name?: string | null, last_name?: string | null, roles?: Array<{ __typename?: 'Role', id: number, name: string }> | null } | null> | null };
 
 export type AssignStaffMutationVariables = Exact<{
   userId: Scalars['Int']['input'];
@@ -1478,14 +1539,14 @@ export type AssignStaffMutationVariables = Exact<{
 }>;
 
 
-export type AssignStaffMutation = { __typename?: 'Mutation', assignStaff?: { __typename?: 'User', id: number, name?: string | null, last_name?: string | null, roles?: Array<{ __typename?: 'Role', id: number, name?: string | null }> | null } | null };
+export type AssignStaffMutation = { __typename?: 'Mutation', assignStaff?: { __typename?: 'User', id: number, name?: string | null, last_name?: string | null, roles?: Array<{ __typename?: 'Role', id: number, name: string }> | null } | null };
 
 export type ShowAvailableEventStaffQueryVariables = Exact<{
   eventId: Scalars['Int']['input'];
 }>;
 
 
-export type ShowAvailableEventStaffQuery = { __typename?: 'Query', availableStaff?: Array<{ __typename?: 'User', id: number, name?: string | null, last_name?: string | null, roles?: Array<{ __typename?: 'Role', id: number, name?: string | null }> | null } | null> | null };
+export type ShowAvailableEventStaffQuery = { __typename?: 'Query', availableStaff?: Array<{ __typename?: 'User', id: number, name?: string | null, last_name?: string | null, roles?: Array<{ __typename?: 'Role', id: number, name: string }> | null } | null> | null };
 
 export type UnassignManyStaffMutationVariables = Exact<{
   eventId: Scalars['Int']['input'];
@@ -1493,7 +1554,7 @@ export type UnassignManyStaffMutationVariables = Exact<{
 }>;
 
 
-export type UnassignManyStaffMutation = { __typename?: 'Mutation', unassignManyStaff?: Array<{ __typename?: 'User', id: number, name?: string | null, last_name?: string | null, email?: string | null, roles?: Array<{ __typename?: 'Role', id: number, name?: string | null }> | null } | null> | null };
+export type UnassignManyStaffMutation = { __typename?: 'Mutation', unassignManyStaff?: Array<{ __typename?: 'User', id: number, name?: string | null, last_name?: string | null, email?: string | null, roles?: Array<{ __typename?: 'Role', id: number, name: string }> | null } | null> | null };
 
 export type UnassignStaffMutationVariables = Exact<{
   userId: Scalars['Int']['input'];
@@ -1501,7 +1562,7 @@ export type UnassignStaffMutationVariables = Exact<{
 }>;
 
 
-export type UnassignStaffMutation = { __typename?: 'Mutation', unassignStaff?: { __typename?: 'User', id: number, name?: string | null, last_name?: string | null, email?: string | null, roles?: Array<{ __typename?: 'Role', id: number, name?: string | null }> | null } | null };
+export type UnassignStaffMutation = { __typename?: 'Mutation', unassignStaff?: { __typename?: 'User', id: number, name?: string | null, last_name?: string | null, email?: string | null, roles?: Array<{ __typename?: 'Role', id: number, name: string }> | null } | null };
 
 export type CreateCourtesyMutationVariables = Exact<{
   data: CreateCourtessyTicketInput;
@@ -1537,7 +1598,7 @@ export type CreateUserMutationVariables = Exact<{
 }>;
 
 
-export type CreateUserMutation = { __typename?: 'Mutation', createUser?: { __typename?: 'User', id: number, name?: string | null, last_name?: string | null, createdAt?: any | null, roles?: Array<{ __typename?: 'Role', id: number, name?: string | null }> | null } | null };
+export type CreateUserMutation = { __typename?: 'Mutation', createUser?: { __typename?: 'User', id: number, name?: string | null, last_name?: string | null, createdAt?: any | null, roles?: Array<{ __typename?: 'Role', id: number, name: string }> | null } | null };
 
 export type EditUserMutationVariables = Exact<{
   updateUserId: Scalars['Int']['input'];
@@ -1545,26 +1606,26 @@ export type EditUserMutationVariables = Exact<{
 }>;
 
 
-export type EditUserMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'User', id: number, name?: string | null, last_name?: string | null, email?: string | null, createdAt?: any | null, updatedAt?: any | null, roles?: Array<{ __typename?: 'Role', id: number, name?: string | null }> | null } | null };
+export type EditUserMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'User', id: number, name?: string | null, last_name?: string | null, email?: string | null, createdAt?: any | null, updatedAt?: any | null, roles?: Array<{ __typename?: 'Role', id: number, name: string }> | null } | null };
 
 export type RemoveUserMutationVariables = Exact<{
   deleteUserId: Scalars['Int']['input'];
 }>;
 
 
-export type RemoveUserMutation = { __typename?: 'Mutation', deleteUser?: { __typename?: 'User', id: number, name?: string | null, last_name?: string | null, email?: string | null, createdAt?: any | null, updatedAt?: any | null, roles?: Array<{ __typename?: 'Role', id: number, name?: string | null }> | null } | null };
+export type RemoveUserMutation = { __typename?: 'Mutation', deleteUser?: { __typename?: 'User', id: number, name?: string | null, last_name?: string | null, email?: string | null, createdAt?: any | null, updatedAt?: any | null, roles?: Array<{ __typename?: 'Role', id: number, name: string }> | null } | null };
 
 export type ShowUserQueryVariables = Exact<{
   userId: Scalars['Int']['input'];
 }>;
 
 
-export type ShowUserQuery = { __typename?: 'Query', user?: { __typename?: 'User', id: number, name?: string | null, last_name?: string | null, email?: string | null, createdAt?: any | null, updatedAt?: any | null, roles?: Array<{ __typename?: 'Role', id: number, name?: string | null }> | null } | null };
+export type ShowUserQuery = { __typename?: 'Query', user?: { __typename?: 'User', id: number, name?: string | null, last_name?: string | null, email?: string | null, createdAt?: any | null, updatedAt?: any | null, roles?: Array<{ __typename?: 'Role', id: number, name: string }> | null } | null };
 
 export type ShowUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ShowUsersQuery = { __typename?: 'Query', users?: Array<{ __typename?: 'User', id: number, name?: string | null, last_name?: string | null, email?: string | null, createdAt?: any | null, updatedAt?: any | null, roles?: Array<{ __typename?: 'Role', id: number, name?: string | null }> | null } | null> | null };
+export type ShowUsersQuery = { __typename?: 'Query', users?: Array<{ __typename?: 'User', id: number, name?: string | null, last_name?: string | null, email?: string | null, createdAt?: any | null, updatedAt?: any | null, roles?: Array<{ __typename?: 'Role', id: number, name: string }> | null } | null> | null };
 
 
 export const ShowAccessTypeDocument = gql`
@@ -2537,6 +2598,10 @@ export const RolesListDocument = gql`
     id
     name
     description
+    abilities {
+      id
+      name
+    }
     createdAt
     updatedAt
     deletedAt
@@ -2570,6 +2635,50 @@ export function useRolesListLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<
 export type RolesListQueryHookResult = ReturnType<typeof useRolesListQuery>;
 export type RolesListLazyQueryHookResult = ReturnType<typeof useRolesListLazyQuery>;
 export type RolesListQueryResult = Apollo.QueryResult<RolesListQuery, RolesListQueryVariables>;
+export const ShowRoleDocument = gql`
+    query ShowRole($roleId: Int!) {
+  role(id: $roleId) {
+    id
+    name
+    description
+    abilities {
+      id
+      name
+    }
+    createdAt
+    updatedAt
+    deletedAt
+  }
+}
+    `;
+
+/**
+ * __useShowRoleQuery__
+ *
+ * To run a query within a React component, call `useShowRoleQuery` and pass it any options that fit your needs.
+ * When your component renders, `useShowRoleQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useShowRoleQuery({
+ *   variables: {
+ *      roleId: // value for 'roleId'
+ *   },
+ * });
+ */
+export function useShowRoleQuery(baseOptions: Apollo.QueryHookOptions<ShowRoleQuery, ShowRoleQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ShowRoleQuery, ShowRoleQueryVariables>(ShowRoleDocument, options);
+      }
+export function useShowRoleLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ShowRoleQuery, ShowRoleQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ShowRoleQuery, ShowRoleQueryVariables>(ShowRoleDocument, options);
+        }
+export type ShowRoleQueryHookResult = ReturnType<typeof useShowRoleQuery>;
+export type ShowRoleLazyQueryHookResult = ReturnType<typeof useShowRoleLazyQuery>;
+export type ShowRoleQueryResult = Apollo.QueryResult<ShowRoleQuery, ShowRoleQueryVariables>;
 export const AssignManyStaffDocument = gql`
     mutation AssignManyStaff($eventId: Int!, $userIds: [Int!]!) {
   assignManyStaff(eventId: $eventId, userIds: $userIds) {

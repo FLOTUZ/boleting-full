@@ -1,3 +1,4 @@
+export * from "./ability.schema";
 export * from "./user.schema";
 export * from "./auth.schema";
 export * from "./role.schema";

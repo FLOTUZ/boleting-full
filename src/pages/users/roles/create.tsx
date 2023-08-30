@@ -1,5 +1,5 @@
 import DesktopLayoutComponent from "@/layouts/desktop-layout-component/desktop-layout.component";
-import CreateRoleView from "@/modules/roles/create-role.view";
+import CreateRoleView from "@/modules/roles/views/create-role.view";
 import { CreateRolePath, ShowRolePath, ShowRolesPath } from "@/routes";
 import { useRouter } from "next/router";
 
