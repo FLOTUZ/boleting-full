@@ -1,10 +1,10 @@
 import { UserProvider } from "@/contexts/user.context";
-import MainView from "@/modules/main.view";
+import LandingView from "@/modules/landing.view";
 
 const MaindRoute = () => {
   return (
     <UserProvider>
-      <MainView />
+      <LandingView />
     </UserProvider>
   );
 };
