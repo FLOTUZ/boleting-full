@@ -23,7 +23,7 @@ export const autorizedAbilities = async ({
       "Acción no autorizada - Usuario no autenticado"
     );
   }
-  const userAbilities = await prisma.abilities.findMany({
+  const userAbilities = await prisma.ability.findMany({
     select: { name: true },
     where: {
       role: {
