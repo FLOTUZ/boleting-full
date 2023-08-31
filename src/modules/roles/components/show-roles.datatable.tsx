@@ -1,6 +1,6 @@
 import { Role } from "@/gql/generated";
 import { ShowRolePath } from "@/routes";
-import { Box, Container, SimpleGrid, useColorMode } from "@chakra-ui/react";
+import { Box, Text, SimpleGrid, useColorMode, Badge } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import DataTable, { TableColumn } from "react-data-table-component";
 
@@ -35,7 +35,6 @@ const ShowRolesDatatable = ({ data, loader }: ShowRolesDatatableProps) => {
       theme={colorMode === "light" ? "light" : "dark"}
       progressPending={loader}
       progressComponent={<div>Loading...</div>}
-      selectableRows
       pointerOnHover
       persistTableHead
       highlightOnHover
@@ -50,9 +49,28 @@ const ShowRolesDatatable = ({ data, loader }: ShowRolesDatatableProps) => {
           <Box m={4}>Sin permisos</Box>
         ) : (
           <SimpleGrid columns={[1, 2, 3]} spacing={4} m={4}>
-            {row.data.abilities?.map((ability) => (
-              <Box key={ability.id}>{ability.name}</Box>
-            ))}
+            {row.data.abilities?.map((ability) => {
+              const colors: any = [
+                { name: "create", color: "green" },
+                { name: "read", color: "blue" },
+                { name: "update", color: "yellow" },
+                { name: "delete", color: "red" },
+              ];
+              const action = ability.name.split(":")[0];
+
+              const badgeColor = colors.find(
+                (color: any) => color.name === action
+              )?.color;
+
+              return (
+                <Box key={ability.id} alignItems={"center"} display={"flex"}>
+                  <Badge colorScheme={badgeColor} mr={2}>
+                    {ability.name.split(":")[0]}
+                  </Badge>
+                  <Text>{ability.name.split(":")[1]}</Text>
+                </Box>
+              );
+            })}
           </SimpleGrid>
         )
       }

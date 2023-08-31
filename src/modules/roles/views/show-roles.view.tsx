@@ -7,12 +7,13 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import ShowRolesDatatable from "../components/show-roles.datatable";
+import { TbReload } from "react-icons/tb";
 
 const ShowRolesView = () => {
   const router = useRouter();
   const [roleList, setRoleList] = useState<Role[]>([]);
 
-  const [getRoles, { loading, error }] = useRolesListLazyQuery({
+  const [getRoles, { loading, error, refetch }] = useRolesListLazyQuery({
     onCompleted(data) {
       setRoleList(data.roles as Role[]);
     },
@@ -38,13 +39,16 @@ const ShowRolesView = () => {
 
   return (
     <IntroAnimationComponent data={roleList}>
-      <Box m={4}>
+      <HStack m={4}>
+        <Button onClick={() => refetch()}>
+          <TbReload />
+        </Button>
         <HStack mb={4}>
           <Link href={CreateRolePath}>
             <Button>Nuevo rol</Button>
           </Link>
         </HStack>
-      </Box>
+      </HStack>
       <Box m={4}>
         <ShowRolesDatatable data={roleList} loader={loading} />
       </Box>

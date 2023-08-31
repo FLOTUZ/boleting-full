@@ -1,7 +1,8 @@
 import IntroAnimationComponent from "@/components/animations/intro-animation.component";
 import ProgressLoaderComponent from "@/components/loaders/progress-loader.component";
 import { Role, useShowRoleLazyQuery } from "@/gql/generated";
-import { Box, Button, Text } from "@chakra-ui/react";
+import { EditRolePath } from "@/routes";
+import { Badge, Box, Button, Spacer, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
@@ -39,7 +40,9 @@ const ShowRoleView = () => {
   return (
     <IntroAnimationComponent data={role}>
       <Box m={4}>
-        <Button onClick={() => router.back()}>Editar</Button>
+        <Button onClick={() => router.push(EditRolePath(String(role?.id)))}>
+          Editar
+        </Button>
       </Box>
       <Box m={4}>
         <Text as={"b"}>Creado por</Text>
@@ -50,9 +53,32 @@ const ShowRoleView = () => {
 
         <Text as={"b"}>Permisos</Text>
         <Box>
-          {role?.abilities?.map((ability) => (
-            <Text key={ability.id}>{ability.name}</Text>
-          ))}
+          {role?.abilities?.length == 0 ? (
+            <Box>Sin permisos</Box>
+          ) : (
+            role?.abilities?.map((ability) => {
+              const colors: any = [
+                { name: "create", color: "green" },
+                { name: "read", color: "blue" },
+                { name: "update", color: "yellow" },
+                { name: "delete", color: "red" },
+              ];
+              const action = ability.name.split(":")[0];
+
+              const badgeColor = colors.find(
+                (color: any) => color.name === action
+              )?.color;
+              return (
+                <Box key={ability.id} alignItems={"center"} display={"flex"}>
+                  <Badge colorScheme={badgeColor} mr={2}>
+                    {ability.name.split(":")[0]}
+                  </Badge>
+
+                  <Text>{ability.name.split(":")[1]}</Text>
+                </Box>
+              );
+            })
+          )}
         </Box>
 
         {/* TODO: Poner usuarios con este rol */}
