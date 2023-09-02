@@ -21,11 +21,11 @@ export const RolesResolver = {
   Mutation: {
     createRole: async (
       _: any,
-      { data }: { data: Role },
+      { data }: { data: Role & { abilities: number[] } },
       __: IGraphqlContext
     ) => {
       await validateData({ schema: CreateRoleSchema, data });
-      await RoleService.createRole(data);
+      return await RoleService.createRole(data);
     },
 
     updateRole: async (

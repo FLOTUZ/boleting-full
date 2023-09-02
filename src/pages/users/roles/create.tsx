@@ -18,7 +18,7 @@ function EditRoleRoute() {
 
         {
           href: CreateRolePath,
-          label: "Crear",
+          label: "Nuevo",
         },
       ]}
     >

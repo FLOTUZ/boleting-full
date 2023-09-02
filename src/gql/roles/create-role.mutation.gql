@@ -1,5 +1,5 @@
-query RolesList($pagination: Pagination) {
-  roles(pagination: $pagination) {
+mutation CreateRole($data: CreateRoleInput!) {
+  createRole(data: $data) {
     id
     name
     description
@@ -9,6 +9,5 @@ query RolesList($pagination: Pagination) {
     }
     createdAt
     updatedAt
-    deletedAt
   }
 }

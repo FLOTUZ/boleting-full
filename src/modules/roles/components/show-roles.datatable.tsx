@@ -1,4 +1,4 @@
-import { Role } from "@/gql/generated";
+import { Pagination, Role } from "@/gql/generated";
 import { ShowRolePath } from "@/routes";
 import { Box, Text, SimpleGrid, useColorMode, Badge } from "@chakra-ui/react";
 import { useRouter } from "next/router";
@@ -25,7 +25,6 @@ const ShowRolesDatatable = ({ data, loader }: ShowRolesDatatableProps) => {
       selector: (row) =>
         row.description ? row.description : "Sin descripción",
     },
-    {},
   ];
   return (
     <DataTable

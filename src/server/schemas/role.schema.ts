@@ -4,6 +4,7 @@ export const RoleSchema = gql`
   input CreateRoleInput {
     name: String!
     description: String!
+    abilities: [Int!]!
   }
 
   input UpdateRoleInput {

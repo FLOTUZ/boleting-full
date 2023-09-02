@@ -1,0 +1,9 @@
+query ShowAbilities {
+  abilitys {
+    id
+    name
+    description
+    createdAt
+    updatedAt
+  }
+}

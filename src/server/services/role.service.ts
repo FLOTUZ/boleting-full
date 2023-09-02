@@ -7,7 +7,7 @@ import { PrismaError } from "../utils";
 export const RoleService = {
   async roles(pagination?: Pagination) {
     return prisma.role.findMany({
-      take: pagination?.take || 10,
+      take: pagination?.take,
       skip: pagination?.skip,
       orderBy: {
         id: "asc",
@@ -19,9 +19,16 @@ export const RoleService = {
     return await prisma.role.findUnique({ where: { id } });
   },
 
-  async createRole(data: Role) {
+  async createRole(data: Role & { abilities: number[] }) {
     try {
-      return await prisma.role.create({ data });
+      return await prisma.role.create({
+        data: {
+          ...data,
+          abilities: {
+            connect: data.abilities.map((id) => ({ id })),
+          },
+        },
+      });
     } catch (error: any) {
       throw PrismaError.handle(error);
     }

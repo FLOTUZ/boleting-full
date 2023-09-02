@@ -229,6 +229,7 @@ export type CreatePaymentRecibedInput = {
 };
 
 export type CreateRoleInput = {
+  abilities: Array<Scalars['Int']['input']>;
   description: Scalars['String']['input'];
   name: Scalars['String']['input'];
 };
@@ -1365,6 +1366,11 @@ export type UserClient = {
   user_client_activity?: Maybe<Array<ActivityLog>>;
 };
 
+export type ShowAbilitiesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ShowAbilitiesQuery = { __typename?: 'Query', abilitys: Array<{ __typename?: 'Ability', id: number, name: string, description?: string | null, createdAt: any, updatedAt?: any | null }> };
+
 export type ShowAccessTypeQueryVariables = Exact<{
   accessTypeId: Scalars['Int']['input'];
 }>;
@@ -1513,7 +1519,16 @@ export type ShowOwnerTypesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type ShowOwnerTypesQuery = { __typename?: 'Query', ownerTypes: Array<{ __typename?: 'OwnerType', id: string, name: string, createdAt: any, updatedAt?: any | null, event: { __typename?: 'Event', id: number, name: string } }> };
 
-export type RolesListQueryVariables = Exact<{ [key: string]: never; }>;
+export type CreateRoleMutationVariables = Exact<{
+  data: CreateRoleInput;
+}>;
+
+
+export type CreateRoleMutation = { __typename?: 'Mutation', createRole?: { __typename?: 'Role', id: number, name: string, description?: string | null, createdAt?: any | null, updatedAt?: any | null, abilities?: Array<{ __typename?: 'Ability', id: number, name: string }> | null } | null };
+
+export type RolesListQueryVariables = Exact<{
+  pagination?: InputMaybe<Pagination>;
+}>;
 
 
 export type RolesListQuery = { __typename?: 'Query', roles?: Array<{ __typename?: 'Role', id: number, name: string, description?: string | null, createdAt?: any | null, updatedAt?: any | null, deletedAt?: any | null, abilities?: Array<{ __typename?: 'Ability', id: number, name: string }> | null }> | null };
@@ -1628,6 +1643,44 @@ export type ShowUsersQueryVariables = Exact<{ [key: string]: never; }>;
 export type ShowUsersQuery = { __typename?: 'Query', users?: Array<{ __typename?: 'User', id: number, name?: string | null, last_name?: string | null, email?: string | null, createdAt?: any | null, updatedAt?: any | null, roles?: Array<{ __typename?: 'Role', id: number, name: string }> | null } | null> | null };
 
 
+export const ShowAbilitiesDocument = gql`
+    query ShowAbilities {
+  abilitys {
+    id
+    name
+    description
+    createdAt
+    updatedAt
+  }
+}
+    `;
+
+/**
+ * __useShowAbilitiesQuery__
+ *
+ * To run a query within a React component, call `useShowAbilitiesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useShowAbilitiesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useShowAbilitiesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useShowAbilitiesQuery(baseOptions?: Apollo.QueryHookOptions<ShowAbilitiesQuery, ShowAbilitiesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ShowAbilitiesQuery, ShowAbilitiesQueryVariables>(ShowAbilitiesDocument, options);
+      }
+export function useShowAbilitiesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ShowAbilitiesQuery, ShowAbilitiesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ShowAbilitiesQuery, ShowAbilitiesQueryVariables>(ShowAbilitiesDocument, options);
+        }
+export type ShowAbilitiesQueryHookResult = ReturnType<typeof useShowAbilitiesQuery>;
+export type ShowAbilitiesLazyQueryHookResult = ReturnType<typeof useShowAbilitiesLazyQuery>;
+export type ShowAbilitiesQueryResult = Apollo.QueryResult<ShowAbilitiesQuery, ShowAbilitiesQueryVariables>;
 export const ShowAccessTypeDocument = gql`
     query ShowAccessType($accessTypeId: Int!) {
   accessType(id: $accessTypeId) {
@@ -2592,9 +2645,50 @@ export function useShowOwnerTypesLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type ShowOwnerTypesQueryHookResult = ReturnType<typeof useShowOwnerTypesQuery>;
 export type ShowOwnerTypesLazyQueryHookResult = ReturnType<typeof useShowOwnerTypesLazyQuery>;
 export type ShowOwnerTypesQueryResult = Apollo.QueryResult<ShowOwnerTypesQuery, ShowOwnerTypesQueryVariables>;
+export const CreateRoleDocument = gql`
+    mutation CreateRole($data: CreateRoleInput!) {
+  createRole(data: $data) {
+    id
+    name
+    description
+    abilities {
+      id
+      name
+    }
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export type CreateRoleMutationFn = Apollo.MutationFunction<CreateRoleMutation, CreateRoleMutationVariables>;
+
+/**
+ * __useCreateRoleMutation__
+ *
+ * To run a mutation, you first call `useCreateRoleMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateRoleMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createRoleMutation, { data, loading, error }] = useCreateRoleMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useCreateRoleMutation(baseOptions?: Apollo.MutationHookOptions<CreateRoleMutation, CreateRoleMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateRoleMutation, CreateRoleMutationVariables>(CreateRoleDocument, options);
+      }
+export type CreateRoleMutationHookResult = ReturnType<typeof useCreateRoleMutation>;
+export type CreateRoleMutationResult = Apollo.MutationResult<CreateRoleMutation>;
+export type CreateRoleMutationOptions = Apollo.BaseMutationOptions<CreateRoleMutation, CreateRoleMutationVariables>;
 export const RolesListDocument = gql`
-    query RolesList {
-  roles {
+    query RolesList($pagination: Pagination) {
+  roles(pagination: $pagination) {
     id
     name
     description
@@ -2621,6 +2715,7 @@ export const RolesListDocument = gql`
  * @example
  * const { data, loading, error } = useRolesListQuery({
  *   variables: {
+ *      pagination: // value for 'pagination'
  *   },
  * });
  */
