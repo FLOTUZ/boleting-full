@@ -1,3 +1,4 @@
+export * from "./ability.resolver";
 export * from "./user.resolver";
 export * from "./auth.resolver";
 export * from "./role.resolver";

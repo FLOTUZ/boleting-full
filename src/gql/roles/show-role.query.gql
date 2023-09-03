@@ -1,0 +1,14 @@
+query ShowRole($roleId: Int!) {
+  role(id: $roleId) {
+    id
+    name
+    description
+    abilities {
+      id
+      name
+    }
+    createdAt
+    updatedAt
+    deletedAt
+  }
+}

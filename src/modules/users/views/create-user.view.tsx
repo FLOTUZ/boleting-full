@@ -16,15 +16,13 @@ import {
   useToast,
   Checkbox,
   SimpleGrid,
+  Container,
 } from "@chakra-ui/react";
-import DesktopLayoutComponent from "@/layouts/desktop-layout-component/desktop-layout.component";
-import { UsersPath } from "@/routes";
 import { useRouter } from "next/router";
 
 const CreateUserView = () => {
   const router = useRouter();
   const [roleList, setRoleList] = useState<Role[]>([]);
-  const [selectedRoles, setSelectedRoles] = useState<number[]>([]);
 
   const toast = useToast();
   const { loading: roleListLoading } = useRolesListQuery({
@@ -46,7 +44,7 @@ const CreateUserView = () => {
         duration: 9000,
         isClosable: true,
       });
-      router.replace(UsersPath);
+      router.back();
     },
     onError(error) {
       toast({
@@ -57,7 +55,6 @@ const CreateUserView = () => {
         duration: 9000,
         isClosable: true,
       });
-      console.error(error);
     },
   });
 
@@ -67,108 +64,112 @@ const CreateUserView = () => {
       last_name: "",
       email: "",
       password: "",
+      roles: [],
     },
     onSubmit: async (values) => {
-      console.log(selectedRoles);
       await createUser({
         variables: {
-          data: {
-            name: values.name,
-            last_name: values.last_name,
-            email: values.email,
-            password: values.password,
-            roles: selectedRoles,
-          },
+          data: { ...values },
         },
       });
     },
   });
 
   return (
-    <DesktopLayoutComponent title={"Create user"}>
-      <Box p={6} rounded="md">
-        <form onSubmit={formCreate.handleSubmit}>
-          <VStack spacing={4} align="flex-start">
-            <FormControl isRequired>
-              <FormLabel htmlFor="name">Nombre</FormLabel>
-              <Input
-                id="name"
-                name="name"
-                type="text"
-                variant="filled"
-                onChange={formCreate.handleChange}
-                value={formCreate.values.name}
-              />
-            </FormControl>
+    <Container p={6} rounded="md">
+      <form onSubmit={formCreate.handleSubmit}>
+        <VStack spacing={4} align="flex-start">
+          <FormControl isRequired>
+            <FormLabel htmlFor="name">Nombre</FormLabel>
+            <Input
+              id="name"
+              name="name"
+              type="text"
+              variant="filled"
+              onChange={formCreate.handleChange}
+              value={formCreate.values.name}
+            />
+          </FormControl>
 
-            <FormControl isRequired>
-              <FormLabel htmlFor="last_name">Apellido</FormLabel>
-              <Input
-                id="last_name"
-                name="last_name"
-                type="text"
-                variant="filled"
-                onChange={formCreate.handleChange}
-                value={formCreate.values.last_name}
-              />
-            </FormControl>
+          <FormControl isRequired>
+            <FormLabel htmlFor="last_name">Apellido</FormLabel>
+            <Input
+              id="last_name"
+              name="last_name"
+              type="text"
+              variant="filled"
+              onChange={formCreate.handleChange}
+              value={formCreate.values.last_name}
+            />
+          </FormControl>
 
-            <FormControl>
-              <FormLabel htmlFor="email">Correo Electronico</FormLabel>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                variant="filled"
-                onChange={formCreate.handleChange}
-                value={formCreate.values.email}
-              />
-            </FormControl>
+          <FormControl>
+            <FormLabel htmlFor="email">Correo Electronico</FormLabel>
+            <Input
+              id="email"
+              name="email"
+              type="email"
+              variant="filled"
+              onChange={formCreate.handleChange}
+              value={formCreate.values.email}
+            />
+          </FormControl>
 
-            <FormControl>
-              <FormLabel htmlFor="password">Contraseña</FormLabel>
-              <Input
-                id="password"
-                name="password"
-                type="password"
-                variant="filled"
-                onChange={formCreate.handleChange}
-                value={formCreate.values.password}
-              />
-            </FormControl>
+          <FormControl>
+            <FormLabel htmlFor="password">Contraseña</FormLabel>
+            <Input
+              id="password"
+              name="password"
+              type="password"
+              variant="filled"
+              onChange={formCreate.handleChange}
+              value={formCreate.values.password}
+            />
+          </FormControl>
 
-            <FormControl>
-              <FormLabel htmlFor="roles">Roles</FormLabel>
-              <SimpleGrid columns={[1, 2, 3, 4, 5]} spacing={2}>
-                {roleList.map((role) => (
-                  <Box key={role.id}>
-                    <Checkbox
-                      value={role.id}
-                      size={"lg"}
-                      onChange={(e) => {
-                        if (e.target.checked) {
-                          setSelectedRoles([...selectedRoles, role.id]);
-                        } else {
-                          setSelectedRoles(
-                            selectedRoles.filter((id) => id !== role.id)
-                          );
-                        }
-                      }}
-                    >
-                      {role.name}
-                    </Checkbox>
-                  </Box>
-                ))}
-              </SimpleGrid>
-            </FormControl>
+          <FormControl>
+            <FormLabel htmlFor="roles">Roles</FormLabel>
+            <SimpleGrid columns={[1, 2]} spacing={2}>
+              {roleList.map((role) => (
+                <Box key={role.id}>
+                  <Checkbox
+                    value={role.id}
+                    size={"lg"}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        formCreate.setFieldValue("roles", [
+                          ...formCreate.values.roles,
+                          role.id,
+                        ]);
+                      } else {
+                        formCreate.setFieldValue(
+                          "roles",
+                          formCreate.values.roles.filter((id) => id !== role.id)
+                        );
+                      }
+                    }}
+                  >
+                    {role.name}
+                  </Checkbox>
+                </Box>
+              ))}
+            </SimpleGrid>
+          </FormControl>
 
-            <Button type="submit" w="full" isLoading={createUserLoading}>
-              Create User
-            </Button>
-          </VStack>
-        </form>
-      </Box>
-    </DesktopLayoutComponent>
+          <Button
+            type="submit"
+            w="full"
+            colorScheme="blue"
+            isLoading={createUserLoading}
+          >
+            Crear
+          </Button>
+          <Button type="submit" w="full" onClick={() => router.back()}>
+            Cancelar
+          </Button>
+        </VStack>
+      </form>
+    </Container>
   );
 };
 

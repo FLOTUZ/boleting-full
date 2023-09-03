@@ -18,6 +18,13 @@ export const EditEventPath = (id: number) => `/events/${id}/edit`;
 export const UsersPath = "/users";
 export const ShowUserPath = (id: string) => `/users/${id}`;
 export const EditUserPath = (userId: string) => `/users/${userId}/edit`;
+export const CreateUsersPath = "/users/create";
+
+// =========== ROLES ============
+export const ShowRolesPath = "/users/roles";
+export const CreateRolePath = "/users/roles/create";
+export const ShowRolePath = (id: string) => `/users/roles/${id}`;
+export const EditRolePath = (id: string) => `/users/roles/${id}/edit`;
 
 // =========== CATEGORIES ============
 export const CategoriesPath = "/categories";

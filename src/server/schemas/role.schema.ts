@@ -4,6 +4,7 @@ export const RoleSchema = gql`
   input CreateRoleInput {
     name: String!
     description: String!
+    abilities: [Int!]!
   }
 
   input UpdateRoleInput {
@@ -13,17 +14,24 @@ export const RoleSchema = gql`
 
   type Role {
     id: Int!
-    name: String
+    name: String!
     description: String
     createdAt: DateTime
     updatedAt: DateTime
     deleted: Boolean
     deletedAt: DateTime
-    users: [User]
+    users: [User!]
+    abilities: [Ability!]
+  }
+
+  type PaginatedRole {
+    pagination: PaginationResponse
+    count: Int!
+    data: [Role!]
   }
 
   type Query {
-    roles(pagination: Pagination): [Role!]
+    roles(pagination: Pagination): PaginatedRole
     role(id: Int!): Role
   }
 
