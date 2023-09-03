@@ -60,11 +60,10 @@ const ShowRolesView = () => {
         <Button onClick={() => refetch()}>
           <TbReload />
         </Button>
-        <HStack mb={4}>
-          <Link href={CreateRolePath}>
-            <Button>Nuevo rol</Button>
-          </Link>
-        </HStack>
+
+        <Link href={CreateRolePath}>
+          <Button>Nuevo rol</Button>
+        </Link>
       </HStack>
 
       <Box m={4}>
