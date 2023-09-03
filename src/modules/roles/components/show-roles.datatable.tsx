@@ -5,14 +5,8 @@ import DataTable, { TableColumn } from "react-data-table-component";
 import { PaginationResponse, Role } from "@/gql/generated";
 import { ShowRolePath } from "@/routes";
 
-import {
-  Box,
-  Text,
-  SimpleGrid,
-  useColorMode,
-  Badge,
-  Heading,
-} from "@chakra-ui/react";
+import { Box, SimpleGrid, useColorMode, Heading } from "@chakra-ui/react";
+import AbilityBadge from "./ability-badge";
 
 interface ShowRolesDatatableProps {
   setTake: (take: number) => void;
@@ -82,40 +76,19 @@ const ShowRolesDatatable = ({
       }
       onRowClicked={(event) => router.push(ShowRolePath(String(event.id)))}
       expandableRows
-      expandableRowsComponent={(row) => <PermmisionsWithBadges {...row.data} />}
+      expandableRowsComponent={({ data: role }) =>
+        role.abilities?.length == 0 ? (
+          <Box m={4}>Sin permisos</Box>
+        ) : (
+          <SimpleGrid columns={[1, 2, 3]} spacing={4} m={4}>
+            {role.abilities?.map((ability) => {
+              return <AbilityBadge key={ability.id} ability={ability} />;
+            })}
+          </SimpleGrid>
+        )
+      }
       noDataComponent={<div>No hay datos</div>}
     />
-  );
-};
-
-const PermmisionsWithBadges = (role: Role) => {
-  return role.abilities?.length == 0 ? (
-    <Box m={4}>Sin permisos</Box>
-  ) : (
-    <SimpleGrid columns={[1, 2, 3]} spacing={4} m={4}>
-      {role.abilities?.map((ability) => {
-        const colors: any = [
-          { name: "create", color: "green" },
-          { name: "read", color: "blue" },
-          { name: "update", color: "yellow" },
-          { name: "delete", color: "red" },
-        ];
-        const action = ability.name.split(":")[0];
-
-        const badgeColor = colors.find(
-          (color: any) => color.name === action
-        )?.color;
-
-        return (
-          <Box key={ability.id} alignItems={"center"} display={"flex"}>
-            <Badge colorScheme={badgeColor} mr={2}>
-              {ability.name.split(":")[0]}
-            </Badge>
-            <Text>{ability.name.split(":")[1]}</Text>
-          </Box>
-        );
-      })}
-    </SimpleGrid>
   );
 };
 

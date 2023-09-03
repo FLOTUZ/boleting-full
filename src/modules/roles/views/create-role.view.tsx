@@ -20,6 +20,7 @@ import {
 import { useFormik } from "formik";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import AbilityBadge from "../components/ability-badge";
 
 const CreateRoleView = () => {
   const router = useRouter();
@@ -89,7 +90,7 @@ const CreateRoleView = () => {
 
   return (
     <IntroAnimationComponent data={true}>
-      <Center mt={4}>
+      <Center m={4}>
         <form onSubmit={form.handleSubmit}>
           <FormLabel htmlFor="name">Nombre:</FormLabel>
           <Input
@@ -124,7 +125,7 @@ const CreateRoleView = () => {
                   form.handleChange(e);
                 }}
               >
-                {ability.name}
+                <AbilityBadge ability={ability} />
               </Checkbox>
             ))}
           </SimpleGrid>
