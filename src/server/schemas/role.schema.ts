@@ -24,8 +24,14 @@ export const RoleSchema = gql`
     abilities: [Ability!]
   }
 
+  type PaginatedRole {
+    pagination: PaginationResponse
+    count: Int!
+    data: [Role!]
+  }
+
   type Query {
-    roles(pagination: Pagination): [Role!]
+    roles(pagination: Pagination): PaginatedRole
     role(id: Int!): Role
   }
 

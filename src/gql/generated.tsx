@@ -804,9 +804,26 @@ export type OwnerType = {
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
+export type PaginatedRole = {
+  __typename?: 'PaginatedRole';
+  count: Scalars['Int']['output'];
+  data?: Maybe<Array<Role>>;
+  pagination?: Maybe<PaginationResponse>;
+};
+
 export type Pagination = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type PaginationResponse = {
+  __typename?: 'PaginationResponse';
+  currentPage?: Maybe<Scalars['Int']['output']>;
+  nextPage?: Maybe<Scalars['Int']['output']>;
+  pages?: Maybe<Scalars['Int']['output']>;
+  prevPage?: Maybe<Scalars['Int']['output']>;
+  skip: Scalars['Int']['output'];
+  take: Scalars['Int']['output'];
 };
 
 export type PaymentCard = {
@@ -898,7 +915,7 @@ export type Query = {
   paymentRecibed: PaymentRecibed;
   paymentRecibeds: Array<PaymentRecibed>;
   role?: Maybe<Role>;
-  roles?: Maybe<Array<Role>>;
+  roles?: Maybe<PaginatedRole>;
   selled_tickets_by_event?: Maybe<Array<Ticket>>;
   ticket?: Maybe<Ticket>;
   tickets?: Maybe<Array<Ticket>>;
@@ -1531,7 +1548,7 @@ export type RolesListQueryVariables = Exact<{
 }>;
 
 
-export type RolesListQuery = { __typename?: 'Query', roles?: Array<{ __typename?: 'Role', id: number, name: string, description?: string | null, createdAt?: any | null, updatedAt?: any | null, deletedAt?: any | null, abilities?: Array<{ __typename?: 'Ability', id: number, name: string }> | null }> | null };
+export type RolesListQuery = { __typename?: 'Query', roles?: { __typename?: 'PaginatedRole', count: number, pagination?: { __typename?: 'PaginationResponse', take: number, skip: number, pages?: number | null, currentPage?: number | null, nextPage?: number | null } | null, data?: Array<{ __typename?: 'Role', id: number, name: string, description?: string | null, createdAt?: any | null, updatedAt?: any | null, deletedAt?: any | null, abilities?: Array<{ __typename?: 'Ability', id: number, name: string }> | null }> | null } | null };
 
 export type ShowRoleQueryVariables = Exact<{
   roleId: Scalars['Int']['input'];
@@ -2689,16 +2706,26 @@ export type CreateRoleMutationOptions = Apollo.BaseMutationOptions<CreateRoleMut
 export const RolesListDocument = gql`
     query RolesList($pagination: Pagination) {
   roles(pagination: $pagination) {
-    id
-    name
-    description
-    abilities {
+    pagination {
+      take
+      skip
+      pages
+      currentPage
+      nextPage
+    }
+    count
+    data {
       id
       name
+      description
+      abilities {
+        id
+        name
+      }
+      createdAt
+      updatedAt
+      deletedAt
     }
-    createdAt
-    updatedAt
-    deletedAt
   }
 }
     `;

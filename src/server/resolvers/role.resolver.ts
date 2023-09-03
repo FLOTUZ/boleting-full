@@ -1,4 +1,4 @@
-import { Args, IGraphqlContext } from "@/server/common";
+import { Args, IGraphqlContext, PaginatedList } from "@/server/common";
 import { Role } from "@prisma/client";
 import {
   CreateRoleSchema,
@@ -10,7 +10,7 @@ import { AbilityService, RoleService, UserService } from "../services";
 export const RolesResolver = {
   Query: {
     roles: async (_: any, { pagination }: Args, __: IGraphqlContext) => {
-      return await RoleService.roles(pagination);
+      return (await RoleService.roles(pagination)) as PaginatedList<Role>;
     },
 
     role: async (_: any, { id }: { id: number }, __: IGraphqlContext) => {

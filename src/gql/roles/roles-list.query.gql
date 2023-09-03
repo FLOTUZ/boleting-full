@@ -1,14 +1,24 @@
 query RolesList($pagination: Pagination) {
   roles(pagination: $pagination) {
-    id
-    name
-    description
-    abilities {
+    pagination {
+      take
+      skip
+      pages
+      currentPage
+      nextPage
+    }
+    count
+    data {
       id
       name
+      description
+      abilities {
+        id
+        name
+      }
+      createdAt
+      updatedAt
+      deletedAt
     }
-    createdAt
-    updatedAt
-    deletedAt
   }
 }
