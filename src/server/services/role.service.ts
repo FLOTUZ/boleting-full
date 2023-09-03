@@ -6,15 +6,13 @@ import { PrismaError } from "../utils";
 
 export const RoleService = {
   async roles(pagination?: Pagination) {
-    const page = pagination?.skip! / pagination?.take! + 1;
-
     const [count, data] = await Promise.all([
       prisma.role.count(),
       prisma.role.findMany({
         skip: pagination?.skip,
         take: pagination?.take,
         orderBy: {
-          id: "asc",
+          id: "desc",
         },
       }),
     ]);

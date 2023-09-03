@@ -57,13 +57,11 @@ const ShowRolesDatatable = ({
       title="Roles"
       responsive
       noHeader
-      noTableHead
       theme={colorMode === "light" ? "light" : "dark"}
       pointerOnHover
       persistTableHead
       highlightOnHover
       pagination
-      subHeader
       columns={columns}
       data={data}
       progressPending={loader}
