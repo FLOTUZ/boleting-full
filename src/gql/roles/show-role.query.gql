@@ -3,12 +3,24 @@ query ShowRole($roleId: Int!) {
     id
     name
     description
+    createdAt
+    updatedAt
+    deletedAt
     abilities {
       id
       name
     }
-    createdAt
-    updatedAt
-    deletedAt
+    users {
+      id
+      name
+      last_name
+      email
+      createdAt
+      updatedAt
+      roles {
+        id
+        name
+      }
+    }
   }
 }

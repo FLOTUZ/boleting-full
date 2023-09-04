@@ -1,23 +1,25 @@
-import { Role, useShowRoleLazyQuery } from "@/gql/generated";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+
+import { Role, useShowRoleLazyQuery } from "@/gql/generated";
 
 export const useShowRole = () => {
   const router = useRouter();
   const { roleId } = router.query;
-  const [role, setrole] = useState<Role>();
 
-  const [getRole, { loading, error }] = useShowRoleLazyQuery({
+  const [role, setRole] = useState<Role>();
+
+  const [GET_ROLE, { loading, error }] = useShowRoleLazyQuery({
     onCompleted(data) {
-      setrole(data.role as Role);
+      setRole(data.role as Role);
     },
   });
 
   useEffect(() => {
     if (roleId) {
-      getRole({ variables: { roleId: Number(roleId) } });
+      GET_ROLE({ variables: { roleId: Number(roleId) } });
     }
-  }, [getRole, roleId]);
+  }, [GET_ROLE, roleId]);
 
   return { role, loading, error };
 };

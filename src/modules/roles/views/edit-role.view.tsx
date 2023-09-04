@@ -1,8 +1,9 @@
 import IntroAnimationComponent from "@/components/animations/intro-animation.component";
 import ProgressLoaderComponent from "@/components/loaders/progress-loader.component";
 
+import AbilityBadge from "../components/ability-badge";
+
 import { useRouter } from "next/router";
-import { useShowRole } from "../hooks/use-show-role.hook";
 
 import {
   Box,
@@ -15,80 +16,46 @@ import {
   Textarea,
   useToast,
 } from "@chakra-ui/react";
-import { useFormik } from "formik";
-import AbilityBadge from "../components/ability-badge";
-import {
-  Ability,
-  useEditRoleMutation,
-  useShowAbilitiesLazyQuery,
-} from "@/gql/generated";
-import { useEffect, useState } from "react";
+
+import { useEditRole } from "../hooks/edit-role.hook";
 
 const EditRoleView = () => {
   const router = useRouter();
+  const { roleId } = router.query;
+
   const toast = useToast();
 
-  const [abilitiesList, setAbilitiesList] = useState<Ability[]>([]);
-  const { role, loading, error } = useShowRole();
-
-  const [getHabilities] = useShowAbilitiesLazyQuery({
-    onCompleted(data) {
-      setAbilitiesList(data.abilitys as Ability[]);
-    },
-  });
-
-  const [updateRole] = useEditRoleMutation({
+  const { abilitiesList, form, loadingRole, getRoleError } = useEditRole({
+    roleId: String(roleId),
     onCompleted(data) {
       toast({
         title: "Rol actualizado",
+        description: "El rol fue actualizado con éxito",
         status: "success",
-        duration: 3000,
+        duration: 5000,
         isClosable: true,
       });
       router.back();
     },
     onError(error) {
       toast({
-        title: "Error",
-        description: error.graphQLErrors
-          .map((error) => error.message)
-          .join(", "),
+        title: "Error al actualizar el rol",
+        description: error.message,
         status: "error",
-        duration: 3000,
+        duration: 5000,
         isClosable: true,
       });
     },
   });
 
-  const form = useFormik({
-    enableReinitialize: true,
-    initialValues: {
-      name: role?.name,
-      description: role?.description,
-      abilities: role?.abilities?.map((ability) => ability.id),
-    },
-    onSubmit: (data) => {
-      updateRole({
-        variables: {
-          updateRoleId: role!.id,
-          data,
-        },
-      });
-    },
-  });
-
-  useEffect(() => {
-    getHabilities();
-  }, [getHabilities]);
-
-  if (loading) {
+  if (loadingRole) {
     return <ProgressLoaderComponent />;
   }
 
-  if (error) {
+  if (getRoleError) {
     return (
       <ul>
-        {error.graphQLErrors.map(({ message }, index) => {
+        {getRoleError.graphQLErrors.map(({ message }, index) => {
           return <li key={index}>{message}</li>;
         })}
       </ul>

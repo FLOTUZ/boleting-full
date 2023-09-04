@@ -1,5 +1,6 @@
 import IntroAnimationComponent from "@/components/animations/intro-animation.component";
 import ProgressLoaderComponent from "@/components/loaders/progress-loader.component";
+import UsersByRoleDatatable from "../components/users-by-role.datatable";
 
 import { useRouter } from "next/router";
 
@@ -10,7 +11,7 @@ import { Badge, Box, Button, Text } from "@chakra-ui/react";
 const ShowRoleView = () => {
   const router = useRouter();
 
-  const { role, loading, error } = useShowRole();
+  const { role, loading: progressPending, error } = useShowRole();
 
   if (error) {
     return (
@@ -22,7 +23,7 @@ const ShowRoleView = () => {
     );
   }
 
-  if (loading) {
+  if (progressPending) {
     return <ProgressLoaderComponent />;
   }
 
@@ -70,7 +71,12 @@ const ShowRoleView = () => {
           )}
         </Box>
 
-        {/* TODO: Poner usuarios con este rol */}
+        <Box mt={4}>
+          <UsersByRoleDatatable
+            data={role?.users!}
+            progressPending={progressPending}
+          />
+        </Box>
       </Box>
     </IntroAnimationComponent>
   );
