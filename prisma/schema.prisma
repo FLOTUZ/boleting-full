@@ -30,12 +30,14 @@ model Organization {
   deletedAt DateTime?
   events    Event[]   @relation("events_on_organization")
   users     User[]    @relation("users_on_organization")
+  roles     Role[]    @relation("created_roles")
 }
 
 model Role {
   id                      Int           @id @unique @default(autoincrement())
   name                    String        @unique @db.VarChar(50)
   description             String?       @db.VarChar(255)
+  organizationId          Int
   createdAt               DateTime      @default(now())
   updatedAt               DateTime      @updatedAt
   deleted                 Boolean       @default(false)
@@ -44,6 +46,7 @@ model Role {
   users                   User[]        @relation("users")
   user_clients            UserClient[]  @relation("user_client")
   application_permissions Application[] @relation("application_roles")
+  organization            Organization? @relation("created_roles", fields: [organizationId], references: [id])
 }
 
 model User {

@@ -5,12 +5,24 @@ import {
   UpdateRoleSchema,
   validateData,
 } from "@/validations";
-import { AbilityService, RoleService, UserService } from "../services";
+import {
+  AbilityService,
+  OrganizationService,
+  RoleService,
+  UserService,
+} from "../services";
 
 export const RolesResolver = {
   Query: {
-    roles: async (_: any, { pagination }: Args, __: IGraphqlContext) => {
-      return (await RoleService.roles(pagination)) as PaginatedList<Role>;
+    roles: async (
+      _: any,
+      { pagination }: Args,
+      { id_organization }: IGraphqlContext
+    ) => {
+      return (await RoleService.roles(
+        pagination,
+        id_organization!
+      )) as PaginatedList<Role>;
     },
 
     role: async (_: any, { id }: { id: number }, __: IGraphqlContext) => {
@@ -22,10 +34,10 @@ export const RolesResolver = {
     createRole: async (
       _: any,
       { data }: { data: Role & { abilities: number[] } },
-      __: IGraphqlContext
+      { id_organization }: IGraphqlContext
     ) => {
       await validateData({ schema: CreateRoleSchema, data });
-      return await RoleService.createRole(data);
+      return await RoleService.createRole(data, id_organization!);
     },
 
     updateRole: async (
@@ -48,6 +60,13 @@ export const RolesResolver = {
     },
     abilities: async ({ id }: Role, _: any, __: IGraphqlContext) => {
       return await AbilityService.abilitiesByRole(id);
+    },
+    organization: async (
+      { organizationId }: Role,
+      _: any,
+      __: IGraphqlContext
+    ) => {
+      return await OrganizationService.organization(organizationId);
     },
   },
 };
