@@ -9,4 +9,5 @@ export const CreateRoleSchema = y.object().shape({
 export const UpdateRoleSchema = y.object().shape({
   name: y.string(),
   description: y.string(),
+  abilities: y.array().of(y.number()),
 });

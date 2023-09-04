@@ -1,0 +1,14 @@
+mutation EditRole($updateRoleId: Int!, $data: UpdateRoleInput!) {
+  updateRole(id: $updateRoleId, data: $data) {
+    id
+    name
+    description
+    abilities {
+      id
+      name
+    }
+    createdAt
+    updatedAt
+    deletedAt
+  }
+}

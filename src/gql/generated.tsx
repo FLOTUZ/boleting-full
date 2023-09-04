@@ -785,6 +785,7 @@ export type Organization = {
   events?: Maybe<Array<Event>>;
   id: Scalars['ID']['output'];
   name?: Maybe<Scalars['String']['output']>;
+  roles?: Maybe<Array<Role>>;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
   users?: Maybe<Array<User>>;
 };
@@ -1156,6 +1157,8 @@ export type Role = {
   description?: Maybe<Scalars['String']['output']>;
   id: Scalars['Int']['output'];
   name: Scalars['String']['output'];
+  organization: Organization;
+  organizationId: Scalars['Int']['output'];
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
   users?: Maybe<Array<User>>;
 };
@@ -1314,6 +1317,7 @@ export type UpdatePaymentRecibedInput = {
 };
 
 export type UpdateRoleInput = {
+  abilities?: InputMaybe<Array<Scalars['Int']['input']>>;
   description?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
 };
@@ -1543,6 +1547,21 @@ export type CreateRoleMutationVariables = Exact<{
 
 export type CreateRoleMutation = { __typename?: 'Mutation', createRole?: { __typename?: 'Role', id: number, name: string, description?: string | null, createdAt?: any | null, updatedAt?: any | null, abilities?: Array<{ __typename?: 'Ability', id: number, name: string }> | null } | null };
 
+export type EditRoleMutationVariables = Exact<{
+  updateRoleId: Scalars['Int']['input'];
+  data: UpdateRoleInput;
+}>;
+
+
+export type EditRoleMutation = { __typename?: 'Mutation', updateRole?: { __typename?: 'Role', id: number, name: string, description?: string | null, createdAt?: any | null, updatedAt?: any | null, deletedAt?: any | null, abilities?: Array<{ __typename?: 'Ability', id: number, name: string }> | null } | null };
+
+export type ShowRoleForEditQueryVariables = Exact<{
+  roleId: Scalars['Int']['input'];
+}>;
+
+
+export type ShowRoleForEditQuery = { __typename?: 'Query', role?: { __typename?: 'Role', id: number, name: string, description?: string | null, createdAt?: any | null, updatedAt?: any | null, deletedAt?: any | null } | null, abilitys: Array<{ __typename?: 'Ability', id: number, name: string }> };
+
 export type RolesListQueryVariables = Exact<{
   pagination?: InputMaybe<Pagination>;
 }>;
@@ -1555,7 +1574,7 @@ export type ShowRoleQueryVariables = Exact<{
 }>;
 
 
-export type ShowRoleQuery = { __typename?: 'Query', role?: { __typename?: 'Role', id: number, name: string, description?: string | null, createdAt?: any | null, updatedAt?: any | null, deletedAt?: any | null, abilities?: Array<{ __typename?: 'Ability', id: number, name: string }> | null } | null };
+export type ShowRoleQuery = { __typename?: 'Query', role?: { __typename?: 'Role', id: number, name: string, description?: string | null, createdAt?: any | null, updatedAt?: any | null, deletedAt?: any | null, abilities?: Array<{ __typename?: 'Ability', id: number, name: string }> | null, users?: Array<{ __typename?: 'User', id: number, name?: string | null, last_name?: string | null, email?: string | null, createdAt?: any | null, updatedAt?: any | null, roles?: Array<{ __typename?: 'Role', id: number, name: string }> | null }> | null } | null };
 
 export type AssignManyStaffMutationVariables = Exact<{
   eventId: Scalars['Int']['input'];
@@ -2703,6 +2722,93 @@ export function useCreateRoleMutation(baseOptions?: Apollo.MutationHookOptions<C
 export type CreateRoleMutationHookResult = ReturnType<typeof useCreateRoleMutation>;
 export type CreateRoleMutationResult = Apollo.MutationResult<CreateRoleMutation>;
 export type CreateRoleMutationOptions = Apollo.BaseMutationOptions<CreateRoleMutation, CreateRoleMutationVariables>;
+export const EditRoleDocument = gql`
+    mutation EditRole($updateRoleId: Int!, $data: UpdateRoleInput!) {
+  updateRole(id: $updateRoleId, data: $data) {
+    id
+    name
+    description
+    abilities {
+      id
+      name
+    }
+    createdAt
+    updatedAt
+    deletedAt
+  }
+}
+    `;
+export type EditRoleMutationFn = Apollo.MutationFunction<EditRoleMutation, EditRoleMutationVariables>;
+
+/**
+ * __useEditRoleMutation__
+ *
+ * To run a mutation, you first call `useEditRoleMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditRoleMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [editRoleMutation, { data, loading, error }] = useEditRoleMutation({
+ *   variables: {
+ *      updateRoleId: // value for 'updateRoleId'
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useEditRoleMutation(baseOptions?: Apollo.MutationHookOptions<EditRoleMutation, EditRoleMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<EditRoleMutation, EditRoleMutationVariables>(EditRoleDocument, options);
+      }
+export type EditRoleMutationHookResult = ReturnType<typeof useEditRoleMutation>;
+export type EditRoleMutationResult = Apollo.MutationResult<EditRoleMutation>;
+export type EditRoleMutationOptions = Apollo.BaseMutationOptions<EditRoleMutation, EditRoleMutationVariables>;
+export const ShowRoleForEditDocument = gql`
+    query ShowRoleForEdit($roleId: Int!) {
+  role(id: $roleId) {
+    id
+    name
+    description
+    createdAt
+    updatedAt
+    deletedAt
+  }
+  abilitys {
+    id
+    name
+  }
+}
+    `;
+
+/**
+ * __useShowRoleForEditQuery__
+ *
+ * To run a query within a React component, call `useShowRoleForEditQuery` and pass it any options that fit your needs.
+ * When your component renders, `useShowRoleForEditQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useShowRoleForEditQuery({
+ *   variables: {
+ *      roleId: // value for 'roleId'
+ *   },
+ * });
+ */
+export function useShowRoleForEditQuery(baseOptions: Apollo.QueryHookOptions<ShowRoleForEditQuery, ShowRoleForEditQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ShowRoleForEditQuery, ShowRoleForEditQueryVariables>(ShowRoleForEditDocument, options);
+      }
+export function useShowRoleForEditLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ShowRoleForEditQuery, ShowRoleForEditQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ShowRoleForEditQuery, ShowRoleForEditQueryVariables>(ShowRoleForEditDocument, options);
+        }
+export type ShowRoleForEditQueryHookResult = ReturnType<typeof useShowRoleForEditQuery>;
+export type ShowRoleForEditLazyQueryHookResult = ReturnType<typeof useShowRoleForEditLazyQuery>;
+export type ShowRoleForEditQueryResult = Apollo.QueryResult<ShowRoleForEditQuery, ShowRoleForEditQueryVariables>;
 export const RolesListDocument = gql`
     query RolesList($pagination: Pagination) {
   roles(pagination: $pagination) {
@@ -2766,6 +2872,18 @@ export const ShowRoleDocument = gql`
     abilities {
       id
       name
+    }
+    users {
+      id
+      name
+      last_name
+      email
+      createdAt
+      updatedAt
+      roles {
+        id
+        name
+      }
     }
     createdAt
     updatedAt

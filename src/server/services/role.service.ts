@@ -67,9 +67,17 @@ export const RoleService = {
     }
   },
 
-  async updateRole(id: number, data: Role) {
+  async updateRole(id: number, data: Role & { abilities: number[] }) {
     try {
-      return await prisma.role.update({ where: { id }, data });
+      return await prisma.role.update({
+        where: { id },
+        data: {
+          ...data,
+          abilities: {
+            set: data.abilities.map((id) => ({ id })),
+          },
+        },
+      });
     } catch (error: any) {
       console.error(error);
       throw PrismaError.handle(error);
