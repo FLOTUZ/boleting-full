@@ -19,25 +19,48 @@ async function main() {
     ],
   });
 
+  await prisma.organization.createMany({
+    data: [
+      {
+        name: "The Core Events",
+      },
+      {
+        name: "Test Organization",
+      },
+    ],
+  });
+
   await prisma.role.createMany({
     data: [
       {
         name: "ADMIN",
+        description: "Super Administrador",
+        organizationId: 1,
       },
       {
         name: "DESARROLLADOR",
+        description: "Desarrollador de la plataforma",
+        organizationId: 1,
       },
       {
         name: "MANAGER",
+        description: "Gerente de la organización",
+        organizationId: 1,
       },
       {
         name: "ASISTENTE",
+        description: "Clientes que asisten a los eventos",
+        organizationId: 1,
       },
       {
         name: "CAJERO",
+        description: "Cajero de la organización",
+        organizationId: 1,
       },
       {
         name: "SPONSOR",
+        description: "Patrocinador de la organización",
+        organizationId: 1,
       },
     ],
   });
@@ -53,18 +76,6 @@ async function main() {
       abilities: {
         connect: adminHabilities.map((ability) => ({ name: ability })),
       },
-    },
-  });
-
-  await prisma.organization.create({
-    data: {
-      name: "The Core Events",
-    },
-  });
-
-  await prisma.organization.create({
-    data: {
-      name: "Test Organization",
     },
   });
 

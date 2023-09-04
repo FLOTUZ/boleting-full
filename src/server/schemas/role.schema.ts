@@ -10,6 +10,7 @@ export const RoleSchema = gql`
   input UpdateRoleInput {
     name: String
     description: String
+    abilities: [Int!]
   }
 
   type Role {
@@ -22,6 +23,8 @@ export const RoleSchema = gql`
     deletedAt: DateTime
     users: [User!]
     abilities: [Ability!]
+    organizationId: Int!
+    organization: Organization!
   }
 
   type PaginatedRole {

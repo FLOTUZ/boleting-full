@@ -5,12 +5,21 @@ import { Pagination } from "../common";
 import { PrismaError } from "../utils";
 
 export const RoleService = {
-  async roles(pagination?: Pagination) {
+  async roles(pagination?: Pagination, organizationId?: number) {
     const [count, data] = await Promise.all([
-      prisma.role.count(),
+      prisma.role.count({
+        where: {
+          organizationId,
+          deleted: false,
+        },
+      }),
       prisma.role.findMany({
         skip: pagination?.skip,
         take: pagination?.take,
+        where: {
+          organizationId,
+          deleted: false,
+        },
         orderBy: {
           id: "desc",
         },
@@ -39,11 +48,15 @@ export const RoleService = {
     return await prisma.role.findUnique({ where: { id } });
   },
 
-  async createRole(data: Role & { abilities: number[] }) {
+  async createRole(
+    data: Role & { abilities: number[] },
+    organizationId: number
+  ) {
     try {
       return await prisma.role.create({
         data: {
           ...data,
+          organizationId,
           abilities: {
             connect: data.abilities.map((id) => ({ id })),
           },
