@@ -785,6 +785,7 @@ export type Organization = {
   events?: Maybe<Array<Event>>;
   id: Scalars['ID']['output'];
   name?: Maybe<Scalars['String']['output']>;
+  roles?: Maybe<Array<Role>>;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
   users?: Maybe<Array<User>>;
 };
@@ -1156,6 +1157,8 @@ export type Role = {
   description?: Maybe<Scalars['String']['output']>;
   id: Scalars['Int']['output'];
   name: Scalars['String']['output'];
+  organization: Organization;
+  organizationId: Scalars['Int']['output'];
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
   users?: Maybe<Array<User>>;
 };
@@ -1314,6 +1317,7 @@ export type UpdatePaymentRecibedInput = {
 };
 
 export type UpdateRoleInput = {
+  abilities?: InputMaybe<Array<Scalars['Int']['input']>>;
   description?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
 };
@@ -1542,6 +1546,14 @@ export type CreateRoleMutationVariables = Exact<{
 
 
 export type CreateRoleMutation = { __typename?: 'Mutation', createRole?: { __typename?: 'Role', id: number, name: string, description?: string | null, createdAt?: any | null, updatedAt?: any | null, abilities?: Array<{ __typename?: 'Ability', id: number, name: string }> | null } | null };
+
+export type EditRoleMutationVariables = Exact<{
+  updateRoleId: Scalars['Int']['input'];
+  data: UpdateRoleInput;
+}>;
+
+
+export type EditRoleMutation = { __typename?: 'Mutation', updateRole?: { __typename?: 'Role', id: number, name: string, description?: string | null, createdAt?: any | null, updatedAt?: any | null, deletedAt?: any | null, abilities?: Array<{ __typename?: 'Ability', id: number, name: string }> | null } | null };
 
 export type RolesListQueryVariables = Exact<{
   pagination?: InputMaybe<Pagination>;
@@ -2703,6 +2715,49 @@ export function useCreateRoleMutation(baseOptions?: Apollo.MutationHookOptions<C
 export type CreateRoleMutationHookResult = ReturnType<typeof useCreateRoleMutation>;
 export type CreateRoleMutationResult = Apollo.MutationResult<CreateRoleMutation>;
 export type CreateRoleMutationOptions = Apollo.BaseMutationOptions<CreateRoleMutation, CreateRoleMutationVariables>;
+export const EditRoleDocument = gql`
+    mutation EditRole($updateRoleId: Int!, $data: UpdateRoleInput!) {
+  updateRole(id: $updateRoleId, data: $data) {
+    id
+    name
+    description
+    abilities {
+      id
+      name
+    }
+    createdAt
+    updatedAt
+    deletedAt
+  }
+}
+    `;
+export type EditRoleMutationFn = Apollo.MutationFunction<EditRoleMutation, EditRoleMutationVariables>;
+
+/**
+ * __useEditRoleMutation__
+ *
+ * To run a mutation, you first call `useEditRoleMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditRoleMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [editRoleMutation, { data, loading, error }] = useEditRoleMutation({
+ *   variables: {
+ *      updateRoleId: // value for 'updateRoleId'
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useEditRoleMutation(baseOptions?: Apollo.MutationHookOptions<EditRoleMutation, EditRoleMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<EditRoleMutation, EditRoleMutationVariables>(EditRoleDocument, options);
+      }
+export type EditRoleMutationHookResult = ReturnType<typeof useEditRoleMutation>;
+export type EditRoleMutationResult = Apollo.MutationResult<EditRoleMutation>;
+export type EditRoleMutationOptions = Apollo.BaseMutationOptions<EditRoleMutation, EditRoleMutationVariables>;
 export const RolesListDocument = gql`
     query RolesList($pagination: Pagination) {
   roles(pagination: $pagination) {

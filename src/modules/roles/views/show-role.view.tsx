@@ -1,27 +1,16 @@
 import IntroAnimationComponent from "@/components/animations/intro-animation.component";
 import ProgressLoaderComponent from "@/components/loaders/progress-loader.component";
-import { Role, useShowRoleLazyQuery } from "@/gql/generated";
-import { EditRolePath } from "@/routes";
-import { Badge, Box, Button, Spacer, Text } from "@chakra-ui/react";
+
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+
+import { EditRolePath } from "@/routes";
+import { useShowRole } from "../hooks/use-show-role.hook";
+import { Badge, Box, Button, Text } from "@chakra-ui/react";
 
 const ShowRoleView = () => {
   const router = useRouter();
-  const { roleId } = router.query;
-  const [role, setrole] = useState<Role>();
 
-  const [getRole, { loading, error }] = useShowRoleLazyQuery({
-    onCompleted(data) {
-      setrole(data.role as Role);
-    },
-  });
-
-  useEffect(() => {
-    if (roleId) {
-      getRole({ variables: { roleId: Number(roleId) } });
-    }
-  }, [getRole, roleId]);
+  const { role, loading, error } = useShowRole();
 
   if (error) {
     return (

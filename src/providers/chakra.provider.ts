@@ -30,6 +30,11 @@ const components = {
       size: "lg",
     },
   },
+  Checkbox: {
+    defaultProps: {
+      size: "lg",
+    },
+  },
 };
 
 export const theme = extendTheme({

@@ -42,11 +42,11 @@ export const RolesResolver = {
 
     updateRole: async (
       _: any,
-      { id, data }: { id: number; data: Role },
+      { id, data }: { id: number; data: Role & { abilities: number[] } },
       __: IGraphqlContext
     ) => {
       await validateData({ schema: UpdateRoleSchema, data });
-      await RoleService.updateRole(id, data);
+      return await RoleService.updateRole(id, data);
     },
 
     deleteRole: async (_: any, { id }: { id: number }, __: IGraphqlContext) => {
