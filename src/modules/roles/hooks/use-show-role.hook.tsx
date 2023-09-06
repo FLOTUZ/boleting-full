@@ -9,7 +9,7 @@ export const useShowRole = () => {
 
   const [role, setRole] = useState<Role>();
 
-  const [GET_ROLE, { loading, error }] = useShowRoleLazyQuery({
+  const [GET_ROLE, { loading, error, refetch }] = useShowRoleLazyQuery({
     onCompleted(data) {
       setRole(data.role as Role);
     },
@@ -21,5 +21,5 @@ export const useShowRole = () => {
     }
   }, [GET_ROLE, roleId]);
 
-  return { role, loading, error };
+  return { role, loading, error, refetch };
 };

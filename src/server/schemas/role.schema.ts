@@ -42,5 +42,6 @@ export const RoleSchema = gql`
     createRole(data: CreateRoleInput!): Role
     updateRole(id: Int!, data: UpdateRoleInput!): Role
     deleteRole(id: Int!): Role
+    removeUsersFromRole(id: Int!, userIds: [Int!]!): Role
   }
 `;

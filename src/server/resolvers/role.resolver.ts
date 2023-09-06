@@ -52,6 +52,14 @@ export const RolesResolver = {
     deleteRole: async (_: any, { id }: { id: number }, __: IGraphqlContext) => {
       return await RoleService.deleteRole(id);
     },
+
+    removeUsersFromRole: async (
+      _: any,
+      { id, userIds }: { id: number; userIds: number[] },
+      __: IGraphqlContext
+    ) => {
+      return await RoleService.removeUsersFromRole(id, userIds);
+    },
   },
 
   Role: {

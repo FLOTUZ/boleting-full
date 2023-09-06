@@ -1,0 +1,26 @@
+mutation RemoveUsersFromRole($roleId: Int!, $userIds: [Int!]!) {
+  removeUsersFromRole(id: $roleId, userIds: $userIds) {
+    id
+    name
+    description
+    createdAt
+    updatedAt
+    deletedAt
+    abilities {
+      id
+      name
+    }
+    users {
+      id
+      name
+      last_name
+      email
+      createdAt
+      updatedAt
+      roles {
+        id
+        name
+      }
+    }
+  }
+}

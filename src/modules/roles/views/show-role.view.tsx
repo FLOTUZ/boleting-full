@@ -6,12 +6,13 @@ import { useRouter } from "next/router";
 
 import { EditRolePath } from "@/routes";
 import { useShowRole } from "../hooks/use-show-role.hook";
-import { Badge, Box, Button, Text } from "@chakra-ui/react";
+import { BiRefresh } from "react-icons/bi";
+import { Badge, Box, Button, HStack, Text } from "@chakra-ui/react";
 
 const ShowRoleView = () => {
   const router = useRouter();
 
-  const { role, loading: progressPending, error } = useShowRole();
+  const { role, loading: progressPending, error, refetch } = useShowRole();
 
   if (error) {
     return (
@@ -30,9 +31,14 @@ const ShowRoleView = () => {
   return (
     <IntroAnimationComponent data={role}>
       <Box m={4}>
-        <Button onClick={() => router.push(EditRolePath(String(role?.id)))}>
-          Editar
-        </Button>
+        <HStack>
+          <Button onClick={() => refetch()}>
+            <BiRefresh size={24} />
+          </Button>
+          <Button onClick={() => router.push(EditRolePath(String(role?.id)))}>
+            Editar
+          </Button>
+        </HStack>
       </Box>
       <Box m={4}>
         <Text as={"b"}>Creado por</Text>

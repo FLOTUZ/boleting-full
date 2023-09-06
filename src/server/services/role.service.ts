@@ -88,6 +88,17 @@ export const RoleService = {
     return await prisma.role.delete({ where: { id } });
   },
 
+  async removeUsersFromRole(id: number, userIds: number[]) {
+    return await prisma.role.update({
+      where: { id },
+      data: {
+        users: {
+          disconnect: userIds.map((id) => ({ id })),
+        },
+      },
+    });
+  },
+
   // ============================================================
 
   async getUserRoles(id_user: number) {

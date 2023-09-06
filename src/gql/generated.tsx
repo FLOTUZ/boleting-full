@@ -393,6 +393,7 @@ export type Mutation = {
   deleteUser?: Maybe<User>;
   deleteUserClient: UserClient;
   login: LoginResponse;
+  removeUsersFromRole?: Maybe<Role>;
   unassignManyStaff?: Maybe<Array<Maybe<User>>>;
   unassignStaff?: Maybe<User>;
   updateAbility: Ability;
@@ -632,6 +633,12 @@ export type MutationDeleteUserClientArgs = {
 
 export type MutationLoginArgs = {
   data: LoginInput;
+};
+
+
+export type MutationRemoveUsersFromRoleArgs = {
+  id: Scalars['Int']['input'];
+  userIds: Array<Scalars['Int']['input']>;
 };
 
 
@@ -1561,6 +1568,14 @@ export type ShowRoleForEditQueryVariables = Exact<{
 
 
 export type ShowRoleForEditQuery = { __typename?: 'Query', role?: { __typename?: 'Role', id: number, name: string, description?: string | null, createdAt?: any | null, updatedAt?: any | null, deletedAt?: any | null, abilities?: Array<{ __typename?: 'Ability', id: number, name: string, description?: string | null }> | null } | null, abilitys: Array<{ __typename?: 'Ability', id: number, name: string }> };
+
+export type RemoveUsersFromRoleMutationVariables = Exact<{
+  roleId: Scalars['Int']['input'];
+  userIds: Array<Scalars['Int']['input']> | Scalars['Int']['input'];
+}>;
+
+
+export type RemoveUsersFromRoleMutation = { __typename?: 'Mutation', removeUsersFromRole?: { __typename?: 'Role', id: number, name: string, description?: string | null, createdAt?: any | null, updatedAt?: any | null, deletedAt?: any | null, abilities?: Array<{ __typename?: 'Ability', id: number, name: string }> | null, users?: Array<{ __typename?: 'User', id: number, name?: string | null, last_name?: string | null, email?: string | null, createdAt?: any | null, updatedAt?: any | null, roles?: Array<{ __typename?: 'Role', id: number, name: string }> | null }> | null } | null };
 
 export type RolesListQueryVariables = Exact<{
   pagination?: InputMaybe<Pagination>;
@@ -2814,6 +2829,61 @@ export function useShowRoleForEditLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type ShowRoleForEditQueryHookResult = ReturnType<typeof useShowRoleForEditQuery>;
 export type ShowRoleForEditLazyQueryHookResult = ReturnType<typeof useShowRoleForEditLazyQuery>;
 export type ShowRoleForEditQueryResult = Apollo.QueryResult<ShowRoleForEditQuery, ShowRoleForEditQueryVariables>;
+export const RemoveUsersFromRoleDocument = gql`
+    mutation RemoveUsersFromRole($roleId: Int!, $userIds: [Int!]!) {
+  removeUsersFromRole(id: $roleId, userIds: $userIds) {
+    id
+    name
+    description
+    createdAt
+    updatedAt
+    deletedAt
+    abilities {
+      id
+      name
+    }
+    users {
+      id
+      name
+      last_name
+      email
+      createdAt
+      updatedAt
+      roles {
+        id
+        name
+      }
+    }
+  }
+}
+    `;
+export type RemoveUsersFromRoleMutationFn = Apollo.MutationFunction<RemoveUsersFromRoleMutation, RemoveUsersFromRoleMutationVariables>;
+
+/**
+ * __useRemoveUsersFromRoleMutation__
+ *
+ * To run a mutation, you first call `useRemoveUsersFromRoleMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveUsersFromRoleMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeUsersFromRoleMutation, { data, loading, error }] = useRemoveUsersFromRoleMutation({
+ *   variables: {
+ *      roleId: // value for 'roleId'
+ *      userIds: // value for 'userIds'
+ *   },
+ * });
+ */
+export function useRemoveUsersFromRoleMutation(baseOptions?: Apollo.MutationHookOptions<RemoveUsersFromRoleMutation, RemoveUsersFromRoleMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RemoveUsersFromRoleMutation, RemoveUsersFromRoleMutationVariables>(RemoveUsersFromRoleDocument, options);
+      }
+export type RemoveUsersFromRoleMutationHookResult = ReturnType<typeof useRemoveUsersFromRoleMutation>;
+export type RemoveUsersFromRoleMutationResult = Apollo.MutationResult<RemoveUsersFromRoleMutation>;
+export type RemoveUsersFromRoleMutationOptions = Apollo.BaseMutationOptions<RemoveUsersFromRoleMutation, RemoveUsersFromRoleMutationVariables>;
 export const RolesListDocument = gql`
     query RolesList($pagination: Pagination) {
   roles(pagination: $pagination) {
