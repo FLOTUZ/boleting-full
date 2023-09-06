@@ -99,11 +99,11 @@ const EditRoleView = () => {
                 <Checkbox
                   key={ability.id}
                   name={"abilities"}
-                  isChecked={form.values.abilities?.includes(ability.id)}
+                  isChecked={form.values.abilities?.includes(ability.id)!}
                   onChange={(e) => {
                     if (e.target.checked) {
                       form.setFieldValue("abilities", [
-                        ...form.values.abilities!,
+                        ...form.values.abilities,
                         ability.id,
                       ]);
                     } else {

@@ -54,7 +54,7 @@ export const useEditRole = ({
     initialValues: {
       name: role?.name,
       description: role?.description,
-      abilities: role?.abilities?.map((ability) => ability.id),
+      abilities: role?.abilities?.map((ability) => ability.id) || [],
     },
     onSubmit: (data) => {
       updateRole({

@@ -1560,7 +1560,7 @@ export type ShowRoleForEditQueryVariables = Exact<{
 }>;
 
 
-export type ShowRoleForEditQuery = { __typename?: 'Query', role?: { __typename?: 'Role', id: number, name: string, description?: string | null, createdAt?: any | null, updatedAt?: any | null, deletedAt?: any | null } | null, abilitys: Array<{ __typename?: 'Ability', id: number, name: string }> };
+export type ShowRoleForEditQuery = { __typename?: 'Query', role?: { __typename?: 'Role', id: number, name: string, description?: string | null, createdAt?: any | null, updatedAt?: any | null, deletedAt?: any | null, abilities?: Array<{ __typename?: 'Ability', id: number, name: string, description?: string | null }> | null } | null, abilitys: Array<{ __typename?: 'Ability', id: number, name: string }> };
 
 export type RolesListQueryVariables = Exact<{
   pagination?: InputMaybe<Pagination>;
@@ -2774,6 +2774,11 @@ export const ShowRoleForEditDocument = gql`
     createdAt
     updatedAt
     deletedAt
+    abilities {
+      id
+      name
+      description
+    }
   }
   abilitys {
     id
@@ -2869,6 +2874,9 @@ export const ShowRoleDocument = gql`
     id
     name
     description
+    createdAt
+    updatedAt
+    deletedAt
     abilities {
       id
       name
@@ -2885,9 +2893,6 @@ export const ShowRoleDocument = gql`
         name
       }
     }
-    createdAt
-    updatedAt
-    deletedAt
   }
 }
     `;

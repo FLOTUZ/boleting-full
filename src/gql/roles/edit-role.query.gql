@@ -6,6 +6,11 @@ query ShowRoleForEdit($roleId: Int!) {
     createdAt
     updatedAt
     deletedAt
+    abilities {
+      id
+      name
+      description
+    }
   }
   abilitys {
     id
