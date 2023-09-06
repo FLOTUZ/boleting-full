@@ -66,15 +66,21 @@ export const RolesResolver = {
     users: async ({ id }: Role, _: any, __: IGraphqlContext) => {
       return await UserService.usersByRole(id);
     },
+
     abilities: async ({ id }: Role, _: any, __: IGraphqlContext) => {
       return await AbilityService.abilitiesByRole(id);
     },
+
     organization: async (
       { organizationId }: Role,
       _: any,
       __: IGraphqlContext
     ) => {
       return await OrganizationService.organization(organizationId);
+    },
+
+    usersCount: async ({ id }: Role, _: any, __: IGraphqlContext) => {
+      return await UserService.usersCountByRole(id);
     },
   },
 };

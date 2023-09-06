@@ -45,6 +45,11 @@ const ShowRolesDatatable = ({
       selector: (row) =>
         row.description ? row.description : "Sin descripción",
     },
+    {
+      name: "Usuarios",
+      sortable: true,
+      selector: (row) => row.usersCount!,
+    },
   ];
   return (
     <DataTable
@@ -61,6 +66,7 @@ const ShowRolesDatatable = ({
       progressPending={loader}
       paginationServer={true}
       paginationTotalRows={count}
+      paginationRowsPerPageOptions={[10, 30, 50, 100]}
       paginationPerPage={paginator.take}
       onChangeRowsPerPage={(e) => {
         setTake(e);
