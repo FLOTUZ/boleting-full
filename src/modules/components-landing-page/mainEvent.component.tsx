@@ -11,6 +11,11 @@ import {
 } from "@chakra-ui/react";
 import { BiLinkExternal } from "react-icons/bi";
 
+// @Emmanuel, en este componente se requiere:
+// saber cual es el evento principal
+// mostrar imageConfigDefault, nombre y descripcion
+//Redireccionar a ver mas sobre el evento
+
 const MainEvent = () => {
   const bg = useColorModeValue("gray.", "gray.800");
   return (
@@ -23,13 +28,13 @@ const MainEvent = () => {
     >
       <Flex bg="brand.400">
         <Image
-          src="https://images.unsplash.com/photo-1675476366352-879f4dbc8886?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1504&q=80"
+          src="/assets/evento_principal_prov.jpg"
           alt="Imagen del evento"
           fit="cover"
           w="full"
           h={{
-            base: 64,
-            md: "60vh",
+            base: "64vh",
+            lg: "74vh",
           }}
           bg="gray.100"
           loading="lazy"
@@ -48,8 +53,7 @@ const MainEvent = () => {
           md: 8,
           lg: 20,
         }}
-        py={24}
-        zIndex={3}
+        py={10}
       >
         <Heading
           mb={4}

@@ -67,13 +67,8 @@ const HeaderLandingComponent = () => {
               md: "inline-flex",
             }}
           >
-            <Button variant="ghost">Encuentra Eventos</Button>
             <Menu>
-              <MenuButton
-                variant="ghost"
-                as={Button}
-                rightIcon={<PiCaretDownBold />}
-              >
+              <MenuButton as={Button} rightIcon={<PiCaretDownBold />}>
                 Centro de ayuda
               </MenuButton>
               <MenuList>
@@ -141,9 +136,6 @@ const HeaderLandingComponent = () => {
               <Box color={"white"}>
                 <Button w="full" variant="ghost">
                   Tus boletos
-                </Button>
-                <Button w="full" variant="ghost">
-                  Encuentra eventos
                 </Button>
                 <Button w="full" variant="ghost">
                   Contacta a tu organizador
