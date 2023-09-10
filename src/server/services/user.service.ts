@@ -192,4 +192,10 @@ export const UserService = {
       where: { staff_of_events: { some: { id: id_event } } },
     });
   },
+
+  async usersCountByRole(id_role: number) {
+    return await prisma.user.count({
+      where: { roles: { some: { id: id_role } } },
+    });
+  },
 };

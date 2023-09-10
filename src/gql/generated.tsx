@@ -1168,6 +1168,7 @@ export type Role = {
   organizationId: Scalars['Int']['output'];
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
   users?: Maybe<Array<User>>;
+  usersCount?: Maybe<Scalars['Int']['output']>;
 };
 
 export type Ticket = {
@@ -1582,7 +1583,7 @@ export type RolesListQueryVariables = Exact<{
 }>;
 
 
-export type RolesListQuery = { __typename?: 'Query', roles?: { __typename?: 'PaginatedRole', count: number, pagination?: { __typename?: 'PaginationResponse', take: number, skip: number, pages?: number | null, currentPage?: number | null, nextPage?: number | null } | null, data?: Array<{ __typename?: 'Role', id: number, name: string, description?: string | null, createdAt?: any | null, updatedAt?: any | null, deletedAt?: any | null, abilities?: Array<{ __typename?: 'Ability', id: number, name: string }> | null }> | null } | null };
+export type RolesListQuery = { __typename?: 'Query', roles?: { __typename?: 'PaginatedRole', count: number, pagination?: { __typename?: 'PaginationResponse', take: number, skip: number, pages?: number | null, currentPage?: number | null, nextPage?: number | null } | null, data?: Array<{ __typename?: 'Role', id: number, name: string, description?: string | null, usersCount?: number | null, createdAt?: any | null, updatedAt?: any | null, deletedAt?: any | null, abilities?: Array<{ __typename?: 'Ability', id: number, name: string }> | null }> | null } | null };
 
 export type ShowRoleQueryVariables = Exact<{
   roleId: Scalars['Int']['input'];
@@ -2903,6 +2904,7 @@ export const RolesListDocument = gql`
         id
         name
       }
+      usersCount
       createdAt
       updatedAt
       deletedAt

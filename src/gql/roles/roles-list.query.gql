@@ -16,6 +16,7 @@ query RolesList($pagination: Pagination) {
         id
         name
       }
+      usersCount
       createdAt
       updatedAt
       deletedAt

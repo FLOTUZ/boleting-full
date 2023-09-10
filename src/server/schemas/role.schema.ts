@@ -25,6 +25,7 @@ export const RoleSchema = gql`
     abilities: [Ability!]
     organizationId: Int!
     organization: Organization!
+    usersCount: Int
   }
 
   type PaginatedRole {
