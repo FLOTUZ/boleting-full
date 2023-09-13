@@ -89,6 +89,7 @@ const HeaderLandingComponent = () => {
 
           {/* para mobile */}
           <Box
+            zIndex={1}
             className="mobileMenu"
             display={{
               base: "inline-flex",
