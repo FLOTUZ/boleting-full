@@ -1,15 +1,17 @@
 import DesktopLayoutComponent from "@/layouts/desktop-layout-component/desktop-layout.component";
-import EditCategoryView from "@/modules/categories/views/edit-category.view";
-import { CategoriesPath, EditCategoryPath, ShowCategoryPath } from "@/routes";
+import ShowCategoryView from "@/modules/categories/views/show-category.view";
+
 import { useRouter } from "next/router";
 
-const EditCategoryRoute = () => {
+import { CategoriesPath, ShowCategoryPath } from "@/routes";
+
+const ShowCategoryRoute = () => {
   const router = useRouter();
   const { categoryId } = router.query;
 
   return (
     <DesktopLayoutComponent
-      title={`Editar categoria ${categoryId}`}
+      title={`Categoria ${categoryId}`}
       breadCrumbs={[
         {
           label: "Categorias",
@@ -19,15 +21,11 @@ const EditCategoryRoute = () => {
           label: `${categoryId}`,
           href: ShowCategoryPath(categoryId as string),
         },
-        {
-          label: "Editar",
-          href: EditCategoryPath(String(categoryId)),
-        },
       ]}
     >
-      <EditCategoryView />
+      <ShowCategoryView />
     </DesktopLayoutComponent>
   );
 };
 
-export default EditCategoryRoute;
+export default ShowCategoryRoute;

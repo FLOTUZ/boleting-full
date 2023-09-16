@@ -295,14 +295,16 @@ export type Event = {
 
 export type EventCategory = {
   __typename?: 'EventCategory';
-  createdAt?: Maybe<Scalars['DateTime']['output']>;
-  deleted?: Maybe<Scalars['Boolean']['output']>;
+  createdAt: Scalars['DateTime']['output'];
+  deleted: Scalars['Boolean']['output'];
   deletedAt?: Maybe<Scalars['DateTime']['output']>;
   description?: Maybe<Scalars['String']['output']>;
-  events?: Maybe<Array<Maybe<Event>>>;
-  id?: Maybe<Scalars['Int']['output']>;
-  name?: Maybe<Scalars['String']['output']>;
-  sub_categories?: Maybe<Array<Maybe<EventSubCategory>>>;
+  events?: Maybe<Array<Event>>;
+  events_count: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  sub_categories?: Maybe<Array<EventSubCategory>>;
+  sub_categories_count: Scalars['Int']['output'];
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
@@ -901,12 +903,12 @@ export type Query = {
   courtecy_tickets?: Maybe<Array<Ticket>>;
   currentUser?: Maybe<User>;
   event?: Maybe<Event>;
-  eventCategories?: Maybe<Array<Maybe<EventCategory>>>;
-  eventCategory?: Maybe<Event>;
+  eventCategories?: Maybe<Array<EventCategory>>;
+  eventCategory: EventCategory;
   eventSubCategories?: Maybe<Array<Maybe<EventSubCategory>>>;
   eventSubCategory?: Maybe<EventSubCategory>;
   events?: Maybe<Array<Maybe<Event>>>;
-  filteredByParentsEventSubCategories?: Maybe<Array<Maybe<EventCategory>>>;
+  filteredByParentsEventSubCategories?: Maybe<Array<EventCategory>>;
   mail: Mail;
   mails: Array<Mail>;
   notification: Notification;
@@ -1444,7 +1446,19 @@ export type WhoAMiQuery = { __typename?: 'Query', currentUser?: { __typename?: '
 export type EventCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type EventCategoriesQuery = { __typename?: 'Query', eventCategories?: Array<{ __typename?: 'EventCategory', id?: number | null, name?: string | null, description?: string | null, sub_categories?: Array<{ __typename?: 'EventSubCategory', id: number, name: string, parent_event_categoryId: number } | null> | null } | null> | null };
+export type EventCategoriesQuery = { __typename?: 'Query', eventCategories?: Array<{ __typename?: 'EventCategory', id: number, name: string, description?: string | null, sub_categories?: Array<{ __typename?: 'EventSubCategory', id: number, name: string, parent_event_categoryId: number }> | null }> | null };
+
+export type ShowEventCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ShowEventCategoriesQuery = { __typename?: 'Query', eventCategories?: Array<{ __typename?: 'EventCategory', id: number, name: string, description?: string | null, events_count: number, sub_categories_count: number, createdAt: any, updatedAt?: any | null }> | null };
+
+export type ShowEventCategoryQueryVariables = Exact<{
+  eventCategoryId: Scalars['Int']['input'];
+}>;
+
+
+export type ShowEventCategoryQuery = { __typename?: 'Query', eventCategory: { __typename?: 'EventCategory', id: number, name: string, description?: string | null, events_count: number, sub_categories_count: number, sub_categories?: Array<{ __typename?: 'EventSubCategory', id: number, name: string, description?: string | null }> | null } };
 
 export type CreateEventMutationVariables = Exact<{
   input: CreateEventInput;
@@ -2015,6 +2029,91 @@ export function useEventCategoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type EventCategoriesQueryHookResult = ReturnType<typeof useEventCategoriesQuery>;
 export type EventCategoriesLazyQueryHookResult = ReturnType<typeof useEventCategoriesLazyQuery>;
 export type EventCategoriesQueryResult = Apollo.QueryResult<EventCategoriesQuery, EventCategoriesQueryVariables>;
+export const ShowEventCategoriesDocument = gql`
+    query ShowEventCategories {
+  eventCategories {
+    id
+    name
+    description
+    events_count
+    sub_categories_count
+    createdAt
+    updatedAt
+  }
+}
+    `;
+
+/**
+ * __useShowEventCategoriesQuery__
+ *
+ * To run a query within a React component, call `useShowEventCategoriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useShowEventCategoriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useShowEventCategoriesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useShowEventCategoriesQuery(baseOptions?: Apollo.QueryHookOptions<ShowEventCategoriesQuery, ShowEventCategoriesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ShowEventCategoriesQuery, ShowEventCategoriesQueryVariables>(ShowEventCategoriesDocument, options);
+      }
+export function useShowEventCategoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ShowEventCategoriesQuery, ShowEventCategoriesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ShowEventCategoriesQuery, ShowEventCategoriesQueryVariables>(ShowEventCategoriesDocument, options);
+        }
+export type ShowEventCategoriesQueryHookResult = ReturnType<typeof useShowEventCategoriesQuery>;
+export type ShowEventCategoriesLazyQueryHookResult = ReturnType<typeof useShowEventCategoriesLazyQuery>;
+export type ShowEventCategoriesQueryResult = Apollo.QueryResult<ShowEventCategoriesQuery, ShowEventCategoriesQueryVariables>;
+export const ShowEventCategoryDocument = gql`
+    query ShowEventCategory($eventCategoryId: Int!) {
+  eventCategory(id: $eventCategoryId) {
+    id
+    name
+    description
+    events_count
+    sub_categories_count
+    events_count
+    sub_categories {
+      id
+      name
+      description
+    }
+  }
+}
+    `;
+
+/**
+ * __useShowEventCategoryQuery__
+ *
+ * To run a query within a React component, call `useShowEventCategoryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useShowEventCategoryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useShowEventCategoryQuery({
+ *   variables: {
+ *      eventCategoryId: // value for 'eventCategoryId'
+ *   },
+ * });
+ */
+export function useShowEventCategoryQuery(baseOptions: Apollo.QueryHookOptions<ShowEventCategoryQuery, ShowEventCategoryQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ShowEventCategoryQuery, ShowEventCategoryQueryVariables>(ShowEventCategoryDocument, options);
+      }
+export function useShowEventCategoryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ShowEventCategoryQuery, ShowEventCategoryQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ShowEventCategoryQuery, ShowEventCategoryQueryVariables>(ShowEventCategoryDocument, options);
+        }
+export type ShowEventCategoryQueryHookResult = ReturnType<typeof useShowEventCategoryQuery>;
+export type ShowEventCategoryLazyQueryHookResult = ReturnType<typeof useShowEventCategoryLazyQuery>;
+export type ShowEventCategoryQueryResult = Apollo.QueryResult<ShowEventCategoryQuery, ShowEventCategoryQueryVariables>;
 export const CreateEventDocument = gql`
     mutation CreateEvent($input: CreateEventInput!) {
   createEvent(data: $input) {

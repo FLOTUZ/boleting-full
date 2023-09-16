@@ -57,4 +57,10 @@ export const EventSubCategoryService = {
       where: { parent_event_categoryId },
     });
   },
+
+  async subCategoriesCountByCategory(categoryId: number) {
+    return await prisma.eventSubCategory.count({
+      where: { parent_event_categoryId: categoryId },
+    });
+  },
 };

@@ -1,4 +1,4 @@
-import { useFormik, FormikProvider } from "formik";
+import { useFormik } from "formik";
 import {
   Box,
   Checkbox,
@@ -54,59 +54,55 @@ const EditCategoryForm = () => {
   }, [selected]);
 
   return (
-    <FormikProvider value={form}>
-      <form onSubmit={form.handleSubmit}>
-        <FormLabel htmlFor="name">Nombre de la categoría:</FormLabel>
-        <Input
-          name="name"
-          type="text"
-          onChange={form.handleChange}
-          defaultValue={"newJeans"}
-        />
-        {form.errors.name && form.touched.name && (
-          <Text color="red">{form.errors.name}</Text>
-        )}
+    <form onSubmit={form.handleSubmit}>
+      <FormLabel htmlFor="name">Nombre de la categoría:</FormLabel>
+      <Input
+        name="name"
+        type="text"
+        onChange={form.handleChange}
+        defaultValue={"newJeans"}
+      />
+      {form.errors.name && form.touched.name && (
+        <Text color="red">{form.errors.name}</Text>
+      )}
 
-        <FormLabel htmlFor="description">
-          Descripción de la categoría:
-        </FormLabel>
-        <Textarea
-          name="description"
-          onChange={form.handleChange}
-          defaultValue={"Concierto de K-pop"}
-        />
-        {form.errors.description && form.touched.description && (
-          <Text color="red">{form.errors.description}</Text>
-        )}
+      <FormLabel htmlFor="description">Descripción de la categoría:</FormLabel>
+      <Textarea
+        name="description"
+        onChange={form.handleChange}
+        defaultValue={"Concierto de K-pop"}
+      />
+      {form.errors.description && form.touched.description && (
+        <Text color="red">{form.errors.description}</Text>
+      )}
 
-        <FormLabel htmlFor="substates">Sub Categorías:</FormLabel>
-        <Box p={4}>
-          {subCategories.map((subCategory, index) => (
-            <Checkbox
-              key={index}
-              ps={2}
-              value={subCategory.id!}
-              isChecked={selected.includes(subCategory.id!)}
-              onChange={(event) =>
-                handleChange(parseInt(event.target.value), event.target.checked)
-              }
-            >
-              {subCategory.name}
-            </Checkbox>
-          ))}
-        </Box>
-        {form.errors.substates && form.touched.substates && (
-          <Text color="red">{form.errors.substates}</Text>
-        )}
+      <FormLabel htmlFor="substates">Sub Categorías:</FormLabel>
+      <Box p={4}>
+        {subCategories.map((subCategory, index) => (
+          <Checkbox
+            key={index}
+            ps={2}
+            value={subCategory.id!}
+            isChecked={selected.includes(subCategory.id!)}
+            onChange={(event) =>
+              handleChange(parseInt(event.target.value), event.target.checked)
+            }
+          >
+            {subCategory.name}
+          </Checkbox>
+        ))}
+      </Box>
+      {form.errors.substates && form.touched.substates && (
+        <Text color="red">{form.errors.substates}</Text>
+      )}
 
-        <HStack mt={4} mb={6}>
-          <Spacer />
-          <Button type="submit" onClick={form.submitForm}>
-            Actualizar
-          </Button>
-        </HStack>
-      </form>
-    </FormikProvider>
+      <HStack mt={4} mb={6}>
+        <Spacer />
+        <Button type="submit" onClick={form.submitForm}>
+          Actualizar
+        </Button>
+      </HStack>
+    </form>
   );
 };
 

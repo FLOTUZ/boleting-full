@@ -1,0 +1,11 @@
+query ShowEventCategories {
+  eventCategories {
+    id
+    name
+    description
+    events_count
+    sub_categories_count
+    createdAt
+    updatedAt
+  }
+}

@@ -31,7 +31,7 @@ export const CategoriesPath = "/categories";
 export const CreateCategoriesPath = "/categories/create";
 export const ShowCategoryPath = (categoryId: string) =>
   `/categories/${categoryId}`;
-export const EditCategoryPath = (categoryId: number) =>
+export const EditCategoryPath = (categoryId: string) =>
   `/categories/${categoryId}/edit`;
 
 // ============ EVENTS ============

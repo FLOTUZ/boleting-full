@@ -77,4 +77,10 @@ export const EventService = {
       where: { organizationId: id_organization },
     });
   },
+
+  async eventsCountByCategory(id_category: number) {
+    return await prisma.event.count({
+      where: { sub_categories: { some: { id: id_category } } },
+    });
+  },
 };
