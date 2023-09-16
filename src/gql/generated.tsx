@@ -1458,7 +1458,7 @@ export type ShowEventCategoryQueryVariables = Exact<{
 }>;
 
 
-export type ShowEventCategoryQuery = { __typename?: 'Query', eventCategory: { __typename?: 'EventCategory', id: number, name: string, description?: string | null, events_count: number, sub_categories_count: number, sub_categories?: Array<{ __typename?: 'EventSubCategory', id: number, name: string, description?: string | null }> | null } };
+export type ShowEventCategoryQuery = { __typename?: 'Query', eventCategory: { __typename?: 'EventCategory', id: number, name: string, description?: string | null, events_count: number, sub_categories_count: number, createdAt: any, updatedAt?: any | null, sub_categories?: Array<{ __typename?: 'EventSubCategory', id: number, name: string, description?: string | null, createdAt: any, updatedAt?: any | null }> | null } };
 
 export type CreateEventMutationVariables = Exact<{
   input: CreateEventInput;
@@ -2082,7 +2082,11 @@ export const ShowEventCategoryDocument = gql`
       id
       name
       description
+      createdAt
+      updatedAt
     }
+    createdAt
+    updatedAt
   }
 }
     `;
