@@ -1253,7 +1253,7 @@ export type UpdateEventInput = {
   re_entry?: InputMaybe<Scalars['Boolean']['input']>;
   start_date?: InputMaybe<Scalars['DateTime']['input']>;
   start_time?: InputMaybe<Scalars['String']['input']>;
-  sub_categories?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
+  sub_categories?: InputMaybe<Array<Scalars['Int']['input']>>;
 };
 
 export type UpdateEventSubCategoryInput = {
@@ -1478,6 +1478,13 @@ export type CreateEventMutationVariables = Exact<{
 
 
 export type CreateEventMutation = { __typename?: 'Mutation', createEvent?: { __typename?: 'Event', id: number, event_key?: string | null, name: string, description?: string | null, event_location: string, event_logo_url?: string | null, start_date: any, start_time?: string | null, end_time?: string | null, re_entry: boolean, userId: number, sub_categories?: Array<{ __typename?: 'EventSubCategory', id: number, name: string }> | null } | null };
+
+export type EditEventQueryVariables = Exact<{
+  eventId: Scalars['Int']['input'];
+}>;
+
+
+export type EditEventQuery = { __typename?: 'Query', event?: { __typename?: 'Event', id: number, name: string, description?: string | null, event_location: string, event_location_url: string, start_date: any, end_date?: any | null, start_time?: string | null, end_time?: string | null, re_entry: boolean, event_logo_url?: string | null, event_banner_url?: string | null, sub_categories?: Array<{ __typename?: 'EventSubCategory', id: number, name: string }> | null } | null, eventSubCategories?: Array<{ __typename?: 'EventSubCategory', id: number, name: string }> | null };
 
 export type ShowEventStaffQueryVariables = Exact<{
   eventId: Scalars['Int']['input'];
@@ -2271,6 +2278,60 @@ export function useCreateEventMutation(baseOptions?: Apollo.MutationHookOptions<
 export type CreateEventMutationHookResult = ReturnType<typeof useCreateEventMutation>;
 export type CreateEventMutationResult = Apollo.MutationResult<CreateEventMutation>;
 export type CreateEventMutationOptions = Apollo.BaseMutationOptions<CreateEventMutation, CreateEventMutationVariables>;
+export const EditEventDocument = gql`
+    query EditEvent($eventId: Int!) {
+  event(id: $eventId) {
+    id
+    name
+    description
+    event_location
+    event_location_url
+    start_date
+    end_date
+    start_time
+    end_time
+    re_entry
+    event_logo_url
+    event_banner_url
+    sub_categories {
+      id
+      name
+    }
+  }
+  eventSubCategories {
+    id
+    name
+  }
+}
+    `;
+
+/**
+ * __useEditEventQuery__
+ *
+ * To run a query within a React component, call `useEditEventQuery` and pass it any options that fit your needs.
+ * When your component renders, `useEditEventQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useEditEventQuery({
+ *   variables: {
+ *      eventId: // value for 'eventId'
+ *   },
+ * });
+ */
+export function useEditEventQuery(baseOptions: Apollo.QueryHookOptions<EditEventQuery, EditEventQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<EditEventQuery, EditEventQueryVariables>(EditEventDocument, options);
+      }
+export function useEditEventLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<EditEventQuery, EditEventQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<EditEventQuery, EditEventQueryVariables>(EditEventDocument, options);
+        }
+export type EditEventQueryHookResult = ReturnType<typeof useEditEventQuery>;
+export type EditEventLazyQueryHookResult = ReturnType<typeof useEditEventLazyQuery>;
+export type EditEventQueryResult = Apollo.QueryResult<EditEventQuery, EditEventQueryVariables>;
 export const ShowEventStaffDocument = gql`
     query ShowEventStaff($eventId: Int!) {
   event(id: $eventId) {

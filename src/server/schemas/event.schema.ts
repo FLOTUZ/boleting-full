@@ -27,7 +27,7 @@ export const EventsSchema = gql`
     re_entry: Boolean
     event_logo_url: String
     event_banner_url: String
-    sub_categories: [Int]
+    sub_categories: [Int!]
   }
 
   type Event {
