@@ -1,0 +1,19 @@
+query ShowEventCategory($eventCategoryId: Int!) {
+  eventCategory(id: $eventCategoryId) {
+    id
+    name
+    description
+    events_count
+    sub_categories_count
+    events_count
+    sub_categories {
+      id
+      name
+      description
+      createdAt
+      updatedAt
+    }
+    createdAt
+    updatedAt
+  }
+}

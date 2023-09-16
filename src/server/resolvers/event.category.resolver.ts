@@ -6,7 +6,11 @@ import {
   CreateEventCategoryValidator,
   UpdateEventCategoryValidator,
 } from "@/validations";
-import { EventCategoryService, EventSubCategoryService } from "../services";
+import {
+  EventCategoryService,
+  EventService,
+  EventSubCategoryService,
+} from "../services";
 
 //
 // Resolver for  model
@@ -68,9 +72,23 @@ export const EventCategoryResolver = {
       _: any,
       __: IGraphqlContext
     ) => {
-      return await EventSubCategoryService.subCategoriesByCategoryEventParentId(
-        id
-      );
+      return await EventSubCategoryService.subCategoriesByCategoryId(id);
+    },
+
+    events_count: async (
+      { id }: EventCategory,
+      _: any,
+      __: IGraphqlContext
+    ) => {
+      return await EventService.eventsCountByCategory(id);
+    },
+
+    sub_categories_count: async (
+      { id }: EventCategory,
+      _: any,
+      __: IGraphqlContext
+    ) => {
+      return await EventSubCategoryService.subCategoriesCountByCategory(id);
     },
   },
 };

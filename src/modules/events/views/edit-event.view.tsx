@@ -30,7 +30,7 @@ const EditEventView = ({ eventId }: EventViewProps) => {
   return (
     <Box p={4}>
       <IntroAnimationComponent data={event}>
-        <EditEventForm event={event} />
+        <EditEventForm />
       </IntroAnimationComponent>
     </Box>
   );

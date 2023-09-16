@@ -1,0 +1,16 @@
+mutation ModifyEventCategory(
+  $updateEventCategoryId: Int!
+  $data: UpdateEventCategoryInput!
+) {
+  updateEventCategory(id: $updateEventCategoryId, data: $data) {
+    id
+    name
+    description
+    updatedAt
+    createdAt
+    sub_categories {
+      id
+      name
+    }
+  }
+}

@@ -4,39 +4,38 @@ export const EventSubCategoriesSchema = gql`
   input CreateEventSubCategoryInput {
     name: String!
     description: String!
-    parent_event_categoryId: Int!
     createdAt: DateTime!
-    parent_event_category: [Int!]
+    event_categories: [Int!]
   }
 
   input UpdateEventSubCategoryInput {
     name: String
     description: String
-    parent_event_categoryId: Int
     createdAt: DateTime
-    parent_event_category: [Int!]
+    event_categories: [Int!]
   }
 
   type EventSubCategory {
     id: Int!
     name: String!
     description: String
-    parent_event_categoryId: Int!
     createdAt: DateTime!
     updatedAt: DateTime
     deleted: Boolean!
     deletedAt: DateTime
-    parent_event_category: [EventCategory!]
+    event_categories: [EventCategory!]
     events: [Event!]
   }
 
   type Query {
-    eventSubCategories(pagination: Pagination): [EventSubCategory]
+    eventSubCategories(pagination: Pagination): [EventSubCategory!]
     eventSubCategory(id: Int!): EventSubCategory
   }
 
   type Mutation {
-    createEventSubCategory(data: CreateEventSubCategoryInput!): EventSubCategory
+    createEventSubCategory(
+      data: CreateEventSubCategoryInput!
+    ): EventSubCategory!
 
     updateEventSubCategory(
       id: Int!

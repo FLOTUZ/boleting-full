@@ -1,0 +1,24 @@
+query EditEvent($eventId: Int!) {
+  event(id: $eventId) {
+    id
+    name
+    description
+    event_location
+    event_location_url
+    start_date
+    end_date
+    start_time
+    end_time
+    re_entry
+    event_logo_url
+    event_banner_url
+    sub_categories {
+      id
+      name
+    }
+  }
+  eventSubCategories {
+    id
+    name
+  }
+}

@@ -1,11 +1,9 @@
 import moment from "moment";
-import ProgressLoaderComponent from "@/components/loaders/progress-loader.component";
 import {
   Event,
-  EventCategory,
   EventSubCategory,
   UpdateEventInput,
-  useEventCategoriesQuery,
+  useEditEventLazyQuery,
   useUpdateEventMutation,
 } from "@/gql/generated";
 import { UpdateEventValidator } from "@/validations";
@@ -17,6 +15,7 @@ import {
   FormLabel,
   HStack,
   Input,
+  SimpleGrid,
   Spacer,
   Switch,
   Text,
@@ -27,26 +26,23 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { ShowEventPath } from "@/routes";
 
-interface EditEventForm {
-  event?: Event;
-}
-
-const EditEventForm = ({ event }: EditEventForm) => {
+const EditEventForm = () => {
   const router = useRouter();
+  const { id } = router.query;
   const toast = useToast();
 
-  const [categories, setCategories] = useState<EventCategory[]>([]);
-  const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
+  const [event, setEvent] = useState<Event>();
 
   const [subCategories, setSubCategories] = useState<EventSubCategory[]>([]);
-  const [selectedSubCategories, setSelectedSubCategories] = useState<
-    EventSubCategory[]
-  >([]);
 
-  const { data: eventCategoriesData, loading: loadingCategoriesList } =
-    useEventCategoriesQuery({
-      onError(error) {
-        console.log(error);
+  const [GET_EVENT, { loading: loadingGetEvent, error: errorGetEvent }] =
+    useEditEventLazyQuery({
+      variables: {
+        eventId: Number(id),
+      },
+      onCompleted(data) {
+        setEvent(data.event as Event);
+        setSubCategories(data.eventSubCategories as EventSubCategory[]);
       },
     });
 
@@ -69,8 +65,8 @@ const EditEventForm = ({ event }: EditEventForm) => {
       re_entry: event?.re_entry,
       event_logo_url: event?.event_logo_url,
       event_banner_url: event?.event_banner_url,
-      sub_categories: selectedSubCategories.map(
-        (subCategory) => subCategory.id!
+      sub_categories: event?.sub_categories!.map(
+        (subCategory) => subCategory.id
       ),
     },
     onSubmit: async (values: UpdateEventInput) => {
@@ -102,31 +98,8 @@ const EditEventForm = ({ event }: EditEventForm) => {
   });
 
   useEffect(() => {
-    if (event) {
-      // Set selected categories
-      setSelectedCategories(
-        event.sub_categories?.map(
-          (subCategory) => subCategory.parent_event_categoryId!
-        ) ?? []
-      );
-
-      // Set sub categories
-      setSubCategories([...(event.sub_categories as EventSubCategory[])]);
-
-      // Set selected sub categories
-      setSelectedSubCategories([
-        ...(event.sub_categories as EventSubCategory[]),
-      ]);
-    }
-
-    if (eventCategoriesData?.eventCategories) {
-      setCategories(eventCategoriesData?.eventCategories as EventCategory[]);
-    }
-  }, [event, eventCategoriesData]);
-
-  if (loadingCategoriesList) {
-    return <ProgressLoaderComponent />;
-  }
+    GET_EVENT();
+  }, [GET_EVENT]);
 
   return (
     <FormikProvider value={form}>
@@ -164,96 +137,46 @@ const EditEventForm = ({ event }: EditEventForm) => {
           <Text color="red">{form.errors.event_location}</Text>
         )}
 
-        <FormLabel htmlFor="categories">Categorias:</FormLabel>
-        <Box p={4}>
-          {categories != null &&
-            categories.map((category, index) => (
-              <Checkbox
-                key={index}
-                ps={2}
-                value={category.id!}
-                isChecked={selectedCategories.includes(category.id!)}
-                onChange={(e) => {
-                  if (e.target.checked) {
-                    // Check category
-                    setSelectedCategories([
-                      ...selectedCategories,
-                      category.id!,
-                    ]);
-
-                    // Add sub categories of the category
-                    setSubCategories([
-                      ...subCategories,
-                      ...(category.sub_categories! as EventSubCategory[]),
-                    ]);
-                  } else {
-                    // Uncheck category
-                    setSelectedCategories(
-                      selectedCategories.filter(
-                        (selectedCategory) => selectedCategory !== category.id!
-                      )
-                    );
-
-                    // Unmount sub categories where parent_event_categoryId is equal to category.id
-                    setSubCategories(
-                      subCategories.filter(
-                        (subCategory) =>
-                          subCategory.parent_event_categoryId !== category.id!
-                      )
-                    );
-                  }
-                }}
-              >
-                {category.name}
-              </Checkbox>
-            ))}
-        </Box>
-
         <FormLabel htmlFor="event_sub_categories">Sub categorias:</FormLabel>
 
-        {event?.sub_categories?.length == 0 &&
-        selectedCategories.length == 0 ? (
-          <Box p={2} bgColor={"brand.semiTransparentContainer"}>
-            <Text>Para ver las subcategorias, selecciona una categoria</Text>
-          </Box>
-        ) : (
-          <Box p={4}>
-            {subCategories.map((subCategory, index) => (
-              <Checkbox
-                key={index}
-                ps={2}
-                value={subCategory.id!}
-                isChecked={
-                  selectedSubCategories?.some(
-                    (selectedSubCategory) =>
-                      selectedSubCategory.id === subCategory.id!
-                  ) ?? false
-                }
-                onChange={(e) => {
-                  if (e.target.checked) {
-                    // Add sub category to selected sub categories
-                    setSelectedSubCategories([
-                      ...selectedSubCategories,
-                      subCategory,
-                    ]);
-                  } else {
-                    console.log("unchecked");
-                    // Remove sub category from selected sub categories
+        <SimpleGrid p={4} columns={[2, 4]}>
+          {subCategories.map((subCategory, index) => (
+            <Checkbox
+              key={index}
+              ps={2}
+              value={subCategory.id!}
+              isChecked={
+                form.values.sub_categories?.some(
+                  (selectedSubCategory) =>
+                    selectedSubCategory === subCategory.id!
+                ) ?? false
+              }
+              onChange={(e) => {
+                if (e.target.checked) {
+                  // Add sub category to selected sub categories
+                  form.setFieldValue(
+                    "sub_categories",
+                    form.values.sub_categories?.concat(subCategory.id!)
+                  );
+                } else {
+                  console.log("unchecked");
+                  // Remove sub category from selected sub categories
 
-                    setSelectedSubCategories(
-                      selectedSubCategories.filter(
-                        (selectedSubCategory) =>
-                          selectedSubCategory.id !== subCategory.id!
-                      )
-                    );
-                  }
-                }}
-              >
-                {subCategory.name}
-              </Checkbox>
-            ))}
-          </Box>
-        )}
+                  form.setFieldValue(
+                    "sub_categories",
+                    form.values.sub_categories?.filter(
+                      (selectedSubCategory) =>
+                        selectedSubCategory !== subCategory.id!
+                    )
+                  );
+                }
+              }}
+            >
+              {subCategory.name}
+            </Checkbox>
+          ))}
+        </SimpleGrid>
+
         {form.errors.sub_categories && form.touched.sub_categories && (
           <Text color="red">{form.errors.sub_categories}</Text>
         )}

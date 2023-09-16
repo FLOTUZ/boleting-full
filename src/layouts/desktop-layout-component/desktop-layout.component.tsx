@@ -27,12 +27,14 @@ import {
   DesktopHeaderComponent,
 } from "./desktop-header.component";
 import {
+  CategoriesPath,
   EventsPath,
   OrganizationsPath,
   UsersPath,
   profilePath,
 } from "@/routes";
 import { useRouter } from "next/router";
+import { BiSolidCategoryAlt } from "react-icons/bi";
 
 interface DesktopLayoutComponentProps {
   title: string;
@@ -74,6 +76,11 @@ const DesktopLayoutComponent = ({
       label: "Usuarios",
       href: UsersPath,
       icon: <FaUserAlt size={25} />,
+    },
+    {
+      label: "Categorias",
+      href: CategoriesPath,
+      icon: <BiSolidCategoryAlt size={30} />,
     },
   ];
   return (

@@ -6,7 +6,10 @@ query EventCategories {
     sub_categories {
       id
       name
-      parent_event_categoryId
+      event_categories {
+        id
+        name
+      }
     }
   }
 }
