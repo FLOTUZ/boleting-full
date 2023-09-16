@@ -52,15 +52,15 @@ export const EventSubCategoryService = {
     });
   },
 
-  async subCategoriesByCategoryEventParentId(parent_event_categoryId: number) {
+  async subCategoriesByCategoryId(categoryId: number) {
     return await prisma.eventSubCategory.findMany({
-      where: { parent_event_categoryId },
+      where: { event_categories: { some: { id: categoryId } } },
     });
   },
 
   async subCategoriesCountByCategory(categoryId: number) {
     return await prisma.eventSubCategory.count({
-      where: { parent_event_categoryId: categoryId },
+      where: { event_categories: { some: { id: categoryId } } },
     });
   },
 };

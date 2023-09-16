@@ -229,16 +229,15 @@ model EventCategory {
 }
 
 model EventSubCategory {
-  id                      Int           @id @unique @default(autoincrement())
-  name                    String        @unique @db.VarChar(50)
-  description             String?       @db.VarChar(255)
-  parent_event_categoryId Int
-  createdAt               DateTime      @default(now())
-  updatedAt               DateTime      @updatedAt
-  deleted                 Boolean       @default(false)
-  deletedAt               DateTime?
-  parent_event_category   EventCategory @relation("event_sub_categories", fields: [parent_event_categoryId], references: [id])
-  events                  Event[]       @relation("event_categories")
+  id               Int             @id @unique @default(autoincrement())
+  name             String          @unique @db.VarChar(50)
+  description      String?         @db.VarChar(255)
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  deleted          Boolean         @default(false)
+  deletedAt        DateTime?
+  event_categories EventCategory[] @relation("event_sub_categories")
+  events           Event[]         @relation("event_categories")
 }
 
 //===================================== TICKETING =====================================

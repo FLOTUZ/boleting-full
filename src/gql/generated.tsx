@@ -170,9 +170,8 @@ export type CreateEventInput = {
 export type CreateEventSubCategoryInput = {
   createdAt: Scalars['DateTime']['input'];
   description: Scalars['String']['input'];
+  event_categories?: InputMaybe<Array<Scalars['Int']['input']>>;
   name: Scalars['String']['input'];
-  parent_event_category?: InputMaybe<Array<Scalars['Int']['input']>>;
-  parent_event_categoryId: Scalars['Int']['input'];
 };
 
 export type CreateMailInput = {
@@ -314,11 +313,10 @@ export type EventSubCategory = {
   deleted: Scalars['Boolean']['output'];
   deletedAt?: Maybe<Scalars['DateTime']['output']>;
   description?: Maybe<Scalars['String']['output']>;
+  event_categories?: Maybe<Array<EventCategory>>;
   events?: Maybe<Array<Event>>;
   id: Scalars['Int']['output'];
   name: Scalars['String']['output'];
-  parent_event_category?: Maybe<Array<EventCategory>>;
-  parent_event_categoryId: Scalars['Int']['output'];
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
@@ -363,7 +361,7 @@ export type Mutation = {
   createCourtesyTicket?: Maybe<Ticket>;
   createEvent?: Maybe<Event>;
   createEventCategory?: Maybe<Event>;
-  createEventSubCategory?: Maybe<EventSubCategory>;
+  createEventSubCategory: EventSubCategory;
   createMail: Mail;
   createNotification: Notification;
   createOrganization?: Maybe<Organization>;
@@ -474,7 +472,7 @@ export type MutationCreateEventArgs = {
 
 
 export type MutationCreateEventCategoryArgs = {
-  input: CreateEventCategoryInput;
+  data: CreateEventCategoryInput;
 };
 
 
@@ -693,8 +691,8 @@ export type MutationUpdateEventArgs = {
 
 
 export type MutationUpdateEventCategoryArgs = {
+  data: UpdateEventCategoryInput;
   id: Scalars['Int']['input'];
-  input: UpdateEventCategoryInput;
 };
 
 
@@ -905,7 +903,7 @@ export type Query = {
   event?: Maybe<Event>;
   eventCategories?: Maybe<Array<EventCategory>>;
   eventCategory: EventCategory;
-  eventSubCategories?: Maybe<Array<Maybe<EventSubCategory>>>;
+  eventSubCategories?: Maybe<Array<EventSubCategory>>;
   eventSubCategory?: Maybe<EventSubCategory>;
   events?: Maybe<Array<Maybe<Event>>>;
   filteredByParentsEventSubCategories?: Maybe<Array<EventCategory>>;
@@ -1261,9 +1259,8 @@ export type UpdateEventInput = {
 export type UpdateEventSubCategoryInput = {
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
+  event_categories?: InputMaybe<Array<Scalars['Int']['input']>>;
   name?: InputMaybe<Scalars['String']['input']>;
-  parent_event_category?: InputMaybe<Array<Scalars['Int']['input']>>;
-  parent_event_categoryId?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type UpdateMailInput = {
@@ -1443,10 +1440,17 @@ export type WhoAMiQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type WhoAMiQuery = { __typename?: 'Query', currentUser?: { __typename?: 'User', id: number, name?: string | null, last_name?: string | null, email?: string | null, createdAt?: any | null, updatedAt?: any | null, roles?: Array<{ __typename?: 'Role', id: number, name: string }> | null } | null };
 
+export type EditEventCategoryQueryVariables = Exact<{
+  eventCategoryId: Scalars['Int']['input'];
+}>;
+
+
+export type EditEventCategoryQuery = { __typename?: 'Query', eventCategory: { __typename?: 'EventCategory', id: number, name: string, description?: string | null, sub_categories?: Array<{ __typename?: 'EventSubCategory', id: number, name: string, description?: string | null }> | null }, eventSubCategories?: Array<{ __typename?: 'EventSubCategory', id: number, name: string, createdAt: any, updatedAt?: any | null }> | null };
+
 export type EventCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type EventCategoriesQuery = { __typename?: 'Query', eventCategories?: Array<{ __typename?: 'EventCategory', id: number, name: string, description?: string | null, sub_categories?: Array<{ __typename?: 'EventSubCategory', id: number, name: string, parent_event_categoryId: number }> | null }> | null };
+export type EventCategoriesQuery = { __typename?: 'Query', eventCategories?: Array<{ __typename?: 'EventCategory', id: number, name: string, description?: string | null, sub_categories?: Array<{ __typename?: 'EventSubCategory', id: number, name: string, event_categories?: Array<{ __typename?: 'EventCategory', id: number, name: string }> | null }> | null }> | null };
 
 export type ShowEventCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1484,7 +1488,7 @@ export type ShowEventQueryVariables = Exact<{
 }>;
 
 
-export type ShowEventQuery = { __typename?: 'Query', event?: { __typename?: 'Event', id: number, event_key?: string | null, name: string, description?: string | null, event_location: string, event_logo_url?: string | null, event_banner_url?: string | null, event_location_url: string, start_date: any, start_time?: string | null, end_time?: string | null, re_entry: boolean, createdAt: any, updatedAt: any, deleted: boolean, createdBy: { __typename?: 'User', id: number, name?: string | null }, sub_categories?: Array<{ __typename?: 'EventSubCategory', id: number, name: string, parent_event_categoryId: number }> | null } | null, selled_tickets_by_event?: Array<{ __typename?: 'Ticket', id: number, createdAt: any, serial_number: string, service_charge: any, is_paid: boolean, is_used: boolean, note?: string | null, price: any }> | null };
+export type ShowEventQuery = { __typename?: 'Query', event?: { __typename?: 'Event', id: number, event_key?: string | null, name: string, description?: string | null, event_location: string, event_logo_url?: string | null, event_banner_url?: string | null, event_location_url: string, start_date: any, start_time?: string | null, end_time?: string | null, re_entry: boolean, createdAt: any, updatedAt: any, deleted: boolean, createdBy: { __typename?: 'User', id: number, name?: string | null }, sub_categories?: Array<{ __typename?: 'EventSubCategory', id: number, name: string, event_categories?: Array<{ __typename?: 'EventCategory', id: number, name: string }> | null }> | null } | null, selled_tickets_by_event?: Array<{ __typename?: 'Ticket', id: number, createdAt: any, serial_number: string, service_charge: any, is_paid: boolean, is_used: boolean, note?: string | null, price: any }> | null };
 
 export type ShowEventsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1988,6 +1992,54 @@ export function useWhoAMiLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Who
 export type WhoAMiQueryHookResult = ReturnType<typeof useWhoAMiQuery>;
 export type WhoAMiLazyQueryHookResult = ReturnType<typeof useWhoAMiLazyQuery>;
 export type WhoAMiQueryResult = Apollo.QueryResult<WhoAMiQuery, WhoAMiQueryVariables>;
+export const EditEventCategoryDocument = gql`
+    query EditEventCategory($eventCategoryId: Int!) {
+  eventCategory(id: $eventCategoryId) {
+    id
+    name
+    description
+    sub_categories {
+      id
+      name
+      description
+    }
+  }
+  eventSubCategories {
+    id
+    name
+    createdAt
+    updatedAt
+  }
+}
+    `;
+
+/**
+ * __useEditEventCategoryQuery__
+ *
+ * To run a query within a React component, call `useEditEventCategoryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useEditEventCategoryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useEditEventCategoryQuery({
+ *   variables: {
+ *      eventCategoryId: // value for 'eventCategoryId'
+ *   },
+ * });
+ */
+export function useEditEventCategoryQuery(baseOptions: Apollo.QueryHookOptions<EditEventCategoryQuery, EditEventCategoryQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<EditEventCategoryQuery, EditEventCategoryQueryVariables>(EditEventCategoryDocument, options);
+      }
+export function useEditEventCategoryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<EditEventCategoryQuery, EditEventCategoryQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<EditEventCategoryQuery, EditEventCategoryQueryVariables>(EditEventCategoryDocument, options);
+        }
+export type EditEventCategoryQueryHookResult = ReturnType<typeof useEditEventCategoryQuery>;
+export type EditEventCategoryLazyQueryHookResult = ReturnType<typeof useEditEventCategoryLazyQuery>;
+export type EditEventCategoryQueryResult = Apollo.QueryResult<EditEventCategoryQuery, EditEventCategoryQueryVariables>;
 export const EventCategoriesDocument = gql`
     query EventCategories {
   eventCategories {
@@ -1997,7 +2049,10 @@ export const EventCategoriesDocument = gql`
     sub_categories {
       id
       name
-      parent_event_categoryId
+      event_categories {
+        id
+        name
+      }
     }
   }
 }
@@ -2275,7 +2330,10 @@ export const ShowEventDocument = gql`
     sub_categories {
       id
       name
-      parent_event_categoryId
+      event_categories {
+        id
+        name
+      }
     }
   }
   selled_tickets_by_event(event_id: $eventId) {

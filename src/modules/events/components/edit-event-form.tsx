@@ -106,7 +106,10 @@ const EditEventForm = ({ event }: EditEventForm) => {
       // Set selected categories
       setSelectedCategories(
         event.sub_categories?.map(
-          (subCategory) => subCategory.parent_event_categoryId!
+          (subCategory) =>
+            subCategory.event_categories?.find(
+              (eventCategory) => eventCategory.id
+            )?.id!
         ) ?? []
       );
 
@@ -194,11 +197,13 @@ const EditEventForm = ({ event }: EditEventForm) => {
                       )
                     );
 
-                    // Unmount sub categories where parent_event_categoryId is equal to category.id
+                    // Unmount sub categories where categories are not selected
                     setSubCategories(
                       subCategories.filter(
                         (subCategory) =>
-                          subCategory.parent_event_categoryId !== category.id!
+                          subCategory.event_categories?.some(
+                            (eventCategory) => eventCategory.id === category.id!
+                          ) ?? false
                       )
                     );
                   }
