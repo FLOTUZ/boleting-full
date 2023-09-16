@@ -360,7 +360,7 @@ export type Mutation = {
   createBuyCart: BuyCart;
   createCourtesyTicket?: Maybe<Ticket>;
   createEvent?: Maybe<Event>;
-  createEventCategory?: Maybe<Event>;
+  createEventCategory?: Maybe<EventCategory>;
   createEventSubCategory: EventSubCategory;
   createMail: Mail;
   createNotification: Notification;
@@ -379,7 +379,7 @@ export type Mutation = {
   deleteApplication: Application;
   deleteBuyCart?: Maybe<BuyCart>;
   deleteEvent?: Maybe<Event>;
-  deleteEventCategory?: Maybe<Event>;
+  deleteEventCategory?: Maybe<EventCategory>;
   deleteEventSubCategory?: Maybe<EventSubCategory>;
   deleteMail: Mail;
   deleteNotification: Notification;
@@ -402,7 +402,7 @@ export type Mutation = {
   updateApplication: Application;
   updateBuyCart?: Maybe<BuyCart>;
   updateEvent?: Maybe<Event>;
-  updateEventCategory?: Maybe<Event>;
+  updateEventCategory?: Maybe<EventCategory>;
   updateEventSubCategory?: Maybe<EventSubCategory>;
   updateMail: Mail;
   updateNotification: Notification;
@@ -1452,6 +1452,14 @@ export type EventCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type EventCategoriesQuery = { __typename?: 'Query', eventCategories?: Array<{ __typename?: 'EventCategory', id: number, name: string, description?: string | null, sub_categories?: Array<{ __typename?: 'EventSubCategory', id: number, name: string, event_categories?: Array<{ __typename?: 'EventCategory', id: number, name: string }> | null }> | null }> | null };
 
+export type ModifyEventCategoryMutationVariables = Exact<{
+  updateEventCategoryId: Scalars['Int']['input'];
+  data: UpdateEventCategoryInput;
+}>;
+
+
+export type ModifyEventCategoryMutation = { __typename?: 'Mutation', updateEventCategory?: { __typename?: 'EventCategory', id: number, name: string, description?: string | null, updatedAt?: any | null, createdAt: any, sub_categories?: Array<{ __typename?: 'EventSubCategory', id: number, name: string }> | null } | null };
+
 export type ShowEventCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -2084,6 +2092,48 @@ export function useEventCategoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type EventCategoriesQueryHookResult = ReturnType<typeof useEventCategoriesQuery>;
 export type EventCategoriesLazyQueryHookResult = ReturnType<typeof useEventCategoriesLazyQuery>;
 export type EventCategoriesQueryResult = Apollo.QueryResult<EventCategoriesQuery, EventCategoriesQueryVariables>;
+export const ModifyEventCategoryDocument = gql`
+    mutation ModifyEventCategory($updateEventCategoryId: Int!, $data: UpdateEventCategoryInput!) {
+  updateEventCategory(id: $updateEventCategoryId, data: $data) {
+    id
+    name
+    description
+    updatedAt
+    createdAt
+    sub_categories {
+      id
+      name
+    }
+  }
+}
+    `;
+export type ModifyEventCategoryMutationFn = Apollo.MutationFunction<ModifyEventCategoryMutation, ModifyEventCategoryMutationVariables>;
+
+/**
+ * __useModifyEventCategoryMutation__
+ *
+ * To run a mutation, you first call `useModifyEventCategoryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useModifyEventCategoryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [modifyEventCategoryMutation, { data, loading, error }] = useModifyEventCategoryMutation({
+ *   variables: {
+ *      updateEventCategoryId: // value for 'updateEventCategoryId'
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useModifyEventCategoryMutation(baseOptions?: Apollo.MutationHookOptions<ModifyEventCategoryMutation, ModifyEventCategoryMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ModifyEventCategoryMutation, ModifyEventCategoryMutationVariables>(ModifyEventCategoryDocument, options);
+      }
+export type ModifyEventCategoryMutationHookResult = ReturnType<typeof useModifyEventCategoryMutation>;
+export type ModifyEventCategoryMutationResult = Apollo.MutationResult<ModifyEventCategoryMutation>;
+export type ModifyEventCategoryMutationOptions = Apollo.BaseMutationOptions<ModifyEventCategoryMutation, ModifyEventCategoryMutationVariables>;
 export const ShowEventCategoriesDocument = gql`
     query ShowEventCategories {
   eventCategories {

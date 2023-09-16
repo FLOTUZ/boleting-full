@@ -1,11 +1,11 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Center } from "@chakra-ui/react";
 import EditCategoryForm from "../components/edit-category-form";
 
 const EditCategoryView = () => {
   return (
-    <Box m={4}>
+    <Center m={4}>
       <EditCategoryForm />
-    </Box>
+    </Center>
   );
 };
 

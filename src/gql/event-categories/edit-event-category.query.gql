@@ -1,0 +1,19 @@
+query EditEventCategory($eventCategoryId: Int!) {
+  eventCategory(id: $eventCategoryId) {
+    id
+    name
+    description
+    sub_categories {
+      id
+      name
+      description
+    }
+  }
+
+  eventSubCategories {
+    id
+    name
+    createdAt
+    updatedAt
+  }
+}

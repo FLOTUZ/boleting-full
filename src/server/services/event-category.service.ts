@@ -12,6 +12,7 @@ export const EventCategoryService = {
     return prisma.eventCategory.findMany({
       ...pagination,
       where: { deleted: false },
+      orderBy: { id: "desc" },
     });
   },
 
@@ -27,7 +28,7 @@ export const EventCategoryService = {
         data: {
           ...data,
           sub_categories: {
-            connect: data.sub_categories.map((id) => ({ id })),
+            connect: data.sub_categories.map((id: number) => ({ id })),
           },
         },
       });
@@ -40,19 +41,15 @@ export const EventCategoryService = {
     id: number,
     data: EventCategory & { sub_categories: number[] }
   ) {
-    try {
-      return await prisma.eventCategory.update({
-        where: { id },
-        data: {
-          ...data,
-          sub_categories: {
-            connect: data.sub_categories.map((id) => ({ id })),
-          },
+    return await prisma.eventCategory.update({
+      where: { id },
+      data: {
+        ...data,
+        sub_categories: {
+          set: data.sub_categories.map((id: number) => ({ id })),
         },
-      });
-    } catch (error) {
-      throw PrismaError.handle(error);
-    }
+      },
+    });
   },
 
   async deleteEventCategory(id: number) {

@@ -72,9 +72,7 @@ export const EventCategoryResolver = {
       _: any,
       __: IGraphqlContext
     ) => {
-      return await EventSubCategoryService.subCategoriesByCategoryEventParentId(
-        id
-      );
+      return await EventSubCategoryService.subCategoriesByCategoryId(id);
     },
 
     events_count: async (

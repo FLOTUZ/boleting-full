@@ -54,6 +54,7 @@ export const EventSubCategoryService = {
 
   async subCategoriesByCategoryId(categoryId: number) {
     return await prisma.eventSubCategory.findMany({
+      orderBy: { id: "asc" },
       where: { event_categories: { some: { id: categoryId } } },
     });
   },

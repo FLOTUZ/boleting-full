@@ -33,8 +33,11 @@ export const EventsCategorySchema = gql`
   }
 
   type Mutation {
-    createEventCategory(input: CreateEventCategoryInput!): Event
-    updateEventCategory(id: Int!, input: UpdateEventCategoryInput!): Event
-    deleteEventCategory(id: Int!): Event
+    createEventCategory(data: CreateEventCategoryInput!): EventCategory
+    updateEventCategory(
+      id: Int!
+      data: UpdateEventCategoryInput!
+    ): EventCategory
+    deleteEventCategory(id: Int!): EventCategory
   }
 `;
