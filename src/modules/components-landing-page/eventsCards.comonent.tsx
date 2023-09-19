@@ -29,7 +29,6 @@ const theme = extendTheme({
 
 const cards = [
   {
-    // La url redirecciona al evento al presionar el boton de comprar boleto
     img: "/assets/foto_provisional_eventos.jpg",
     name: "Dia de muertos",
     day: "02/nov/2024",

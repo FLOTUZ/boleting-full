@@ -87,7 +87,7 @@ const HeaderLandingComponent = () => {
             </Button>
           </HStack>
 
-          {/* para mobile */}
+          {/*mobile menu*/}
           <Box
             zIndex={1}
             className="mobileMenu"

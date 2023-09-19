@@ -13,7 +13,7 @@ import { BiLinkExternal } from "react-icons/bi";
 
 // @Emmanuel, en este componente se requiere:
 // saber cual es el evento principal
-// mostrar imageConfigDefault, nombre y descripcion
+// mostrar imagen, nombre y descripcion
 //Redireccionar a ver mas sobre el evento
 
 const MainEvent = () => {
