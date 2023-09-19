@@ -32,7 +32,7 @@ const EditUserView = () => {
 
   const { loading: rolesLoader } = useRolesListQuery({
     onCompleted: (data) => {
-      setRolesList(data.roles as Role[]);
+      setRolesList(data.roles?.data as Role[]);
     },
   });
 
