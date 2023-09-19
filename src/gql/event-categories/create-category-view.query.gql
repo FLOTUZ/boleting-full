@@ -1,0 +1,6 @@
+query CreateEventCategoryView {
+  eventSubCategories {
+    id
+    name
+  }
+}
