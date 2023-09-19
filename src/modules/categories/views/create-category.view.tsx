@@ -1,4 +1,11 @@
 import { useFormik } from "formik";
+import IntroAnimationComponent from "@/components/animations/intro-animation.component";
+import {
+  EventSubCategory,
+  useCreateEventCategoryMutation,
+  useCreateEventCategoryViewLazyQuery,
+} from "@/gql/generated";
+
 import {
   Spacer,
   Button,
@@ -7,22 +14,91 @@ import {
   Input,
   Box,
   Textarea,
+  Checkbox,
+  SimpleGrid,
+  Text,
+  useToast,
 } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import { CreateEventCategoryValidator } from "@/validations";
+import { error } from "console";
+import { useRouter } from "next/router";
+import { CategoriesPath } from "@/routes";
 
 const CreateCategoryView = () => {
-  const formCreateCategory = useFormik({
+  const toast = useToast();
+  const router = useRouter();
+
+  const [subCategories, setSubCategories] = useState<EventSubCategory[]>([]);
+  const [
+    GET_CREATE_CATEGORY,
+    { loading: loadingCreateCategory, error: errorShowCreateCategory },
+  ] = useCreateEventCategoryViewLazyQuery({
+    onCompleted(data) {
+      setSubCategories(data.eventSubCategories as EventSubCategory[]);
+    },
+  });
+
+  const [CREATE_EVENT_CATEGORY, { loading: loadingCreateEventCategory }] =
+    useCreateEventCategoryMutation({
+      onCompleted(data) {
+        router.push(CategoriesPath);
+        toast({
+          title: "Categoria creada",
+          description: `La categoria ${data.createEventCategory?.name} ha sido creada`,
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
+      },
+      onError(error) {
+        toast({
+          title: "Error al crear la categoria",
+          description: error.message,
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      },
+    });
+
+  const form = useFormik({
+    enableReinitialize: true,
+    validationSchema: CreateEventCategoryValidator,
     initialValues: {
       name: "",
       description: "",
+      sub_categories: [] as number[],
     },
     onSubmit: (values) => {
-      console.log(values);
+      CREATE_EVENT_CATEGORY({
+        variables: {
+          data: { ...values },
+        },
+      });
     },
   });
+
+  useEffect(() => {
+    GET_CREATE_CATEGORY();
+  }, [GET_CREATE_CATEGORY]);
+
+  if (errorShowCreateCategory) {
+    return (
+      <>
+        {errorShowCreateCategory.graphQLErrors.map(({ message }) => (
+          <Text key={message} color="red.500" fontSize="xs">
+            {message}
+          </Text>
+        ))}
+      </>
+    );
+  }
+
   return (
-    <Box m={4} p={4}>
-      <form onSubmit={formCreateCategory.handleSubmit}>
-        <Box>
+    <IntroAnimationComponent data={loadingCreateCategory}>
+      <Box m={4}>
+        <form onSubmit={form.handleSubmit}>
           <FormLabel htmlFor="name">Nombre:</FormLabel>
           <Input
             required
@@ -31,27 +107,75 @@ const CreateCategoryView = () => {
             maxLength={50}
             isRequired={true}
             placeholder="Musica Electronica"
-            onChange={formCreateCategory.handleChange}
-            value={formCreateCategory.values.name}
+            onChange={form.handleChange}
+            value={form.values.name}
           />
+          {form.errors.name && form.touched.name && (
+            <Text color="red.500" fontSize="xs">
+              {form.errors.name}
+            </Text>
+          )}
 
-          <FormLabel htmlFor="description">Detalles de la categoria:</FormLabel>
+          <FormLabel mt={4} htmlFor="description">
+            Detalles de la categoria:
+          </FormLabel>
           <Textarea
             name="description"
             variant={"filled"}
             maxLength={255}
             placeholder="Descripcion"
-            onChange={formCreateCategory.handleChange}
-            value={formCreateCategory.values.description!}
+            onChange={form.handleChange}
+            value={form.values.description!}
           />
-        </Box>
+          {form.errors.description && form.touched.description && (
+            <Text color="red.500" fontSize="xs">
+              {form.errors.description}
+            </Text>
+          )}
 
-        <HStack mt={4}>
-          <Spacer />
-          <Button type="submit">Enviar</Button>
-        </HStack>
-      </form>
-    </Box>
+          <FormLabel mt={4} htmlFor="subCategories">
+            Subcategorias:
+          </FormLabel>
+          <SimpleGrid columns={[2, 3, 4]}>
+            {subCategories.map((subCategory) => (
+              <Checkbox
+                key={subCategory.id}
+                value={subCategory.id}
+                onChange={({ target }) => {
+                  if (target.checked) {
+                    form.setFieldValue(
+                      "sub_categories",
+                      form.values.sub_categories.concat(Number(target.value))
+                    );
+                  } else {
+                    form.setFieldValue(
+                      "sub_categories",
+                      form.values.sub_categories.filter(
+                        (id) => id !== Number(target.value)
+                      )
+                    );
+                  }
+                }}
+              >
+                {subCategory.name}
+              </Checkbox>
+            ))}
+          </SimpleGrid>
+          {form.errors.sub_categories && form.touched.sub_categories && (
+            <Text color="red.500" fontSize="xs">
+              {form.errors.sub_categories}
+            </Text>
+          )}
+
+          <HStack mt={4}>
+            <Spacer />
+            <Button type="submit" isLoading={loadingCreateEventCategory}>
+              Enviar
+            </Button>
+          </HStack>
+        </form>
+      </Box>
+    </IntroAnimationComponent>
   );
 };
 

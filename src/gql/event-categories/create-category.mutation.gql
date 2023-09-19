@@ -1,0 +1,13 @@
+mutation CreateEventCategory($data: CreateEventCategoryInput!) {
+  createEventCategory(data: $data) {
+    id
+    name
+    description
+    sub_categories {
+      name
+      description
+    }
+    createdAt
+    updatedAt
+  }
+}

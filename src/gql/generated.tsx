@@ -1440,6 +1440,18 @@ export type WhoAMiQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type WhoAMiQuery = { __typename?: 'Query', currentUser?: { __typename?: 'User', id: number, name?: string | null, last_name?: string | null, email?: string | null, createdAt?: any | null, updatedAt?: any | null, roles?: Array<{ __typename?: 'Role', id: number, name: string }> | null } | null };
 
+export type CreateEventCategoryMutationVariables = Exact<{
+  data: CreateEventCategoryInput;
+}>;
+
+
+export type CreateEventCategoryMutation = { __typename?: 'Mutation', createEventCategory?: { __typename?: 'EventCategory', id: number, name: string, description?: string | null, createdAt: any, updatedAt?: any | null, sub_categories?: Array<{ __typename?: 'EventSubCategory', name: string, description?: string | null }> | null } | null };
+
+export type CreateEventCategoryViewQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CreateEventCategoryViewQuery = { __typename?: 'Query', eventSubCategories?: Array<{ __typename?: 'EventSubCategory', id: number, name: string }> | null };
+
 export type EditEventCategoryQueryVariables = Exact<{
   eventCategoryId: Scalars['Int']['input'];
 }>;
@@ -2007,6 +2019,82 @@ export function useWhoAMiLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Who
 export type WhoAMiQueryHookResult = ReturnType<typeof useWhoAMiQuery>;
 export type WhoAMiLazyQueryHookResult = ReturnType<typeof useWhoAMiLazyQuery>;
 export type WhoAMiQueryResult = Apollo.QueryResult<WhoAMiQuery, WhoAMiQueryVariables>;
+export const CreateEventCategoryDocument = gql`
+    mutation CreateEventCategory($data: CreateEventCategoryInput!) {
+  createEventCategory(data: $data) {
+    id
+    name
+    description
+    sub_categories {
+      name
+      description
+    }
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export type CreateEventCategoryMutationFn = Apollo.MutationFunction<CreateEventCategoryMutation, CreateEventCategoryMutationVariables>;
+
+/**
+ * __useCreateEventCategoryMutation__
+ *
+ * To run a mutation, you first call `useCreateEventCategoryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateEventCategoryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createEventCategoryMutation, { data, loading, error }] = useCreateEventCategoryMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useCreateEventCategoryMutation(baseOptions?: Apollo.MutationHookOptions<CreateEventCategoryMutation, CreateEventCategoryMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateEventCategoryMutation, CreateEventCategoryMutationVariables>(CreateEventCategoryDocument, options);
+      }
+export type CreateEventCategoryMutationHookResult = ReturnType<typeof useCreateEventCategoryMutation>;
+export type CreateEventCategoryMutationResult = Apollo.MutationResult<CreateEventCategoryMutation>;
+export type CreateEventCategoryMutationOptions = Apollo.BaseMutationOptions<CreateEventCategoryMutation, CreateEventCategoryMutationVariables>;
+export const CreateEventCategoryViewDocument = gql`
+    query CreateEventCategoryView {
+  eventSubCategories {
+    id
+    name
+  }
+}
+    `;
+
+/**
+ * __useCreateEventCategoryViewQuery__
+ *
+ * To run a query within a React component, call `useCreateEventCategoryViewQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCreateEventCategoryViewQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCreateEventCategoryViewQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCreateEventCategoryViewQuery(baseOptions?: Apollo.QueryHookOptions<CreateEventCategoryViewQuery, CreateEventCategoryViewQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CreateEventCategoryViewQuery, CreateEventCategoryViewQueryVariables>(CreateEventCategoryViewDocument, options);
+      }
+export function useCreateEventCategoryViewLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CreateEventCategoryViewQuery, CreateEventCategoryViewQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CreateEventCategoryViewQuery, CreateEventCategoryViewQueryVariables>(CreateEventCategoryViewDocument, options);
+        }
+export type CreateEventCategoryViewQueryHookResult = ReturnType<typeof useCreateEventCategoryViewQuery>;
+export type CreateEventCategoryViewLazyQueryHookResult = ReturnType<typeof useCreateEventCategoryViewLazyQuery>;
+export type CreateEventCategoryViewQueryResult = Apollo.QueryResult<CreateEventCategoryViewQuery, CreateEventCategoryViewQueryVariables>;
 export const EditEventCategoryDocument = gql`
     query EditEventCategory($eventCategoryId: Int!) {
   eventCategory(id: $eventCategoryId) {
