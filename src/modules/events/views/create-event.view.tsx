@@ -157,9 +157,7 @@ const CreateEventView = () => {
                         // Remove sub categories of the category
                         setEventSubCategories(
                           eventSubCategories.filter(
-                            (subCategory) =>
-                              subCategory.parent_event_categoryId !==
-                              category.id!
+                            (subCategory) => subCategory.id !== category.id!
                           )
                         );
                       }

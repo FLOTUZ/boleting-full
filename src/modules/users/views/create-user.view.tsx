@@ -27,7 +27,7 @@ const CreateUserView = () => {
   const toast = useToast();
   const { loading: roleListLoading } = useRolesListQuery({
     onCompleted(data) {
-      setRoleList(data.roles as Role[]);
+      setRoleList(data.roles?.data as Role[]);
     },
     onError(error) {
       console.log(error.message);
