@@ -65,7 +65,8 @@ const cards = [
   },
 ];
 
-const Populares = () => {
+//This component have the 5 most popular events
+const EventCards = () => {
   return (
     <>
       <ChakraProvider theme={theme}>
@@ -168,4 +169,4 @@ const Populares = () => {
   );
 };
 
-export default Populares;
+export default EventCards;

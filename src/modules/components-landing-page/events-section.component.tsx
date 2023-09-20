@@ -17,7 +17,7 @@ import {
 } from "react-icons/md";
 import { RiMentalHealthLine } from "react-icons/ri";
 import { TbChristmasTree } from "react-icons/tb";
-import Populares from "./eventsCards.comonent";
+import EventCards from "./event-cards.component";
 
 const eventCategories = [
   {
@@ -108,7 +108,7 @@ const EventsSection = () => {
           </GridItem>
         ))}
       </Grid>
-      <Populares />
+      <EventCards />
     </Box>
   );
 };
