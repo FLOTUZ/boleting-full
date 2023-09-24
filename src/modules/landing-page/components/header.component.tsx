@@ -1,4 +1,4 @@
-import ClientMenuComponent from "./client-menu.component";
+import ClientMenuComponent from "@/modules/components-landing-page/client-menu.component";
 import ThemeSwitchComponent from "@/components/buttons/theme-switch.component";
 import { Button, Flex, HStack, Image, Spacer } from "@chakra-ui/react";
 import { AiOutlineSearch } from "react-icons/ai";

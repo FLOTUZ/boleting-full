@@ -13,7 +13,12 @@ import {
   DrawerOverlay,
 } from "@chakra-ui/react";
 import { AiOutlineMenu } from "react-icons/ai";
-import { IoExit, IoHelpBuoy, IoTicketSharp } from "react-icons/io5";
+import {
+  IoCloseSharp,
+  IoExit,
+  IoHelpBuoy,
+  IoTicketSharp,
+} from "react-icons/io5";
 
 const ClientMenuComponent = () => {
   const { user } = useSession();
@@ -37,6 +42,11 @@ const ClientMenuComponent = () => {
         <DrawerOverlay bg="none" backdropFilter="auto" backdropBlur="3px" />
         <DrawerContent>
           <DrawerHeader borderBottomWidth="1px">
+            <Box>
+              <IconButton aria-label={"close"} onClick={onClose}>
+                <IoCloseSharp size={16} />
+              </IconButton>
+            </Box>
             Bienvenido a tu cuenta
             <Box>
               {user && user.email ? (
