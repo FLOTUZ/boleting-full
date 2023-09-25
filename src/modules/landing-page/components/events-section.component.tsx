@@ -7,6 +7,7 @@ import {
   Heading,
   Icon,
   Link,
+  SimpleGrid,
 } from "@chakra-ui/react";
 import { BsMusicNoteBeamed } from "react-icons/bs";
 import { FaGlassMartiniAlt, FaGuitar } from "react-icons/fa";
@@ -68,46 +69,18 @@ const EventsSection = () => {
       <Heading as="h3" size="lg">
         Eventos y categorias
       </Heading>
-      <Grid
-        margin={4}
-        templateColumns={{
-          base: "repeat(2, 1fr)",
-          md: "repeat(3, 1fr)",
-          lg: "repeat(4, 1fr)",
-        }}
-        gap={6}
-      >
+
+      <SimpleGrid columns={[2, 3, 4]} spacing={2}>
         {eventCategories.map((item, index) => (
-          <GridItem key={index}>
-            <Center h="100%">
-              <Box>
-                <Button
-                  as={Link}
-                  href={item.link}
-                  variant="outline"
-                  leftIcon={<Icon as={item.icon} ml={2} />}
-                  display="inline-flex"
-                  w="200px"
-                  _light={{
-                    color: "#1a202ceb",
-                  }}
-                  _dark={{
-                    bg: "brand.500",
-                  }}
-                  _hover={{
-                    bg: "#dae5f1f7",
-                    _dark: {
-                      bg: "#2c313d",
-                    },
-                  }}
-                >
-                  {item.text}
-                </Button>
-              </Box>
+          <Button key={index} as={Link} href={item.link} variant="outline">
+            <Center>
+              <Icon as={item.icon} />
             </Center>
-          </GridItem>
+            {item.text}
+          </Button>
         ))}
-      </Grid>
+      </SimpleGrid>
+
       <EventCards />
     </Box>
   );
