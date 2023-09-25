@@ -1,3 +1,4 @@
+import ThemeSwitchComponent from "@/components/buttons/theme-switch.component";
 import { useSession } from "@/hooks";
 import {
   Box,
@@ -11,8 +12,9 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerOverlay,
+  useColorMode,
 } from "@chakra-ui/react";
-import { AiOutlineMenu } from "react-icons/ai";
+import { FaRegUserCircle } from "react-icons/fa";
 import {
   IoCloseSharp,
   IoExit,
@@ -23,23 +25,22 @@ import {
 const ClientMenuComponent = () => {
   const { user } = useSession();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { colorMode } = useColorMode();
 
   return (
     <>
       <IconButton
         aria-label="Open menu"
         fontSize="20px"
-        color="gray.800"
-        variant="ghost"
-        icon={<AiOutlineMenu />}
+        color="black"
+        variant="outline"
         onClick={onOpen}
-        _dark={{
-          color: "inherit",
-        }}
-      />
+      >
+        <FaRegUserCircle color={colorMode === "light" ? "black" : "white"} />
+      </IconButton>
 
       <Drawer placement={"right"} onClose={onClose} isOpen={isOpen} size={"sm"}>
-        <DrawerOverlay bg="none" backdropFilter="auto" backdropBlur="3px" />
+        <DrawerOverlay />
         <DrawerContent>
           <DrawerHeader borderBottomWidth="1px">
             <Box>
@@ -81,6 +82,7 @@ const ClientMenuComponent = () => {
                 <IoExit />
                 &nbsp; Cerrar sesion
               </Button>
+              <ThemeSwitchComponent />
             </VStack>
           </DrawerBody>
         </DrawerContent>
