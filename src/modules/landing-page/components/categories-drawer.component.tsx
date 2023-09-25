@@ -1,5 +1,4 @@
 import {
-  Button,
   Drawer,
   DrawerBody,
   DrawerContent,
@@ -10,10 +9,16 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { HiMenuAlt2 } from "react-icons/hi";
+import { useLandingPage } from "../contexts/landing-page.context";
+import Link from "next/link";
+import { ShowEventsBySubcategory } from "@/routes";
 
 const CategoriesDrawerComponent = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { colorMode } = useColorMode();
+
+  const { eventSubCategories } = useLandingPage();
+
   return (
     <>
       <IconButton
@@ -28,11 +33,16 @@ const CategoriesDrawerComponent = () => {
       <Drawer placement={"left"} onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />
         <DrawerContent>
-          <DrawerHeader borderBottomWidth="1px">Basic Drawer</DrawerHeader>
+          <DrawerHeader borderBottomWidth="1px">SubCategorías</DrawerHeader>
           <DrawerBody>
-            <p>Some contents...</p>
-            <p>Some contents...</p>
-            <p>Some contents...</p>
+            {eventSubCategories.map((subCategory) => (
+              <Link
+                key={subCategory.id}
+                href={ShowEventsBySubcategory(String(subCategory.id))}
+              >
+                <p>{subCategory.name}</p>
+              </Link>
+            ))}
           </DrawerBody>
         </DrawerContent>
       </Drawer>

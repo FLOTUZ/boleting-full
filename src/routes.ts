@@ -34,6 +34,10 @@ export const ShowCategoryPath = (categoryId: string) =>
 export const EditCategoryPath = (categoryId: string) =>
   `/categories/${categoryId}/edit`;
 
+// =========== SUBCATEGORIES ============
+export const ShowEventsBySubcategory = (id: string) =>
+  `/subcategories/${id}/events`;
+
 // ============ EVENTS ============
 export const ShowEventStaffIdPath = (id: number) => `/events/${id}/staff`;
 
