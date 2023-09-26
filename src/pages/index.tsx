@@ -23,7 +23,7 @@ const MaindRoute = ({ eventSubCategories }: MaindRouteProps) => {
 export const getStaticProps: GetStaticProps = async (ctx) => {
   const eventSubCategories = await prisma.eventSubCategory.findMany({
     include: {
-      event_categories: true,
+      event_category: true,
     },
   });
 

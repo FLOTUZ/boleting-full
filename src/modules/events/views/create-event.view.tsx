@@ -22,18 +22,19 @@ import {
   Text,
   useToast,
   Checkbox,
+  Center,
 } from "@chakra-ui/react";
 import { FormikProvider, useFormik } from "formik";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 const CreateEventView = () => {
   const toast = useToast();
+  const router = useRouter();
   const [eventCategories, setEventCategories] = useState<EventCategory[]>([]);
   const [eventSubCategories, setEventSubCategories] = useState<
     EventSubCategory[]
   >([]);
-
-  const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
 
   const { loading: loadingEventCategoriesList } = useEventCategoriesQuery({
     onError(error) {
@@ -41,6 +42,7 @@ const CreateEventView = () => {
     },
     onCompleted(data) {
       setEventCategories(data.eventCategories as EventCategory[]);
+      setEventSubCategories(data.eventSubCategories as EventSubCategory[]);
     },
   });
 
@@ -58,7 +60,7 @@ const CreateEventView = () => {
       re_entry: false,
       event_logo_url: "",
       event_banner_url: "",
-      sub_categories: eventSubCategories.map(
+      event_sub_categories: eventSubCategories.map(
         (subCategory) => subCategory.id!
       ) as number[],
     },
@@ -74,6 +76,7 @@ const CreateEventView = () => {
           },
         },
         onCompleted() {
+          router.back();
           toast({
             title: "Evento guardado",
             description: "El evento se guardó con exito",
@@ -99,7 +102,7 @@ const CreateEventView = () => {
 
   return (
     <IntroAnimationComponent data={eventCategories}>
-      <Box m={4} p={4}>
+      <Center m={4} p={4}>
         <FormikProvider value={form}>
           <form onSubmit={form.handleSubmit}>
             <Box>
@@ -127,92 +130,43 @@ const CreateEventView = () => {
                 <Text color={"red"}>{form.errors.description}</Text>
               )}
 
-              <FormLabel htmlFor="event_categories">Categorias:</FormLabel>
+              <FormLabel htmlFor="event_sub_categories">
+                Sub categorias:
+              </FormLabel>
 
-              <Box p={4}>
-                {eventCategories.map((category, index) => (
+              <SimpleGrid columns={[1, 2, 3, 4]}>
+                {eventSubCategories.map((subCategory, index) => (
                   <Checkbox
                     key={index}
-                    value={category.id!}
+                    value={subCategory.id!}
+                    isChecked={form.values.event_sub_categories!.includes(
+                      subCategory.id!
+                    )}
                     onChange={(e) => {
                       if (e.target.checked) {
-                        setSelectedCategories([
-                          ...selectedCategories,
-                          category.id!,
-                        ]);
-
-                        // Add sub categories of the category
-                        setEventSubCategories([
-                          ...eventSubCategories,
-                          ...(category.sub_categories! as EventSubCategory[]),
+                        form.setFieldValue("event_sub_categories", [
+                          ...form.values.event_sub_categories!,
+                          subCategory.id!,
                         ]);
                       } else {
-                        setSelectedCategories(
-                          selectedCategories.filter(
-                            (selectedCategory) =>
-                              selectedCategory !== category.id!
-                          )
-                        );
-
-                        // Remove sub categories of the category
-                        setEventSubCategories(
-                          eventSubCategories.filter(
-                            (subCategory) => subCategory.id !== category.id!
+                        form.setFieldValue(
+                          "event_sub_categories",
+                          form.values.event_sub_categories!.filter(
+                            (subCategoryId) => subCategoryId !== subCategory.id!
                           )
                         );
                       }
                     }}
                   >
-                    {category.name}
+                    {subCategory.name}
                   </Checkbox>
                 ))}
-              </Box>
+              </SimpleGrid>
 
-              <FormLabel htmlFor="event_sub_categories">
-                Sub categorias:
-              </FormLabel>
-
-              {eventSubCategories.length == 0 ? (
-                <Box p={2} bgColor={"brand.semiTransparentContainer"}>
-                  <Text>
-                    Para ver las subcategorias, selecciona una categoria
-                  </Text>
-                </Box>
-              ) : (
-                <Box p={4}>
-                  {eventSubCategories.map((subCategory, index) => (
-                    <Checkbox
-                      key={index}
-                      value={subCategory.id!}
-                      isChecked={form.values.sub_categories!.includes(
-                        subCategory.id!
-                      )}
-                      onChange={(e) => {
-                        if (e.target.checked) {
-                          form.setFieldValue("sub_categories", [
-                            ...form.values.sub_categories!,
-                            subCategory.id!,
-                          ]);
-                        } else {
-                          form.setFieldValue(
-                            "sub_categories",
-                            form.values.sub_categories!.filter(
-                              (subCategoryId) =>
-                                subCategoryId !== subCategory.id!
-                            )
-                          );
-                        }
-                      }}
-                    >
-                      {subCategory.name}
-                    </Checkbox>
-                  ))}
-                </Box>
-              )}
-
-              {form.errors.sub_categories && form.touched.sub_categories && (
-                <Text color={"red"}>{form.errors.sub_categories}</Text>
-              )}
+              {form.errors.event_sub_categories &&
+                form.touched.event_sub_categories && (
+                  <Text color={"red"}>{form.errors.event_sub_categories}</Text>
+                )}
 
               <FormLabel htmlFor="event_location">Ubicacion evento:</FormLabel>
               <Input
@@ -359,7 +313,7 @@ const CreateEventView = () => {
             </HStack>
           </form>
         </FormikProvider>
-      </Box>
+      </Center>
     </IntroAnimationComponent>
   );
 };

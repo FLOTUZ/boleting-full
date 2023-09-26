@@ -7,7 +7,7 @@ import ProgressLoaderComponent from "@/components/loaders/progress-loader.compon
 
 import SelledTicketsByEventDatatable from "../components/selled-tickets-by-event.datatable";
 
-import { Event, Ticket, useShowEventQuery } from "@/gql/generated";
+import { Event, Ticket, useShowEventLazyQuery } from "@/gql/generated";
 import {
   Badge,
   Box,
@@ -26,28 +26,35 @@ import {
 import { IoTicketSharp } from "react-icons/io5";
 import { PiUsersFourFill } from "react-icons/pi";
 import { FaGift } from "react-icons/fa";
+import { useRouter } from "next/router";
 
-const ShowEventView = ({ eventId }: { eventId: number }) => {
-  const [event, setEvent] = useState<Event>();
+const ShowEventView = () => {
+  const router = useRouter();
+  const { id: eventId } = router.query;
+
+  const [dataEvent, setDataEvent] = useState<Event>();
   const [selledTickets, setSelledTickets] = useState<Ticket[]>([]);
 
-  const {
-    data,
-    loading: selledByEventLoader,
-    refetch: refetchSelledByEvent,
-  } = useShowEventQuery({
-    variables: {
-      eventId,
+  const [
+    GET_EVENT,
+    { loading: selledByEventLoader, refetch: refetchSelledByEvent },
+  ] = useShowEventLazyQuery({
+    fetchPolicy: "no-cache",
+    variables: { eventId: Number(eventId) },
+    onCompleted(data) {
+      setDataEvent(data.event as Event);
+      setSelledTickets(data.selled_tickets_by_event as Ticket[]);
     },
-    fetchPolicy: "network-only",
+    onError(error) {
+      console.log(error);
+    },
   });
 
   useEffect(() => {
-    if (data) {
-      setEvent(data.event as Event);
-      setSelledTickets(data.selled_tickets_by_event as Ticket[]);
+    if (eventId) {
+      GET_EVENT();
     }
-  }, [selledByEventLoader, data]);
+  }, [GET_EVENT, eventId]);
 
   if (selledByEventLoader) {
     return <ProgressLoaderComponent />;
@@ -56,10 +63,10 @@ const ShowEventView = ({ eventId }: { eventId: number }) => {
   return (
     <IntroAnimationComponent data>
       <Box p={4}>
-        <Link passHref href={EditEventPath(event?.id as number)}>
+        <Link passHref href={EditEventPath(dataEvent?.id as number)}>
           <Button mb={4}> Editar evento </Button>
         </Link>
-        <Link passHref href={ShowEventStaffIdPath(event?.id as number)}>
+        <Link passHref href={ShowEventStaffIdPath(dataEvent?.id as number)}>
           <Button mb={4} ml={4}>
             Staff
             <Box pl={2}>
@@ -68,7 +75,7 @@ const ShowEventView = ({ eventId }: { eventId: number }) => {
           </Button>
         </Link>
 
-        <Link href={AccessTypesPath(event?.id as number)}>
+        <Link href={AccessTypesPath(dataEvent?.id as number)}>
           <Button mb={4} ml={4}>
             Tipos de acceso
             <Box pl={2}>
@@ -77,7 +84,7 @@ const ShowEventView = ({ eventId }: { eventId: number }) => {
           </Button>
         </Link>
 
-        <Link passHref href={ShowCourtecyTicketsPath(String(event?.id))}>
+        <Link passHref href={ShowCourtecyTicketsPath(String(dataEvent?.id))}>
           <Button mb={4} ml={4}>
             Cortesías
             <Box pl={2}>
@@ -88,21 +95,25 @@ const ShowEventView = ({ eventId }: { eventId: number }) => {
 
         <Card mb={4} p={4}>
           <Box>
-            {event?.event_logo_url && (
+            {dataEvent?.event_logo_url && (
               <Image
-                src={event?.event_logo_url}
-                alt={event?.name!}
+                src={dataEvent?.event_logo_url}
+                alt={dataEvent?.name!}
                 height={100}
               />
             )}
           </Box>
 
-          <Heading>{event?.name}</Heading>
-          {event?.event_location_url != null && (
+          <Heading>{dataEvent?.name}</Heading>
+          {dataEvent?.event_location_url != null && (
             <Text as={"p"} fontSize={"lg"}>
-              {event?.event_location}
+              {dataEvent?.event_location}
 
-              <Link passHref href={event?.event_location_url} target="_blank">
+              <Link
+                passHref
+                href={dataEvent?.event_location_url}
+                target="_blank"
+              >
                 <Badge ml={2} p={1}>
                   Ver en mapa
                 </Badge>
@@ -111,20 +122,20 @@ const ShowEventView = ({ eventId }: { eventId: number }) => {
           )}
 
           <Text as={"b"}>Descripcion</Text>
-          <Text>{event?.description}</Text>
+          <Text>{dataEvent?.description}</Text>
 
           <Text as={"b"}>Fecha</Text>
           <Text as={"p"} fontSize={"lg"}>
-            {new Date(event?.start_date).toLocaleDateString("es-MX", {
+            {new Date(dataEvent?.start_date).toLocaleDateString("es-MX", {
               day: "numeric",
               month: "long",
             }) || "Sin fecha inicial"}{" "}
-            -{event?.end_date || "Sin fecha final"}
+            -{dataEvent?.end_date || "Sin fecha final"}
           </Text>
 
           <Text as={"b"}>Creado por</Text>
           <Text as={"p"} fontSize={"lg"}>
-            {event?.createdBy?.name}
+            {dataEvent?.createdBy?.name}
           </Text>
         </Card>
 

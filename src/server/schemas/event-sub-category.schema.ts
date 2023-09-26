@@ -5,14 +5,14 @@ export const EventSubCategoriesSchema = gql`
     name: String!
     description: String!
     createdAt: DateTime!
-    event_categories: [Int!]
+    event_categoryId: Int!
   }
 
   input UpdateEventSubCategoryInput {
     name: String
     description: String
     createdAt: DateTime
-    event_categories: [Int!]
+    event_categoryId: Int
   }
 
   type EventSubCategory {
@@ -23,7 +23,8 @@ export const EventSubCategoriesSchema = gql`
     updatedAt: DateTime
     deleted: Boolean!
     deletedAt: DateTime
-    event_categories: [EventCategory!]
+    event_categoryId: Int!
+    event_category: EventCategory!
     events: [Event!]
   }
 

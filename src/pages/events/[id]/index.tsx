@@ -6,23 +6,23 @@ import { useRouter } from "next/router";
 function ShowEventRoute() {
   const router = useRouter();
 
-  const { id } = router.query;
+  const { id: eventId } = router.query;
 
   return (
     <DesktopLayoutComponent
-      title={`Evento ${id}`}
+      title={`Evento ${eventId}`}
       breadCrumbs={[
         {
           label: "Eventos",
           href: EventsPath,
         },
         {
-          label: `${id}`,
-          href: ShowEventPath(String(id)),
+          label: `${eventId}`,
+          href: ShowEventPath(String(eventId)),
         },
       ]}
     >
-      <ShowEventView eventId={Number(id)} />
+      <ShowEventView />
     </DesktopLayoutComponent>
   );
 }

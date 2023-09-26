@@ -50,7 +50,6 @@ const SubCategoriesByCategoryIdDatatableComponent = (
       columns={columns}
       theme={colorMode === "light" ? "light" : "dark"}
       title={`Subcategorias`}
-      noHeader
       progressComponent={<div>Cargando subcategorias...</div>}
       pointerOnHover
       persistTableHead

@@ -8,7 +8,7 @@ mutation ModifyEventCategory(
     description
     updatedAt
     createdAt
-    sub_categories {
+    event_sub_categories {
       id
       name
     }

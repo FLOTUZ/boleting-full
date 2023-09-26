@@ -4,9 +4,9 @@ query ShowEventCategory($eventCategoryId: Int!) {
     name
     description
     events_count
-    sub_categories_count
+    event_sub_categories_count
     events_count
-    sub_categories {
+    event_sub_categories {
       id
       name
       description

@@ -9,7 +9,7 @@ query ShowEvents {
     start_date
     deleted
     event_banner_url
-    sub_categories {
+    event_sub_categories {
       id
       name
     }

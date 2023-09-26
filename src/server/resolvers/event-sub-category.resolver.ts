@@ -6,7 +6,7 @@ import {
   CreateEventSubCategoryValidator,
   UpdateEventSubCategoryValidator,
 } from "@/validations";
-import { EventSubCategoryService } from "../services";
+import { EventCategoryService, EventSubCategoryService } from "../services";
 
 //
 // Resolver for EventSubCategory model
@@ -55,6 +55,16 @@ export const EventSubCategoryResolver = {
       __: IGraphqlContext
     ) => {
       return await EventSubCategoryService.deleteEventSubCategory(id);
+    },
+  },
+
+  EventSubCategory: {
+    event_category: async (
+      { event_categoryId }: EventSubCategory,
+      _: any,
+      __: IGraphqlContext
+    ) => {
+      return await EventCategoryService.eventCategory(event_categoryId);
     },
   },
 };

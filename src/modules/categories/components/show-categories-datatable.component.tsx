@@ -31,7 +31,7 @@ const ShowCategoriesDatatable = (props: ShowCategoriesDatatableProps) => {
     },
     {
       name: "Subcategorías",
-      selector: (row) => row.sub_categories_count!,
+      selector: (row) => row.event_sub_categories_count!,
       sortable: true,
       center: true,
     },

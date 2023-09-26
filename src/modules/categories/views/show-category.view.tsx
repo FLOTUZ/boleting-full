@@ -6,7 +6,7 @@ import { EventCategory, useShowEventCategoryLazyQuery } from "@/gql/generated";
 
 import { EditCategoryPath } from "@/routes";
 
-import { Badge, Box, Button, Container, HStack, Text } from "@chakra-ui/react";
+import { Badge, Box, Button, HStack, Text } from "@chakra-ui/react";
 import Link from "next/link";
 import SubCategoriesByCategoryIdDatatableComponent from "../components/sub-categories-datatable.component";
 
@@ -18,6 +18,7 @@ const ShowCategoryView = () => {
 
   const [GET_CATEGORY, { loading: categoryLoading, error: categoryError }] =
     useShowEventCategoryLazyQuery({
+      fetchPolicy: "network-only",
       variables: {
         eventCategoryId: Number(categoryId),
       },
@@ -49,7 +50,7 @@ const ShowCategoryView = () => {
           <Box>
             <Text as="b">Subcategorías: </Text>
             <Badge colorScheme="purple">
-              {eventCategory?.sub_categories_count}
+              {eventCategory?.event_sub_categories_count}
             </Badge>
           </Box>
 
@@ -67,7 +68,7 @@ const ShowCategoryView = () => {
         <Box mt={4}>
           <SubCategoriesByCategoryIdDatatableComponent
             progressPending={categoryLoading}
-            data={eventCategory?.sub_categories!}
+            data={eventCategory?.event_sub_categories!}
           />
         </Box>
       </Box>

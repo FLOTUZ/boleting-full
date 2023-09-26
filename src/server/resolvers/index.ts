@@ -3,7 +3,7 @@ export * from "./user.resolver";
 export * from "./auth.resolver";
 export * from "./role.resolver";
 export * from "./event.resolver";
-export * from "./event.category.resolver";
+export * from "./event-category.resolver";
 export * from "./organization.resolver";
 export * from "./event-sub-category.resolver";
 export * from "./ticket.resolver";

@@ -188,27 +188,35 @@ async function main() {
     data: [
       {
         name: "Electronica",
+        event_categoryId: 1,
       },
       {
         name: "Festivales",
+        event_categoryId: 1,
       },
       {
         name: "Rock & Metal",
+        event_categoryId: 1,
       },
       {
         name: "Drama",
+        event_categoryId: 2,
       },
       {
         name: "Musica clasica",
+        event_categoryId: 2,
       },
       {
         name: "Automovilismo",
+        event_categoryId: 3,
       },
       {
         name: "Futbol",
+        event_categoryId: 3,
       },
       {
         name: "Seminarios y conferencias",
+        event_categoryId: 4,
       },
     ],
   });
