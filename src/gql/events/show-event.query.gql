@@ -20,10 +20,10 @@ query ShowEvent($eventId: Int!) {
       id
       name
     }
-    sub_categories {
+    event_sub_categories {
       id
       name
-      event_categories {
+      event_category {
         id
         name
       }

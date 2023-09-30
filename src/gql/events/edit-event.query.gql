@@ -12,7 +12,7 @@ query EditEvent($eventId: Int!) {
     re_entry
     event_logo_url
     event_banner_url
-    sub_categories {
+    event_sub_categories {
       id
       name
     }

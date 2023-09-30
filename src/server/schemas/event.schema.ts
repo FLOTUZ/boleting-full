@@ -12,7 +12,7 @@ export const EventsSchema = gql`
     re_entry: Boolean!
     event_logo_url: String!
     event_banner_url: String!
-    sub_categories: [Int!]
+    event_sub_categories: [Int!]
   }
 
   input UpdateEventInput {
@@ -27,7 +27,7 @@ export const EventsSchema = gql`
     re_entry: Boolean
     event_logo_url: String
     event_banner_url: String
-    sub_categories: [Int!]
+    event_sub_categories: [Int!]
   }
 
   type Event {
@@ -51,7 +51,7 @@ export const EventsSchema = gql`
     deleted: Boolean!
     deletedAt: DateTime
     createdBy: User!
-    sub_categories: [EventSubCategory!]
+    event_sub_categories: [EventSubCategory!]
     selled_tickets: [Ticket!]
     organization: Organization!
     access_types: [AccessType!]

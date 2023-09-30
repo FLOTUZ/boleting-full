@@ -33,7 +33,7 @@ export const EventResolver = {
   Mutation: {
     createEvent: async (
       _: any,
-      { data }: { data: Event & { sub_categories: number[] } },
+      { data }: { data: Event & { event_sub_categories: number[] } },
       { id_user, id_organization }: IGraphqlContext
     ) => {
       if (!id_user) throw new AuthenticationError("User not authenticated");
@@ -44,7 +44,10 @@ export const EventResolver = {
 
     updateEvent: async (
       _: any,
-      { id, data }: { id: number; data: Event & { sub_categories: number[] } },
+      {
+        id,
+        data,
+      }: { id: number; data: Event & { event_sub_categories: number[] } },
       __: IGraphqlContext
     ) => {
       await validateData({ schema: UpdateEventValidator, data: data });
@@ -62,8 +65,14 @@ export const EventResolver = {
       return await EventService.createdBy(id);
     },
 
-    sub_categories: async ({ id }: Event, _: any, __: IGraphqlContext) => {
-      return await EventSubCategoryService.subCategoriesByCategoryEventId(id);
+    event_sub_categories: async (
+      { id }: Event,
+      _: any,
+      __: IGraphqlContext
+    ) => {
+      return await EventSubCategoryService.eventSubCategoriesByCategoryEventId(
+        id
+      );
     },
 
     access_types: async ({ id }: Event, _: any, __: IGraphqlContext) => {

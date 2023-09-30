@@ -37,7 +37,7 @@ export const EventCategoryResolver = {
   Mutation: {
     createEventCategory: async (
       _: any,
-      { data }: { data: EventCategory & { sub_categories: number[] } },
+      { data }: { data: EventCategory & { event_sub_categories: number[] } },
       __: IGraphqlContext
     ) => {
       await validateData({ schema: CreateEventCategoryValidator, data });
@@ -50,7 +50,10 @@ export const EventCategoryResolver = {
       {
         id,
         data,
-      }: { id: number; data: EventCategory & { sub_categories: number[] } },
+      }: {
+        id: number;
+        data: EventCategory & { event_sub_categories: number[] };
+      },
       __: IGraphqlContext
     ) => {
       await validateData({ schema: UpdateEventCategoryValidator, data });
@@ -67,12 +70,12 @@ export const EventCategoryResolver = {
   },
 
   EventCategory: {
-    sub_categories: async (
+    event_sub_categories: async (
       { id }: EventCategory,
       _: any,
       __: IGraphqlContext
     ) => {
-      return await EventSubCategoryService.subCategoriesByCategoryId(id);
+      return await EventSubCategoryService.eventSubCategoriesByCategoryId(id);
     },
 
     events_count: async (
@@ -83,12 +86,14 @@ export const EventCategoryResolver = {
       return await EventService.eventsCountByCategory(id);
     },
 
-    sub_categories_count: async (
+    event_sub_categories_count: async (
       { id }: EventCategory,
       _: any,
       __: IGraphqlContext
     ) => {
-      return await EventSubCategoryService.subCategoriesCountByCategory(id);
+      return await EventSubCategoryService.eventSubCategoriesCountByCategory(
+        id
+      );
     },
   },
 };

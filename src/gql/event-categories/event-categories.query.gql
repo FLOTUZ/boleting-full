@@ -3,13 +3,16 @@ query EventCategories {
     id
     name
     description
-    sub_categories {
+    event_sub_categories {
       id
       name
-      event_categories {
-        id
-        name
-      }
+      event_categoryId
     }
+  }
+
+  eventSubCategories {
+    id
+    name
+    event_categoryId
   }
 }

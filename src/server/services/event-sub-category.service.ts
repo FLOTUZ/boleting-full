@@ -46,22 +46,22 @@ export const EventSubCategoryService = {
 
   // ======================= FOR ANOTHER RESOLVERS =======================
 
-  async subCategoriesByCategoryEventId(eventId: number) {
+  async eventSubCategoriesByCategoryEventId(eventId: number) {
     return await prisma.eventSubCategory.findMany({
       where: { events: { some: { id: eventId } } },
     });
   },
 
-  async subCategoriesByCategoryId(categoryId: number) {
+  async eventSubCategoriesByCategoryId(categoryId: number) {
     return await prisma.eventSubCategory.findMany({
       orderBy: { id: "asc" },
-      where: { event_categories: { some: { id: categoryId } } },
+      where: { event_categoryId: categoryId },
     });
   },
 
-  async subCategoriesCountByCategory(categoryId: number) {
+  async eventSubCategoriesCountByCategory(categoryId: number) {
     return await prisma.eventSubCategory.count({
-      where: { event_categories: { some: { id: categoryId } } },
+      where: { event_categoryId: categoryId },
     });
   },
 };

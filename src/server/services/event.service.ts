@@ -23,7 +23,7 @@ export const EventService = {
   async createEvent(
     id_user: number,
     id_organization: number,
-    data: Event & { sub_categories: number[] }
+    data: Event & { event_sub_categories: number[] }
   ) {
     try {
       return await prisma.event.create({
@@ -31,8 +31,8 @@ export const EventService = {
           ...data,
           userId: id_user,
           organizationId: id_organization!,
-          sub_categories: {
-            connect: data.sub_categories?.map((id) => ({ id })),
+          event_sub_categories: {
+            connect: data.event_sub_categories?.map((id) => ({ id })),
           },
         },
       });
@@ -41,14 +41,17 @@ export const EventService = {
     }
   },
 
-  async updateEvent(id: number, data: Event & { sub_categories: number[] }) {
+  async updateEvent(
+    id: number,
+    data: Event & { event_sub_categories: number[] }
+  ) {
     try {
       return await prisma.event.update({
         where: { id },
         data: {
           ...data,
-          sub_categories: {
-            set: data.sub_categories?.map((id) => ({ id })),
+          event_sub_categories: {
+            set: data.event_sub_categories?.map((id) => ({ id })),
           },
         },
       });
@@ -80,7 +83,7 @@ export const EventService = {
 
   async eventsCountByCategory(id_category: number) {
     return await prisma.event.count({
-      where: { sub_categories: { some: { id: id_category } } },
+      where: { event_sub_categories: { some: { id: id_category } } },
     });
   },
 };

@@ -173,35 +173,35 @@ model Application {
 //============================= EVENT MANAGEMENT ================================
 
 model Event {
-  id                 Int                @id @unique @default(autoincrement())
-  event_key          String?            @unique @db.VarChar(8)
-  name               String             @unique @db.VarChar(50)
-  description        String?            @db.VarChar(255)
-  event_location     String             @db.VarChar(255)
-  event_location_url String             @db.VarChar(1000)
-  start_date         DateTime           @db.Date
-  end_date           DateTime?          @db.Date
-  start_time         String?            @db.VarChar(5)
-  end_time           String?            @db.VarChar(5)
-  re_entry           Boolean            @default(false)
-  event_logo_url     String?            @db.VarChar(1000)
-  event_banner_url   String?            @db.VarChar(1000)
-  userId             Int
-  organizationId     Int
-  createdAt          DateTime           @default(now())
-  updatedAt          DateTime           @updatedAt
-  deleted            Boolean            @default(false)
-  deletedAt          DateTime?
-  createdBy          User               @relation("created_events", fields: [userId], references: [id])
-  sub_categories     EventSubCategory[] @relation("event_categories")
-  staff              User[]             @relation("staff_of_events")
-  ateendees          UserClient[]       @relation("atendee_of_events")
-  selled_tickets     Ticket[]           @relation("selled_tickets")
-  event_social_media EventSocialMedia[] @relation("event_social_media")
-  organization       Organization?      @relation("events_on_organization", fields: [organizationId], references: [id])
-  access_types       AccessType[]       @relation("types_of_access_for_event")
-  owner_types        OwnerType[]        @relation("owner_types_for_event")
-  dealers            AuthorizedDealer[] @relation("dealer_of_event")
+  id                   Int                @id @unique @default(autoincrement())
+  event_key            String?            @unique @db.VarChar(8)
+  name                 String             @unique @db.VarChar(50)
+  description          String?            @db.VarChar(255)
+  event_location       String             @db.VarChar(255)
+  event_location_url   String             @db.VarChar(1000)
+  start_date           DateTime           @db.Date
+  end_date             DateTime?          @db.Date
+  start_time           String?            @db.VarChar(5)
+  end_time             String?            @db.VarChar(5)
+  re_entry             Boolean            @default(false)
+  event_logo_url       String?            @db.VarChar(1000)
+  event_banner_url     String?            @db.VarChar(1000)
+  userId               Int
+  organizationId       Int
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+  deleted              Boolean            @default(false)
+  deletedAt            DateTime?
+  createdBy            User               @relation("created_events", fields: [userId], references: [id])
+  event_sub_categories EventSubCategory[] @relation("event_categories")
+  staff                User[]             @relation("staff_of_events")
+  ateendees            UserClient[]       @relation("atendee_of_events")
+  selled_tickets       Ticket[]           @relation("selled_tickets")
+  event_social_media   EventSocialMedia[] @relation("event_social_media")
+  organization         Organization?      @relation("events_on_organization", fields: [organizationId], references: [id])
+  access_types         AccessType[]       @relation("types_of_access_for_event")
+  owner_types          OwnerType[]        @relation("owner_types_for_event")
+  dealers              AuthorizedDealer[] @relation("dealer_of_event")
 }
 
 model EventSocialMedia {
@@ -218,26 +218,27 @@ model EventSocialMedia {
 }
 
 model EventCategory {
-  id             Int                @id @unique @default(autoincrement())
-  name           String             @unique @db.VarChar(50)
-  description    String?            @db.VarChar(255)
-  createdAt      DateTime           @default(now())
-  updatedAt      DateTime           @updatedAt
-  deleted        Boolean            @default(false)
-  deletedAt      DateTime?
-  sub_categories EventSubCategory[] @relation("event_sub_categories")
+  id                   Int                @id @unique @default(autoincrement())
+  name                 String             @unique @db.VarChar(50)
+  description          String?            @db.VarChar(255)
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+  deleted              Boolean            @default(false)
+  deletedAt            DateTime?
+  event_sub_categories EventSubCategory[] @relation("event_sub_categories")
 }
 
 model EventSubCategory {
-  id               Int             @id @unique @default(autoincrement())
-  name             String          @unique @db.VarChar(50)
-  description      String?         @db.VarChar(255)
-  createdAt        DateTime        @default(now())
-  updatedAt        DateTime        @updatedAt
-  deleted          Boolean         @default(false)
+  id               Int           @id @unique @default(autoincrement())
+  name             String        @unique @db.VarChar(50)
+  event_categoryId Int
+  description      String?       @db.VarChar(255)
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  deleted          Boolean       @default(false)
   deletedAt        DateTime?
-  event_categories EventCategory[] @relation("event_sub_categories")
-  events           Event[]         @relation("event_categories")
+  events           Event[]       @relation("event_categories")
+  event_category   EventCategory @relation("event_sub_categories", fields: [event_categoryId], references: [id])
 }
 
 //===================================== TICKETING =====================================

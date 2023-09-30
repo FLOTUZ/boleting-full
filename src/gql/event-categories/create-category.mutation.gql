@@ -3,7 +3,7 @@ mutation CreateEventCategory($data: CreateEventCategoryInput!) {
     id
     name
     description
-    sub_categories {
+    event_sub_categories {
       name
       description
     }

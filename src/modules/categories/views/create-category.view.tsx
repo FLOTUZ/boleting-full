@@ -68,7 +68,7 @@ const CreateCategoryView = () => {
     initialValues: {
       name: "",
       description: "",
-      sub_categories: [] as number[],
+      event_sub_categories: [] as number[],
     },
     onSubmit: (values) => {
       CREATE_EVENT_CATEGORY({
@@ -144,13 +144,15 @@ const CreateCategoryView = () => {
                 onChange={({ target }) => {
                   if (target.checked) {
                     form.setFieldValue(
-                      "sub_categories",
-                      form.values.sub_categories.concat(Number(target.value))
+                      "event_sub_categories",
+                      form.values.event_sub_categories.concat(
+                        Number(target.value)
+                      )
                     );
                   } else {
                     form.setFieldValue(
-                      "sub_categories",
-                      form.values.sub_categories.filter(
+                      "event_sub_categories",
+                      form.values.event_sub_categories.filter(
                         (id) => id !== Number(target.value)
                       )
                     );
@@ -161,11 +163,12 @@ const CreateCategoryView = () => {
               </Checkbox>
             ))}
           </SimpleGrid>
-          {form.errors.sub_categories && form.touched.sub_categories && (
-            <Text color="red.500" fontSize="xs">
-              {form.errors.sub_categories}
-            </Text>
-          )}
+          {form.errors.event_sub_categories &&
+            form.touched.event_sub_categories && (
+              <Text color="red.500" fontSize="xs">
+                {form.errors.event_sub_categories}
+              </Text>
+            )}
 
           <HStack mt={4}>
             <Spacer />

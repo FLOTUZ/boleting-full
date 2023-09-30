@@ -21,14 +21,14 @@ export const EventCategoryService = {
   },
 
   async createEventCategory(
-    data: EventCategory & { sub_categories: number[] }
+    data: EventCategory & { event_sub_categories: number[] }
   ) {
     try {
       return await prisma.eventCategory.create({
         data: {
           ...data,
-          sub_categories: {
-            connect: data.sub_categories.map((id: number) => ({ id })),
+          event_sub_categories: {
+            connect: data.event_sub_categories.map((id: number) => ({ id })),
           },
         },
       });
@@ -39,14 +39,14 @@ export const EventCategoryService = {
 
   async updateEventCategory(
     id: number,
-    data: EventCategory & { sub_categories: number[] }
+    data: EventCategory & { event_sub_categories: number[] }
   ) {
     return await prisma.eventCategory.update({
       where: { id },
       data: {
         ...data,
-        sub_categories: {
-          set: data.sub_categories.map((id: number) => ({ id })),
+        event_sub_categories: {
+          set: data.event_sub_categories.map((id: number) => ({ id })),
         },
       },
     });

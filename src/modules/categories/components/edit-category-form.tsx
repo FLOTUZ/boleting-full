@@ -49,7 +49,7 @@ const EditCategoryForm = () => {
     initialValues: {
       name: eventCategory?.name,
       description: eventCategory?.description || "",
-      sub_categories: eventCategory?.sub_categories?.map(
+      event_sub_categories: eventCategory?.event_sub_categories?.map(
         (subCategory) => subCategory.id
       ),
     },
@@ -111,18 +111,20 @@ const EditCategoryForm = () => {
             key={index}
             ps={2}
             value={subCategory.id!}
-            isChecked={form.values.sub_categories?.includes(subCategory.id!)}
+            isChecked={form.values.event_sub_categories?.includes(
+              subCategory.id!
+            )}
             onChange={({ target }) => {
-              form.values.sub_categories?.includes(subCategory.id!)
+              form.values.event_sub_categories?.includes(subCategory.id!)
                 ? form.setFieldValue(
-                    "sub_categories",
-                    form.values.sub_categories?.filter(
+                    "event_sub_categories",
+                    form.values.event_sub_categories?.filter(
                       (subCategoryId) => subCategoryId !== subCategory.id!
                     )
                   )
                 : form.setFieldValue(
-                    "sub_categories",
-                    form.values.sub_categories?.concat(subCategory.id!)
+                    "event_sub_categories",
+                    form.values.event_sub_categories?.concat(subCategory.id!)
                   );
             }}
           >
@@ -131,9 +133,10 @@ const EditCategoryForm = () => {
         ))}
       </SimpleGrid>
 
-      {form.values.sub_categories && form.touched.sub_categories && (
-        <Text color="red">{form.errors.sub_categories}</Text>
-      )}
+      {form.values.event_sub_categories &&
+        form.touched.event_sub_categories && (
+          <Text color="red">{form.errors.event_sub_categories}</Text>
+        )}
 
       <HStack mt={4} mb={6}>
         <Spacer />

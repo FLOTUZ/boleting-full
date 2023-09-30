@@ -11,7 +11,9 @@ import { useFormik, FormikProvider } from "formik";
 import {
   Box,
   Button,
+  Center,
   Checkbox,
+  Container,
   FormLabel,
   HStack,
   Input,
@@ -65,7 +67,7 @@ const EditEventForm = () => {
       re_entry: event?.re_entry,
       event_logo_url: event?.event_logo_url,
       event_banner_url: event?.event_banner_url,
-      sub_categories: event?.sub_categories!.map(
+      event_sub_categories: event?.event_sub_categories!.map(
         (subCategory) => subCategory.id
       ),
     },
@@ -102,7 +104,7 @@ const EditEventForm = () => {
   }, [GET_EVENT]);
 
   return (
-    <FormikProvider value={form}>
+    <Center>
       <form onSubmit={form.handleSubmit}>
         <FormLabel htmlFor="name">Nombre del evento:</FormLabel>
         <Input
@@ -139,14 +141,14 @@ const EditEventForm = () => {
 
         <FormLabel htmlFor="event_sub_categories">Sub categorias:</FormLabel>
 
-        <SimpleGrid p={4} columns={[2, 4]}>
+        <SimpleGrid columns={[2, 4]}>
           {subCategories.map((subCategory, index) => (
             <Checkbox
               key={index}
               ps={2}
               value={subCategory.id!}
               isChecked={
-                form.values.sub_categories?.some(
+                form.values.event_sub_categories?.some(
                   (selectedSubCategory) =>
                     selectedSubCategory === subCategory.id!
                 ) ?? false
@@ -155,16 +157,16 @@ const EditEventForm = () => {
                 if (e.target.checked) {
                   // Add sub category to selected sub categories
                   form.setFieldValue(
-                    "sub_categories",
-                    form.values.sub_categories?.concat(subCategory.id!)
+                    "event_sub_categories",
+                    form.values.event_sub_categories?.concat(subCategory.id!)
                   );
                 } else {
                   console.log("unchecked");
                   // Remove sub category from selected sub categories
 
                   form.setFieldValue(
-                    "sub_categories",
-                    form.values.sub_categories?.filter(
+                    "event_sub_categories",
+                    form.values.event_sub_categories?.filter(
                       (selectedSubCategory) =>
                         selectedSubCategory !== subCategory.id!
                     )
@@ -177,9 +179,10 @@ const EditEventForm = () => {
           ))}
         </SimpleGrid>
 
-        {form.errors.sub_categories && form.touched.sub_categories && (
-          <Text color="red">{form.errors.sub_categories}</Text>
-        )}
+        {form.errors.event_sub_categories &&
+          form.touched.event_sub_categories && (
+            <Text color="red">{form.errors.event_sub_categories}</Text>
+          )}
 
         <FormLabel htmlFor="event_location_url">
           Localizacion del evento en mapa (URL):
@@ -190,9 +193,10 @@ const EditEventForm = () => {
           onChange={form.handleChange}
           defaultValue={event?.event_location_url ?? ""}
         />
-        {form.errors.sub_categories && form.touched.sub_categories && (
-          <Text color="red">{form.errors.sub_categories}</Text>
-        )}
+        {form.errors.event_sub_categories &&
+          form.touched.event_sub_categories && (
+            <Text color="red">{form.errors.event_sub_categories}</Text>
+          )}
 
         <FormLabel htmlFor="start_date">Fecha de inicio:</FormLabel>
         <Input
@@ -288,7 +292,7 @@ const EditEventForm = () => {
           </Button>
         </HStack>
       </form>
-    </FormikProvider>
+    </Center>
   );
 };
 

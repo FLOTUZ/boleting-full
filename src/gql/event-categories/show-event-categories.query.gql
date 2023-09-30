@@ -4,7 +4,7 @@ query ShowEventCategories {
     name
     description
     events_count
-    sub_categories_count
+    event_sub_categories_count
     createdAt
     updatedAt
   }
