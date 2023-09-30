@@ -1,3 +1,4 @@
+import IntroAnimationComponent from "@/components/animations/intro-animation.component";
 import { useSession } from "@/hooks/useSession";
 import {
   Text,
@@ -9,6 +10,7 @@ import {
   Spacer,
   SimpleGrid,
   Box,
+  Container,
 } from "@chakra-ui/react";
 
 import Head from "next/head";
@@ -36,17 +38,11 @@ function LoginView() {
       <Head>
         <title>Login</title>
       </Head>
-      <Center h={"100vh"}>
-        <Box bgColor={"red"}>
-          <SimpleGrid
-            h={"100%"}
-            w={"100%"}
-            columns={[1, 1]}
-            bgColor={"gray.700"}
-            padding={20}
-          >
+      <IntroAnimationComponent data={true}>
+        <Container>
+          <SimpleGrid columns={[1, 1]} bgColor={"gray.700"} padding={20}>
             <Heading>Login</Heading>
-            <Text fontSize={"xl"}>Log in to your account</Text>
+            <Text fontSize={"xl"}>Ingresa a tu cuenta</Text>
 
             <Spacer mt={8} />
 
@@ -58,18 +54,18 @@ function LoginView() {
               <Spacer mt={2} />
 
               <FormLabel htmlFor="password" w={"100%"}>
-                Password
+                Contraseña
               </FormLabel>
               <Input id="password" name="password" type="password" w={"100%"} />
               <Spacer mt={2} />
 
               <Button type="submit" w={"100%"} isLoading={loginLoading}>
-                Login
+                Ingresar
               </Button>
             </form>
           </SimpleGrid>
-        </Box>
-      </Center>
+        </Container>
+      </IntroAnimationComponent>
     </>
   );
 }
