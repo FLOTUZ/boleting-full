@@ -66,7 +66,7 @@ const eventCategories = [
 const EventsSection = () => {
   return (
     <Box margin={9}>
-      <Heading as="h3" size="lg">
+      <Heading as="h3" size="lg" mb={4}>
         Eventos y categorias
       </Heading>
 
