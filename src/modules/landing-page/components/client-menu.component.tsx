@@ -1,5 +1,8 @@
+import Head from "next/head";
+import Link from "next/link";
 import ThemeSwitchComponent from "@/components/buttons/theme-switch.component";
 import { useSession } from "@/hooks";
+import { LoginPath, RegisterPath } from "@/routes";
 import {
   Box,
   Button,
@@ -14,7 +17,7 @@ import {
   DrawerOverlay,
   useColorMode,
 } from "@chakra-ui/react";
-import Head from "next/head";
+
 import { FaRegUserCircle } from "react-icons/fa";
 import {
   IoCloseSharp,
@@ -64,8 +67,13 @@ const ClientMenuComponent = () => {
                 </Text>
               ) : (
                 <Box textAlign={"center"} mt={4}>
-                  <Button variant="ghost">Iniciar sesion</Button>
-                  <Button variant="ghost">Registrame</Button>
+                  <Link href={LoginPath}>
+                    <Button variant="ghost">Iniciar sesion</Button>
+                  </Link>
+
+                  <Link href={RegisterPath}>
+                    <Button variant="ghost">Registrame</Button>
+                  </Link>
                 </Box>
               )}
             </Box>
