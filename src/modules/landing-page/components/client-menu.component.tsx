@@ -27,7 +27,7 @@ import {
 } from "react-icons/io5";
 
 const ClientMenuComponent = () => {
-  const { user } = useSession();
+  const { user, logout } = useSession();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { colorMode } = useColorMode();
 
@@ -94,6 +94,7 @@ const ClientMenuComponent = () => {
                 placeContent={"start"}
                 variant="ghost"
                 colorScheme="red"
+                onClick={() => logout()}
               >
                 <IoExit />
                 &nbsp; Cerrar sesion
