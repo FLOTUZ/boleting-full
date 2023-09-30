@@ -14,6 +14,7 @@ import {
   DrawerOverlay,
   useColorMode,
 } from "@chakra-ui/react";
+import Head from "next/head";
 import { FaRegUserCircle } from "react-icons/fa";
 import {
   IoCloseSharp,
@@ -29,6 +30,11 @@ const ClientMenuComponent = () => {
 
   return (
     <>
+      <Head>
+        <title>Boleting full</title>
+        <meta name="description" content="Ticketing system" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <IconButton
         aria-label="Open menu"
         fontSize="20px"
@@ -48,17 +54,19 @@ const ClientMenuComponent = () => {
                 <IoCloseSharp size={16} />
               </IconButton>
             </Box>
-            Bienvenido a tu cuenta
+            <Box textAlign={"center"}>
+              {user ? "Bienvenido a tu cuenta" : "Ingresa"}
+            </Box>
             <Box>
               {user && user.email ? (
                 <Text as={"b"} fontSize={"md"} alignSelf={"center"}>
                   {user.name}
                 </Text>
               ) : (
-                <>
-                  <Button variant="ghost">Registrame</Button>
+                <Box textAlign={"center"} mt={4}>
                   <Button variant="ghost">Iniciar sesion</Button>
-                </>
+                  <Button variant="ghost">Registrame</Button>
+                </Box>
               )}
             </Box>
           </DrawerHeader>
