@@ -2,8 +2,8 @@ import { NextApiRequest, NextApiResponse } from "next";
 import * as argon from "argon2";
 import { prisma } from "@/server";
 
-import jwt from "jsonwebtoken";
 import { LoginClientSchema, validateData } from "@/validations";
+import { signJWT } from "@/utils/sign-jwt.util";
 
 export default async function POST(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") res.status(404).json({ message: "Not found" });
@@ -27,13 +27,10 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
     res.status(401).json({ message: "Credenciales incorrectas" });
   }
 
-  const token = jwt.sign(
-    {
-      id: client!.id,
-      email: client!.email,
-    },
-    process.env.JWT_SECRET as string
-  );
+  const token = signJWT({
+    userId: client!.id,
+    email: client!.email,
+  });
 
   res?.setHeader("Authorization", `Bearer ${token}`);
 
