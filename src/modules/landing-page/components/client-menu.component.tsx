@@ -2,7 +2,7 @@ import Head from "next/head";
 import Link from "next/link";
 import ThemeSwitchComponent from "@/components/buttons/theme-switch.component";
 import { useSession } from "@/hooks";
-import { LoginPath, RegisterPath } from "@/routes";
+import { LoginClientPath, LoginPath, RegisterPath } from "@/routes";
 import {
   Box,
   Button,
@@ -25,9 +25,10 @@ import {
   IoHelpBuoy,
   IoTicketSharp,
 } from "react-icons/io5";
+import { useClientSession } from "@/hooks/useClientSession";
 
 const ClientMenuComponent = () => {
-  const { user, logout } = useSession();
+  const { client, logout } = useClientSession();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { colorMode } = useColorMode();
 
@@ -58,16 +59,18 @@ const ClientMenuComponent = () => {
               </IconButton>
             </Box>
             <Box textAlign={"center"}>
-              {user ? "Bienvenido a tu cuenta" : "Ingresa"}
+              {client ? "Bienvenido a tu cuenta" : "Ingresa"}
             </Box>
             <Box>
-              {user && user.email ? (
-                <Text as={"b"} fontSize={"md"} alignSelf={"center"}>
-                  {user.name}
-                </Text>
+              {client && client.email ? (
+                <Box textAlign={"center"}>
+                  <Text as={"b"} fontSize={"md"}>
+                    {client.name} {client.last_name}
+                  </Text>
+                </Box>
               ) : (
                 <Box textAlign={"center"} mt={4}>
-                  <Link href={LoginPath}>
+                  <Link href={LoginClientPath}>
                     <Button variant="ghost">Iniciar sesion</Button>
                   </Link>
 

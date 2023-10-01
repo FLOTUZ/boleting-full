@@ -1706,6 +1706,13 @@ export type ShowCourtesyTicketQueryVariables = Exact<{
 
 export type ShowCourtesyTicketQuery = { __typename?: 'Query', ticket?: { __typename?: 'Ticket', id: number, note?: string | null, is_used: boolean, price: any, service_charge: any, access_typeId?: number | null, owner_typeId?: number | null, createdAt: any, updatedAt?: any | null, access_type?: { __typename?: 'AccessType', id: number, name: string } | null, ticket_type?: { __typename?: 'OwnerType', id: string, name: string } | null, event: { __typename?: 'Event', id: number, name: string } } | null };
 
+export type UserClientQueryVariables = Exact<{
+  userClientId: Scalars['Int']['input'];
+}>;
+
+
+export type UserClientQuery = { __typename?: 'Query', userClient: { __typename?: 'UserClient', id: number, name: string, last_name: string } };
+
 export type CreateUserMutationVariables = Exact<{
   data: CreateUserInput;
 }>;
@@ -3760,6 +3767,43 @@ export function useShowCourtesyTicketLazyQuery(baseOptions?: Apollo.LazyQueryHoo
 export type ShowCourtesyTicketQueryHookResult = ReturnType<typeof useShowCourtesyTicketQuery>;
 export type ShowCourtesyTicketLazyQueryHookResult = ReturnType<typeof useShowCourtesyTicketLazyQuery>;
 export type ShowCourtesyTicketQueryResult = Apollo.QueryResult<ShowCourtesyTicketQuery, ShowCourtesyTicketQueryVariables>;
+export const UserClientDocument = gql`
+    query UserClient($userClientId: Int!) {
+  userClient(id: $userClientId) {
+    id
+    name
+    last_name
+  }
+}
+    `;
+
+/**
+ * __useUserClientQuery__
+ *
+ * To run a query within a React component, call `useUserClientQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserClientQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserClientQuery({
+ *   variables: {
+ *      userClientId: // value for 'userClientId'
+ *   },
+ * });
+ */
+export function useUserClientQuery(baseOptions: Apollo.QueryHookOptions<UserClientQuery, UserClientQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UserClientQuery, UserClientQueryVariables>(UserClientDocument, options);
+      }
+export function useUserClientLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserClientQuery, UserClientQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UserClientQuery, UserClientQueryVariables>(UserClientDocument, options);
+        }
+export type UserClientQueryHookResult = ReturnType<typeof useUserClientQuery>;
+export type UserClientLazyQueryHookResult = ReturnType<typeof useUserClientLazyQuery>;
+export type UserClientQueryResult = Apollo.QueryResult<UserClientQuery, UserClientQueryVariables>;
 export const CreateUserDocument = gql`
     mutation CreateUser($data: CreateUserInput!) {
   createUser(data: $data) {
