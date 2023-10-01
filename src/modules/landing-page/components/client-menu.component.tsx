@@ -80,7 +80,6 @@ const ClientMenuComponent = () => {
           </DrawerHeader>
           <DrawerBody>
             <VStack rounded="sm" alignItems={"flex-start"} spacing={4} p={4}>
-              <Box></Box>
               <Button w={"full"} placeContent={"start"} variant="ghost">
                 <IoTicketSharp />
                 &nbsp; Mis boletos
