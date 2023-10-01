@@ -1,8 +1,12 @@
 import Head from "next/head";
 import Link from "next/link";
 import ThemeSwitchComponent from "@/components/buttons/theme-switch.component";
-import { useSession } from "@/hooks";
-import { LoginClientPath, LoginPath, RegisterPath } from "@/routes";
+import {
+  LoginClientPath,
+  LoginPath,
+  RegisterClientPath,
+  RegisterPath,
+} from "@/routes";
 import {
   Box,
   Button,
@@ -74,7 +78,7 @@ const ClientMenuComponent = () => {
                     <Button variant="ghost">Iniciar sesion</Button>
                   </Link>
 
-                  <Link href={RegisterPath}>
+                  <Link href={RegisterClientPath}>
                     <Button variant="ghost">Registrame</Button>
                   </Link>
                 </Box>
