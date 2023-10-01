@@ -39,8 +39,16 @@ function LoginView() {
         <title>Login</title>
       </Head>
       <IntroAnimationComponent data={true}>
-        <Container>
-          <SimpleGrid columns={[1, 1]} bgColor={"gray.700"} padding={20}>
+        <Container
+          borderRadius={"xl"}
+          _light={{
+            shadow: "xl",
+          }}
+          _dark={{
+            bg: "gray.900",
+          }}
+        >
+          <SimpleGrid columns={[1]} padding={20}>
             <Heading>Login</Heading>
             <Text fontSize={"xl"}>Ingresa a tu cuenta</Text>
 
