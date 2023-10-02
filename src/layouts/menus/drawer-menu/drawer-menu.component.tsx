@@ -1,4 +1,4 @@
-import { useSession } from "@/hooks/useSession";
+import { useUserSession } from "@/hooks/useUserSession";
 import {
   Box,
   Button,
@@ -18,12 +18,17 @@ interface MenuDrawerComponentProps {
 }
 
 const MenuDrawerComponent = ({ menuItems }: MenuDrawerComponentProps) => {
-  const { user } = useSession();
+  const { user } = useUserSession();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
-      <Button aria-label="Search database" w={"fit-content"} onClick={onOpen} bgColor={"gray.600"}>
+      <Button
+        aria-label="Search database"
+        w={"fit-content"}
+        onClick={onOpen}
+        bgColor={"gray.600"}
+      >
         <GiHamburgerMenu />
       </Button>
 

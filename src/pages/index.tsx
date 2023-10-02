@@ -4,6 +4,8 @@ import LandingViewComponent from "@/modules/landing-page/views/landing.view";
 import { LandingPageProvider } from "@/modules/landing-page/contexts/landing-page.context";
 
 import { UserProvider } from "@/contexts/user.context";
+import { ClientProvider } from "@/contexts/client.context";
+
 import { EventSubCategory } from "@/gql/generated";
 import { prisma } from "@/server";
 
@@ -14,7 +16,9 @@ const MaindRoute = ({ eventSubCategories }: MaindRouteProps) => {
   return (
     <LandingPageProvider eventSubCategories={eventSubCategories}>
       <UserProvider>
-        <LandingViewComponent />
+        <ClientProvider>
+          <LandingViewComponent />
+        </ClientProvider>
       </UserProvider>
     </LandingPageProvider>
   );

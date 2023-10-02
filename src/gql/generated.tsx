@@ -1429,13 +1429,6 @@ export type EditAccessTypeMutationVariables = Exact<{
 
 export type EditAccessTypeMutation = { __typename?: 'Mutation', updateAccessType: { __typename?: 'AccessType', id: number, description?: string | null, enter_and_exit_option: boolean, price: any } };
 
-export type LoginMutationVariables = Exact<{
-  data: LoginInput;
-}>;
-
-
-export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'LoginResponse', accessToken?: string | null, user?: { __typename?: 'User', id: number, name?: string | null, email?: string | null, last_name?: string | null } | null } };
-
 export type WhoAMiQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1706,6 +1699,13 @@ export type ShowCourtesyTicketQueryVariables = Exact<{
 
 export type ShowCourtesyTicketQuery = { __typename?: 'Query', ticket?: { __typename?: 'Ticket', id: number, note?: string | null, is_used: boolean, price: any, service_charge: any, access_typeId?: number | null, owner_typeId?: number | null, createdAt: any, updatedAt?: any | null, access_type?: { __typename?: 'AccessType', id: number, name: string } | null, ticket_type?: { __typename?: 'OwnerType', id: string, name: string } | null, event: { __typename?: 'Event', id: number, name: string } } | null };
 
+export type UserClientQueryVariables = Exact<{
+  userClientId: Scalars['Int']['input'];
+}>;
+
+
+export type UserClientQuery = { __typename?: 'Query', userClient: { __typename?: 'UserClient', id: number, name: string, last_name: string } };
+
 export type CreateUserMutationVariables = Exact<{
   data: CreateUserInput;
 }>;
@@ -1938,45 +1938,6 @@ export function useEditAccessTypeMutation(baseOptions?: Apollo.MutationHookOptio
 export type EditAccessTypeMutationHookResult = ReturnType<typeof useEditAccessTypeMutation>;
 export type EditAccessTypeMutationResult = Apollo.MutationResult<EditAccessTypeMutation>;
 export type EditAccessTypeMutationOptions = Apollo.BaseMutationOptions<EditAccessTypeMutation, EditAccessTypeMutationVariables>;
-export const LoginDocument = gql`
-    mutation Login($data: LoginInput!) {
-  login(data: $data) {
-    accessToken
-    user {
-      id
-      name
-      email
-      last_name
-    }
-  }
-}
-    `;
-export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>;
-
-/**
- * __useLoginMutation__
- *
- * To run a mutation, you first call `useLoginMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useLoginMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [loginMutation, { data, loading, error }] = useLoginMutation({
- *   variables: {
- *      data: // value for 'data'
- *   },
- * });
- */
-export function useLoginMutation(baseOptions?: Apollo.MutationHookOptions<LoginMutation, LoginMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, options);
-      }
-export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
-export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
-export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
 export const WhoAMiDocument = gql`
     query WhoAMi {
   currentUser {
@@ -3760,6 +3721,43 @@ export function useShowCourtesyTicketLazyQuery(baseOptions?: Apollo.LazyQueryHoo
 export type ShowCourtesyTicketQueryHookResult = ReturnType<typeof useShowCourtesyTicketQuery>;
 export type ShowCourtesyTicketLazyQueryHookResult = ReturnType<typeof useShowCourtesyTicketLazyQuery>;
 export type ShowCourtesyTicketQueryResult = Apollo.QueryResult<ShowCourtesyTicketQuery, ShowCourtesyTicketQueryVariables>;
+export const UserClientDocument = gql`
+    query UserClient($userClientId: Int!) {
+  userClient(id: $userClientId) {
+    id
+    name
+    last_name
+  }
+}
+    `;
+
+/**
+ * __useUserClientQuery__
+ *
+ * To run a query within a React component, call `useUserClientQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserClientQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserClientQuery({
+ *   variables: {
+ *      userClientId: // value for 'userClientId'
+ *   },
+ * });
+ */
+export function useUserClientQuery(baseOptions: Apollo.QueryHookOptions<UserClientQuery, UserClientQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UserClientQuery, UserClientQueryVariables>(UserClientDocument, options);
+      }
+export function useUserClientLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserClientQuery, UserClientQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UserClientQuery, UserClientQueryVariables>(UserClientDocument, options);
+        }
+export type UserClientQueryHookResult = ReturnType<typeof useUserClientQuery>;
+export type UserClientLazyQueryHookResult = ReturnType<typeof useUserClientLazyQuery>;
+export type UserClientQueryResult = Apollo.QueryResult<UserClientQuery, UserClientQueryVariables>;
 export const CreateUserDocument = gql`
     mutation CreateUser($data: CreateUserInput!) {
   createUser(data: $data) {

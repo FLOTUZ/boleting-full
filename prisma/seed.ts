@@ -47,11 +47,7 @@ async function main() {
         description: "Gerente de la organización",
         organizationId: 1,
       },
-      {
-        name: "ASISTENTE",
-        description: "Clientes que asisten a los eventos",
-        organizationId: 1,
-      },
+
       {
         name: "CAJERO",
         description: "Cajero de la organización",
@@ -60,6 +56,11 @@ async function main() {
       {
         name: "SPONSOR",
         description: "Patrocinador de la organización",
+        organizationId: 1,
+      },
+      {
+        name: "ASISTENTE",
+        description: "Clientes que asisten a los eventos",
         organizationId: 1,
       },
     ],

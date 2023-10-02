@@ -1,36 +1,27 @@
 import IntroAnimationComponent from "@/components/animations/intro-animation.component";
-import { useSession } from "@/hooks/useSession";
+import { useUserSession } from "@/hooks/useUserSession";
 import {
   Text,
   Button,
-  Center,
   FormLabel,
   Heading,
   Input,
   Spacer,
   SimpleGrid,
-  Box,
   Container,
 } from "@chakra-ui/react";
 
 import Head from "next/head";
 
 function LoginView() {
-  const { login, loginLoading } = useSession();
+  const { login, loginLoading } = useUserSession();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const email = e.currentTarget.email.value;
     const password = e.currentTarget.password.value;
-    await login({
-      variables: {
-        data: {
-          email,
-          password,
-        },
-      },
-    });
+    await login({ email, password });
   };
 
   return (
@@ -39,8 +30,16 @@ function LoginView() {
         <title>Login</title>
       </Head>
       <IntroAnimationComponent data={true}>
-        <Container>
-          <SimpleGrid columns={[1, 1]} bgColor={"gray.700"} padding={20}>
+        <Container
+          borderRadius={"xl"}
+          _light={{
+            shadow: "xl",
+          }}
+          _dark={{
+            bg: "gray.900",
+          }}
+        >
+          <SimpleGrid columns={[1]} padding={20}>
             <Heading>Login</Heading>
             <Text fontSize={"xl"}>Ingresa a tu cuenta</Text>
 

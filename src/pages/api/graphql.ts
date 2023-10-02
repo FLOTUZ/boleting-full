@@ -1,32 +1,25 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { apolloServer, prisma } from "@/server";
+import { apolloServer } from "@/server";
+
 import { startServerAndCreateNextHandler } from "@as-integrations/next";
-import jwt from "jsonwebtoken";
-import { User } from "@prisma/client";
-import { AuthenticationError } from "@/server/utils";
+import { jwtVerifier } from "@/utils/jwt-verifier.util";
 
 export default startServerAndCreateNextHandler(apolloServer, {
   context: async (req: NextApiRequest, res: NextApiResponse) => {
+    req.headers.authorization == null;
     const token = req.headers.authorization?.split(" ")[1];
-    const user = token ? getUser(token) : null;
 
-    if (!user)
-      return { id_user: null, id_organization: null, prisma, req, res };
+    const user = token ? jwtVerifier(token) : null;
+
+    if (user == null)
+      return { id_user: null, id_organization: null, type: null, req, res };
 
     return {
-      id_user: user.id,
-      id_organization: user.organizationId,
-      prisma,
+      id_user: user!.id,
+      type: user!.type,
+      id_organization: user!.organizationId ?? null,
       req,
       res,
     };
   },
 });
-
-const getUser = (token: string) => {
-  try {
-    return jwt.verify(token, process.env.JWT_SECRET as string) as User;
-  } catch (error) {
-    throw new AuthenticationError("Invalid token");
-  }
-};
