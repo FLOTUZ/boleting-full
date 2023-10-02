@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react";
 import { User } from "@/gql/generated";
-import { useUserSession } from "@/hooks/useSession";
+import { useUserSession } from "@/hooks/useUserSession";
 import CircularLoaderComponent from "@/components/loaders/circular-loader.component";
 
 export type UserContextType = {

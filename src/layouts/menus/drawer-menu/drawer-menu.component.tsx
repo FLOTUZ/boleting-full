@@ -1,4 +1,4 @@
-import { useUserSession } from "@/hooks/useSession";
+import { useUserSession } from "@/hooks/useUserSession";
 import {
   Box,
   Button,

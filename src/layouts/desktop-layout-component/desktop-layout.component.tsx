@@ -21,7 +21,7 @@ import { IoBusiness } from "react-icons/io5";
 import { MdDashboard } from "react-icons/md";
 import { TbBuildingCircus } from "react-icons/tb";
 import { FaChevronCircleDown, FaUserAlt } from "react-icons/fa";
-import { useUserSession } from "@/hooks/useSession";
+import { useUserSession } from "@/hooks/useUserSession";
 import {
   BreadCrumbItem,
   DesktopHeaderComponent,

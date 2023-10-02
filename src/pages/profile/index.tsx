@@ -1,6 +1,6 @@
 //User profile
 
-import { useUserSession } from "@/hooks/useSession";
+import { useUserSession } from "@/hooks/useUserSession";
 import DesktopLayoutComponent from "@/layouts/desktop-layout-component/desktop-layout.component";
 import {
   Card,

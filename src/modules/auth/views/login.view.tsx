@@ -1,5 +1,5 @@
 import IntroAnimationComponent from "@/components/animations/intro-animation.component";
-import { useUserSession } from "@/hooks/useSession";
+import { useUserSession } from "@/hooks/useUserSession";
 import {
   Text,
   Button,
