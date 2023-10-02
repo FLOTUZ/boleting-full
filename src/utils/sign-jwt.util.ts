@@ -13,6 +13,7 @@ export const signJWT = ({
     {
       id: userId,
       email: email,
+      type: organizationId ? "USER" : "CLIENT",
       organizationId: organizationId,
     },
     process.env.JWT_SECRET as string

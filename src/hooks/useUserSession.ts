@@ -1,7 +1,7 @@
 import { User } from "@/gql/generated";
 import { EventsPath, LoginPath } from "@/routes";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export const useUserSession = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -46,16 +46,20 @@ export const useUserSession = () => {
     router.push(LoginPath);
   };
 
-  useEffect(() => {
-    const getUser = (): User | null => {
-      const userStorage = localStorage.getItem("user");
+  const getUser = useCallback(() => {
+    const userStorage = localStorage.getItem("user");
 
-      if (userStorage) setUser(JSON.parse(userStorage));
-
-      return null;
-    };
-    getUser();
+    if (userStorage) {
+      setUser(JSON.parse(userStorage));
+    } else {
+      router.replace(LoginPath);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    getUser();
+  }, [getUser]);
 
   return {
     user,

@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { UserClient } from "@/gql/generated";
-import { rootPath } from "@/routes";
+import { LoginClientPath, rootPath } from "@/routes";
 
 import { useToast } from "@chakra-ui/react";
 
@@ -47,19 +47,20 @@ export const useClientSession = () => {
     router.push(rootPath);
   };
 
-  useEffect(() => {
-    const getUser = (): UserClient | null => {
-      const userStorage = localStorage.getItem("user");
+  const getUser = useCallback(() => {
+    const userStorage = localStorage.getItem("user");
 
-      if (userStorage) {
-        setClient(JSON.parse(userStorage));
-        return JSON.parse(userStorage) as UserClient;
-      }
-
-      return null;
-    };
-    getUser();
+    if (userStorage) {
+      setClient(JSON.parse(userStorage));
+    } else {
+      router.replace(LoginClientPath);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    getUser();
+  }, [getUser]);
 
   return {
     client,
