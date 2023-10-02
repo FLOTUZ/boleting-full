@@ -1,4 +1,4 @@
-import { useSession } from "@/hooks/useSession";
+import { useUserSession } from "@/hooks/useSession";
 import { MenuItems } from "@/interfaces";
 import {
   Spacer,
@@ -17,7 +17,7 @@ interface LeftMenuComponentProps {
 }
 
 const LeftMenuComponent = ({ menuItems }: LeftMenuComponentProps) => {
-  const { user, logout } = useSession();
+  const { user, logout } = useUserSession();
   return (
     <Box p={4} textAlign={"center"}>
       {menuItems.map((menuItem, index) => (

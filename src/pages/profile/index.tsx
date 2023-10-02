@@ -1,6 +1,6 @@
 //User profile
 
-import { useSession } from "@/hooks/useSession";
+import { useUserSession } from "@/hooks/useSession";
 import DesktopLayoutComponent from "@/layouts/desktop-layout-component/desktop-layout.component";
 import {
   Card,
@@ -16,7 +16,7 @@ import {
 import { useEffect } from "react";
 
 function ProfileRoute() {
-  const { user } = useSession();
+  const { user } = useUserSession();
 
   useEffect(() => {
     console.log(user);

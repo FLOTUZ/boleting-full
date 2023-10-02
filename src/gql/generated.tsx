@@ -1429,13 +1429,6 @@ export type EditAccessTypeMutationVariables = Exact<{
 
 export type EditAccessTypeMutation = { __typename?: 'Mutation', updateAccessType: { __typename?: 'AccessType', id: number, description?: string | null, enter_and_exit_option: boolean, price: any } };
 
-export type LoginMutationVariables = Exact<{
-  data: LoginInput;
-}>;
-
-
-export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'LoginResponse', accessToken?: string | null, user?: { __typename?: 'User', id: number, name?: string | null, email?: string | null, last_name?: string | null } | null } };
-
 export type WhoAMiQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1945,45 +1938,6 @@ export function useEditAccessTypeMutation(baseOptions?: Apollo.MutationHookOptio
 export type EditAccessTypeMutationHookResult = ReturnType<typeof useEditAccessTypeMutation>;
 export type EditAccessTypeMutationResult = Apollo.MutationResult<EditAccessTypeMutation>;
 export type EditAccessTypeMutationOptions = Apollo.BaseMutationOptions<EditAccessTypeMutation, EditAccessTypeMutationVariables>;
-export const LoginDocument = gql`
-    mutation Login($data: LoginInput!) {
-  login(data: $data) {
-    accessToken
-    user {
-      id
-      name
-      email
-      last_name
-    }
-  }
-}
-    `;
-export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>;
-
-/**
- * __useLoginMutation__
- *
- * To run a mutation, you first call `useLoginMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useLoginMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [loginMutation, { data, loading, error }] = useLoginMutation({
- *   variables: {
- *      data: // value for 'data'
- *   },
- * });
- */
-export function useLoginMutation(baseOptions?: Apollo.MutationHookOptions<LoginMutation, LoginMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, options);
-      }
-export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
-export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
-export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
 export const WhoAMiDocument = gql`
     query WhoAMi {
   currentUser {

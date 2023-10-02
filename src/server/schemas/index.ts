@@ -1,6 +1,5 @@
 export * from "./ability.schema";
 export * from "./user.schema";
-export * from "./auth.schema";
 export * from "./role.schema";
 export * from "./event.schema";
 export * from "./event-category.schema";

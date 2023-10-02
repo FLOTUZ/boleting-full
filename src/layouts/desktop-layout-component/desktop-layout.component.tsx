@@ -21,7 +21,7 @@ import { IoBusiness } from "react-icons/io5";
 import { MdDashboard } from "react-icons/md";
 import { TbBuildingCircus } from "react-icons/tb";
 import { FaChevronCircleDown, FaUserAlt } from "react-icons/fa";
-import { useSession } from "@/hooks/useSession";
+import { useUserSession } from "@/hooks/useSession";
 import {
   BreadCrumbItem,
   DesktopHeaderComponent,
@@ -55,7 +55,7 @@ const DesktopLayoutComponent = ({
   breadCrumbs,
 }: DesktopLayoutComponentProps) => {
   const router = useRouter();
-  const { user, logout } = useSession();
+  const { user, logout } = useUserSession();
   const menuItems: MenuItem[] = [
     {
       label: "Dashboard",

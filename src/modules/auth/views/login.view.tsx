@@ -1,36 +1,27 @@
 import IntroAnimationComponent from "@/components/animations/intro-animation.component";
-import { useSession } from "@/hooks/useSession";
+import { useUserSession } from "@/hooks/useSession";
 import {
   Text,
   Button,
-  Center,
   FormLabel,
   Heading,
   Input,
   Spacer,
   SimpleGrid,
-  Box,
   Container,
 } from "@chakra-ui/react";
 
 import Head from "next/head";
 
 function LoginView() {
-  const { login, loginLoading } = useSession();
+  const { login, loginLoading } = useUserSession();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const email = e.currentTarget.email.value;
     const password = e.currentTarget.password.value;
-    await login({
-      variables: {
-        data: {
-          email,
-          password,
-        },
-      },
-    });
+    await login({ email, password });
   };
 
   return (
