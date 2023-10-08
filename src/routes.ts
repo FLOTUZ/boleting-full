@@ -4,6 +4,7 @@ export const RegisterPath = "/auth/register";
 export const LoginClientPath = "/auth/client";
 export const RegisterClientPath = "/auth/client/register";
 export const profilePath = "/profile";
+export const DashboardPath = "/dashboard";
 
 // ============ ORGANIZATIONS ============
 export const OrganizationsPath = "/organizations";

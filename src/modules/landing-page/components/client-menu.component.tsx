@@ -1,12 +1,7 @@
 import Head from "next/head";
 import Link from "next/link";
 import ThemeSwitchComponent from "@/components/buttons/theme-switch.component";
-import {
-  LoginClientPath,
-  LoginPath,
-  RegisterClientPath,
-  RegisterPath,
-} from "@/routes";
+import { LoginClientPath, RegisterClientPath } from "@/routes";
 import {
   Box,
   Button,
@@ -30,6 +25,7 @@ import {
   IoTicketSharp,
 } from "react-icons/io5";
 import { useClientSession } from "@/hooks/useClientSession";
+import { ClientProvider } from "@/contexts/client.context";
 
 const ClientMenuComponent = () => {
   const { client, logout } = useClientSession();
@@ -37,7 +33,7 @@ const ClientMenuComponent = () => {
   const { colorMode } = useColorMode();
 
   return (
-    <>
+    <ClientProvider>
       <Head>
         <title>Boleting full</title>
         <meta name="description" content="Ticketing system" />
@@ -87,30 +83,35 @@ const ClientMenuComponent = () => {
           </DrawerHeader>
           <DrawerBody>
             <VStack rounded="sm" alignItems={"flex-start"} spacing={4} p={4}>
-              <Button w={"full"} placeContent={"start"} variant="ghost">
-                <IoTicketSharp />
-                &nbsp; Mis boletos
-              </Button>
+              {client && client.email && (
+                <>
+                  <Button w={"full"} placeContent={"start"} variant="ghost">
+                    <IoTicketSharp />
+                    &nbsp; Mis boletos
+                  </Button>
+
+                  <Button
+                    w={"full"}
+                    placeContent={"start"}
+                    variant="ghost"
+                    colorScheme="red"
+                    onClick={() => logout()}
+                  >
+                    <IoExit />
+                    &nbsp; Cerrar sesion
+                  </Button>
+                </>
+              )}
               <Button w={"full"} placeContent={"start"} variant="ghost">
                 <IoHelpBuoy />
                 &nbsp; Contacta a tu organizador
-              </Button>
-              <Button
-                w={"full"}
-                placeContent={"start"}
-                variant="ghost"
-                colorScheme="red"
-                onClick={() => logout()}
-              >
-                <IoExit />
-                &nbsp; Cerrar sesion
               </Button>
               <ThemeSwitchComponent />
             </VStack>
           </DrawerBody>
         </DrawerContent>
       </Drawer>
-    </>
+    </ClientProvider>
   );
 };
 

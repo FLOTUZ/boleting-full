@@ -18,7 +18,7 @@ export const UserContext = createContext<UserContextType>({
 export const useUser = () => useContext(UserContext);
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
-  const { user, setUser, logout, loginLoading } = useUserSession();
+  const { user, setUser, logout, loginLoading } = useUserSession({});
 
   if (loginLoading) {
     return <CircularLoaderComponent />;

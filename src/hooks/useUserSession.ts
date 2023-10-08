@@ -3,7 +3,11 @@ import { EventsPath, LoginPath } from "@/routes";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
-export const useUserSession = () => {
+interface UserSession {
+  requireAuth?: boolean | null;
+}
+
+export const useUserSession = ({ requireAuth = false }: UserSession) => {
   const [user, setUser] = useState<User | null>(null);
   const [loginLoading, setLoginLoading] = useState(false);
 
@@ -52,7 +56,7 @@ export const useUserSession = () => {
     if (userStorage) {
       setUser(JSON.parse(userStorage));
     } else {
-      router.replace(LoginPath);
+      requireAuth && router.replace(LoginPath);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

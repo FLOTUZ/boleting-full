@@ -3,10 +3,10 @@ import { useCallback, useEffect, useState } from "react";
 
 import { UserClient } from "@/gql/generated";
 import { LoginClientPath, rootPath } from "@/routes";
-
 import { useToast } from "@chakra-ui/react";
 
 export const useClientSession = () => {
+  const toast = useToast();
   const router = useRouter();
 
   const [client, setClient] = useState<UserClient | null>(null);
@@ -32,19 +32,27 @@ export const useClientSession = () => {
       const token = response.headers.get("Authorization")!;
       localStorage.setItem("access-token", token);
       localStorage.setItem("user", JSON.stringify(data as UserClient));
-
-      router.back();
-      return;
+      setClient(data as UserClient);
+      return true;
     }
 
-    throw new Error(data.message);
+    toast({
+      title: "Error",
+      description: data.message,
+      status: "error",
+      duration: 5000,
+      isClosable: true,
+    });
+
+    return false;
   };
 
   const logout = () => {
     setClient(null);
     localStorage.removeItem("user");
     localStorage.removeItem("access-token");
-    router.push(rootPath);
+
+    router.replace(rootPath);
   };
 
   const getUser = useCallback(() => {
@@ -52,8 +60,6 @@ export const useClientSession = () => {
 
     if (userStorage) {
       setClient(JSON.parse(userStorage));
-    } else {
-      router.replace(LoginClientPath);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
