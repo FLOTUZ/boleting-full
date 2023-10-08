@@ -5,6 +5,7 @@ import {
   Avatar,
   AvatarBadge,
   Box,
+  Button,
   Center,
   Grid,
   GridItem,
@@ -16,7 +17,6 @@ import {
   MenuList,
   Text,
 } from "@chakra-ui/react";
-import { GiTicket } from "react-icons/gi";
 import { IoBusiness } from "react-icons/io5";
 import { MdDashboard } from "react-icons/md";
 import { TbBuildingCircus } from "react-icons/tb";
@@ -30,6 +30,7 @@ import {
   CategoriesPath,
   DashboardPath,
   EventsPath,
+  LoginPath,
   OrganizationsPath,
   UsersPath,
   profilePath,
@@ -143,37 +144,42 @@ const DesktopLayoutComponent = ({
             </Box>
 
             <Box mt={16} maxW={"100%"} textAlign={"center"}>
-              <Menu>
-                <MenuButton
-                  as={Avatar}
-                  size={"sm"}
-                  name={user?.name + " " + user?.last_name}
-                  textAlign={"center"}
-                  userSelect={"none"}
-                  style={{
-                    cursor: "pointer",
-                    display: "inline-block",
-                  }}
-                >
-                  <AvatarBadge
-                    boxSize="1.25em"
-                    color={"white"}
-                    bgColor={"gray"}
-                  >
-                    <FaChevronCircleDown />
-                  </AvatarBadge>
-                </MenuButton>
-                <MenuList>
-                  <Text cursor={"default"}>
-                    {user?.name + " " + user?.last_name}
-                  </Text>
-                  <MenuDivider />
-                  <Link href={profilePath} passHref>
-                    <MenuItem>Perfil</MenuItem>
-                  </Link>
-                  <MenuItem onClick={logout}>Cerrar sesión</MenuItem>
-                </MenuList>
-              </Menu>
+              {user ? (
+                <>
+                  <Menu>
+                    <MenuButton
+                      as={Avatar}
+                      size={"sm"}
+                      name={user?.name + " " + user?.last_name}
+                      textAlign={"center"}
+                      userSelect={"none"}
+                      cursor={"pointer"}
+                    >
+                      <AvatarBadge
+                        boxSize="1.25em"
+                        color={"white"}
+                        bgColor={"gray"}
+                      >
+                        <FaChevronCircleDown />
+                      </AvatarBadge>
+                    </MenuButton>
+                    <MenuList>
+                      <Text cursor={"default"}>
+                        {user?.name + " " + user?.last_name}
+                      </Text>
+                      <MenuDivider />
+                      <Link href={profilePath} passHref>
+                        <MenuItem>Perfil</MenuItem>
+                      </Link>
+                      <MenuItem onClick={logout}>Cerrar sesión</MenuItem>
+                    </MenuList>
+                  </Menu>
+                </>
+              ) : (
+                <Link href={LoginPath}>
+                  <Button>Iniciar sesión</Button>
+                </Link>
+              )}
             </Box>
           </GridItem>
 
