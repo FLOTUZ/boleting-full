@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
 import { UserClient } from "@/gql/generated";
-import { rootPath } from "@/routes";
+import { RootPath } from "@/routes";
 import { useToast } from "@chakra-ui/react";
 
 export const useClientSession = () => {
@@ -53,7 +53,7 @@ export const useClientSession = () => {
     localStorage.removeItem("admin");
     localStorage.removeItem("access-token");
 
-    router.replace(rootPath);
+    router.replace(RootPath);
   };
 
   const getUser = useCallback(() => {

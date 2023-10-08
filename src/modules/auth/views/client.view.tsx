@@ -20,7 +20,7 @@ import {
   useMediaQuery,
 } from "@chakra-ui/react";
 import { GoEye, GoEyeClosed } from "react-icons/go";
-import { RegisterClientPath, rootPath } from "@/routes";
+import { RegisterClientPath, RootPath } from "@/routes";
 
 import { useClientSession } from "@/hooks/useClientSession";
 
@@ -44,7 +44,7 @@ const ClientLoginView = () => {
       const response = await login({ email, password });
 
       if (response) {
-        router.replace(rootPath);
+        router.replace(RootPath);
       }
     },
   });

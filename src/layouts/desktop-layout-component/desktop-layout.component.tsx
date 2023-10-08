@@ -33,7 +33,7 @@ import {
   LoginPath,
   OrganizationsPath,
   UsersPath,
-  profilePath,
+  ProfilePath,
 } from "@/routes";
 import { useRouter } from "next/router";
 import { BiSolidCategoryAlt } from "react-icons/bi";
@@ -168,7 +168,7 @@ const DesktopLayoutComponent = ({
                         {user?.name + " " + user?.last_name}
                       </Text>
                       <MenuDivider />
-                      <Link href={profilePath} passHref>
+                      <Link href={ProfilePath} passHref>
                         <MenuItem>Perfil</MenuItem>
                       </Link>
                       <MenuItem onClick={logout}>Cerrar sesión</MenuItem>
