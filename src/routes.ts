@@ -1,9 +1,10 @@
-export const rootPath = "/";
+export const RootPath = "/";
 export const LoginPath = "/auth/login";
 export const RegisterPath = "/auth/register";
 export const LoginClientPath = "/auth/client";
 export const RegisterClientPath = "/auth/client/register";
-export const profilePath = "/profile";
+export const ProfilePath = "/profile";
+export const DashboardPath = "/dashboard";
 
 // ============ ORGANIZATIONS ============
 export const OrganizationsPath = "/organizations";

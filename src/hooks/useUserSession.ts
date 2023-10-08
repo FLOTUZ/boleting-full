@@ -32,7 +32,7 @@ export const useUserSession = () => {
     if (response.ok) {
       const token = response.headers.get("Authorization")!;
       localStorage.setItem("access-token", token);
-      localStorage.setItem("user", JSON.stringify(data as User));
+      localStorage.setItem("admin", JSON.stringify(data as User));
 
       router.replace(EventsPath);
       return;
@@ -41,19 +41,17 @@ export const useUserSession = () => {
 
   const logout = () => {
     setUser(null);
+    localStorage.removeItem("admin");
     localStorage.removeItem("user");
     localStorage.removeItem("access-token");
     router.push(LoginPath);
   };
 
   const getUser = useCallback(() => {
-    const userStorage = localStorage.getItem("user");
+    const userStorage = localStorage.getItem("admin");
 
-    if (userStorage) {
-      setUser(JSON.parse(userStorage));
-    } else {
-      router.replace(LoginPath);
-    }
+    if (userStorage) setUser(JSON.parse(userStorage));
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

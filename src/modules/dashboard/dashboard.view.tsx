@@ -1,15 +1,10 @@
-import DefaultLayoutComponent from "@/layouts/default-layout.component";
 import { Box, Center, Heading } from "@chakra-ui/react";
 
 const DashBoardView = () => {
   return (
-    <DefaultLayoutComponent tittle="Dashboard">
-      <Box>
-        <Center>
-          <Heading>Dashboard</Heading>
-        </Center>
-      </Box>
-    </DefaultLayoutComponent>
+    <Box m={4}>
+      <h1>Dashboard</h1>
+    </Box>
   );
 };
 

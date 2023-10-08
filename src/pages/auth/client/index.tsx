@@ -1,4 +1,4 @@
-import ClientView from "@/modules/auth/views/client.view";
+import ClientLoginView from "@/modules/auth/views/client.view";
 import Head from "next/head";
 
 const LoginClientRoute = () => {
@@ -8,7 +8,7 @@ const LoginClientRoute = () => {
         <title>Login</title>
         <meta name="description" content="Inicio de sesión" />
       </Head>
-      <ClientView />
+      <ClientLoginView />
     </>
   );
 };

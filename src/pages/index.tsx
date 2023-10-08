@@ -3,23 +3,16 @@ import { GetStaticProps } from "next";
 import LandingViewComponent from "@/modules/landing-page/views/landing.view";
 import { LandingPageProvider } from "@/modules/landing-page/contexts/landing-page.context";
 
-import { UserProvider } from "@/contexts/user.context";
-import { ClientProvider } from "@/contexts/client.context";
-
 import { EventSubCategory } from "@/gql/generated";
 import { prisma } from "@/server";
 
-interface MaindRouteProps {
+interface RootRoute {
   eventSubCategories: EventSubCategory[];
 }
-const MaindRoute = ({ eventSubCategories }: MaindRouteProps) => {
+const RootRoute = ({ eventSubCategories }: RootRoute) => {
   return (
     <LandingPageProvider eventSubCategories={eventSubCategories}>
-      <UserProvider>
-        <ClientProvider>
-          <LandingViewComponent />
-        </ClientProvider>
-      </UserProvider>
+      <LandingViewComponent />
     </LandingPageProvider>
   );
 };
@@ -38,4 +31,4 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
   };
 };
 
-export default MaindRoute;
+export default RootRoute;

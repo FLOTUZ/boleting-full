@@ -1,3 +1,7 @@
+import Link from "next/link";
+import Image from "next/image";
+import { useRouter } from "next/router";
+
 import { useFormik } from "formik";
 import { useState } from "react";
 import { LoginClientSchema } from "@/validations";
@@ -16,13 +20,12 @@ import {
   useMediaQuery,
 } from "@chakra-ui/react";
 import { GoEye, GoEyeClosed } from "react-icons/go";
-import Link from "next/link";
-import { RegisterClientPath, rootPath } from "@/routes";
-import Image from "next/image";
-import { useRouter } from "next/router";
+import { RegisterClientPath, RootPath } from "@/routes";
+
 import { useClientSession } from "@/hooks/useClientSession";
 
-const ClientView = () => {
+const ClientLoginView = () => {
+  const router = useRouter();
   const [show, setShow] = useState<boolean>(false);
   const handleClick = () => setShow(!show);
 
@@ -38,7 +41,11 @@ const ClientView = () => {
     },
     onSubmit: async (values) => {
       const { email, password } = values;
-      await login({ email, password });
+      const response = await login({ email, password });
+
+      if (response) {
+        router.replace(RootPath);
+      }
     },
   });
   return (
@@ -124,4 +131,4 @@ const ClientView = () => {
   );
 };
 
-export default ClientView;
+export default ClientLoginView;
