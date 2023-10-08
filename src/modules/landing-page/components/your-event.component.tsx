@@ -37,26 +37,16 @@ const YourEvent = () => {
         >
           Comienza ahora
         </Text>
-        <Button
-          border="solid trasparent"
-          fontWeight="bold"
-          rounded="md"
-          h="50px"
-          _light={{
-            color: "#1a202ceb",
-          }}
-          _dark={{
-            bg: "brand.500",
-          }}
-          _hover={{
-            bg: "#dae5f1f7",
-            _dark: {
-              bg: "#2c313d",
-            },
-          }}
-        >
-          Saber más
-        </Button>
+        <Link href={LoginPath}>
+          <Button
+            border="solid trasparent"
+            fontWeight="bold"
+            rounded="md"
+            h="50px"
+          >
+            Saber más
+          </Button>
+        </Link>
       </Flex>
     </>
   );

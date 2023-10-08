@@ -3,11 +3,7 @@ import { EventsPath, LoginPath } from "@/routes";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
-interface UserSession {
-  requireAuth?: boolean | null;
-}
-
-export const useUserSession = ({ requireAuth = false }: UserSession) => {
+export const useUserSession = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loginLoading, setLoginLoading] = useState(false);
 
@@ -53,11 +49,8 @@ export const useUserSession = ({ requireAuth = false }: UserSession) => {
   const getUser = useCallback(() => {
     const userStorage = localStorage.getItem("user");
 
-    if (userStorage) {
-      setUser(JSON.parse(userStorage));
-    } else {
-      requireAuth && router.replace(LoginPath);
-    }
+    if (userStorage) setUser(JSON.parse(userStorage));
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

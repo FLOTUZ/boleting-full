@@ -58,9 +58,7 @@ const DesktopLayoutComponent = ({
   breadCrumbs,
 }: DesktopLayoutComponentProps) => {
   const router = useRouter();
-  const { user, logout } = useUserSession({
-    requireAuth: false,
-  });
+  const { user, logout } = useUserSession();
 
   const menuItems: MenuItem[] = [
     {
