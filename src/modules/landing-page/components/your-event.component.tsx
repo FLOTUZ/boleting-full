@@ -1,4 +1,6 @@
+import { LoginPath } from "@/routes";
 import { Flex, Heading, Button, Text, Divider } from "@chakra-ui/react";
+import Link from "next/link";
 
 const YourEvent = () => {
   return (

@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
 import { UserClient } from "@/gql/generated";
-import { LoginClientPath, rootPath } from "@/routes";
+import { rootPath } from "@/routes";
 import { useToast } from "@chakra-ui/react";
 
 export const useClientSession = () => {

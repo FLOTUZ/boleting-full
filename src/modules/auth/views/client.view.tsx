@@ -24,7 +24,7 @@ import { RegisterClientPath, rootPath } from "@/routes";
 
 import { useClientSession } from "@/hooks/useClientSession";
 
-const ClientView = () => {
+const ClientLoginView = () => {
   const router = useRouter();
   const [show, setShow] = useState<boolean>(false);
   const handleClick = () => setShow(!show);
@@ -44,7 +44,7 @@ const ClientView = () => {
       const response = await login({ email, password });
 
       if (response) {
-        router.push(rootPath);
+        router.replace(rootPath);
       }
     },
   });
@@ -131,4 +131,4 @@ const ClientView = () => {
   );
 };
 
-export default ClientView;
+export default ClientLoginView;
