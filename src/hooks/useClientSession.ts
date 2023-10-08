@@ -50,6 +50,7 @@ export const useClientSession = () => {
   const logout = () => {
     setClient(null);
     localStorage.removeItem("user");
+    localStorage.removeItem("admin");
     localStorage.removeItem("access-token");
 
     router.replace(rootPath);

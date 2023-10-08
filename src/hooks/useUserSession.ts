@@ -42,14 +42,15 @@ export const useUserSession = () => {
   const logout = () => {
     setUser(null);
     localStorage.removeItem("admin");
+    localStorage.removeItem("user");
     localStorage.removeItem("access-token");
     router.push(LoginPath);
   };
 
   const getUser = useCallback(() => {
-    const adminStorage = localStorage.getItem("admin");
+    const userStorage = localStorage.getItem("admin");
 
-    if (adminStorage) setUser(JSON.parse(adminStorage));
+    if (userStorage) setUser(JSON.parse(userStorage));
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
