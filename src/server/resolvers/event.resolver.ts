@@ -28,6 +28,13 @@ export const EventResolver = {
     event: async (_: any, { id }: { id: number }, __: IGraphqlContext) => {
       return await EventService.event(id);
     },
+    eventsByCategory: async (
+      _: any,
+      { categoryId }: { categoryId: number },
+      __: IGraphqlContext
+    ) => {
+      return await EventService.eventsByCategory(categoryId);
+    },
   },
 
   Mutation: {

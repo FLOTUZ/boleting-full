@@ -162,6 +162,8 @@ export type CreateEventInput = {
   event_logo_url: Scalars['String']['input'];
   event_sub_categories?: InputMaybe<Array<Scalars['Int']['input']>>;
   name: Scalars['String']['input'];
+  price_from?: InputMaybe<Scalars['Decimal']['input']>;
+  price_to?: InputMaybe<Scalars['Decimal']['input']>;
   re_entry: Scalars['Boolean']['input'];
   start_date: Scalars['DateTime']['input'];
   start_time: Scalars['String']['input'];
@@ -283,6 +285,8 @@ export type Event = {
   organization: Organization;
   organizationId: Scalars['Int']['output'];
   owner_types?: Maybe<Array<OwnerType>>;
+  price_from?: Maybe<Scalars['Decimal']['output']>;
+  price_to?: Maybe<Scalars['Decimal']['output']>;
   re_entry: Scalars['Boolean']['output'];
   selled_tickets?: Maybe<Array<Ticket>>;
   staff?: Maybe<Array<User>>;
@@ -319,17 +323,6 @@ export type EventSubCategory = {
   id: Scalars['Int']['output'];
   name: Scalars['String']['output'];
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
-};
-
-export type LoginInput = {
-  email: Scalars['String']['input'];
-  password: Scalars['String']['input'];
-};
-
-export type LoginResponse = {
-  __typename?: 'LoginResponse';
-  accessToken?: Maybe<Scalars['String']['output']>;
-  user?: Maybe<User>;
 };
 
 export type Mail = {
@@ -393,7 +386,6 @@ export type Mutation = {
   deleteTicket?: Maybe<Ticket>;
   deleteUser?: Maybe<User>;
   deleteUserClient: UserClient;
-  login: LoginResponse;
   removeUsersFromRole?: Maybe<Role>;
   unassignManyStaff?: Maybe<Array<Maybe<User>>>;
   unassignStaff?: Maybe<User>;
@@ -629,11 +621,6 @@ export type MutationDeleteUserArgs = {
 
 export type MutationDeleteUserClientArgs = {
   id: Scalars['Int']['input'];
-};
-
-
-export type MutationLoginArgs = {
-  data: LoginInput;
 };
 
 
@@ -905,8 +892,10 @@ export type Query = {
   eventCategories?: Maybe<Array<EventCategory>>;
   eventCategory: EventCategory;
   eventSubCategories?: Maybe<Array<EventSubCategory>>;
+  eventSubCategoriesByCategory?: Maybe<Array<EventSubCategory>>;
   eventSubCategory?: Maybe<EventSubCategory>;
   events?: Maybe<Array<Maybe<Event>>>;
+  eventsByCategory?: Maybe<Array<Maybe<Event>>>;
   filteredByParentsEventSubCategories?: Maybe<Array<EventCategory>>;
   mail: Mail;
   mails: Array<Mail>;
@@ -1021,6 +1010,11 @@ export type QueryEventSubCategoriesArgs = {
 };
 
 
+export type QueryEventSubCategoriesByCategoryArgs = {
+  categoryId: Scalars['Int']['input'];
+};
+
+
 export type QueryEventSubCategoryArgs = {
   id: Scalars['Int']['input'];
 };
@@ -1028,6 +1022,11 @@ export type QueryEventSubCategoryArgs = {
 
 export type QueryEventsArgs = {
   pagination?: InputMaybe<Pagination>;
+};
+
+
+export type QueryEventsByCategoryArgs = {
+  categoryId: Scalars['Int']['input'];
 };
 
 
@@ -1252,6 +1251,8 @@ export type UpdateEventInput = {
   event_logo_url?: InputMaybe<Scalars['String']['input']>;
   event_sub_categories?: InputMaybe<Array<Scalars['Int']['input']>>;
   name?: InputMaybe<Scalars['String']['input']>;
+  price_from?: InputMaybe<Scalars['Decimal']['input']>;
+  price_to?: InputMaybe<Scalars['Decimal']['input']>;
   re_entry?: InputMaybe<Scalars['Boolean']['input']>;
   start_date?: InputMaybe<Scalars['DateTime']['input']>;
   start_time?: InputMaybe<Scalars['String']['input']>;
@@ -1630,6 +1631,13 @@ export type ShowRoleQueryVariables = Exact<{
 
 
 export type ShowRoleQuery = { __typename?: 'Query', role?: { __typename?: 'Role', id: number, name: string, description?: string | null, createdAt?: any | null, updatedAt?: any | null, deletedAt?: any | null, abilities?: Array<{ __typename?: 'Ability', id: number, name: string }> | null, users?: Array<{ __typename?: 'User', id: number, name?: string | null, last_name?: string | null, email?: string | null, createdAt?: any | null, updatedAt?: any | null, roles?: Array<{ __typename?: 'Role', id: number, name: string }> | null }> | null } | null };
+
+export type SearchEventsByCategoryQueryVariables = Exact<{
+  categoryId: Scalars['Int']['input'];
+}>;
+
+
+export type SearchEventsByCategoryQuery = { __typename?: 'Query', eventCategory: { __typename?: 'EventCategory', id: number, name: string }, eventSubCategoriesByCategory?: Array<{ __typename?: 'EventSubCategory', id: number, name: string }> | null, eventsByCategory?: Array<{ __typename?: 'Event', id: number, name: string, start_date: any, end_date?: any | null, price_from?: any | null, price_to?: any | null, start_time?: string | null, end_time?: string | null, event_location: string } | null> | null };
 
 export type AssignManyStaffMutationVariables = Exact<{
   eventId: Scalars['Int']['input'];
@@ -3320,6 +3328,57 @@ export function useShowRoleLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<S
 export type ShowRoleQueryHookResult = ReturnType<typeof useShowRoleQuery>;
 export type ShowRoleLazyQueryHookResult = ReturnType<typeof useShowRoleLazyQuery>;
 export type ShowRoleQueryResult = Apollo.QueryResult<ShowRoleQuery, ShowRoleQueryVariables>;
+export const SearchEventsByCategoryDocument = gql`
+    query SearchEventsByCategory($categoryId: Int!) {
+  eventCategory(id: $categoryId) {
+    id
+    name
+  }
+  eventSubCategoriesByCategory(categoryId: $categoryId) {
+    id
+    name
+  }
+  eventsByCategory(categoryId: $categoryId) {
+    id
+    name
+    start_date
+    end_date
+    price_from
+    price_to
+    start_time
+    end_time
+    event_location
+  }
+}
+    `;
+
+/**
+ * __useSearchEventsByCategoryQuery__
+ *
+ * To run a query within a React component, call `useSearchEventsByCategoryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchEventsByCategoryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchEventsByCategoryQuery({
+ *   variables: {
+ *      categoryId: // value for 'categoryId'
+ *   },
+ * });
+ */
+export function useSearchEventsByCategoryQuery(baseOptions: Apollo.QueryHookOptions<SearchEventsByCategoryQuery, SearchEventsByCategoryQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SearchEventsByCategoryQuery, SearchEventsByCategoryQueryVariables>(SearchEventsByCategoryDocument, options);
+      }
+export function useSearchEventsByCategoryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchEventsByCategoryQuery, SearchEventsByCategoryQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SearchEventsByCategoryQuery, SearchEventsByCategoryQueryVariables>(SearchEventsByCategoryDocument, options);
+        }
+export type SearchEventsByCategoryQueryHookResult = ReturnType<typeof useSearchEventsByCategoryQuery>;
+export type SearchEventsByCategoryLazyQueryHookResult = ReturnType<typeof useSearchEventsByCategoryLazyQuery>;
+export type SearchEventsByCategoryQueryResult = Apollo.QueryResult<SearchEventsByCategoryQuery, SearchEventsByCategoryQueryVariables>;
 export const AssignManyStaffDocument = gql`
     mutation AssignManyStaff($eventId: Int!, $userIds: [Int!]!) {
   assignManyStaff(eventId: $eventId, userIds: $userIds) {

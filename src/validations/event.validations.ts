@@ -10,6 +10,8 @@ export const CreateEventValidator = y.object().shape({
   start_time: y.string().required().max(5),
   end_time: y.string().required().max(5),
   re_entry: y.boolean().required(),
+  price_from: y.number().min(0),
+  price_to: y.number().min(0),
   event_logo_url: y.string().max(1000),
   event_banner_url: y.string().max(1000),
   event_sub_categories: y
@@ -31,6 +33,8 @@ export const UpdateEventValidator = y.object().shape({
   start_time: y.string().max(5),
   end_time: y.string().max(5),
   re_entry: y.boolean(),
+  price_from: y.number().min(0),
+  price_to: y.number().min(0),
   event_logo_url: y.string().max(1000),
   event_banner_url: y.string().max(1000),
   event_sub_categories: y.array(y.number()).of(y.number()),

@@ -184,6 +184,8 @@ model Event {
   start_time           String?            @db.VarChar(5)
   end_time             String?            @db.VarChar(5)
   re_entry             Boolean            @default(false)
+  price_from           Decimal?           @default(0) @db.Money
+  price_to             Decimal?           @db.Money
   event_logo_url       String?            @db.VarChar(1000)
   event_banner_url     String?            @db.VarChar(1000)
   userId               Int
