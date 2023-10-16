@@ -1,6 +1,6 @@
 import IntroAnimationComponent from "@/components/animations/intro-animation.component";
 import EventsSection from "../components/events-section.component";
-import HeaderLandingComponent from "../components/header.component";
+import HeaderLandingComponent from "../../../layouts/header-landing.component";
 import MainEvent from "../components/main-event.component";
 import YourEvent from "../components/your-event.component";
 

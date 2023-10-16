@@ -1,0 +1,10 @@
+query ShowEventSubCategories {
+  eventSubCategories {
+    id
+    name
+    event_category {
+      id
+      name
+    }
+  }
+}
