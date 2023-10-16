@@ -7,7 +7,6 @@ import {
   Link,
   SimpleGrid,
   Text,
-  useColorModeValue,
 } from "@chakra-ui/react";
 import { BiLinkExternal } from "react-icons/bi";
 
@@ -17,11 +16,9 @@ import { BiLinkExternal } from "react-icons/bi";
 //Redireccionar a ver mas sobre el evento
 
 const MainEvent = () => {
-  const bg = useColorModeValue("gray.", "gray.800");
   return (
     <SimpleGrid
       columns={{
-        base: 1,
         md: 2,
       }}
       spacing={0}
@@ -53,7 +50,6 @@ const MainEvent = () => {
           md: 8,
           lg: 20,
         }}
-        py={10}
       >
         <Heading
           mb={4}

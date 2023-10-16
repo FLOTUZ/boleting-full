@@ -7,10 +7,11 @@ import YourEvent from "../components/your-event.component";
 const LandingViewComponent = () => {
   return (
     <IntroAnimationComponent data={true}>
-      <HeaderLandingComponent />
-      <MainEvent />
-      <EventsSection />
-      <YourEvent />
+      <HeaderLandingComponent>
+        <MainEvent />
+        <EventsSection />
+        <YourEvent />
+      </HeaderLandingComponent>
     </IntroAnimationComponent>
   );
 };

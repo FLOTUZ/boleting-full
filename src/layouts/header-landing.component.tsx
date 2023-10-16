@@ -18,8 +18,11 @@ import {
 } from "@/gql/generated";
 
 import { useEffect, useState } from "react";
+interface HeaderLandingComponentProps {
+  children?: React.ReactNode | React.ReactNode[];
+}
 
-const HeaderLandingComponent = () => {
+const HeaderLandingComponent = ({ children }: HeaderLandingComponentProps) => {
   const [isLargerThan800] = useMediaQuery("(min-width: 420px)");
   const [eventSubCategories, setEventSubCategories] = useState<
     EventSubCategory[]
@@ -71,6 +74,14 @@ const HeaderLandingComponent = () => {
             <SearchClientButtonComponent />
           </Box>
         )}
+      </Box>
+
+      <Box
+        style={{
+          marginTop: "4.5rem",
+        }}
+      >
+        {children}
       </Box>
     </LandingPageProvider>
   );
