@@ -18,11 +18,11 @@ import {
 } from "@/gql/generated";
 
 import { useEffect, useState } from "react";
-interface HeaderLandingComponentProps {
+interface LandingLayoutProps {
   children?: React.ReactNode | React.ReactNode[];
 }
 
-const HeaderLandingComponent = ({ children }: HeaderLandingComponentProps) => {
+const LandingLayout = ({ children }: LandingLayoutProps) => {
   const [isLargerThan800] = useMediaQuery("(min-width: 420px)");
   const [eventSubCategories, setEventSubCategories] = useState<
     EventSubCategory[]
@@ -87,4 +87,4 @@ const HeaderLandingComponent = ({ children }: HeaderLandingComponentProps) => {
   );
 };
 
-export default HeaderLandingComponent;
+export default LandingLayout;

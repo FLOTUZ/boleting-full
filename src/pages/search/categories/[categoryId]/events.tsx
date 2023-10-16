@@ -1,12 +1,12 @@
-import HeaderLandingComponent from "@/layouts/header-landing.component";
+import LandingLayout from "@/layouts/landing-layout.component";
 import { Text } from "@chakra-ui/react";
 
 const EventsByCategoryView = () => {
   return (
     <>
-      <HeaderLandingComponent>
+      <LandingLayout>
         <Text>EventsByCategoryView</Text>
-      </HeaderLandingComponent>
+      </LandingLayout>
     </>
   );
 };
