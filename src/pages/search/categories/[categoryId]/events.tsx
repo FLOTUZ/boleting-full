@@ -1,14 +1,14 @@
 import LandingLayout from "@/layouts/landing-layout.component";
-import { Text } from "@chakra-ui/react";
+import EventsByCategoryView from "@/modules/search/events";
 
-const EventsByCategoryView = () => {
+const EventsByCategoryRoute = () => {
   return (
     <>
       <LandingLayout>
-        <Text>EventsByCategoryView</Text>
+        <EventsByCategoryView />
       </LandingLayout>
     </>
   );
 };
 
-export default EventsByCategoryView;
+export default EventsByCategoryRoute;
