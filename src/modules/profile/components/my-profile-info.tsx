@@ -1,8 +1,6 @@
 import { useSession } from "@/hooks/useSession";
 import { useEffect } from "react";
-import { Box, Button, Flex, Icon, SimpleGrid, Text } from "@chakra-ui/react";
-import { IoTicketSharp } from "react-icons/io5";
-import { AiFillCreditCard } from "react-icons/ai";
+import { Box, Button, Flex, Image, SimpleGrid, Text } from "@chakra-ui/react";
 
 //Here is all the  sections that help the user
 const MyProfileInfo = () => {
@@ -13,28 +11,38 @@ const MyProfileInfo = () => {
   }, [user]);
 
   return (
-    <Box as={Flex} placeContent={"center"}>
+    <Flex placeContent={"center"}>
       <SimpleGrid
-        templateColumns={{ base: "1", md: "repeat(2, 1fr)" }}
+        templateColumns={{ base: "repeat(2, 1fr)", md: "repeat(3, 1fr)" }}
         mt="108px"
         w="95%"
         gap="8px"
       >
-        <Button p="4px" h="80px">
-          <Icon as={IoTicketSharp} m={"8px"} />
+        <Button h="80px" border={"1px solid white"}>
+          <Image
+            src="/assets/icons/ticket.svg"
+            alt="ticket"
+            h="50px"
+            w="50px"
+          ></Image>
           <Text fontWeight="normal" fontSize="md">
             Mis boletos
           </Text>
         </Button>
 
-        <Button p="4px" h="80px">
-          <Icon as={AiFillCreditCard} m={"8px"} />
+        <Button h="80px" border={"1px solid white"}>
+          <Image
+            src="/assets/icons/card.svg"
+            alt="ticket"
+            h="50px"
+            w="50px"
+          ></Image>
           <Text fontWeight="normal" fontSize="md">
             Pedidos y pagos
           </Text>
         </Button>
       </SimpleGrid>
-    </Box>
+    </Flex>
   );
 };
 

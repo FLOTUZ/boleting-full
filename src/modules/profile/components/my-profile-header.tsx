@@ -15,6 +15,7 @@ import {
 import { useEffect } from "react";
 import { BiSolidPencil } from "react-icons/bi";
 
+//Here is all the information to identify the user
 const MyProfileHeader = () => {
   const isMobile = useBreakpointValue({ base: true, md: false });
   const { user } = useSession();
@@ -52,6 +53,8 @@ const MyProfileHeader = () => {
             >
               <Box
                 as={Avatar}
+                name={user?.name + " " + user?.last_name}
+                src={undefined}
                 p={2}
                 borderRadius={{ base: "50%", md: "8" }}
                 size={{ base: "lg", md: "xl" }}
@@ -59,8 +62,10 @@ const MyProfileHeader = () => {
               <Box>
                 <Flex direction={"column"} alignSelf="end" ml={"8px"}>
                   <Text fontSize="2xl">
+                    {/*name and last name */}
                     {user?.name + " " + user?.last_name}
                   </Text>
+                  {/*email*/}
                   <Text color="gray">{user?.email}</Text>
                 </Flex>
               </Box>
