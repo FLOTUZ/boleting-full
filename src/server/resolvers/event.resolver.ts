@@ -10,6 +10,7 @@ import {
   AccessTypeService,
   EventService,
   EventSubCategoryService,
+  OrganizationService,
   OwnerTypeService,
   TicketService,
   UserService,
@@ -96,6 +97,10 @@ export const EventResolver = {
 
     staff: async ({ id }: Event, _: any, __: IGraphqlContext) => {
       return await UserService.staffByEvent(id);
+    },
+
+    organization: async ({ id }: Event, _: any, __: IGraphqlContext) => {
+      return await OrganizationService.organization(id);
     },
   },
 };

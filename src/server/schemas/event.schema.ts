@@ -66,14 +66,14 @@ export const EventsSchema = gql`
   }
 
   type Query {
-    event(id: Int!): Event
-    events(pagination: Pagination): [Event]
-    eventsByCategory(categoryId: Int!): [Event]
+    event(id: Int!): Event!
+    events(pagination: Pagination): [Event!]
+    eventsByCategory(categoryId: Int!): [Event!]
   }
 
   type Mutation {
-    createEvent(data: CreateEventInput!): Event
-    updateEvent(id: Int!, data: UpdateEventInput!): Event
-    deleteEvent(id: Int!): Event
+    createEvent(data: CreateEventInput!): Event!
+    updateEvent(id: Int!, data: UpdateEventInput!): Event!
+    deleteEvent(id: Int!): Event!
   }
 `;

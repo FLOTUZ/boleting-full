@@ -65,18 +65,14 @@ const LandingLayout = ({ children }: LandingLayoutProps) => {
           <Spacer />
 
           <HStack alignItems="center" spacing={1}>
-            {isLargerThan800 && <SearchClientButtonComponent />}
+            <SearchClientButtonComponent />
             <ClientMenuComponent />
           </HStack>
         </Flex>
-        {!isLargerThan800 && (
-          <Box m={2}>
-            <SearchClientButtonComponent />
-          </Box>
-        )}
       </Box>
 
       <Box
+        p={4}
         style={{
           marginTop: "4.5rem",
         }}

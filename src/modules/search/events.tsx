@@ -11,11 +11,8 @@ import {
 
 import {
   Box,
-  Button,
-  ButtonGroup,
   Card,
   CardBody,
-  CardFooter,
   Divider,
   Heading,
   SimpleGrid,
@@ -34,19 +31,16 @@ const EventsByCategoryView = () => {
   const router = useRouter();
   const { categoryId } = router.query;
 
-  const [GET_DATA, { data, loading, error }] =
-    useSearchEventsByCategoryLazyQuery({
-      variables: {
-        categoryId: Number(categoryId),
-      },
-      onCompleted(data) {
-        setCategory(data.eventCategory as EventCategory);
-        setEvents(data.eventsByCategory as Event[]);
-        setSubCategories(
-          data.eventSubCategoriesByCategory as EventSubCategory[]
-        );
-      },
-    });
+  const [GET_DATA, { loading }] = useSearchEventsByCategoryLazyQuery({
+    variables: {
+      categoryId: Number(categoryId),
+    },
+    onCompleted(data) {
+      setCategory(data.eventCategory as EventCategory);
+      setEvents(data.eventsByCategory as Event[]);
+      setSubCategories(data.eventSubCategoriesByCategory as EventSubCategory[]);
+    },
+  });
 
   useEffect(() => {
     if (categoryId) GET_DATA();

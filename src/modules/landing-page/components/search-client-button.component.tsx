@@ -1,11 +1,13 @@
-import { Button } from "@chakra-ui/react";
+import { Button, useMediaQuery } from "@chakra-ui/react";
 import { AiOutlineSearch } from "react-icons/ai";
 
 const SearchClientButtonComponent = () => {
+  const [isLargerThan800] = useMediaQuery("(min-width: 420px)");
   return (
-    <Button w={"15rem"} colorScheme="gray" color={"gray"}>
+    <Button maxW={"fit-content"} colorScheme="gray" color={"gray"}>
       <AiOutlineSearch />
-      &nbsp; Buscar
+      &nbsp;
+      {isLargerThan800 ? "Buscar" : null}
     </Button>
   );
 };
