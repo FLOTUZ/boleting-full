@@ -36,6 +36,14 @@ export const EventResolver = {
     ) => {
       return await EventService.eventsByCategory(categoryId);
     },
+
+    eventsBySubcategory: async (
+      _: any,
+      { subCategoryId }: { subCategoryId: number },
+      __: IGraphqlContext
+    ) => {
+      return await EventService.eventsBySubCategory(subCategoryId);
+    },
   },
 
   Mutation: {

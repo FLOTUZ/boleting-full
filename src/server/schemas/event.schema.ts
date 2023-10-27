@@ -69,6 +69,7 @@ export const EventsSchema = gql`
     event(id: Int!): Event!
     events(pagination: Pagination): [Event!]
     eventsByCategory(categoryId: Int!): [Event!]
+    eventsBySubcategory(subCategoryId: Int!): [Event!]
   }
 
   type Mutation {

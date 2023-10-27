@@ -48,8 +48,8 @@ const ShowEventRoute = () => {
   }
 
   return (
-    <IntroAnimationComponent data={event != null}>
-      <LandingLayout>
+    <LandingLayout>
+      <IntroAnimationComponent data={event != null}>
         <Box>
           <Text>{new Date(event?.start_date).toDateString()}</Text>
           <Heading>{event?.name}</Heading>
@@ -123,8 +123,8 @@ const ShowEventRoute = () => {
           Acerca del evento
         </Heading>
         <Box>{event?.description}</Box>
-      </LandingLayout>
-    </IntroAnimationComponent>
+      </IntroAnimationComponent>
+    </LandingLayout>
   );
 };
 

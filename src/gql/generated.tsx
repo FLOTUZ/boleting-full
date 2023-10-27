@@ -896,6 +896,7 @@ export type Query = {
   eventSubCategory?: Maybe<EventSubCategory>;
   events?: Maybe<Array<Event>>;
   eventsByCategory?: Maybe<Array<Event>>;
+  eventsBySubcategory?: Maybe<Array<Event>>;
   filteredByParentsEventSubCategories?: Maybe<Array<EventCategory>>;
   mail: Mail;
   mails: Array<Mail>;
@@ -1027,6 +1028,11 @@ export type QueryEventsArgs = {
 
 export type QueryEventsByCategoryArgs = {
   categoryId: Scalars['Int']['input'];
+};
+
+
+export type QueryEventsBySubcategoryArgs = {
+  subCategoryId: Scalars['Int']['input'];
 };
 
 
@@ -1497,6 +1503,13 @@ export type EditEventQueryVariables = Exact<{
 
 
 export type EditEventQuery = { __typename?: 'Query', event: { __typename?: 'Event', id: number, name: string, description?: string | null, event_location: string, event_location_url: string, start_date: any, end_date?: any | null, start_time?: string | null, end_time?: string | null, re_entry: boolean, event_logo_url?: string | null, event_banner_url?: string | null, event_sub_categories?: Array<{ __typename?: 'EventSubCategory', id: number, name: string }> | null }, eventSubCategories?: Array<{ __typename?: 'EventSubCategory', id: number, name: string }> | null };
+
+export type SearchEventsBySubcategoryQueryVariables = Exact<{
+  subCategoryId: Scalars['Int']['input'];
+}>;
+
+
+export type SearchEventsBySubcategoryQuery = { __typename?: 'Query', eventSubCategory?: { __typename?: 'EventSubCategory', id: number, name: string } | null, eventsBySubcategory?: Array<{ __typename?: 'Event', id: number, event_key?: string | null, name: string, event_location: string, event_logo_url?: string | null, start_date: any, start_time?: string | null, end_time?: string | null, price_from?: any | null, price_to?: any | null, organization: { __typename?: 'Organization', id: string, name?: string | null } }> | null };
 
 export type ShowEventStaffQueryVariables = Exact<{
   eventId: Scalars['Int']['input'];
@@ -2443,6 +2456,59 @@ export function useEditEventLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<
 export type EditEventQueryHookResult = ReturnType<typeof useEditEventQuery>;
 export type EditEventLazyQueryHookResult = ReturnType<typeof useEditEventLazyQuery>;
 export type EditEventQueryResult = Apollo.QueryResult<EditEventQuery, EditEventQueryVariables>;
+export const SearchEventsBySubcategoryDocument = gql`
+    query SearchEventsBySubcategory($subCategoryId: Int!) {
+  eventSubCategory(id: $subCategoryId) {
+    id
+    name
+  }
+  eventsBySubcategory(subCategoryId: $subCategoryId) {
+    id
+    event_key
+    name
+    event_location
+    event_logo_url
+    start_date
+    start_time
+    end_time
+    event_logo_url
+    price_from
+    price_to
+    organization {
+      id
+      name
+    }
+  }
+}
+    `;
+
+/**
+ * __useSearchEventsBySubcategoryQuery__
+ *
+ * To run a query within a React component, call `useSearchEventsBySubcategoryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchEventsBySubcategoryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchEventsBySubcategoryQuery({
+ *   variables: {
+ *      subCategoryId: // value for 'subCategoryId'
+ *   },
+ * });
+ */
+export function useSearchEventsBySubcategoryQuery(baseOptions: Apollo.QueryHookOptions<SearchEventsBySubcategoryQuery, SearchEventsBySubcategoryQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SearchEventsBySubcategoryQuery, SearchEventsBySubcategoryQueryVariables>(SearchEventsBySubcategoryDocument, options);
+      }
+export function useSearchEventsBySubcategoryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchEventsBySubcategoryQuery, SearchEventsBySubcategoryQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SearchEventsBySubcategoryQuery, SearchEventsBySubcategoryQueryVariables>(SearchEventsBySubcategoryDocument, options);
+        }
+export type SearchEventsBySubcategoryQueryHookResult = ReturnType<typeof useSearchEventsBySubcategoryQuery>;
+export type SearchEventsBySubcategoryLazyQueryHookResult = ReturnType<typeof useSearchEventsBySubcategoryLazyQuery>;
+export type SearchEventsBySubcategoryQueryResult = Apollo.QueryResult<SearchEventsBySubcategoryQuery, SearchEventsBySubcategoryQueryVariables>;
 export const ShowEventStaffDocument = gql`
     query ShowEventStaff($eventId: Int!) {
   event(id: $eventId) {

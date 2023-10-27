@@ -92,4 +92,10 @@ export const EventService = {
       where: { event_sub_categories: { some: { id: id_category } } },
     });
   },
+
+  async eventsBySubCategory(subcategoryId: number) {
+    return await prisma.event.findMany({
+      where: { event_sub_categories: { some: { id: subcategoryId } } },
+    });
+  },
 };
