@@ -12,7 +12,7 @@ export const EventCategoryService = {
     return prisma.eventCategory.findMany({
       ...pagination,
       where: { deleted: false },
-      orderBy: { id: "desc" },
+      orderBy: { id: "asc" },
     });
   },
 

@@ -1,0 +1,23 @@
+query SearchEventsByCategory($categoryId: Int!) {
+  eventCategory(id: $categoryId) {
+    id
+    name
+  }
+
+  eventSubCategoriesByCategory(categoryId: $categoryId) {
+    id
+    name
+  }
+
+  eventsByCategory(categoryId: $categoryId) {
+    id
+    name
+    start_date
+    end_date
+    price_from
+    price_to
+    start_time
+    end_time
+    event_location
+  }
+}

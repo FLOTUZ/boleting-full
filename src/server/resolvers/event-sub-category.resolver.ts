@@ -28,6 +28,16 @@ export const EventSubCategoryResolver = {
     ) => {
       return await EventSubCategoryService.eventSubCategory(id);
     },
+
+    eventSubCategoriesByCategory: async (
+      _: any,
+      { categoryId }: { categoryId: number },
+      __: IGraphqlContext
+    ) => {
+      return await EventSubCategoryService.eventSubCategoriesByCategoryId(
+        categoryId
+      );
+    },
   },
 
   Mutation: {

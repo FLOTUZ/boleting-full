@@ -1,0 +1,34 @@
+query SearchEvent($eventId: Int!) {
+  event(id: $eventId) {
+    id
+    event_key
+    name
+    description
+    event_location
+    event_logo_url
+    event_banner_url
+    event_location_url
+    start_date
+    start_time
+    end_time
+    re_entry
+    event_logo_url
+    price_from
+    price_to
+    createdAt
+    updatedAt
+    deleted
+    organization {
+      id
+      name
+    }
+    event_sub_categories {
+      id
+      name
+      event_category {
+        id
+        name
+      }
+    }
+  }
+}

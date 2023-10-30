@@ -10,6 +10,8 @@ export const EventsSchema = gql`
     start_time: String!
     end_time: String!
     re_entry: Boolean!
+    price_from: Decimal
+    price_to: Decimal
     event_logo_url: String!
     event_banner_url: String!
     event_sub_categories: [Int!]
@@ -25,6 +27,8 @@ export const EventsSchema = gql`
     start_time: String
     end_time: String
     re_entry: Boolean
+    price_from: Decimal
+    price_to: Decimal
     event_logo_url: String
     event_banner_url: String
     event_sub_categories: [Int!]
@@ -42,6 +46,8 @@ export const EventsSchema = gql`
     start_time: String
     end_time: String
     re_entry: Boolean!
+    price_from: Decimal
+    price_to: Decimal
     event_logo_url: String
     event_banner_url: String
     userId: Int!
@@ -60,13 +66,15 @@ export const EventsSchema = gql`
   }
 
   type Query {
-    event(id: Int!): Event
-    events(pagination: Pagination): [Event]
+    event(id: Int!): Event!
+    events(pagination: Pagination): [Event!]
+    eventsByCategory(categoryId: Int!): [Event!]
+    eventsBySubcategory(subCategoryId: Int!): [Event!]
   }
 
   type Mutation {
-    createEvent(data: CreateEventInput!): Event
-    updateEvent(id: Int!, data: UpdateEventInput!): Event
-    deleteEvent(id: Int!): Event
+    createEvent(data: CreateEventInput!): Event!
+    updateEvent(id: Int!, data: UpdateEventInput!): Event!
+    deleteEvent(id: Int!): Event!
   }
 `;

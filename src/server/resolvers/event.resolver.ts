@@ -10,6 +10,7 @@ import {
   AccessTypeService,
   EventService,
   EventSubCategoryService,
+  OrganizationService,
   OwnerTypeService,
   TicketService,
   UserService,
@@ -27,6 +28,21 @@ export const EventResolver = {
 
     event: async (_: any, { id }: { id: number }, __: IGraphqlContext) => {
       return await EventService.event(id);
+    },
+    eventsByCategory: async (
+      _: any,
+      { categoryId }: { categoryId: number },
+      __: IGraphqlContext
+    ) => {
+      return await EventService.eventsByCategory(categoryId);
+    },
+
+    eventsBySubcategory: async (
+      _: any,
+      { subCategoryId }: { subCategoryId: number },
+      __: IGraphqlContext
+    ) => {
+      return await EventService.eventsBySubCategory(subCategoryId);
     },
   },
 
@@ -89,6 +105,14 @@ export const EventResolver = {
 
     staff: async ({ id }: Event, _: any, __: IGraphqlContext) => {
       return await UserService.staffByEvent(id);
+    },
+
+    organization: async (
+      { organizationId }: Event,
+      _: any,
+      __: IGraphqlContext
+    ) => {
+      return await OrganizationService.organization(organizationId);
     },
   },
 };
