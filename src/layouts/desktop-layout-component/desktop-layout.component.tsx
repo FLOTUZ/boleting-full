@@ -34,6 +34,7 @@ import {
   OrganizationsPath,
   UsersPath,
   ProfilePath,
+  RootPath,
 } from "@/routes";
 import { useRouter } from "next/router";
 import { BiSolidCategoryAlt } from "react-icons/bi";
@@ -102,14 +103,14 @@ const DesktopLayoutComponent = ({
           <GridItem rowSpan={3} colSpan={1} w={"auto"} borderWidth={"1px"}>
             <Box w={"100%"} mt={30} pos={"inherit"} top={0} right={0}>
               <Center pt={"1rem"}>
-                <Text>
+                <Link href={RootPath}>
                   <Image
                     src={"/assets/logo_provisional.png"}
                     width={50}
                     height={50}
                     alt="app logo"
                   />
-                </Text>
+                </Link>
               </Center>
             </Box>
             <Box w={"100%"} mt={100} pos={"inherit"} top={0} right={0}>
@@ -191,7 +192,7 @@ const DesktopLayoutComponent = ({
             borderWidth={"1px"}
           >
             <DesktopHeaderComponent title={title} breadCrumbs={breadCrumbs} />
-            <Box h={"100%"} mb={16}>
+            <Box h={"auto"} mb={16}>
               {children}
             </Box>
           </GridItem>
