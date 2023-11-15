@@ -14,7 +14,7 @@ export const OrganizationResolver = {
     ) => {
       await autorizedAbilities({
         authorized_abilities: ["read:organizations"],
-        id_user: id_user,
+        id_user: id_user!,
       });
       return await OrganizationService.organizations(pagination);
     },

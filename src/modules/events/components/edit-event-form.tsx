@@ -67,7 +67,7 @@ const EditEventForm = () => {
       re_entry: event?.re_entry,
       event_logo_url: event?.event_logo_url,
       event_banner_url: event?.event_banner_url,
-      event_sub_categories: event?.event_sub_categories!.map(
+      event_sub_categories: event?.event_sub_categories?.map(
         (subCategory) => subCategory.id
       ),
     },

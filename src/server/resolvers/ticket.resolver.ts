@@ -37,7 +37,7 @@ export const TicketResolver = {
       { id_user }: IGraphqlContext
     ) => {
       await autorizedAbilities({
-        id_user,
+        id_user: id_user!,
         authorized_abilities: ["read:courtesy-ticket"],
       });
 
@@ -70,7 +70,7 @@ export const TicketResolver = {
       { id_user }: IGraphqlContext
     ) => {
       await autorizedAbilities({
-        id_user,
+        id_user: id_user!,
         authorized_abilities: ["create:courtesy-ticket"],
       });
       await validateData({ schema: CreateCourtesyTicketValidator, data });

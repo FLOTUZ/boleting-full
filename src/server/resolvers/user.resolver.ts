@@ -51,7 +51,10 @@ export const UserResolver = {
       if (id_organization === null)
         throw new UnauthorizedError("Unauthorized organization");
 
-      return await UserService.createUser({ data, id_organization });
+      return await UserService.createUser({
+        data,
+        id_organization: id_organization!,
+      });
     },
 
     updateUser: async (
