@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 import LandingLayout from "@/layouts/landing-layout.component";
 
 import {
@@ -16,6 +14,8 @@ import { Event, useSearchEventLazyQuery } from "@/gql/generated";
 import { useEffect, useState } from "react";
 import ProgressLoaderComponent from "@/components/loaders/progress-loader.component";
 import IntroAnimationComponent from "@/components/animations/intro-animation.component";
+import { ShowAccessTypesByEvent } from "@/routes";
+import Link from "next/link";
 
 const ShowEventRoute = () => {
   const router = useRouter();
@@ -103,9 +103,11 @@ const ShowEventRoute = () => {
             )}
           </Box>
 
-          <Button mt={4} w={"full"} colorScheme={"green"}>
-            Buscar boletos
-          </Button>
+          <Link href={ShowAccessTypesByEvent(String(event?.id))}>
+            <Button mt={4} w={"full"} colorScheme={"green"}>
+              Buscar boletos
+            </Button>
+          </Link>
         </Box>
 
         <Heading size={"md"} mt={8}>

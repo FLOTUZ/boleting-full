@@ -6,7 +6,7 @@ import {
   CreateAccessTypeValidator,
   UpdateAccessTypeValidator,
 } from "@/validations";
-import { AccessTypeService } from "../services";
+import { AccessTypeService, EventService } from "../services";
 
 //
 // Resolver for AccessType model
@@ -59,6 +59,11 @@ export const AccessTypeResolver = {
       __: IGraphqlContext
     ) => {
       return await AccessTypeService.deleteAccessType(id);
+    },
+  },
+  AccessType: {
+    event: async ({ eventId }: AccessType, _: any, __: IGraphqlContext) => {
+      return await EventService.event(eventId);
     },
   },
 };

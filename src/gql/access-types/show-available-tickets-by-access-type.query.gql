@@ -1,0 +1,15 @@
+query ShowTicketsByAccessType($accessTypeId: Int!) {
+  accessType(id: $accessTypeId) {
+    id
+    name
+    price
+    enter_and_exit_option
+    description
+    event {
+      id
+      name
+      event_logo_url
+      event_banner_url
+    }
+  }
+}

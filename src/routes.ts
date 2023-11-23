@@ -37,6 +37,7 @@ export const ShowCategoryPath = (categoryId: string) =>
 export const EditCategoryPath = (categoryId: string) =>
   `/categories/${categoryId}/edit`;
 
+// =========== BUY TICKETS ============
 export const SearchEventsByCategoryPath = (categoryId: string) =>
   `/search/categories/${categoryId}/events`;
 
@@ -44,6 +45,12 @@ export const SearchEventsBySubcategoryPath = (subcategoryId: string) =>
   `/search/sub-categories/${subcategoryId}/events`;
 
 export const SearchEventById = (eventId: string) => `/search/events/${eventId}`;
+
+export const ShowAccessTypesByEvent = (eventId: string) =>
+  `/search/events/${eventId}/access-types`;
+
+export const SearchTicketsByEvent = (eventId: string, accessTypeId: string) =>
+  `/search/events/${eventId}/access-types/${accessTypeId}/tickets`;
 
 // =========== SUBCATEGORIES ============
 export const ShowEventsBySubcategory = (id: string) =>

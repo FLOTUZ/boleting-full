@@ -1436,6 +1436,20 @@ export type EditAccessTypeMutationVariables = Exact<{
 
 export type EditAccessTypeMutation = { __typename?: 'Mutation', updateAccessType: { __typename?: 'AccessType', id: number, description?: string | null, enter_and_exit_option: boolean, price: any } };
 
+export type ShowEventAccessTypesByEventQueryVariables = Exact<{
+  eventId: Scalars['Int']['input'];
+}>;
+
+
+export type ShowEventAccessTypesByEventQuery = { __typename?: 'Query', event: { __typename?: 'Event', id: number, name: string }, accessTypesByEventId: Array<{ __typename?: 'AccessType', id: number, name: string, price: any, eventId: number, description?: string | null, enter_and_exit_option: boolean }> };
+
+export type ShowTicketsByAccessTypeQueryVariables = Exact<{
+  accessTypeId: Scalars['Int']['input'];
+}>;
+
+
+export type ShowTicketsByAccessTypeQuery = { __typename?: 'Query', accessType: { __typename?: 'AccessType', id: number, name: string, price: any, enter_and_exit_option: boolean, description?: string | null, event: { __typename?: 'Event', id: number, name: string, event_logo_url?: string | null, event_banner_url?: string | null } } };
+
 export type WhoAMiQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1971,6 +1985,95 @@ export function useEditAccessTypeMutation(baseOptions?: Apollo.MutationHookOptio
 export type EditAccessTypeMutationHookResult = ReturnType<typeof useEditAccessTypeMutation>;
 export type EditAccessTypeMutationResult = Apollo.MutationResult<EditAccessTypeMutation>;
 export type EditAccessTypeMutationOptions = Apollo.BaseMutationOptions<EditAccessTypeMutation, EditAccessTypeMutationVariables>;
+export const ShowEventAccessTypesByEventDocument = gql`
+    query ShowEventAccessTypesByEvent($eventId: Int!) {
+  event(id: $eventId) {
+    id
+    name
+  }
+  accessTypesByEventId(eventId: $eventId) {
+    id
+    name
+    price
+    eventId
+    description
+    enter_and_exit_option
+  }
+}
+    `;
+
+/**
+ * __useShowEventAccessTypesByEventQuery__
+ *
+ * To run a query within a React component, call `useShowEventAccessTypesByEventQuery` and pass it any options that fit your needs.
+ * When your component renders, `useShowEventAccessTypesByEventQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useShowEventAccessTypesByEventQuery({
+ *   variables: {
+ *      eventId: // value for 'eventId'
+ *   },
+ * });
+ */
+export function useShowEventAccessTypesByEventQuery(baseOptions: Apollo.QueryHookOptions<ShowEventAccessTypesByEventQuery, ShowEventAccessTypesByEventQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ShowEventAccessTypesByEventQuery, ShowEventAccessTypesByEventQueryVariables>(ShowEventAccessTypesByEventDocument, options);
+      }
+export function useShowEventAccessTypesByEventLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ShowEventAccessTypesByEventQuery, ShowEventAccessTypesByEventQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ShowEventAccessTypesByEventQuery, ShowEventAccessTypesByEventQueryVariables>(ShowEventAccessTypesByEventDocument, options);
+        }
+export type ShowEventAccessTypesByEventQueryHookResult = ReturnType<typeof useShowEventAccessTypesByEventQuery>;
+export type ShowEventAccessTypesByEventLazyQueryHookResult = ReturnType<typeof useShowEventAccessTypesByEventLazyQuery>;
+export type ShowEventAccessTypesByEventQueryResult = Apollo.QueryResult<ShowEventAccessTypesByEventQuery, ShowEventAccessTypesByEventQueryVariables>;
+export const ShowTicketsByAccessTypeDocument = gql`
+    query ShowTicketsByAccessType($accessTypeId: Int!) {
+  accessType(id: $accessTypeId) {
+    id
+    name
+    price
+    enter_and_exit_option
+    description
+    event {
+      id
+      name
+      event_logo_url
+      event_banner_url
+    }
+  }
+}
+    `;
+
+/**
+ * __useShowTicketsByAccessTypeQuery__
+ *
+ * To run a query within a React component, call `useShowTicketsByAccessTypeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useShowTicketsByAccessTypeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useShowTicketsByAccessTypeQuery({
+ *   variables: {
+ *      accessTypeId: // value for 'accessTypeId'
+ *   },
+ * });
+ */
+export function useShowTicketsByAccessTypeQuery(baseOptions: Apollo.QueryHookOptions<ShowTicketsByAccessTypeQuery, ShowTicketsByAccessTypeQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ShowTicketsByAccessTypeQuery, ShowTicketsByAccessTypeQueryVariables>(ShowTicketsByAccessTypeDocument, options);
+      }
+export function useShowTicketsByAccessTypeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ShowTicketsByAccessTypeQuery, ShowTicketsByAccessTypeQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ShowTicketsByAccessTypeQuery, ShowTicketsByAccessTypeQueryVariables>(ShowTicketsByAccessTypeDocument, options);
+        }
+export type ShowTicketsByAccessTypeQueryHookResult = ReturnType<typeof useShowTicketsByAccessTypeQuery>;
+export type ShowTicketsByAccessTypeLazyQueryHookResult = ReturnType<typeof useShowTicketsByAccessTypeLazyQuery>;
+export type ShowTicketsByAccessTypeQueryResult = Apollo.QueryResult<ShowTicketsByAccessTypeQuery, ShowTicketsByAccessTypeQueryVariables>;
 export const WhoAMiDocument = gql`
     query WhoAMi {
   currentUser {
