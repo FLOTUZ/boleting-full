@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Link from "next/link";
 import ThemeSwitchComponent from "@/components/buttons/theme-switch.component";
-import { LoginClientPath, RegisterClientPath } from "@/routes";
+import { LoginClientPath, ProfilePath, RegisterClientPath } from "@/routes";
 import {
   Box,
   Button,
@@ -17,7 +17,7 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 
-import { FaRegUserCircle } from "react-icons/fa";
+import { FaRegUserCircle, FaUserCircle } from "react-icons/fa";
 import {
   IoCloseSharp,
   IoExit,
@@ -85,6 +85,12 @@ const ClientMenuComponent = () => {
             <VStack rounded="sm" alignItems={"flex-start"} spacing={4} p={4}>
               {client && client.email && (
                 <>
+                  <Link href={ProfilePath}>
+                    <Button w={"full"} placeContent={"start"} variant="ghost">
+                      <FaUserCircle />
+                      &nbsp; Perfil
+                    </Button>
+                  </Link>
                   <Button w={"full"} placeContent={"start"} variant="ghost">
                     <IoTicketSharp />
                     &nbsp; Mis boletos

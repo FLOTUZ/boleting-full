@@ -4,6 +4,7 @@ import {
   useShowTicketsByAccessTypeLazyQuery,
 } from "@/gql/generated";
 import { Box, Heading, Text } from "@chakra-ui/react";
+import ShowOrderView from "@/modules/orders/views/show-order.view";
 
 interface AvailableEventTicketsProps {
   eventId: string;
@@ -45,6 +46,7 @@ const ShowavailableTicketsByAccessTypesView = ({
           {accessType?.event.name}
         </Text>
       </Box>
+      <ShowOrderView />
     </Box>
   );
 };

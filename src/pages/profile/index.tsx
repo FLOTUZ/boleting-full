@@ -2,6 +2,8 @@
 
 import { useUserSession } from "@/hooks/useUserSession";
 import DesktopLayoutComponent from "@/layouts/desktop-layout-component/desktop-layout.component";
+import LandingLayout from "@/layouts/landing-layout.component";
+import { LandingPageProvider } from "@/modules/landing-page/contexts/landing-page.context";
 import ShowMyProfile from "@/modules/profile/views/show-my-profile";
 import { ProfilePath } from "@/routes";
 
@@ -15,19 +17,9 @@ function ProfileRoute() {
   }, [user]);
 
   return (
-    <>
-      <DesktopLayoutComponent
-        title={"Mi Perfil"}
-        breadCrumbs={[
-          {
-            label: "Mi perfil",
-            href: ProfilePath,
-          },
-        ]}
-      >
-        <ShowMyProfile />
-      </DesktopLayoutComponent>
-    </>
+    <LandingLayout>
+      <ShowMyProfile />
+    </LandingLayout>
   );
 }
 
