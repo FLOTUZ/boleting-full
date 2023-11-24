@@ -2,17 +2,9 @@
 
 import { useUserSession } from "@/hooks/useUserSession";
 import DesktopLayoutComponent from "@/layouts/desktop-layout-component/desktop-layout.component";
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  Heading,
-  Stack,
-  StackDivider,
-  Box,
-  Text,
-  AbsoluteCenter,
-} from "@chakra-ui/react";
+import ShowMyProfile from "@/modules/profile/views/show-my-profile";
+import { ProfilePath } from "@/routes";
+
 import { useEffect } from "react";
 
 function ProfileRoute() {
@@ -29,7 +21,7 @@ function ProfileRoute() {
         breadCrumbs={[
           {
             label: "Mi perfil",
-            href: profilePath,
+            href: ProfilePath,
           },
         ]}
       >

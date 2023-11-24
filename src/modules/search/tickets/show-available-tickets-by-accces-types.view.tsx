@@ -4,7 +4,11 @@ import {
   useShowTicketsByAccessTypeLazyQuery,
 } from "@/gql/generated";
 import { Box, Heading, Text } from "@chakra-ui/react";
-import { AvailableEventTicketsProps } from "./show-tickets-by-access-type.view";
+
+interface AvailableEventTicketsProps {
+  eventId: string;
+  accessTypeId: string;
+}
 
 export const ShowavailableTicketsByAccessTypesView = ({
   eventId,
@@ -34,7 +38,7 @@ export const ShowavailableTicketsByAccessTypesView = ({
       <Box display="flex" flexDirection="row" alignItems="center">
         <Heading>Tickets de </Heading>
         <Text ml={4} mr={4} fontSize={"4xl"}>
-          {accessType.name}
+          {accessType?.name}
         </Text>
         <Heading>para:</Heading>
         <Text ml={4} fontSize={"4xl"}>

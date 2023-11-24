@@ -1,14 +1,14 @@
-import { useSession } from "@/hooks/useSession";
+import { useClientSession } from "@/hooks/useClientSession";
 import { useEffect } from "react";
 import { Box, Button, Flex, Image, SimpleGrid, Text } from "@chakra-ui/react";
 
 //Here is all the  sections that help the user
 const MyProfileInfo = () => {
-  const { user } = useSession();
+  const { client } = useClientSession();
 
   useEffect(() => {
-    console.log(user);
-  }, [user]);
+    console.log(client);
+  }, [client]);
 
   return (
     <Flex placeContent={"center"}>

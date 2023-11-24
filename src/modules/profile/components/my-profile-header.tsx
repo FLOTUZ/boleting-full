@@ -1,4 +1,4 @@
-import { useSession } from "@/hooks/useSession";
+import { useClientSession } from "@/hooks/useClientSession";
 import {
   AbsoluteCenter,
   Avatar,
@@ -18,11 +18,11 @@ import { BiSolidPencil } from "react-icons/bi";
 //Here is all the information to identify the user
 const MyProfileHeader = () => {
   const isMobile = useBreakpointValue({ base: true, md: false });
-  const { user } = useSession();
+  const { client } = useClientSession();
 
   useEffect(() => {
-    console.log(user);
-  }, [user]);
+    console.log(client);
+  }, [client]);
 
   return (
     <Center>
@@ -53,7 +53,7 @@ const MyProfileHeader = () => {
             >
               <Box
                 as={Avatar}
-                name={user?.name + " " + user?.last_name}
+                name={client?.name + " " + client?.last_name}
                 src={undefined}
                 p={2}
                 borderRadius={{ base: "50%", md: "8" }}
@@ -63,10 +63,10 @@ const MyProfileHeader = () => {
                 <Flex direction={"column"} alignSelf="end" ml={"8px"}>
                   <Text fontSize="2xl">
                     {/*name and last name */}
-                    {user?.name + " " + user?.last_name}
+                    {client?.name + " " + client?.last_name}
                   </Text>
                   {/*email*/}
-                  <Text color="gray">{user?.email}</Text>
+                  <Text color="gray">{client?.email}</Text>
                 </Flex>
               </Box>
             </Flex>

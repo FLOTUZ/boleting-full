@@ -21,7 +21,10 @@ import {
 } from "@chakra-ui/react";
 import ProgressLoaderComponent from "@/components/loaders/progress-loader.component";
 import Link from "next/link";
-import { SearchTicketsByEvent, SearchEventsBySubcategoryPath } from "@/routes";
+import {
+  SearchEventsBySubcategoryPath,
+  ShowAccessTypesByEvent,
+} from "@/routes";
 
 const EventsByCategoryView = () => {
   const [category, setCategory] = useState<EventCategory>();
@@ -92,7 +95,7 @@ const EventsByCategoryView = () => {
       <Box>
         <SimpleGrid columns={[1, 3, 5]} spacing={4}>
           {events.map((event, index) => (
-            <Link key={index} href={SearchTicketsByEvent(String(event.id))}>
+            <Link key={index} href={ShowAccessTypesByEvent(String(event.id))}>
               <Card
                 maxW="sm"
                 shadow={"md"}
