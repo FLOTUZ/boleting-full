@@ -1,6 +1,6 @@
 import { Event } from "@/gql/generated";
 import { SearchEventById } from "@/routes";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import Link from "next/link";
 import {
   Box,

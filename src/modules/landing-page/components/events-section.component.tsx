@@ -47,7 +47,7 @@ const EventsSection = ({
               variant="outline"
               textAlign={"center"}
               css={{
-                "text-wrap": "wrap",
+                textWrap: "wrap",
               }}
             >
               {category.name}
