@@ -36,9 +36,9 @@ const MainEvent = ({ event }: MainEventProps) => {
                 event.event_banner_url || "/assets/evento_principal_prov.jpg"
               }
               alt="Imagen del evento"
-              height={2440}
-              width={2440}
-              loading="lazy"
+              height={1280}
+              width={1280}
+              priority
               style={{
                 opacity: 0.4,
                 borderRadius: "5px",
