@@ -913,6 +913,7 @@ export type Query = {
   paymentMethods: Array<PaymentMethod>;
   paymentRecibed: PaymentRecibed;
   paymentRecibeds: Array<PaymentRecibed>;
+  popular_events?: Maybe<Array<Event>>;
   role?: Maybe<Role>;
   roles?: Maybe<PaginatedRole>;
   selled_tickets_by_event?: Maybe<Array<Ticket>>;
@@ -1517,6 +1518,11 @@ export type EditEventQueryVariables = Exact<{
 
 
 export type EditEventQuery = { __typename?: 'Query', event: { __typename?: 'Event', id: number, name: string, description?: string | null, event_location: string, event_location_url: string, start_date: any, end_date?: any | null, start_time?: string | null, end_time?: string | null, re_entry: boolean, event_logo_url?: string | null, event_banner_url?: string | null, event_sub_categories?: Array<{ __typename?: 'EventSubCategory', id: number, name: string }> | null }, eventSubCategories?: Array<{ __typename?: 'EventSubCategory', id: number, name: string }> | null };
+
+export type LandingViewQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type LandingViewQuery = { __typename?: 'Query', eventCategories?: Array<{ __typename?: 'EventCategory', id: number, name: string }> | null, popular_events?: Array<{ __typename?: 'Event', id: number, name: string, description?: string | null, start_date: any, event_location: string, event_logo_url?: string | null, event_banner_url?: string | null }> | null };
 
 export type SearchEventsBySubcategoryQueryVariables = Exact<{
   subCategoryId: Scalars['Int']['input'];
@@ -2559,6 +2565,50 @@ export function useEditEventLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<
 export type EditEventQueryHookResult = ReturnType<typeof useEditEventQuery>;
 export type EditEventLazyQueryHookResult = ReturnType<typeof useEditEventLazyQuery>;
 export type EditEventQueryResult = Apollo.QueryResult<EditEventQuery, EditEventQueryVariables>;
+export const LandingViewDocument = gql`
+    query LandingView {
+  eventCategories {
+    id
+    name
+  }
+  popular_events {
+    id
+    name
+    description
+    start_date
+    event_location
+    event_logo_url
+    event_banner_url
+  }
+}
+    `;
+
+/**
+ * __useLandingViewQuery__
+ *
+ * To run a query within a React component, call `useLandingViewQuery` and pass it any options that fit your needs.
+ * When your component renders, `useLandingViewQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useLandingViewQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useLandingViewQuery(baseOptions?: Apollo.QueryHookOptions<LandingViewQuery, LandingViewQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<LandingViewQuery, LandingViewQueryVariables>(LandingViewDocument, options);
+      }
+export function useLandingViewLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<LandingViewQuery, LandingViewQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<LandingViewQuery, LandingViewQueryVariables>(LandingViewDocument, options);
+        }
+export type LandingViewQueryHookResult = ReturnType<typeof useLandingViewQuery>;
+export type LandingViewLazyQueryHookResult = ReturnType<typeof useLandingViewLazyQuery>;
+export type LandingViewQueryResult = Apollo.QueryResult<LandingViewQuery, LandingViewQueryVariables>;
 export const SearchEventsBySubcategoryDocument = gql`
     query SearchEventsBySubcategory($subCategoryId: Int!) {
   eventSubCategory(id: $subCategoryId) {

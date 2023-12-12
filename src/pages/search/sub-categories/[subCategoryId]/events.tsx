@@ -8,7 +8,7 @@ import {
 import LandingLayout from "@/layouts/landing-layout.component";
 import { SearchEventById } from "@/routes";
 import { Container, HStack, Heading, SimpleGrid, Text } from "@chakra-ui/react";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";

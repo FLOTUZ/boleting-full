@@ -44,6 +44,13 @@ export const EventResolver = {
     ) => {
       return await EventService.eventsBySubCategory(subCategoryId);
     },
+    popular_events: async (
+      _: any,
+      { pagination }: Args,
+      { id_organization }: IGraphqlContext
+    ) => {
+      return await EventService.popular_events(pagination);
+    },
   },
 
   Mutation: {
