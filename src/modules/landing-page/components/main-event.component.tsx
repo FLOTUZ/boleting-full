@@ -1,15 +1,9 @@
 import Image from "next/image";
-import {
-  Box,
-  Flex,
-  Heading,
-  Icon,
-  Link,
-  SimpleGrid,
-  Text,
-} from "@chakra-ui/react";
+import Link from "next/link";
+import { Box, Flex, Heading, Icon, SimpleGrid, Text } from "@chakra-ui/react";
 import { BiLinkExternal } from "react-icons/bi";
 import { Event } from "@/gql/generated";
+import { SearchEventById } from "@/routes";
 
 // @Emmanuel, en este componente se requiere:
 // saber cual es el evento principal
@@ -40,7 +34,6 @@ const MainEvent = ({ event }: MainEventProps) => {
               width={1280}
               priority
               style={{
-                opacity: 0.4,
                 borderRadius: "5px",
               }}
             />
@@ -88,31 +81,8 @@ const MainEvent = ({ event }: MainEventProps) => {
               {event.description ?? "No hay descripción para este evento"}
             </Text>
             <Box display="inline-flex" rounded="md" shadow="md">
-              <Link
-                mt={2}
-                display="inline-flex"
-                alignItems="center"
-                justifyContent="center"
-                px={5}
-                py={3}
-                border="solid transparent"
-                fontWeight="bold"
-                w="full"
-                rounded="md"
-                _light={{
-                  color: "#1a202ceb",
-                }}
-                _dark={{
-                  bg: "brand.500",
-                }}
-                _hover={{
-                  bg: "#dae5f1f7",
-                  _dark: {
-                    bg: "#2c313d",
-                  },
-                }}
-              >
-                Ver mas
+              <Link href={SearchEventById(String(event.id))}>
+                Comprar boletos
                 <Icon as={BiLinkExternal} ml={2} />
               </Link>
             </Box>
