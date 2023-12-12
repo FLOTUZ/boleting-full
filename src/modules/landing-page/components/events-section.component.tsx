@@ -9,31 +9,32 @@ import {
 
 import EventCards from "./event-cards.component";
 import {
+  Event,
   EventCategory,
   useShowEventCategoriesLazyQuery,
+  useShowEventsLazyQuery,
+  useShowEventsQuery,
 } from "@/gql/generated";
 import { useEffect, useState } from "react";
 import { SearchEventsByCategoryPath } from "@/routes";
 
-const EventsSection = () => {
-  const [categories, setCategories] = useState<EventCategory[]>([]);
-  const [GET_CATEGORIES, { data, loading }] = useShowEventCategoriesLazyQuery({
-    onCompleted(data) {
-      setCategories(data.eventCategories as EventCategory[]);
-    },
-  });
-
-  useEffect(() => {
-    GET_CATEGORIES();
-  }, [GET_CATEGORIES]);
-
+interface EventsSectionProps {
+  events: Event[];
+  categories: EventCategory[];
+  isLoading?: boolean;
+}
+const EventsSection = ({
+  events,
+  categories,
+  isLoading,
+}: EventsSectionProps) => {
   return (
     <Box margin={9}>
       <Heading as="h3" size="lg" mb={4}>
         Eventos y categorias
       </Heading>
 
-      {loading ? (
+      {isLoading ? (
         <SkeletonCircle size="10" />
       ) : (
         <SimpleGrid columns={[2, 3, 4]} spacing={2}>
@@ -41,8 +42,13 @@ const EventsSection = () => {
             <Button
               key={index}
               as={Link}
+              py={6}
               href={SearchEventsByCategoryPath(String(category.id))}
               variant="outline"
+              textAlign={"center"}
+              css={{
+                "text-wrap": "wrap",
+              }}
             >
               {category.name}
             </Button>
@@ -50,7 +56,7 @@ const EventsSection = () => {
         </SimpleGrid>
       )}
 
-      <EventCards />
+      <EventCards events={events} />
     </Box>
   );
 };

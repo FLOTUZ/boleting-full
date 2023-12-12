@@ -98,4 +98,13 @@ export const EventService = {
       where: { event_sub_categories: { some: { id: subcategoryId } } },
     });
   },
+
+  async popular_events(pagination?: Pagination) {
+    return await prisma.event.findMany({
+      skip: pagination?.skip,
+      take: pagination?.take,
+      where: { deleted: false },
+      orderBy: { selled_tickets: { _count: "desc" } },
+    });
+  },
 };

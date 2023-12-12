@@ -1,0 +1,14 @@
+query LandingView {
+  eventCategories {
+    id
+    name
+  }
+
+  popular_events {
+    id
+    name
+    start_date
+    event_location
+    event_logo_url
+  }
+}
