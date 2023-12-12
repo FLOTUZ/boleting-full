@@ -56,7 +56,12 @@ const EventsSection = ({
         </SimpleGrid>
       )}
 
-      <EventCards events={events} />
+      <EventCards
+        events={[
+          // remove first event
+          ...events.slice(1),
+        ]}
+      />
     </Box>
   );
 };

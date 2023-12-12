@@ -64,7 +64,6 @@ const EventCards = ({ events }: EventCardsProps) => {
                 <Image
                   height={250}
                   width={250}
-                  objectFit={"fill"}
                   objectPosition="center"
                   style={{
                     borderRadius: "5px",

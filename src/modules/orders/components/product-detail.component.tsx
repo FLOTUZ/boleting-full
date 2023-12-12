@@ -21,7 +21,6 @@ const ProductDetail = () => {
             alt="Imagen del evento"
             h="320px"
             w="full"
-            objectFit="cover"
           />
           <Box>
             <Heading size="lg">Dia de muertos</Heading>

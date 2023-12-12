@@ -1522,7 +1522,7 @@ export type EditEventQuery = { __typename?: 'Query', event: { __typename?: 'Even
 export type LandingViewQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type LandingViewQuery = { __typename?: 'Query', eventCategories?: Array<{ __typename?: 'EventCategory', id: number, name: string }> | null, popular_events?: Array<{ __typename?: 'Event', id: number, name: string, start_date: any, event_location: string, event_logo_url?: string | null }> | null };
+export type LandingViewQuery = { __typename?: 'Query', eventCategories?: Array<{ __typename?: 'EventCategory', id: number, name: string }> | null, popular_events?: Array<{ __typename?: 'Event', id: number, name: string, description?: string | null, start_date: any, event_location: string, event_logo_url?: string | null, event_banner_url?: string | null }> | null };
 
 export type SearchEventsBySubcategoryQueryVariables = Exact<{
   subCategoryId: Scalars['Int']['input'];
@@ -2574,9 +2574,11 @@ export const LandingViewDocument = gql`
   popular_events {
     id
     name
+    description
     start_date
     event_location
     event_logo_url
+    event_banner_url
   }
 }
     `;

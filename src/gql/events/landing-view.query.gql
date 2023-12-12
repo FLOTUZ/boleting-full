@@ -7,8 +7,10 @@ query LandingView {
   popular_events {
     id
     name
+    description
     start_date
     event_location
     event_logo_url
+    event_banner_url
   }
 }

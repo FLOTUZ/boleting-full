@@ -65,7 +65,6 @@ const ClientLoginView = () => {
                 width={500}
                 height={500}
                 style={{
-                  objectFit: "cover",
                   borderRadius: "20px",
                 }}
               />
