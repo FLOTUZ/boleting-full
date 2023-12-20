@@ -40,9 +40,8 @@ const ProductDetail = () => {
             </Text>
           </Flex>
 
-          <Text color="gray" fontWeight="semibold"></Text>
-          <Divider mt="8px" />
-          <Flex justifyContent="space-between" mt="24px">
+          <Divider mt={2} />
+          <Flex justifyContent="space-between" mt={4}>
             <Text>Cantidad: </Text>
             <Text>
               <Button colorScheme="facebook" as={CgMathPlus} mr={4} />
@@ -50,7 +49,7 @@ const ProductDetail = () => {
               <Button colorScheme="facebook" as={CgMathMinus} ml={4} />
             </Text>
           </Flex>
-          <Flex mt="8px" justifyContent={"space-between"}>
+          <Flex mt={4} justifyContent={"space-between"}>
             <Text fontWeight={"bold"}>Total: </Text>
             <Text fontWeight={"bold"}>$160 mxn</Text>
           </Flex>
