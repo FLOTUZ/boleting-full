@@ -25,11 +25,13 @@ export const OrganizationSchema = gql`
     events: [Event!]
     users: [User!]
     roles: [Role!]
+    current_events_count: Int
   }
 
   type Query {
     organizations(pagination: Pagination): [Organization]
     organization(id: Int!): Organization
+    searchOrganizations(query: String!, pagination: Pagination): [Organization]
   }
 
   type Mutation {

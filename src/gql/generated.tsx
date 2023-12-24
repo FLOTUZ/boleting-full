@@ -775,6 +775,7 @@ export type Notification = {
 export type Organization = {
   __typename?: 'Organization';
   createdAt?: Maybe<Scalars['DateTime']['output']>;
+  current_events_count?: Maybe<Scalars['Int']['output']>;
   deleted?: Maybe<Scalars['Boolean']['output']>;
   deletedAt?: Maybe<Scalars['DateTime']['output']>;
   events?: Maybe<Array<Event>>;
@@ -916,6 +917,8 @@ export type Query = {
   popular_events?: Maybe<Array<Event>>;
   role?: Maybe<Role>;
   roles?: Maybe<PaginatedRole>;
+  searchOrganizations?: Maybe<Array<Maybe<Organization>>>;
+  search_events?: Maybe<Array<Event>>;
   selled_tickets_by_event?: Maybe<Array<Ticket>>;
   ticket?: Maybe<Ticket>;
   tickets?: Maybe<Array<Ticket>>;
@@ -1124,6 +1127,18 @@ export type QueryRoleArgs = {
 
 export type QueryRolesArgs = {
   pagination?: InputMaybe<Pagination>;
+};
+
+
+export type QuerySearchOrganizationsArgs = {
+  pagination?: InputMaybe<Pagination>;
+  query: Scalars['String']['input'];
+};
+
+
+export type QuerySearch_EventsArgs = {
+  pagination?: InputMaybe<Pagination>;
+  query: Scalars['String']['input'];
 };
 
 
@@ -1683,6 +1698,20 @@ export type SearchEventsByCategoryQueryVariables = Exact<{
 
 
 export type SearchEventsByCategoryQuery = { __typename?: 'Query', eventCategory: { __typename?: 'EventCategory', id: number, name: string }, eventSubCategoriesByCategory?: Array<{ __typename?: 'EventSubCategory', id: number, name: string }> | null, eventsByCategory?: Array<{ __typename?: 'Event', id: number, name: string, start_date: any, end_date?: any | null, price_from?: any | null, price_to?: any | null, start_time?: string | null, end_time?: string | null, event_location: string }> | null };
+
+export type SearchOrganizationQueryVariables = Exact<{
+  organizationId: Scalars['Int']['input'];
+}>;
+
+
+export type SearchOrganizationQuery = { __typename?: 'Query', organization?: { __typename?: 'Organization', id: string, name?: string | null, current_events_count?: number | null, createdAt?: any | null, events?: Array<{ __typename?: 'Event', id: number, name: string, description?: string | null }> | null } | null };
+
+export type MainSearchQueryVariables = Exact<{
+  query: Scalars['String']['input'];
+}>;
+
+
+export type MainSearchQuery = { __typename?: 'Query', search_events?: Array<{ __typename?: 'Event', id: number, name: string, description?: string | null, event_logo_url?: string | null, start_date: any, price_from?: any | null, event_location: string, event_sub_categories?: Array<{ __typename?: 'EventSubCategory', id: number, name: string }> | null }> | null, searchOrganizations?: Array<{ __typename?: 'Organization', id: string, name?: string | null, current_events_count?: number | null } | null> | null };
 
 export type AssignManyStaffMutationVariables = Exact<{
   eventId: Scalars['Int']['input'];
@@ -3713,6 +3742,99 @@ export function useSearchEventsByCategoryLazyQuery(baseOptions?: Apollo.LazyQuer
 export type SearchEventsByCategoryQueryHookResult = ReturnType<typeof useSearchEventsByCategoryQuery>;
 export type SearchEventsByCategoryLazyQueryHookResult = ReturnType<typeof useSearchEventsByCategoryLazyQuery>;
 export type SearchEventsByCategoryQueryResult = Apollo.QueryResult<SearchEventsByCategoryQuery, SearchEventsByCategoryQueryVariables>;
+export const SearchOrganizationDocument = gql`
+    query SearchOrganization($organizationId: Int!) {
+  organization(id: $organizationId) {
+    id
+    name
+    current_events_count
+    createdAt
+    events {
+      id
+      name
+      description
+    }
+  }
+}
+    `;
+
+/**
+ * __useSearchOrganizationQuery__
+ *
+ * To run a query within a React component, call `useSearchOrganizationQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchOrganizationQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchOrganizationQuery({
+ *   variables: {
+ *      organizationId: // value for 'organizationId'
+ *   },
+ * });
+ */
+export function useSearchOrganizationQuery(baseOptions: Apollo.QueryHookOptions<SearchOrganizationQuery, SearchOrganizationQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SearchOrganizationQuery, SearchOrganizationQueryVariables>(SearchOrganizationDocument, options);
+      }
+export function useSearchOrganizationLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchOrganizationQuery, SearchOrganizationQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SearchOrganizationQuery, SearchOrganizationQueryVariables>(SearchOrganizationDocument, options);
+        }
+export type SearchOrganizationQueryHookResult = ReturnType<typeof useSearchOrganizationQuery>;
+export type SearchOrganizationLazyQueryHookResult = ReturnType<typeof useSearchOrganizationLazyQuery>;
+export type SearchOrganizationQueryResult = Apollo.QueryResult<SearchOrganizationQuery, SearchOrganizationQueryVariables>;
+export const MainSearchDocument = gql`
+    query MainSearch($query: String!) {
+  search_events(query: $query) {
+    id
+    name
+    description
+    event_logo_url
+    start_date
+    price_from
+    event_location
+    event_sub_categories {
+      id
+      name
+    }
+  }
+  searchOrganizations(query: $query) {
+    id
+    name
+    current_events_count
+  }
+}
+    `;
+
+/**
+ * __useMainSearchQuery__
+ *
+ * To run a query within a React component, call `useMainSearchQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMainSearchQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMainSearchQuery({
+ *   variables: {
+ *      query: // value for 'query'
+ *   },
+ * });
+ */
+export function useMainSearchQuery(baseOptions: Apollo.QueryHookOptions<MainSearchQuery, MainSearchQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MainSearchQuery, MainSearchQueryVariables>(MainSearchDocument, options);
+      }
+export function useMainSearchLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MainSearchQuery, MainSearchQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MainSearchQuery, MainSearchQueryVariables>(MainSearchDocument, options);
+        }
+export type MainSearchQueryHookResult = ReturnType<typeof useMainSearchQuery>;
+export type MainSearchLazyQueryHookResult = ReturnType<typeof useMainSearchLazyQuery>;
+export type MainSearchQueryResult = Apollo.QueryResult<MainSearchQuery, MainSearchQueryVariables>;
 export const AssignManyStaffDocument = gql`
     mutation AssignManyStaff($eventId: Int!, $userIds: [Int!]!) {
   assignManyStaff(eventId: $eventId, userIds: $userIds) {
