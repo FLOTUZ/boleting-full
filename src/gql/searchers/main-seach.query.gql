@@ -1,0 +1,20 @@
+query MainSearch($query: String!) {
+  search_events(query: $query) {
+    id
+    name
+    description
+    event_logo_url
+    start_date
+    price_from
+    event_location
+    event_sub_categories {
+      id
+      name
+    }
+  }
+  searchOrganizations(query: $query) {
+    id
+    name
+    current_events_count
+  }
+}

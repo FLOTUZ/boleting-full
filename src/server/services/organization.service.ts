@@ -51,4 +51,20 @@ export const OrganizationService = {
       where: { users: { some: { id: id_user } } },
     });
   },
+
+  async searchOrganizations(query: string, pagination?: Pagination) {
+    return prisma.organization.findMany({
+      ...pagination,
+      where: {
+        OR: [
+          { name: { contains: query, mode: "insensitive" } },
+          {
+            events: {
+              some: { name: { contains: query, mode: "insensitive" } },
+            },
+          },
+        ],
+      },
+    });
+  },
 };

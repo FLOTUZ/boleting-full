@@ -1,0 +1,13 @@
+query SearchOrganization($organizationId: Int!) {
+  organization(id: $organizationId) {
+    id
+    name
+    current_events_count
+    createdAt
+    events {
+      id
+      name
+      description
+    }
+  }
+}

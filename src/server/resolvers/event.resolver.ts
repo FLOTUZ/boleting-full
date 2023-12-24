@@ -51,6 +51,15 @@ export const EventResolver = {
     ) => {
       return await EventService.popular_events(pagination);
     },
+
+    search_events: async (
+      _: any,
+      { query, pagination }: { query: string } & Args,
+      __: IGraphqlContext
+    ) => {
+      if (query.length < 3) return [];
+      return await EventService.searchEvents(query, pagination);
+    },
   },
 
   Mutation: {

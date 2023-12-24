@@ -46,6 +46,9 @@ export const SearchEventsBySubcategoryPath = (subcategoryId: string) =>
 
 export const SearchEventById = (eventId: string) => `/search/events/${eventId}`;
 
+export const SearchOrganizationById = (organizationId: string) =>
+  `/search/organizations/${organizationId}`;
+
 export const ShowAccessTypesByEvent = (eventId: string) =>
   `/search/events/${eventId}/access-types`;
 

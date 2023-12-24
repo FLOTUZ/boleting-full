@@ -107,4 +107,27 @@ export const EventService = {
       orderBy: { selled_tickets: { _count: "desc" } },
     });
   },
+
+  async searchEvents(query: string, pagination?: Pagination) {
+    return await prisma.event.findMany({
+      ...pagination,
+      where: {
+        OR: [
+          { name: { contains: query, mode: "insensitive" } },
+          { description: { contains: query, mode: "insensitive" } },
+        ],
+      },
+    });
+  },
+
+  async currentEventsCount(organizationId: number) {
+    // Returns the number of events that have not ended
+    return await prisma.event.count({
+      where: {
+        organizationId,
+        end_date: { gt: new Date() },
+        deleted: false,
+      },
+    });
+  },
 };
