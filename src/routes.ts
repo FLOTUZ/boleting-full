@@ -55,10 +55,6 @@ export const ShowAccessTypesByEvent = (eventId: string) =>
 export const SearchTicketsByEvent = (eventId: string, accessTypeId: string) =>
   `/search/events/${eventId}/access-types/${accessTypeId}/tickets`;
 
-// =========== SUBCATEGORIES ============
-export const ShowEventsBySubcategory = (id: string) =>
-  `/subcategories/${id}/events`;
-
 // ============ EVENTS ============
 export const ShowEventStaffIdPath = (id: number) => `/events/${id}/staff`;
 

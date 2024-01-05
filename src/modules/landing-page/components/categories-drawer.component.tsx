@@ -11,7 +11,7 @@ import {
 import { HiMenuAlt2 } from "react-icons/hi";
 import { useLandingPage } from "../contexts/landing-page.context";
 import Link from "next/link";
-import { ShowEventsBySubcategory } from "@/routes";
+import { SearchEventsBySubcategoryPath } from "@/routes";
 
 const CategoriesDrawerComponent = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -38,7 +38,7 @@ const CategoriesDrawerComponent = () => {
             {eventSubCategories.map((subCategory) => (
               <Link
                 key={subCategory.id}
-                href={ShowEventsBySubcategory(String(subCategory.id))}
+                href={SearchEventsBySubcategoryPath(String(subCategory.id))}
               >
                 <p>{subCategory.name}</p>
               </Link>
