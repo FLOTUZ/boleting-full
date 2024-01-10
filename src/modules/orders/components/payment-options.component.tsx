@@ -1,50 +1,42 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  Icon,
-  Spacer,
-  Text,
-} from "@chakra-ui/react";
-import { AiFillCreditCard } from "react-icons/ai";
-import { BsFillCreditCard2FrontFill } from "react-icons/bs";
+//This component has the payment options (cards and cash)
 
-const PaymentOptions = () => {
+import MyCards from "./my-cards.component";
+import CashComponent from "./cash.component";
+import { Flex, Heading } from "@chakra-ui/react";
+
+import { AiOutlineCreditCard } from "react-icons/ai";
+import { BsCashCoin } from "react-icons/bs";
+import ExpandedPanelComponent from "./expanded-panel";
+
+const PaymentOptionsComponent = () => {
   return (
     <>
-      <Flex w="100%" h="100%" justify="center" align="center">
-        <Flex direction="column" h="auto" w="90%" p="8px" borderRadius="14px">
-          <Heading size="lg" mb="8px">
-            ¿Cómo quieres pagar?
+      <Flex h={"100%"} placeContent={"center"}>
+        <Flex direction={"column"} w={"100%"} alignSelf={"center"}>
+          <Heading
+            m={"16px 0"}
+            size="lg"
+            fontWeight={"semibold"}
+            alignSelf={"center"}
+          >
+            Opciones de pago
           </Heading>
-          <Box p="4px">
-            <Flex width="100%">
-              <Button w="100%" h="64px">
-                <Text fontWeight="normal" fontSize="md">
-                  Tarjeta credito
-                </Text>
-                <Spacer />
-                <Icon as={AiFillCreditCard} ml={2} />
-              </Button>
-            </Flex>
-          </Box>
 
-          <Box p="4px">
-            <Flex width="100%">
-              <Button w="full" h="64px">
-                <Text fontWeight="normal" fontSize="md">
-                  Tarjeta debito
-                </Text>
-                <Spacer />
-                <Icon as={BsFillCreditCard2FrontFill} ml={2} />
-              </Button>
-            </Flex>
-          </Box>
+          <ExpandedPanelComponent
+            icon={AiOutlineCreditCard}
+            title={"Tarjeta de credito o debito"}
+            isDefaultExpanded={false}
+          >
+            <MyCards isVisible={false} />
+          </ExpandedPanelComponent>
+
+          <ExpandedPanelComponent icon={BsCashCoin} title={"Pago en efectivo"}>
+            <CashComponent isVisible={false} />
+          </ExpandedPanelComponent>
         </Flex>
       </Flex>
     </>
   );
 };
 
-export default PaymentOptions;
+export default PaymentOptionsComponent;

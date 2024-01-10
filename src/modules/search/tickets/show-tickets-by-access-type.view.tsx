@@ -43,24 +43,23 @@ const ShowavailableTicketsByAccessTypesView = ({
   }, [GET_TICKETS_BY_ACCESS_TYPE, accessTypeId]);
 
   return (
-    <Box>
-      <Box
-        display="flex"
-        flexDirection={isMobile ? "column" : "row"}
-        alignItems="start"
-      >
-        <Heading>Tickets de </Heading>
-
-        <Text mx={isMobile ? 0 : 2} fontSize={"3xl"} fontWeight="thin">
-          {accessType?.name}
-        </Text>
-        <Heading mr={isMobile ? 0 : 2}>para</Heading>
-        <Text fontSize={"3xl"} fontWeight="thin">
-          {accessType?.event.name}
-        </Text>
-      </Box>
-      <ShowOrderView />
-    </Box>
+    <>
+      <SimpleGrid>
+        <Box display={"flex"} flexWrap={"wrap"}>
+          <Heading mr={2}>Tickets de </Heading>
+          <Text mx={isMobile ? 0 : 2} fontSize={"3xl"} fontWeight="thin">
+            {accessType?.name}
+          </Text>
+          <Heading ml={2} mr={2}>
+            para
+          </Heading>
+          <Text fontSize={"3xl"} fontWeight="thin">
+            {accessType?.event.name}
+          </Text>
+        </Box>
+        <ShowOrderView />
+      </SimpleGrid>
+    </>
   );
 };
 
