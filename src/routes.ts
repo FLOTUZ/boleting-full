@@ -6,6 +6,8 @@ export const RegisterClientPath = "/auth/client/register";
 export const ProfilePath = "/profile";
 export const DashboardPath = "/dashboard";
 
+export const PaymentIntentAPIPath = "/api/create-payment-intent";
+
 // ============ ORGANIZATIONS ============
 export const OrganizationsPath = "/organizations";
 export const CreateOrganizationPath = "/organizations/create";
@@ -83,3 +85,9 @@ export const ShowCourtecyTicketPath = (id: string, courtesyId: string) =>
   `/events/${id}/courtesy-tickets/${courtesyId}`;
 export const EditCourtecyTicketPath = (id: string, courtesyId: string) =>
   `/events/${id}/courtesy-tickets/${courtesyId}/edit`;
+
+// =========== ORDERS ============
+export const ShowOrdersPath = `/orders`;
+export const ShowOrderPath = (orderId: string) => `/orders/${orderId}`;
+export const ShowOrderCheckoutPath = (orderId: string) =>
+  `/orders/${orderId}/checkout`;

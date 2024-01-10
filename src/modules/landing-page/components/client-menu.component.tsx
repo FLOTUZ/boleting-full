@@ -1,7 +1,12 @@
 import Head from "next/head";
 import Link from "next/link";
 import ThemeSwitchComponent from "@/components/buttons/theme-switch.component";
-import { LoginClientPath, ProfilePath, RegisterClientPath } from "@/routes";
+import {
+  LoginClientPath,
+  ProfilePath,
+  RegisterClientPath,
+  ShowOrdersPath,
+} from "@/routes";
 import {
   Box,
   Button,
@@ -19,6 +24,7 @@ import {
 
 import { FaRegUserCircle, FaUserCircle } from "react-icons/fa";
 import {
+  IoCartSharp,
   IoCloseSharp,
   IoExit,
   IoHelpBuoy,
@@ -85,7 +91,7 @@ const ClientMenuComponent = () => {
             <VStack rounded="sm" alignItems={"flex-start"} spacing={4} p={4}>
               {client && client.email && (
                 <>
-                  <Link href={ProfilePath}>
+                  <Link href={ProfilePath} style={{ width: "100%" }}>
                     <Button w={"full"} placeContent={"start"} variant="ghost">
                       <FaUserCircle />
                       &nbsp; Perfil
@@ -95,7 +101,12 @@ const ClientMenuComponent = () => {
                     <IoTicketSharp />
                     &nbsp; Mis boletos
                   </Button>
-
+                  <Link href={ShowOrdersPath} style={{ width: "100%" }}>
+                    <Button w={"full"} placeContent={"start"} variant="ghost">
+                      <IoCartSharp />
+                      &nbsp; Órdenes
+                    </Button>
+                  </Link>
                   <Button
                     w={"full"}
                     placeContent={"start"}
