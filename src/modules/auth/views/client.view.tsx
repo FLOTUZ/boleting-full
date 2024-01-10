@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import { useRouter } from "next/router";
 
 import { useFormik } from "formik";
@@ -65,7 +65,6 @@ const ClientLoginView = () => {
                 width={500}
                 height={500}
                 style={{
-                  objectFit: "cover",
                   borderRadius: "20px",
                 }}
               />

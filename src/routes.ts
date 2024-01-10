@@ -6,6 +6,8 @@ export const RegisterClientPath = "/auth/client/register";
 export const ProfilePath = "/profile";
 export const DashboardPath = "/dashboard";
 
+export const PaymentIntentAPIPath = "/api/create-payment-intent";
+
 // ============ ORGANIZATIONS ============
 export const OrganizationsPath = "/organizations";
 export const CreateOrganizationPath = "/organizations/create";
@@ -46,15 +48,14 @@ export const SearchEventsBySubcategoryPath = (subcategoryId: string) =>
 
 export const SearchEventById = (eventId: string) => `/search/events/${eventId}`;
 
+export const SearchOrganizationById = (organizationId: string) =>
+  `/search/organizations/${organizationId}`;
+
 export const ShowAccessTypesByEvent = (eventId: string) =>
   `/search/events/${eventId}/access-types`;
 
 export const SearchTicketsByEvent = (eventId: string, accessTypeId: string) =>
   `/search/events/${eventId}/access-types/${accessTypeId}/tickets`;
-
-// =========== SUBCATEGORIES ============
-export const ShowEventsBySubcategory = (id: string) =>
-  `/subcategories/${id}/events`;
 
 // ============ EVENTS ============
 export const ShowEventStaffIdPath = (id: number) => `/events/${id}/staff`;
@@ -84,3 +85,9 @@ export const ShowCourtecyTicketPath = (id: string, courtesyId: string) =>
   `/events/${id}/courtesy-tickets/${courtesyId}`;
 export const EditCourtecyTicketPath = (id: string, courtesyId: string) =>
   `/events/${id}/courtesy-tickets/${courtesyId}/edit`;
+
+// =========== ORDERS ============
+export const ShowOrdersPath = `/orders`;
+export const ShowOrderPath = (orderId: string) => `/orders/${orderId}`;
+export const ShowOrderCheckoutPath = (orderId: string) =>
+  `/orders/${orderId}/checkout`;

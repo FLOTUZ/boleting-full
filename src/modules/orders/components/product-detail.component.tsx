@@ -34,6 +34,7 @@ const ProductDetail = () => {
             <Text size="lg">$80</Text>
           </Flex>
           <Flex justifyContent="space-between" pb={4}>
+
             <Text color="gray">02/nov/2024 8:00pm</Text>
             <Text color="gray" fontWeight="semibold">
               Morelia | Presencial

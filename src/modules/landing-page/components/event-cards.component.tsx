@@ -1,144 +1,120 @@
+import { Event } from "@/gql/generated";
+import { SearchEventById } from "@/routes";
+import Image from "next/legacy/image";
+import Link from "next/link";
 import {
   Box,
   Button,
-  CSSReset,
   Card,
-  ChakraProvider,
   Flex,
   Heading,
   Icon,
-  Image,
+  Spacer,
   Text,
-  extendTheme,
 } from "@chakra-ui/react";
-import Link from "next/link";
+
 import { FaCalendarAlt, FaMapPin } from "react-icons/fa";
 
-const theme = extendTheme({
-  styles: {
-    global: {
-      "::-webkit-scrollbar": {
-        width: "0px",
-      },
-      "::-webkit-scrollbar-thumb": {
-        backgroundColor: "brand.500",
-      },
-    },
-  },
-});
+import moment from "moment";
 
-const cards = [
-  {
-    img: "/assets/foto_provisional_eventos.jpg",
-    name: "Dia de muertos",
-    day: "02/nov/2024",
-    place: "Morelia",
-    urlButton: "#",
-  },
-  {
-    img: "/assets/foto_provisional_eventos.jpg",
-    name: "Dia de muertos",
-    day: "02/nov/2024",
-    place: "Morelia",
-    urlButton: "#",
-  },
-  {
-    img: "/assets/foto_provisional_eventos.jpg",
-    name: "Dia de muertos",
-    day: "02/nov/2024",
-    place: "Morelia",
-    urlButton: "#",
-  },
-  {
-    img: "/assets/foto_provisional_eventos.jpg",
-    name: "Dia de muertos",
-    day: "02/nov/2024",
-    place: "Morelia",
-    urlButton: "#",
-  },
-  {
-    img: "/assets/foto_provisional_eventos.jpg",
-    name: "Dia de muertos",
-    day: "02/nov/2024",
-    place: "Morelia",
-    urlButton: "#",
-  },
-];
-
-//This component have the 5 most popular events
-const EventCards = () => {
+interface EventCardsProps {
+  events: Event[];
+}
+const EventCards = ({ events }: EventCardsProps) => {
   return (
     <>
-      <ChakraProvider theme={theme}>
-        <CSSReset />
-        <Box
-          className="container"
-          margin={4}
-          w="100%"
-          overflow={"auto"}
-          overscrollBehaviorX="contain"
-          scrollSnapType={"x proximity"}
-        >
-          <Flex className="no-scrollbar" margin={4} gap={4}>
-            {cards.map((item, index) => (
-              <Box key={index}>
-                <Card
-                  maxW="sm"
-                  mx="auto"
-                  bg="white"
-                  _dark={{
-                    bg: "#2c313d",
+      <Box
+        className="container"
+        my={8}
+        w="100%"
+        overflow={"auto"}
+        css={{
+          "&::-webkit-scrollbar": {
+            width: "0px",
+            height: "0.4em",
+          },
+          "&::-webkit-scrollbar-track": {
+            boxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+            webkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            // color gray light
+            backgroundColor: "#a0a0a0",
+            borderRadius: "10px",
+          },
+          "&:hover::-webkit-scrollbar-thumb": {
+            backgroundColor: "#d4d4d4",
+          },
+        }}
+      >
+        <Flex className="no-scrollbar" gap={4}>
+          {events.map((item, index) => (
+            <Box key={index}>
+              <Card
+                maxW="sm"
+                mx="auto"
+                bg="white"
+                _dark={{
+                  bg: "#2c313d",
+                }}
+                shadow="lg"
+                rounded="lg"
+                overflow="hidden"
+              >
+                <Image
+                  height={250}
+                  width={250}
+                  objectPosition="center"
+                  style={{
+                    borderRadius: "5px",
                   }}
-                  shadow="lg"
-                  rounded="lg"
-                  overflow="hidden"
-                >
-                  <Image
-                    w="full"
-                    h={40}
-                    fit="cover"
-                    objectPosition="center"
-                    src={item.img}
-                    alt="Imagen del evento"
-                  />
-                  <Box py={4} px={4}>
-                    <Heading
-                      as="h4"
-                      size="md"
-                      color="gray.800"
-                      _dark={{
-                        color: "white",
-                      }}
-                    >
-                      {item.name}
-                    </Heading>
-                    <Flex
-                      alignItems="center"
-                      mt={4}
-                      color="gray.700"
-                      _dark={{
-                        color: "gray.200",
-                      }}
-                    >
-                      <Icon as={FaCalendarAlt} h={6} w={6} mr={2} />
-                      <Text fontSize="md">{item.day}</Text>
-                    </Flex>
+                  src={
+                    item.event_logo_url ||
+                    "/assets/foto_provisional_eventos.jpg"
+                  }
+                  alt="Imagen del evento"
+                />
+                <Box py={4} px={4}>
+                  <Heading
+                    as="h4"
+                    size="md"
+                    color="gray.800"
+                    _dark={{
+                      color: "white",
+                    }}
+                  >
+                    {item.name}
+                  </Heading>
+                  <Flex
+                    alignItems="center"
+                    mt={4}
+                    color="gray.700"
+                    _dark={{
+                      color: "gray.200",
+                    }}
+                  >
+                    <Icon as={FaCalendarAlt} h={6} w={6} mr={2} />
+                    <Text fontSize="md">
+                      {moment(item.start_date).format("DD MMM YYYY")}
+                    </Text>
+                  </Flex>
 
-                    <Flex
-                      alignItems="center"
-                      mt={4}
-                      color="gray.700"
-                      _dark={{
-                        color: "gray.200",
-                      }}
-                    >
-                      <Icon as={FaMapPin} h={6} w={6} mr={2} />
-                      <Text fontSize="md">{item.place}</Text>
-                    </Flex>
+                  <Flex
+                    alignItems="center"
+                    mt={4}
+                    color="gray.700"
+                    _dark={{
+                      color: "gray.200",
+                    }}
+                  >
+                    <Icon as={FaMapPin} h={6} w={6} mr={2} />
+                    <Text fontSize="md">{item.event_location}</Text>
+                  </Flex>
 
+                  <Spacer h={"100%"} />
+
+                  <Link href={SearchEventById(String(item.id))}>
                     <Button
-                      as={Link}
-                      href={item.urlButton}
                       variant="outline"
                       display="inline-flex"
                       w="200px"
@@ -158,13 +134,13 @@ const EventCards = () => {
                     >
                       Comprar boleto
                     </Button>
-                  </Box>
-                </Card>
-              </Box>
-            ))}
-          </Flex>
-        </Box>
-      </ChakraProvider>
+                  </Link>
+                </Box>
+              </Card>
+            </Box>
+          ))}
+        </Flex>
+      </Box>
     </>
   );
 };

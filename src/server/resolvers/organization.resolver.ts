@@ -26,6 +26,15 @@ export const OrganizationResolver = {
     ) => {
       return await OrganizationService.organization(id);
     },
+
+    searchOrganizations: async (
+      _: any,
+      { query, pagination }: { query: string } & Args,
+      __: IGraphqlContext
+    ) => {
+      if (query.length < 3) return [];
+      return await OrganizationService.searchOrganizations(query, pagination);
+    },
   },
   Mutation: {
     createOrganization: async (
@@ -60,6 +69,14 @@ export const OrganizationResolver = {
 
     users: async ({ id }: Organization, _: any, __: IGraphqlContext) => {
       return await UserService.usersByOrganization(id);
+    },
+
+    current_events_count: async (
+      { id }: Organization,
+      _: any,
+      __: IGraphqlContext
+    ) => {
+      return await EventService.currentEventsCount(id);
     },
   },
 };
