@@ -1,13 +1,13 @@
 import { gql } from "graphql-tag";
 
-export const BuyCartSchema = gql`
-  input CreateBuyCartInput {
+export const OrderSchema = gql`
+  input CreateOrderInput {
     user_clientId: Int!
     payment_methodId: Int!
     selled_tickets: [Int!]!
   }
 
-  input UpdateBuyCartInput {
+  input UpdateOrderInput {
     total_price: Decimal
     user_clientId: Int
     is_paid: Boolean
@@ -16,13 +16,13 @@ export const BuyCartSchema = gql`
     deleted: Boolean
   }
 
-  type BuyCart {
+  type Order {
     id: ID!
     total_price: Decimal!
     user_clientId: Int!
     is_paid: Boolean!
     payment_methodId: Int!
-    recibed_paymentId: Int!
+    authorized_dealerId: Int
     createdAt: DateTime!
     updatedAt: DateTime
     deleted: Boolean!
@@ -30,17 +30,17 @@ export const BuyCartSchema = gql`
     user_client: UserClient!
     selled_tickets: [Ticket!]
     payment_method: PaymentMethod!
-    recibed_payment: PaymentRecibed!
+    autorized_dealer: AuthorizedDealer
   }
 
   type Query {
-    buyCarts(pagination: Pagination): [BuyCart!]!
-    buyCart(id: ID!): BuyCart
+    orders(pagination: Pagination): [Order!]!
+    order(id: ID!): Order
   }
 
   type Mutation {
-    createBuyCart(data: CreateBuyCartInput!): BuyCart!
-    updateBuyCart(id: ID!, data: UpdateBuyCartInput!): BuyCart
-    deleteBuyCart(id: ID!): BuyCart
+    createOrder(data: CreateOrderInput!): Order!
+    updateOrder(id: ID!, data: UpdateOrderInput!): Order
+    deleteOrder(id: ID!): Order
   }
 `;

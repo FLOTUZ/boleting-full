@@ -22,7 +22,7 @@ export const PaymentMethodSchema = gql`
     deleted: Boolean!
     deletedAt: DateTime
     payment_card: PaymentCard
-    buy_cart: [BuyCart!]
+    orders: [Orders!]
   }
 
   type Query {

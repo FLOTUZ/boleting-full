@@ -89,7 +89,7 @@ model UserClient {
   deleted              Boolean          @default(false)
   deletedAt            DateTime?
   atendee_of_events    Event[]          @relation("atendee_of_events")
-  buy_carts            BuyCart[]        @relation("buy_cart")
+  orders               Order[]          @relation("orders")
   payment_cards        PaymentCard[]
   cashless_mediums     Cashless[]       @relation("cashless_mediums")
   cashless_refills     CashlessRefill[] @relation("cashless_refill")
@@ -285,7 +285,7 @@ model Ticket {
   eventId        Int
   access_typeId  Int?
   owner_typeId   Int?
-  buy_cartId     Int?
+  orderId        Int?
   is_courtesy    Boolean     @default(false)
   createdAt      DateTime    @default(now())
   updatedAt      DateTime    @updatedAt
@@ -294,7 +294,7 @@ model Ticket {
   event          Event       @relation("selled_tickets", fields: [eventId], references: [id])
   access_type    AccessType? @relation("access_type", fields: [access_typeId], references: [id])
   ticket_type    OwnerType?  @relation("owner_types", fields: [owner_typeId], references: [id])
-  buy_cart       BuyCart?    @relation("buy_cart", fields: [buy_cartId], references: [id])
+  order          Order?      @relation("order_items", fields: [orderId], references: [id])
 }
 
 // ================================ SEATING ================================
@@ -402,6 +402,7 @@ model PaymentCard {
 }
 
 enum PaymentMethodType {
+  NONE
   CREDIT_CARD
   DEBIT_CARD
   PAYPAL
@@ -411,7 +412,7 @@ enum PaymentMethodType {
 
 model PaymentMethod {
   id                Int               @id @unique @default(autoincrement())
-  payment_type      PaymentMethodType @default(CREDIT_CARD)
+  payment_type      PaymentMethodType @default(NONE)
   description       String?           @db.VarChar(255)
   payment_reference String?           @db.VarChar(255)
   createdAt         DateTime          @default(now())
@@ -419,24 +420,24 @@ model PaymentMethod {
   deleted           Boolean           @default(false)
   deletedAt         DateTime?
   payment_card      PaymentCard?      @relation("payment_way")
-  buy_cart          BuyCart[]         @relation("payment_method")
+  orders            Order[]           @relation("payment_method")
 }
 
-model BuyCart {
-  id                Int             @id @unique @default(autoincrement())
-  total_price       Decimal         @db.Money
-  is_paid           Boolean?        @default(false)
-  user_clientId     Int
-  payment_methodId  Int
-  recibed_paymentId Int?
-  createdAt         DateTime        @default(now())
-  updatedAt         DateTime        @updatedAt
-  deleted           Boolean         @default(false)
-  deletedAt         DateTime?
-  user_client       UserClient      @relation("buy_cart", fields: [user_clientId], references: [id])
-  selled_tickets    Ticket[]        @relation("buy_cart")
-  payment_method    PaymentMethod   @relation("payment_method", fields: [payment_methodId], references: [id])
-  recibed_payment   PaymentRecibed? @relation("buy_cart_is_payed", fields: [recibed_paymentId], references: [id])
+model Order {
+  id                  Int               @id @unique @default(autoincrement())
+  total_price         Decimal           @db.Money
+  is_paid             Boolean?          @default(false)
+  user_clientId       Int
+  payment_methodId    Int
+  authorized_dealerId Int?
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
+  deleted             Boolean           @default(false)
+  deletedAt           DateTime?
+  user_client         UserClient        @relation("orders", fields: [user_clientId], references: [id])
+  selled_tickets      Ticket[]          @relation("order_items")
+  payment_method      PaymentMethod     @relation("payment_method", fields: [payment_methodId], references: [id])
+  autorized_dealer    AuthorizedDealer? @relation(fields: [authorized_dealerId], references: [id])
 }
 
 model PaymentRecibed {
@@ -450,7 +451,6 @@ model PaymentRecibed {
   updatedAt           DateTime          @updatedAt
   deleted             Boolean           @default(false)
   deletedAt           DateTime?
-  buy_cart            BuyCart[]         @relation("buy_cart_is_payed")
   authorized_dealer   AuthorizedDealer? @relation("dealer_recibed_payments", fields: [authorized_dealerId], references: [id])
 }
 
@@ -471,6 +471,7 @@ model AuthorizedDealer {
   user             User?            @relation("authorized_dealers", fields: [userId], references: [id])
   recibed_payments PaymentRecibed[] @relation("dealer_recibed_payments")
   events           Event[]          @relation("dealer_of_event")
+  orders           Order[]
 }
 
 enum CashLessType {
