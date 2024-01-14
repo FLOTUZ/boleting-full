@@ -29,7 +29,7 @@ export const UserClientSchema = gql`
     deleted: Boolean!
     deletedAt: DateTime
     atendee_of_events: [Event!]
-    buy_carts: [BuyCart!]
+    orders: [Order!]
     payment_cards: [PaymentCard!]
     # cashless_mediums: [Cashless!]
     # cashless_refills: [CashlessRefill!]

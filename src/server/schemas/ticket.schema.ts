@@ -55,7 +55,7 @@ export const TicketSchema = gql`
     is_courtesy: Boolean!
     access_type: AccessType
     ticket_type: OwnerType
-    order: Orders
+    order: Order
   }
 
   type Query {
