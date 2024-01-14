@@ -2,12 +2,16 @@ import ProgressLoaderComponent from "@/components/loaders/progress-loader.compon
 import { Event, Organization, useMainSearchLazyQuery } from "@/gql/generated";
 import { SearchEventById, SearchOrganizationById } from "@/routes";
 import {
+  Box,
   Button,
   Card,
   CardBody,
+  Flex,
   Grid,
   GridItem,
   Heading,
+  Image,
+  Img,
   Input,
   Modal,
   ModalBody,
@@ -17,14 +21,17 @@ import {
   ModalOverlay,
   Progress,
   Text,
+  Tooltip,
   useDisclosure,
   useMediaQuery,
 } from "@chakra-ui/react";
+import { redirect } from "next/dist/server/api-utils";
 import Link from "next/link";
 import { useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 
 const SearchClientButtonComponent = () => {
+  const [isMobile] = useMediaQuery("(max-width: 768px)");
   const [isLargerThan800] = useMediaQuery("(min-width: 420px)");
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -99,17 +106,63 @@ const SearchClientButtonComponent = () => {
                 <Heading size={"md"} mt={8}>
                   Eventos
                 </Heading>
-                <Grid mt={4} templateColumns={"repeat(2, 1fr)"} gap={4}>
+                <Grid
+                  templateColumns={{
+                    base: "repeat(1, 1fr)",
+                    md: "repeat(2, 1fr)",
+                  }}
+                  mt={4}
+                  gap={4}
+                >
                   {eventList.map((event, index) => (
                     <Link
                       key={index}
                       target="_blank"
                       href={SearchEventById(String(event.id))}
                     >
-                      <GridItem>
-                        <Card>
-                          <CardBody>
-                            <Text>{event.name} </Text>
+                      <GridItem w={"100%"}>
+                        <Card w="100%">
+                          <CardBody p={isMobile ? "0" : "4"}>
+                            {/* /Here are the detail about the event/ */}
+                            <Flex w={isMobile ? "100%" : "auto"}>
+                              <Box>
+                                <Img
+                                  src={event.event_logo_url || ""}
+                                  alt="Imagen del evento"
+                                  objectFit={"cover"}
+                                  height={isMobile ? "100%" : 58}
+                                  width={isMobile ? 100 : 58}
+                                  borderRadius={5}
+                                />
+                              </Box>
+                              <Box ml={4}>
+                                <Text fontWeight={"bold"}>{event.name}</Text>
+                                <Text mb={2}>
+                                  {event.description === null ? (
+                                    "sin descripción"
+                                  ) : (
+                                    <>
+                                      {event
+                                        .description!.split(" ")
+                                        .slice(0, 10)
+                                        .join(" ")}
+                                      {"..."}
+                                      <Box
+                                        display={{
+                                          base: "block",
+                                          md: "inline",
+                                        }}
+                                        mt={2}
+                                      >
+                                        <Text as="i" fontWeight="bold">
+                                          {" ver más"}
+                                        </Text>
+                                      </Box>
+                                    </>
+                                  )}
+                                </Text>
+                              </Box>
+                            </Flex>
                           </CardBody>
                         </Card>
                       </GridItem>
@@ -124,7 +177,14 @@ const SearchClientButtonComponent = () => {
                 <Heading size={"md"} mt={8}>
                   Organizaciones
                 </Heading>
-                <Grid mt={4} templateColumns={"repeat(2, 1fr)"} gap={4}>
+                <Grid
+                  templateColumns={{
+                    base: "repeat(1, 1fr)",
+                    md: "repeat(2, 1fr)",
+                  }}
+                  mt={4}
+                  gap={4}
+                >
                   {organizationList.map((organization, index) => (
                     <Link
                       key={index}
@@ -132,8 +192,8 @@ const SearchClientButtonComponent = () => {
                       href={SearchOrganizationById(String(organization.id))}
                     >
                       <GridItem>
-                        <Card>
-                          <CardBody>
+                        <Card w={isMobile ? "100%" : "50%"}>
+                          <CardBody p={isMobile ? "0" : "4"}>
                             <Text>{organization.name} </Text>
                           </CardBody>
                         </Card>
