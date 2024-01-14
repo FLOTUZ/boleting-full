@@ -402,7 +402,7 @@ model PaymentCard {
 }
 
 enum PaymentMethodType {
-  NONE
+  OTHER
   CREDIT_CARD
   DEBIT_CARD
   PAYPAL
@@ -412,7 +412,7 @@ enum PaymentMethodType {
 
 model PaymentMethod {
   id                Int               @id @unique @default(autoincrement())
-  payment_type      PaymentMethodType @default(NONE)
+  payment_type      PaymentMethodType @default(OTHER)
   description       String?           @db.VarChar(255)
   payment_reference String?           @db.VarChar(255)
   createdAt         DateTime          @default(now())

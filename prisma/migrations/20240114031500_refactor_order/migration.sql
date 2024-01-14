@@ -6,7 +6,7 @@
 
 */
 -- AlterEnum
-ALTER TYPE "PaymentMethodType" ADD VALUE 'NONE';
+ALTER TYPE "PaymentMethodType" ADD VALUE 'OTHER';
 
 -- DropForeignKey
 ALTER TABLE "BuyCart" DROP CONSTRAINT "BuyCart_payment_methodId_fkey";
@@ -21,7 +21,7 @@ ALTER TABLE "BuyCart" DROP CONSTRAINT "BuyCart_user_clientId_fkey";
 ALTER TABLE "Ticket" DROP CONSTRAINT "Ticket_buy_cartId_fkey";
 
 -- AlterTable
-ALTER TABLE "PaymentMethod" ALTER COLUMN "payment_type" SET DEFAULT 'NONE';
+ALTER TABLE "PaymentMethod" ALTER COLUMN "payment_type" DROP DEFAULT;
 
 -- AlterTable
 ALTER TABLE "Ticket" DROP COLUMN "buy_cartId",
