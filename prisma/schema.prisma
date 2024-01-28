@@ -425,11 +425,14 @@ model PaymentMethod {
 
 model Order {
   id                  Int               @id @unique @default(autoincrement())
+  individual_price    Decimal           @db.Money
   total_price         Decimal           @db.Money
   is_paid             Boolean?          @default(false)
   user_clientId       Int
   payment_methodId    Int
   authorized_dealerId Int?
+  buyed_access_count  Int
+  expiry_time         DateTime
   createdAt           DateTime          @default(now())
   updatedAt           DateTime          @updatedAt
   deleted             Boolean           @default(false)
@@ -464,6 +467,7 @@ model AuthorizedDealer {
   commision        Decimal          @db.Money
   address          String           @db.VarChar(255)
   userId           Int?
+  is_verified      Boolean          @default(false)
   createdAt        DateTime         @default(now())
   updatedAt        DateTime         @updatedAt
   deleted          Boolean          @default(false)
