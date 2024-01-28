@@ -1,12 +1,13 @@
 import { IGraphqlContext } from "@/server";
 import { Args } from "@/server/common";
-import { Order } from "@prisma/client";
+import { AccessType, Order } from "@prisma/client";
 import {
   validateData,
   CreateOrderValidator,
   UpdateOrderValidator,
 } from "@/validations";
 import { OrderService } from "../services";
+import { AuthenticationError } from "../utils";
 
 //
 // Resolver for Order model
@@ -23,13 +24,21 @@ export const OrderResolver = {
   },
 
   Mutation: {
-    createOrder: async (
+    createOpenVenueOrder: async (
       _: any,
-      { data }: { data: Order },
-      __: IGraphqlContext
+      { data }: { data: Order & { access_typeId: number } },
+      { type, id_user }: IGraphqlContext
     ) => {
-      await validateData({ schema: CreateOrderValidator, data });
-      return await OrderService.createOrder(data);
+      if (type === "USER" || type == null || id_user == null)
+        throw new AuthenticationError("User not authenticated");
+      // await validateData({ schema: CreateOrderValidator, data });
+
+      return await OrderService.createOpenVenueOrder(
+        id_user,
+        data.access_typeId,
+        data.payment_methodId,
+        data.buyed_access_count
+      );
     },
 
     updateOrder: async (

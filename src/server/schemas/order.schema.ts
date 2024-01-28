@@ -1,16 +1,17 @@
 import { gql } from "graphql-tag";
 
 export const OrderSchema = gql`
-  input CreateOrderInput {
-    user_clientId: Int!
+  input CreateOpenVenueOrderInput {
     payment_methodId: Int!
-    selled_tickets: [Int!]!
+    buyed_access_count: Int!
+    access_typeId: Int!
   }
 
   input UpdateOrderInput {
     total_price: Decimal
     user_clientId: Int
     is_paid: Boolean
+    buyed_access_count: Int
     payment_methodId: Int
     selled_tickets: [Int!]
     deleted: Boolean
@@ -18,11 +19,13 @@ export const OrderSchema = gql`
 
   type Order {
     id: ID!
+    individual_price: Decimal
     total_price: Decimal!
     user_clientId: Int!
     is_paid: Boolean!
     payment_methodId: Int!
     authorized_dealerId: Int
+    buyed_access_count: Int!
     createdAt: DateTime!
     updatedAt: DateTime
     deleted: Boolean!
@@ -39,7 +42,7 @@ export const OrderSchema = gql`
   }
 
   type Mutation {
-    createOrder(data: CreateOrderInput!): Order!
+    createOpenVenueOrder(data: CreateOpenVenueOrderInput!): String!
     updateOrder(id: ID!, data: UpdateOrderInput!): Order
     deleteOrder(id: ID!): Order
   }
