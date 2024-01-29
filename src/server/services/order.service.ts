@@ -1,0 +1,129 @@
+import Stripe from "stripe";
+import { prisma } from "@/server";
+
+import { Pagination } from "../common";
+import { PrismaError } from "../utils";
+import { AccessType, Order } from "@prisma/client";
+
+//
+// Service for Order model
+//
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  typescript: true,
+  apiVersion: "2023-10-16",
+});
+
+export const OrderService = {
+  async orders(pagination?: Pagination) {
+    return prisma.order.findMany({
+      ...pagination,
+      where: { deleted: false },
+    });
+  },
+
+  async order(id: number) {
+    return await prisma.order.findUnique({ where: { id } });
+  },
+
+  async createOpenVenueOrder(
+    user_clientId: number,
+    access_typeId: number,
+    payment_methodId: number,
+    buyed_access_count: number = 1
+  ) {
+    const userClient = await prisma.userClient.findUniqueOrThrow({
+      where: { id: user_clientId },
+    });
+    const accessType = await prisma.accessType.findUniqueOrThrow({
+      include: { event: true },
+      where: { id: access_typeId },
+    });
+
+    const paymentMethod = await prisma.paymentMethod.findUniqueOrThrow({
+      where: { id: payment_methodId },
+    });
+
+    const total_price: number = buyed_access_count * Number(accessType?.price);
+
+    const order = await prisma.order.create({
+      include: { payment_method: true },
+      data: {
+        individual_price: Number(accessType?.price),
+        buyed_access_count,
+        total_price,
+        user_clientId,
+        payment_methodId,
+        expiry_time: new Date(Date.now() + 1000 * 60 * 5), // 5minutes
+        is_paid: false,
+      },
+    });
+
+    const ticket_fees = total_price * 0.07;
+    const stripe_fee = (total_price + ticket_fees) * 0.0766;
+
+    const total_fees = Math.round(ticket_fees + stripe_fee);
+
+    const session = await stripe.checkout.sessions.create({
+      line_items: [
+        {
+          price_data: {
+            currency: "MXN",
+            product_data: {
+              name: `${accessType.event.name} - ${accessType.name}`,
+              metadata: {
+                id: accessType.id,
+                name: accessType.name,
+                event_id: accessType.eventId,
+                price: Number(accessType.price),
+              },
+            },
+            unit_amount: Number(accessType.price) * 100,
+          },
+          quantity: buyed_access_count,
+        },
+
+        {
+          price_data: {
+            currency: "MXN",
+            product_data: {
+              name: `Cargos por servicio x ${buyed_access_count}`,
+              metadata: {
+                name: "Cargos por servicio",
+                price: total_fees,
+              },
+            },
+            unit_amount: total_fees * 100,
+          },
+          quantity: 1,
+        },
+      ],
+      currency: "MXN",
+      mode: "payment",
+      customer_email: userClient.email,
+      success_url: `${process.env.BASE_URL}/orders/${order.id}/success`,
+      cancel_url: `${process.env.BASE_URL}/orders/${order.id}/cancel`,
+    });
+
+    return session.url;
+  },
+
+  async updateOrder(id: number, data: Order) {
+    try {
+      return await prisma.order.update({
+        where: { id },
+        data: { ...data },
+      });
+    } catch (error) {
+      throw PrismaError.handle(error);
+    }
+  },
+
+  async deleteOrder(id: number) {
+    return await prisma.order.delete({
+      where: { id },
+    });
+  },
+
+  // ======================= FOR ANOTHER RESOLVERS =======================
+};

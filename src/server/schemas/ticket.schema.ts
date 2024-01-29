@@ -10,7 +10,7 @@ export const TicketSchema = gql`
     eventId: Int!
     access_typeId: Int
     owner_typeId: Int
-    buy_cartId: Int
+    order_id: Int
   }
 
   input CreateCourtessyTicketInput {
@@ -32,7 +32,7 @@ export const TicketSchema = gql`
     eventId: Int
     access_typeId: Int
     owner_typeId: Int
-    buy_cartId: Int
+    order_id: Int
   }
 
   type Ticket {
@@ -46,7 +46,7 @@ export const TicketSchema = gql`
     eventId: Int!
     access_typeId: Int
     owner_typeId: Int
-    buy_cartId: Int!
+    order_id: Int!
     createdAt: DateTime!
     updatedAt: DateTime
     deleted: Boolean!
@@ -55,7 +55,7 @@ export const TicketSchema = gql`
     is_courtesy: Boolean!
     access_type: AccessType
     ticket_type: OwnerType
-    buy_cart: BuyCart
+    order: Order
   }
 
   type Query {

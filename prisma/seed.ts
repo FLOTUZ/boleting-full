@@ -63,6 +63,11 @@ async function main() {
         description: "Clientes que asisten a los eventos",
         organizationId: 1,
       },
+      {
+        name: "DEALER",
+        description: "Dispensario de tickets en efectivo",
+        organizationId: 1,
+      },
     ],
   });
 
@@ -146,6 +151,61 @@ async function main() {
       role: {
         connect: {
           name: "ASISTENTE",
+        },
+      },
+    },
+  });
+
+  await prisma.user.create({
+    data: {
+      name: "Distribuidor",
+      last_name: "Autorizado",
+      email: "distribuidor@thecore.events",
+      password: await argon2.hash("distribuidor"),
+      roles: {
+        connect: { name: "DEALER" },
+      },
+      organization: {
+        connect: { name: "The Core Events" },
+      },
+    },
+  });
+
+  await prisma.authorizedDealer.create({
+    data: {
+      name: "Distribuidor autorizado",
+      description: "Pago vía distribuidor autorizado",
+      address: "1000, Madero, Colonia Centro, Morelia, Mich., México",
+      email: "distribuidor@thecore.events",
+      telephone: "555 555 555",
+      is_verified: true,
+      commision: 5,
+      user: {
+        connect: { email: "distribuidor@thecore.events" },
+      },
+    },
+  });
+
+  await prisma.paymentMethod.create({
+    data: {
+      payment_type: "DEALER",
+      description: "Pago vía distribuidor autorizado",
+    },
+  });
+
+  await prisma.paymentMethod.create({
+    data: {
+      payment_type: "DEBIT_CARD",
+      description: "Pago vía tarjeta de debito",
+      payment_card: {
+        create: {
+          nick_name: "TEST CARD",
+          card_number: "1111 2222 3333 4444",
+          expiration_date: "10/25",
+          is_credit_card: false,
+          owner_name: "TEST",
+          country: "MX",
+          user_clientId: 1,
         },
       },
     },

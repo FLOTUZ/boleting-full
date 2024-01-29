@@ -27,7 +27,6 @@ export const PaymentRecibedSchema = gql`
     updatedAt: DateTime
     deleted: Boolean!
     deletedAt: DateTime
-    buy_cart: [BuyCart!]
     authorized_dealer: UserClient
   }
 

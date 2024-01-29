@@ -1,28 +1,31 @@
 import { gql } from "graphql-tag";
 
-export const BuyCartSchema = gql`
-  input CreateBuyCartInput {
-    user_clientId: Int!
+export const OrderSchema = gql`
+  input CreateOpenVenueOrderInput {
     payment_methodId: Int!
-    selled_tickets: [Int!]!
+    buyed_access_count: Int!
+    access_typeId: Int!
   }
 
-  input UpdateBuyCartInput {
+  input UpdateOrderInput {
     total_price: Decimal
     user_clientId: Int
     is_paid: Boolean
+    buyed_access_count: Int
     payment_methodId: Int
     selled_tickets: [Int!]
     deleted: Boolean
   }
 
-  type BuyCart {
+  type Order {
     id: ID!
+    individual_price: Decimal
     total_price: Decimal!
     user_clientId: Int!
     is_paid: Boolean!
     payment_methodId: Int!
-    recibed_paymentId: Int!
+    authorized_dealerId: Int
+    buyed_access_count: Int!
     createdAt: DateTime!
     updatedAt: DateTime
     deleted: Boolean!
@@ -30,17 +33,17 @@ export const BuyCartSchema = gql`
     user_client: UserClient!
     selled_tickets: [Ticket!]
     payment_method: PaymentMethod!
-    recibed_payment: PaymentRecibed!
+    autorized_dealer: AuthorizedDealer
   }
 
   type Query {
-    buyCarts(pagination: Pagination): [BuyCart!]!
-    buyCart(id: ID!): BuyCart
+    orders(pagination: Pagination): [Order!]!
+    order(id: ID!): Order
   }
 
   type Mutation {
-    createBuyCart(data: CreateBuyCartInput!): BuyCart!
-    updateBuyCart(id: ID!, data: UpdateBuyCartInput!): BuyCart
-    deleteBuyCart(id: ID!): BuyCart
+    createOpenVenueOrder(data: CreateOpenVenueOrderInput!): String!
+    updateOrder(id: ID!, data: UpdateOrderInput!): Order
+    deleteOrder(id: ID!): Order
   }
 `;
