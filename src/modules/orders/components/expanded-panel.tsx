@@ -40,11 +40,13 @@ const ExpandedPanelComponent = ({
         alignItems={"center"}
       >
         <Flex //options to pay
-          w={isMobile ? "100%" : "80%"}
-          border={"1px solid #808080"}
           p={4}
-          m={2}
+          mt={4}
+          w={"100%"}
+          border={"1px solid #808080"}
           borderRadius="md"
+          _hover={{ shadow: "md", bg: "gray.100", cursor: "pointer" }}
+          _dark={{ _hover: { bg: "gray.700" } }}
           onClick={() => setIsOpen(!isOpen)}
         >
           <Icon mr={4} as={icon} boxSize={6} />
@@ -56,9 +58,9 @@ const ExpandedPanelComponent = ({
         </Flex>
 
         {/* saved cards or options to pay with cash */}
-        <Box w={isMobile ? "100%" : "80%"}>
+        <Box w={"100%"}>
           <Collapse in={isOpen} animateOpacity>
-            {children}
+            <Box mt={4}> {children}</Box>
           </Collapse>
         </Box>
       </Flex>

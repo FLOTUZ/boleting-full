@@ -1,7 +1,7 @@
-import MyCards from "../components/my-cards.component";
 import CashComponent from "../components/cash.component";
 import ExpandedPanelComponent from "../components/expanded-panel";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -29,6 +29,8 @@ const ShowOrderView = () => {
 
   const { eventId, accessTypeId } = router.query;
 
+  const [ticketQuantity, setTicketQuantity] = useState<number>(1);
+
   return (
     <>
       <Box borderTop={"1px solid #808080"}>
@@ -41,7 +43,7 @@ const ShowOrderView = () => {
           {/* Payment */}
           <GridItem colSpan={2}>
             <Flex h={"100%"} placeContent={"center"}>
-              <Flex direction={"column"} w={"100%"} alignSelf={"center"}>
+              <Flex direction={"column"} w={"80%"} alignSelf={"center"}>
                 <Heading
                   m={"16px 0"}
                   size="lg"
@@ -51,26 +53,11 @@ const ShowOrderView = () => {
                   Opciones de pago
                 </Heading>
 
-                <ExpandedPanelComponent
-                  icon={AiOutlineCreditCard}
-                  title={"Tarjeta de credito o debito"}
-                  isDefaultExpanded={false}
-                >
-                  <MyCards isVisible={false} />
-                </ExpandedPanelComponent>
-
-                <ExpandedPanelComponent
-                  icon={BsCashCoin}
-                  title={"Pago en efectivo"}
-                >
-                  <CashComponent isVisible={false} />
-                </ExpandedPanelComponent>
-
                 <Link
                   href={CreateOrderPath(
                     String(eventId),
                     String(accessTypeId),
-                    Number(1)
+                    Number(ticketQuantity)
                   )}
                 >
                   <Flex
@@ -90,6 +77,13 @@ const ShowOrderView = () => {
                     <Text>Tarjeta de credito o debito.</Text>
                   </Flex>
                 </Link>
+
+                <ExpandedPanelComponent
+                  icon={BsCashCoin}
+                  title={"Pago en efectivo"}
+                >
+                  <CashComponent isVisible={false} />
+                </ExpandedPanelComponent>
               </Flex>
             </Flex>
           </GridItem>
@@ -133,9 +127,24 @@ const ShowOrderView = () => {
                 <Flex justifyContent="space-between" mt={4}>
                   <Text>Cantidad: </Text>
                   <Text>
-                    <Button colorScheme="facebook" as={CgMathPlus} mr={4} />
-                    2
-                    <Button colorScheme="facebook" as={CgMathMinus} ml={4} />
+                    <Button
+                      colorScheme="facebook"
+                      as={CgMathMinus}
+                      mr={4}
+                      onClick={() =>
+                        ticketQuantity > 1 &&
+                        setTicketQuantity(ticketQuantity - 1)
+                      }
+                    />
+
+                    {ticketQuantity}
+
+                    <Button
+                      colorScheme="facebook"
+                      as={CgMathPlus}
+                      ml={4}
+                      onClick={() => setTicketQuantity(ticketQuantity + 1)}
+                    />
                   </Text>
                 </Flex>
                 <Flex mt={4} justifyContent={"space-between"}>
