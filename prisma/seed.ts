@@ -295,7 +295,7 @@ async function main() {
       event_logo_url:
         "https://upload.wikimedia.org/wikipedia/commons/1/1f/Logo-tomorrowland.jpg",
       event_banner_url:
-        "https://media.resources.festicket.com/www/admin/uploads/images/Tomorrowland2022-1.jpg",
+        "https://media.staging.ops.tomorrowland.com/og-image.jpg",
       event_location_url: "https://goo.gl/maps/yBHzTgwNdsRJGR5Q6",
       re_entry: true,
       userId: 1,
