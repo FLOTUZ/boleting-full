@@ -1,7 +1,8 @@
 import CashComponent from "../components/cash.component";
 import ExpandedPanelComponent from "../components/expanded-panel";
+import moment from "moment";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -22,14 +23,43 @@ import { CgMathMinus, CgMathPlus } from "react-icons/cg";
 import { AiOutlineCreditCard } from "react-icons/ai";
 import { BsCashCoin } from "react-icons/bs";
 import { CreateOrderPath } from "@/routes";
+import {
+  AccessType,
+  Event,
+  useSelectPaymentMethodLazyQuery,
+} from "@/gql/generated";
+import ProgressLoaderComponent from "@/components/loaders/progress-loader.component";
 
-const ShowOrderView = () => {
+const SelectPaymentMethod = () => {
   const router = useRouter();
   const bg = useColorModeValue("#edf2f7", "gray.700");
 
   const { eventId, accessTypeId } = router.query;
 
   const [ticketQuantity, setTicketQuantity] = useState<number>(1);
+  const [accessType, setAccessType] = useState<AccessType>();
+  const [event, setEvent] = useState<Event>();
+
+  const [GET_ACCESS_TYPE, { loading, data }] = useSelectPaymentMethodLazyQuery({
+    variables: {
+      accessTypeId: Number(accessTypeId),
+      eventId: Number(eventId),
+    },
+    onCompleted(data) {
+      setAccessType(data.accessType as AccessType);
+      setEvent(data.event as Event);
+    },
+  });
+
+  useEffect(() => {
+    if (accessTypeId) {
+      GET_ACCESS_TYPE();
+    }
+  }, [accessTypeId, GET_ACCESS_TYPE]);
+
+  if (loading) {
+    return <ProgressLoaderComponent />;
+  }
 
   return (
     <>
@@ -90,13 +120,16 @@ const ShowOrderView = () => {
 
           {/* Product Detail */}
           <GridItem display={{ base: "none", md: "block" }}>
-            <Flex direction="column" bg={bg}>
-              <Box h={250} overflow="hidden" alignSelf={"center"}>
+            <Flex direction="column" bg={"gray.100"} _dark={{ bg: "gray.700" }}>
+              <Box h={250} alignSelf={"center"}>
                 <Image
-                  src={"/assets/foto_provisional_eventos.jpg"}
+                  src={
+                    event?.event_banner_url ||
+                    "/assets/foto_provisional_eventos.jpg"
+                  }
                   alt="Imagen del evento"
-                  height={250}
-                  width={250}
+                  height={0}
+                  width={480}
                   objectPosition="center"
                   style={{
                     borderRadius: "5px",
@@ -113,13 +146,25 @@ const ShowOrderView = () => {
                   Resumen de la orden
                 </Text>
                 <Flex justifyContent="space-between" pb={4}>
-                  <Text size="lg">1 x Dia de muertos 2024</Text>
-                  <Text size="lg">$80</Text>
+                  <Text size="lg">
+                    {ticketQuantity} x {accessType?.name}
+                  </Text>
+                  <Text size="lg">{accessType?.price} c/u</Text>
                 </Flex>
                 <Flex justifyContent="space-between" pb={4}>
-                  <Text color="gray">02/nov/2024 8:00pm</Text>
+                  <Flex flexDirection={"row"}>
+                    <Text color="gray">
+                      {event &&
+                        moment(new Date(event?.start_date))
+                          .locale("es")
+                          .format("LLL")}
+                    </Text>
+                    <Text ml={4} color="gray">
+                      {event?.start_time}
+                    </Text>
+                  </Flex>
                   <Text color="gray" fontWeight="semibold">
-                    Morelia | Presencial
+                    {event?.event_location}
                   </Text>
                 </Flex>
 
@@ -128,28 +173,37 @@ const ShowOrderView = () => {
                   <Text>Cantidad: </Text>
                   <Text>
                     <Button
-                      colorScheme="facebook"
-                      as={CgMathMinus}
+                      colorScheme="blackAlpha"
+                      _dark={{ color: "white" }}
                       mr={4}
                       onClick={() =>
                         ticketQuantity > 1 &&
                         setTicketQuantity(ticketQuantity - 1)
                       }
-                    />
+                    >
+                      <CgMathMinus />
+                    </Button>
 
                     {ticketQuantity}
 
                     <Button
-                      colorScheme="facebook"
-                      as={CgMathPlus}
+                      colorScheme="blackAlpha"
+                      _dark={{ color: "white" }}
                       ml={4}
-                      onClick={() => setTicketQuantity(ticketQuantity + 1)}
-                    />
+                      onClick={() =>
+                        ticketQuantity < 10 &&
+                        setTicketQuantity(ticketQuantity + 1)
+                      }
+                    >
+                      <CgMathPlus />
+                    </Button>
                   </Text>
                 </Flex>
                 <Flex mt={4} justifyContent={"space-between"}>
                   <Text fontWeight={"bold"}>Total: </Text>
-                  <Text fontWeight={"bold"}>$160 mxn</Text>
+                  <Text fontWeight={"bold"}>
+                    ${accessType?.price * ticketQuantity} MXN
+                  </Text>
                 </Flex>
               </Flex>
             </Flex>
@@ -160,4 +214,4 @@ const ShowOrderView = () => {
   );
 };
 
-export default ShowOrderView;
+export default SelectPaymentMethod;

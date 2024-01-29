@@ -1673,6 +1673,14 @@ export type CheckoutOpenVenueMutationVariables = Exact<{
 
 export type CheckoutOpenVenueMutation = { __typename?: 'Mutation', createOpenVenueOrder: string };
 
+export type SelectPaymentMethodQueryVariables = Exact<{
+  accessTypeId: Scalars['Int']['input'];
+  eventId: Scalars['Int']['input'];
+}>;
+
+
+export type SelectPaymentMethodQuery = { __typename?: 'Query', accessType: { __typename?: 'AccessType', id: number, name: string, description?: string | null, price: any }, event: { __typename?: 'Event', id: number, name: string, description?: string | null, event_location: string, event_banner_url?: string | null, start_date: any, start_time?: string | null } };
+
 export type CreateOrganizationMutationVariables = Exact<{
   data: CreateOrganizationInput;
 }>;
@@ -3155,6 +3163,54 @@ export function useCheckoutOpenVenueMutation(baseOptions?: Apollo.MutationHookOp
 export type CheckoutOpenVenueMutationHookResult = ReturnType<typeof useCheckoutOpenVenueMutation>;
 export type CheckoutOpenVenueMutationResult = Apollo.MutationResult<CheckoutOpenVenueMutation>;
 export type CheckoutOpenVenueMutationOptions = Apollo.BaseMutationOptions<CheckoutOpenVenueMutation, CheckoutOpenVenueMutationVariables>;
+export const SelectPaymentMethodDocument = gql`
+    query SelectPaymentMethod($accessTypeId: Int!, $eventId: Int!) {
+  accessType(id: $accessTypeId) {
+    id
+    name
+    description
+    price
+  }
+  event(id: $eventId) {
+    id
+    name
+    description
+    event_location
+    event_banner_url
+    start_date
+    start_time
+  }
+}
+    `;
+
+/**
+ * __useSelectPaymentMethodQuery__
+ *
+ * To run a query within a React component, call `useSelectPaymentMethodQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSelectPaymentMethodQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSelectPaymentMethodQuery({
+ *   variables: {
+ *      accessTypeId: // value for 'accessTypeId'
+ *      eventId: // value for 'eventId'
+ *   },
+ * });
+ */
+export function useSelectPaymentMethodQuery(baseOptions: Apollo.QueryHookOptions<SelectPaymentMethodQuery, SelectPaymentMethodQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SelectPaymentMethodQuery, SelectPaymentMethodQueryVariables>(SelectPaymentMethodDocument, options);
+      }
+export function useSelectPaymentMethodLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SelectPaymentMethodQuery, SelectPaymentMethodQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SelectPaymentMethodQuery, SelectPaymentMethodQueryVariables>(SelectPaymentMethodDocument, options);
+        }
+export type SelectPaymentMethodQueryHookResult = ReturnType<typeof useSelectPaymentMethodQuery>;
+export type SelectPaymentMethodLazyQueryHookResult = ReturnType<typeof useSelectPaymentMethodLazyQuery>;
+export type SelectPaymentMethodQueryResult = Apollo.QueryResult<SelectPaymentMethodQuery, SelectPaymentMethodQueryVariables>;
 export const CreateOrganizationDocument = gql`
     mutation CreateOrganization($data: CreateOrganizationInput!) {
   createOrganization(data: $data) {
