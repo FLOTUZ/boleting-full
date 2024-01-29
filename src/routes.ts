@@ -88,6 +88,13 @@ export const EditCourtecyTicketPath = (id: string, courtesyId: string) =>
 
 // =========== ORDERS ============
 export const ShowOrdersPath = `/orders`;
+export const CreateOrderPath = (
+  eventId: string,
+  accessTypeId: string,
+  buyedTicketsCount: number
+) =>
+  `/orders/create?eventId=${eventId}&accessTypeId=${accessTypeId}&buyedTicketsCount=${buyedTicketsCount}`;
+
 export const ShowOrderPath = (orderId: string) => `/orders/${orderId}`;
 export const ShowOrderCheckoutPath = (orderId: string) =>
   `/orders/${orderId}/checkout`;
