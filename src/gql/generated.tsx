@@ -82,22 +82,24 @@ export type Application = {
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
-export type BuyCart = {
-  __typename?: 'BuyCart';
+export type AuthorizedDealer = {
+  __typename?: 'AuthorizedDealer';
+  address: Scalars['String']['output'];
+  commision: Scalars['Decimal']['output'];
   createdAt: Scalars['DateTime']['output'];
   deleted: Scalars['Boolean']['output'];
   deletedAt?: Maybe<Scalars['DateTime']['output']>;
-  id: Scalars['ID']['output'];
-  is_paid: Scalars['Boolean']['output'];
-  payment_method: PaymentMethod;
-  payment_methodId: Scalars['Int']['output'];
-  recibed_payment: PaymentRecibed;
-  recibed_paymentId: Scalars['Int']['output'];
-  selled_tickets?: Maybe<Array<Ticket>>;
-  total_price: Scalars['Decimal']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  email: Scalars['String']['output'];
+  events?: Maybe<Array<Event>>;
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  orders?: Maybe<Array<Order>>;
+  recibed_payments?: Maybe<Array<PaymentRecibed>>;
+  telephone: Scalars['String']['output'];
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
-  user_client: UserClient;
-  user_clientId: Scalars['Int']['output'];
+  user?: Maybe<User>;
+  userId?: Maybe<Scalars['Int']['output']>;
 };
 
 export type CreateAbilityInput = {
@@ -131,10 +133,13 @@ export type CreateApplicationInput = {
   token: Scalars['String']['input'];
 };
 
-export type CreateBuyCartInput = {
-  payment_methodId: Scalars['Int']['input'];
-  selled_tickets: Array<Scalars['Int']['input']>;
-  user_clientId: Scalars['Int']['input'];
+export type CreateAuthorizedDealerInput = {
+  address: Scalars['String']['input'];
+  commision: Scalars['Decimal']['input'];
+  description?: InputMaybe<Scalars['String']['input']>;
+  email: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  telephone: Scalars['String']['input'];
 };
 
 export type CreateCourtessyTicketInput = {
@@ -193,6 +198,12 @@ export type CreateNotificationInput = {
   user_clientId?: InputMaybe<Scalars['Int']['input']>;
 };
 
+export type CreateOpenVenueOrderInput = {
+  access_typeId: Scalars['Int']['input'];
+  buyed_access_count: Scalars['Int']['input'];
+  payment_methodId: Scalars['Int']['input'];
+};
+
 export type CreateOrganizationInput = {
   name: Scalars['String']['input'];
 };
@@ -237,11 +248,11 @@ export type CreateRoleInput = {
 
 export type CreateTicketInput = {
   access_typeId?: InputMaybe<Scalars['Int']['input']>;
-  buy_cartId?: InputMaybe<Scalars['Int']['input']>;
   eventId: Scalars['Int']['input'];
   is_paid: Scalars['Boolean']['input'];
   is_used?: InputMaybe<Scalars['Boolean']['input']>;
   note?: InputMaybe<Scalars['String']['input']>;
+  order_id?: InputMaybe<Scalars['Int']['input']>;
   owner_typeId?: InputMaybe<Scalars['Int']['input']>;
   price: Scalars['Decimal']['input'];
   serial_number: Scalars['String']['input'];
@@ -351,13 +362,14 @@ export type Mutation = {
   createAccessType: AccessType;
   createActivityLog: ActivityLog;
   createApplication: Application;
-  createBuyCart: BuyCart;
+  createAuthorizedDealer: AuthorizedDealer;
   createCourtesyTicket?: Maybe<Ticket>;
   createEvent: Event;
   createEventCategory?: Maybe<EventCategory>;
   createEventSubCategory: EventSubCategory;
   createMail: Mail;
   createNotification: Notification;
+  createOpenVenueOrder: Scalars['String']['output'];
   createOrganization?: Maybe<Organization>;
   createOwnerType: OwnerType;
   createPaymentCard: PaymentCard;
@@ -371,12 +383,13 @@ export type Mutation = {
   deleteAccessType: AccessType;
   deleteActivityLog: ActivityLog;
   deleteApplication: Application;
-  deleteBuyCart?: Maybe<BuyCart>;
+  deleteAuthorizedDealer: AuthorizedDealer;
   deleteEvent: Event;
   deleteEventCategory?: Maybe<EventCategory>;
   deleteEventSubCategory?: Maybe<EventSubCategory>;
   deleteMail: Mail;
   deleteNotification: Notification;
+  deleteOrder?: Maybe<Order>;
   deleteOrganization?: Maybe<Organization>;
   deleteOwnerType?: Maybe<OwnerType>;
   deletePaymentCard: PaymentCard;
@@ -393,12 +406,13 @@ export type Mutation = {
   updateAccessType: AccessType;
   updateActivityLog: ActivityLog;
   updateApplication: Application;
-  updateBuyCart?: Maybe<BuyCart>;
+  updateAuthorizedDealer: AuthorizedDealer;
   updateEvent: Event;
   updateEventCategory?: Maybe<EventCategory>;
   updateEventSubCategory?: Maybe<EventSubCategory>;
   updateMail: Mail;
   updateNotification: Notification;
+  updateOrder?: Maybe<Order>;
   updateOrganization?: Maybe<Organization>;
   updateOwnerType?: Maybe<OwnerType>;
   updatePaymentCard: PaymentCard;
@@ -449,8 +463,8 @@ export type MutationCreateApplicationArgs = {
 };
 
 
-export type MutationCreateBuyCartArgs = {
-  data: CreateBuyCartInput;
+export type MutationCreateAuthorizedDealerArgs = {
+  data: CreateAuthorizedDealerInput;
 };
 
 
@@ -481,6 +495,11 @@ export type MutationCreateMailArgs = {
 
 export type MutationCreateNotificationArgs = {
   data: CreateNotificationInput;
+};
+
+
+export type MutationCreateOpenVenueOrderArgs = {
+  data: CreateOpenVenueOrderInput;
 };
 
 
@@ -549,8 +568,8 @@ export type MutationDeleteApplicationArgs = {
 };
 
 
-export type MutationDeleteBuyCartArgs = {
-  id: Scalars['ID']['input'];
+export type MutationDeleteAuthorizedDealerArgs = {
+  id: Scalars['Int']['input'];
 };
 
 
@@ -576,6 +595,11 @@ export type MutationDeleteMailArgs = {
 
 export type MutationDeleteNotificationArgs = {
   id: Scalars['Int']['input'];
+};
+
+
+export type MutationDeleteOrderArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
@@ -666,9 +690,9 @@ export type MutationUpdateApplicationArgs = {
 };
 
 
-export type MutationUpdateBuyCartArgs = {
-  data: UpdateBuyCartInput;
-  id: Scalars['ID']['input'];
+export type MutationUpdateAuthorizedDealerArgs = {
+  data: UpdateAuthorizedDealerInput;
+  id: Scalars['Int']['input'];
 };
 
 
@@ -699,6 +723,12 @@ export type MutationUpdateMailArgs = {
 export type MutationUpdateNotificationArgs = {
   data: UpdateNotificationInput;
   id: Scalars['Int']['input'];
+};
+
+
+export type MutationUpdateOrderArgs = {
+  data: UpdateOrderInput;
+  id: Scalars['ID']['input'];
 };
 
 
@@ -770,6 +800,26 @@ export type Notification = {
   userId?: Maybe<Scalars['Int']['output']>;
   user_client?: Maybe<UserClient>;
   user_clientId?: Maybe<Scalars['Int']['output']>;
+};
+
+export type Order = {
+  __typename?: 'Order';
+  authorized_dealerId?: Maybe<Scalars['Int']['output']>;
+  autorized_dealer?: Maybe<AuthorizedDealer>;
+  buyed_access_count: Scalars['Int']['output'];
+  createdAt: Scalars['DateTime']['output'];
+  deleted: Scalars['Boolean']['output'];
+  deletedAt?: Maybe<Scalars['DateTime']['output']>;
+  id: Scalars['ID']['output'];
+  individual_price?: Maybe<Scalars['Decimal']['output']>;
+  is_paid: Scalars['Boolean']['output'];
+  payment_method: PaymentMethod;
+  payment_methodId: Scalars['Int']['output'];
+  selled_tickets?: Maybe<Array<Ticket>>;
+  total_price: Scalars['Decimal']['output'];
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  user_client: UserClient;
+  user_clientId: Scalars['Int']['output'];
 };
 
 export type Organization = {
@@ -845,12 +895,12 @@ export type PaymentCard = {
 
 export type PaymentMethod = {
   __typename?: 'PaymentMethod';
-  buy_cart?: Maybe<Array<BuyCart>>;
   createdAt: Scalars['DateTime']['output'];
   deleted: Scalars['Boolean']['output'];
   deletedAt?: Maybe<Scalars['DateTime']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   id: Scalars['Int']['output'];
+  orders?: Maybe<Array<Order>>;
   payment_card?: Maybe<PaymentCard>;
   payment_reference?: Maybe<Scalars['String']['output']>;
   payment_type: Scalars['String']['output'];
@@ -861,7 +911,6 @@ export type PaymentRecibed = {
   __typename?: 'PaymentRecibed';
   authorized_dealer?: Maybe<UserClient>;
   authorized_dealerId?: Maybe<Scalars['Int']['output']>;
-  buy_cart?: Maybe<Array<BuyCart>>;
   createdAt: Scalars['DateTime']['output'];
   deleted: Scalars['Boolean']['output'];
   deletedAt?: Maybe<Scalars['DateTime']['output']>;
@@ -884,9 +933,9 @@ export type Query = {
   activityLogs: Array<ActivityLog>;
   application: Application;
   applications: Array<Application>;
+  authorizedDealer: AuthorizedDealer;
+  authorizedDealers: Array<AuthorizedDealer>;
   availableStaff?: Maybe<Array<Maybe<User>>>;
-  buyCart?: Maybe<BuyCart>;
-  buyCarts: Array<BuyCart>;
   courtecy_tickets?: Maybe<Array<Ticket>>;
   currentUser?: Maybe<User>;
   event: Event;
@@ -903,6 +952,8 @@ export type Query = {
   mails: Array<Mail>;
   notification: Notification;
   notifications: Array<Notification>;
+  order?: Maybe<Order>;
+  orders: Array<Order>;
   organization?: Maybe<Organization>;
   organizations?: Maybe<Array<Maybe<Organization>>>;
   ownerType?: Maybe<OwnerType>;
@@ -974,18 +1025,18 @@ export type QueryApplicationsArgs = {
 };
 
 
+export type QueryAuthorizedDealerArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type QueryAuthorizedDealersArgs = {
+  pagination?: InputMaybe<Pagination>;
+};
+
+
 export type QueryAvailableStaffArgs = {
   eventId: Scalars['Int']['input'];
-};
-
-
-export type QueryBuyCartArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type QueryBuyCartsArgs = {
-  pagination?: InputMaybe<Pagination>;
 };
 
 
@@ -1061,6 +1112,16 @@ export type QueryNotificationArgs = {
 
 
 export type QueryNotificationsArgs = {
+  pagination?: InputMaybe<Pagination>;
+};
+
+
+export type QueryOrderArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryOrdersArgs = {
   pagination?: InputMaybe<Pagination>;
 };
 
@@ -1197,8 +1258,6 @@ export type Ticket = {
   __typename?: 'Ticket';
   access_type?: Maybe<AccessType>;
   access_typeId?: Maybe<Scalars['Int']['output']>;
-  buy_cart?: Maybe<BuyCart>;
-  buy_cartId: Scalars['Int']['output'];
   createdAt: Scalars['DateTime']['output'];
   deleted: Scalars['Boolean']['output'];
   deletedAt?: Maybe<Scalars['DateTime']['output']>;
@@ -1209,6 +1268,8 @@ export type Ticket = {
   is_paid: Scalars['Boolean']['output'];
   is_used: Scalars['Boolean']['output'];
   note?: Maybe<Scalars['String']['output']>;
+  order?: Maybe<Order>;
+  order_id: Scalars['Int']['output'];
   owner_typeId?: Maybe<Scalars['Int']['output']>;
   price: Scalars['Decimal']['output'];
   serial_number: Scalars['String']['output'];
@@ -1248,13 +1309,13 @@ export type UpdateApplicationInput = {
   token?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type UpdateBuyCartInput = {
-  deleted?: InputMaybe<Scalars['Boolean']['input']>;
-  is_paid?: InputMaybe<Scalars['Boolean']['input']>;
-  payment_methodId?: InputMaybe<Scalars['Int']['input']>;
-  selled_tickets?: InputMaybe<Array<Scalars['Int']['input']>>;
-  total_price?: InputMaybe<Scalars['Decimal']['input']>;
-  user_clientId?: InputMaybe<Scalars['Int']['input']>;
+export type UpdateAuthorizedDealerInput = {
+  address?: InputMaybe<Scalars['String']['input']>;
+  commision?: InputMaybe<Scalars['Decimal']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  telephone?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type UpdateEventCategoryInput = {
@@ -1301,6 +1362,16 @@ export type UpdateNotificationInput = {
   redirect_url?: InputMaybe<Scalars['String']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
   userId?: InputMaybe<Scalars['Int']['input']>;
+  user_clientId?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type UpdateOrderInput = {
+  buyed_access_count?: InputMaybe<Scalars['Int']['input']>;
+  deleted?: InputMaybe<Scalars['Boolean']['input']>;
+  is_paid?: InputMaybe<Scalars['Boolean']['input']>;
+  payment_methodId?: InputMaybe<Scalars['Int']['input']>;
+  selled_tickets?: InputMaybe<Array<Scalars['Int']['input']>>;
+  total_price?: InputMaybe<Scalars['Decimal']['input']>;
   user_clientId?: InputMaybe<Scalars['Int']['input']>;
 };
 
@@ -1355,11 +1426,11 @@ export type UpdateRoleInput = {
 
 export type UpdateTicketInput = {
   access_typeId?: InputMaybe<Scalars['Int']['input']>;
-  buy_cartId?: InputMaybe<Scalars['Int']['input']>;
   eventId?: InputMaybe<Scalars['Int']['input']>;
   is_paid?: InputMaybe<Scalars['Boolean']['input']>;
   is_used?: InputMaybe<Scalars['Boolean']['input']>;
   note?: InputMaybe<Scalars['String']['input']>;
+  order_id?: InputMaybe<Scalars['Int']['input']>;
   owner_typeId?: InputMaybe<Scalars['Int']['input']>;
   price?: InputMaybe<Scalars['Decimal']['input']>;
   serial_number?: InputMaybe<Scalars['String']['input']>;
@@ -1400,7 +1471,6 @@ export type User = {
 export type UserClient = {
   __typename?: 'UserClient';
   atendee_of_events?: Maybe<Array<Event>>;
-  buy_carts?: Maybe<Array<BuyCart>>;
   createdAt: Scalars['DateTime']['output'];
   deleted: Scalars['Boolean']['output'];
   deletedAt?: Maybe<Scalars['DateTime']['output']>;
@@ -1410,6 +1480,7 @@ export type UserClient = {
   mails?: Maybe<Array<Mail>>;
   name: Scalars['String']['output'];
   notifications?: Maybe<Array<Notification>>;
+  orders?: Maybe<Array<Order>>;
   password: Scalars['String']['output'];
   payment_cards?: Maybe<Array<PaymentCard>>;
   role: Role;
@@ -1594,6 +1665,13 @@ export type NotificationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type NotificationsQuery = { __typename?: 'Query', notifications: Array<{ __typename?: 'Notification', id: number, title: string, description?: string | null, createdAt: any, user?: { __typename?: 'User', id: number, name?: string | null } | null }> };
+
+export type CheckoutOpenVenueMutationVariables = Exact<{
+  data: CreateOpenVenueOrderInput;
+}>;
+
+
+export type CheckoutOpenVenueMutation = { __typename?: 'Mutation', createOpenVenueOrder: string };
 
 export type CreateOrganizationMutationVariables = Exact<{
   data: CreateOrganizationInput;
@@ -3046,6 +3124,37 @@ export function useNotificationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type NotificationsQueryHookResult = ReturnType<typeof useNotificationsQuery>;
 export type NotificationsLazyQueryHookResult = ReturnType<typeof useNotificationsLazyQuery>;
 export type NotificationsQueryResult = Apollo.QueryResult<NotificationsQuery, NotificationsQueryVariables>;
+export const CheckoutOpenVenueDocument = gql`
+    mutation CheckoutOpenVenue($data: CreateOpenVenueOrderInput!) {
+  createOpenVenueOrder(data: $data)
+}
+    `;
+export type CheckoutOpenVenueMutationFn = Apollo.MutationFunction<CheckoutOpenVenueMutation, CheckoutOpenVenueMutationVariables>;
+
+/**
+ * __useCheckoutOpenVenueMutation__
+ *
+ * To run a mutation, you first call `useCheckoutOpenVenueMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCheckoutOpenVenueMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [checkoutOpenVenueMutation, { data, loading, error }] = useCheckoutOpenVenueMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useCheckoutOpenVenueMutation(baseOptions?: Apollo.MutationHookOptions<CheckoutOpenVenueMutation, CheckoutOpenVenueMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CheckoutOpenVenueMutation, CheckoutOpenVenueMutationVariables>(CheckoutOpenVenueDocument, options);
+      }
+export type CheckoutOpenVenueMutationHookResult = ReturnType<typeof useCheckoutOpenVenueMutation>;
+export type CheckoutOpenVenueMutationResult = Apollo.MutationResult<CheckoutOpenVenueMutation>;
+export type CheckoutOpenVenueMutationOptions = Apollo.BaseMutationOptions<CheckoutOpenVenueMutation, CheckoutOpenVenueMutationVariables>;
 export const CreateOrganizationDocument = gql`
     mutation CreateOrganization($data: CreateOrganizationInput!) {
   createOrganization(data: $data) {
