@@ -1,0 +1,18 @@
+query SelectPaymentMethod($accessTypeId: Int!, $eventId: Int!) {
+  accessType(id: $accessTypeId) {
+    id
+    name
+    description
+    price
+  }
+
+  event(id: $eventId) {
+    id
+    name
+    description
+    event_location
+    event_banner_url
+    start_date
+    start_time
+  }
+}

@@ -11,7 +11,7 @@ import {
   Text,
   useMediaQuery,
 } from "@chakra-ui/react";
-import ShowOrderView from "@/modules/orders/views/show-order.view";
+import SelectPaymentMethod from "@/modules/orders/views/select-payment-method.view";
 
 interface AvailableEventTicketsProps {
   eventId: string;
@@ -57,7 +57,7 @@ const ShowavailableTicketsByAccessTypesView = ({
             {accessType?.event.name}
           </Text>
         </Box>
-        <ShowOrderView />
+        <SelectPaymentMethod />
       </SimpleGrid>
     </>
   );
