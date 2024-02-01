@@ -20,7 +20,7 @@ import { FaLocationDot } from "react-icons/fa6";
 import { FaCalendarCheck } from "react-icons/fa";
 
 //The user find their events after to shearch
-const ShearchEventView = () => {
+const SearchEventView = () => {
   const [isMobile] = useMediaQuery("(max-width: 768px)");
 
   const router = useRouter();
@@ -205,4 +205,4 @@ const ShearchEventView = () => {
   );
 };
 
-export default ShearchEventView;
+export default SearchEventView;

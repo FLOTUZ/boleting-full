@@ -1,11 +1,11 @@
 import LandingLayout from "@/layouts/landing-layout.component";
-import ShearchEventView from "@/modules/search/views/events/shearch-event-view";
+import SearchEventView from "@/modules/search/views/events/search-event.view";
 
 const ShowEventRoute = () => {
   return (
     <>
       <LandingLayout />
-      <ShearchEventView />
+      <SearchEventView />
     </>
   );
 };
