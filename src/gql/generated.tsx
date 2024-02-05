@@ -201,6 +201,7 @@ export type CreateNotificationInput = {
 export type CreateOpenVenueOrderInput = {
   access_typeId: Scalars['Int']['input'];
   buyed_access_count: Scalars['Int']['input'];
+  eventId: Scalars['Int']['input'];
   payment_methodId: Scalars['Int']['input'];
 };
 
@@ -810,6 +811,8 @@ export type Order = {
   createdAt: Scalars['DateTime']['output'];
   deleted: Scalars['Boolean']['output'];
   deletedAt?: Maybe<Scalars['DateTime']['output']>;
+  event?: Maybe<Event>;
+  eventId?: Maybe<Scalars['Int']['output']>;
   id: Scalars['ID']['output'];
   individual_price?: Maybe<Scalars['Decimal']['output']>;
   is_paid: Scalars['Boolean']['output'];
@@ -937,6 +940,7 @@ export type Query = {
   authorizedDealers: Array<AuthorizedDealer>;
   availableStaff?: Maybe<Array<Maybe<User>>>;
   courtecy_tickets?: Maybe<Array<Ticket>>;
+  currentClientOrders: Array<Order>;
   currentUser?: Maybe<User>;
   event: Event;
   eventCategories?: Maybe<Array<EventCategory>>;
@@ -1680,6 +1684,11 @@ export type SelectPaymentMethodQueryVariables = Exact<{
 
 
 export type SelectPaymentMethodQuery = { __typename?: 'Query', accessType: { __typename?: 'AccessType', id: number, name: string, description?: string | null, price: any }, event: { __typename?: 'Event', id: number, name: string, description?: string | null, event_location: string, event_banner_url?: string | null, start_date: any, start_time?: string | null } };
+
+export type CurrentClientOrdersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CurrentClientOrdersQuery = { __typename?: 'Query', currentClientOrders: Array<{ __typename?: 'Order', id: string, buyed_access_count: number, eventId?: number | null }> };
 
 export type CreateOrganizationMutationVariables = Exact<{
   data: CreateOrganizationInput;
@@ -3211,6 +3220,42 @@ export function useSelectPaymentMethodLazyQuery(baseOptions?: Apollo.LazyQueryHo
 export type SelectPaymentMethodQueryHookResult = ReturnType<typeof useSelectPaymentMethodQuery>;
 export type SelectPaymentMethodLazyQueryHookResult = ReturnType<typeof useSelectPaymentMethodLazyQuery>;
 export type SelectPaymentMethodQueryResult = Apollo.QueryResult<SelectPaymentMethodQuery, SelectPaymentMethodQueryVariables>;
+export const CurrentClientOrdersDocument = gql`
+    query CurrentClientOrders {
+  currentClientOrders {
+    id
+    buyed_access_count
+    eventId
+  }
+}
+    `;
+
+/**
+ * __useCurrentClientOrdersQuery__
+ *
+ * To run a query within a React component, call `useCurrentClientOrdersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCurrentClientOrdersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCurrentClientOrdersQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCurrentClientOrdersQuery(baseOptions?: Apollo.QueryHookOptions<CurrentClientOrdersQuery, CurrentClientOrdersQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CurrentClientOrdersQuery, CurrentClientOrdersQueryVariables>(CurrentClientOrdersDocument, options);
+      }
+export function useCurrentClientOrdersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CurrentClientOrdersQuery, CurrentClientOrdersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CurrentClientOrdersQuery, CurrentClientOrdersQueryVariables>(CurrentClientOrdersDocument, options);
+        }
+export type CurrentClientOrdersQueryHookResult = ReturnType<typeof useCurrentClientOrdersQuery>;
+export type CurrentClientOrdersLazyQueryHookResult = ReturnType<typeof useCurrentClientOrdersLazyQuery>;
+export type CurrentClientOrdersQueryResult = Apollo.QueryResult<CurrentClientOrdersQuery, CurrentClientOrdersQueryVariables>;
 export const CreateOrganizationDocument = gql`
     mutation CreateOrganization($data: CreateOrganizationInput!) {
   createOrganization(data: $data) {

@@ -2,6 +2,7 @@ import { gql } from "graphql-tag";
 
 export const OrderSchema = gql`
   input CreateOpenVenueOrderInput {
+    eventId: Int!
     payment_methodId: Int!
     buyed_access_count: Int!
     access_typeId: Int!
@@ -26,10 +27,12 @@ export const OrderSchema = gql`
     payment_methodId: Int!
     authorized_dealerId: Int
     buyed_access_count: Int!
+    eventId: Int
     createdAt: DateTime!
     updatedAt: DateTime
     deleted: Boolean!
     deletedAt: DateTime
+    event: Event
     user_client: UserClient!
     selled_tickets: [Ticket!]
     payment_method: PaymentMethod!

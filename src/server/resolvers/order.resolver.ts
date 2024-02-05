@@ -26,7 +26,7 @@ export const OrderResolver = {
   Mutation: {
     createOpenVenueOrder: async (
       _: any,
-      { data }: { data: Order & { access_typeId: number } },
+      { data }: { data: Order & { eventId: number; access_typeId: number } },
       { type, id_user }: IGraphqlContext
     ) => {
       if (type === "USER" || type == null || id_user == null)
@@ -35,6 +35,7 @@ export const OrderResolver = {
 
       return await OrderService.createOpenVenueOrder(
         id_user,
+        data.eventId,
         data.access_typeId,
         data.payment_methodId,
         data.buyed_access_count

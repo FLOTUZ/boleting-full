@@ -28,6 +28,7 @@ export const OrderService = {
 
   async createOpenVenueOrder(
     user_clientId: number,
+    event_id: number,
     access_typeId: number,
     payment_methodId: number,
     buyed_access_count: number = 1
@@ -49,6 +50,7 @@ export const OrderService = {
     const order = await prisma.order.create({
       include: { payment_method: true },
       data: {
+        eventId: event_id,
         individual_price: Number(accessType?.price),
         buyed_access_count,
         total_price,
@@ -126,4 +128,10 @@ export const OrderService = {
   },
 
   // ======================= FOR ANOTHER RESOLVERS =======================
+
+  async currentClientOrders(id_user: number) {
+    return await prisma.order.findMany({
+      where: { user_clientId: id_user, deleted: false },
+    });
+  },
 };

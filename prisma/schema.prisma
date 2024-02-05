@@ -204,6 +204,7 @@ model Event {
   access_types         AccessType[]       @relation("types_of_access_for_event")
   owner_types          OwnerType[]        @relation("owner_types_for_event")
   dealers              AuthorizedDealer[] @relation("dealer_of_event")
+  orders               Order[]            @relation("event_orders")
 }
 
 model EventSocialMedia {
@@ -433,10 +434,12 @@ model Order {
   authorized_dealerId Int?
   buyed_access_count  Int
   expiry_time         DateTime
+  eventId             Int
   createdAt           DateTime          @default(now())
   updatedAt           DateTime          @updatedAt
   deleted             Boolean           @default(false)
   deletedAt           DateTime?
+  event               Event             @relation("event_orders", fields: [eventId], references: [id])
   user_client         UserClient        @relation("orders", fields: [user_clientId], references: [id])
   selled_tickets      Ticket[]          @relation("order_items")
   payment_method      PaymentMethod     @relation("payment_method", fields: [payment_methodId], references: [id])

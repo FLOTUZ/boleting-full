@@ -1,6 +1,7 @@
 import * as y from "yup";
 
 export const CreateOrderValidator = y.object().shape({
+  event_id: y.number().required(),
   total_price: y.number().required(),
   user_clientId: y.number().required(),
   payment_methodId: y.number().required(),
