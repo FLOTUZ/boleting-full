@@ -4,6 +4,7 @@ import { prisma } from "@/server";
 import { Pagination } from "../common";
 import { PrismaError } from "../utils";
 import { AccessType, Order } from "@prisma/client";
+import { v4 as uuidv4 } from "uuid";
 
 //
 // Service for Order model
@@ -66,11 +67,8 @@ export const OrderService = {
       data: Array.from({ length: buyed_access_count }, (_, i) => ({
         eventId: accessType.eventId,
         access_typeId: accessType.id,
-        serial_number: "uuidv4()",
-        service_charge: 0,
-        price: Number(accessType.price),
-        order_id: order.id,
-        is_courtesy: false,
+        serial_number: uuidv4(),
+        orderId: order.id,
       })),
     });
 
