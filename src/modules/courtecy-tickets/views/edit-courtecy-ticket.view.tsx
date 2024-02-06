@@ -35,7 +35,7 @@ const EditCourtecyTicketView = () => {
   const [accessTypesList, setAccessTypesList] = useState<AccessType[]>();
 
   const [
-    getAccessTypes,
+    GET_ACCESS_TYPES,
     { loading: loadingAccessTypes, error: errorAccessTypes },
   ] = useAccessTypesByEventLazyQuery({
     variables: { eventId: Number(eventId) },
@@ -97,9 +97,9 @@ const EditCourtecyTicketView = () => {
     if (eventId && courtesyId) {
       getTicket();
 
-      getAccessTypes();
+      GET_ACCESS_TYPES();
     }
-  }, [courtesyId, eventId, getAccessTypes, getTicket]);
+  }, [courtesyId, eventId, GET_ACCESS_TYPES, getTicket]);
 
   if (loading || loadingAccessTypes) {
     return <ProgressLoaderComponent />;
