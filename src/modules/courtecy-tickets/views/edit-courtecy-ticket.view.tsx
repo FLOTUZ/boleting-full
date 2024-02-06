@@ -40,7 +40,7 @@ const EditCourtecyTicketView = () => {
   ] = useAccessTypesByEventLazyQuery({
     variables: { eventId: Number(eventId) },
     onCompleted(data) {
-      setAccessTypesList(data.accessTypesByEventId as AccessType[]);
+      setAccessTypesList(data.courtesyAccessTypes as AccessType[]);
     },
   });
 
