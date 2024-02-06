@@ -1,7 +1,0 @@
-query CurrentClientOrders {
-  currentClientOrders {
-    id
-    buyed_access_count
-    eventId
-  }
-}

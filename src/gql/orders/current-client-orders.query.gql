@@ -1,0 +1,15 @@
+query CurrentClientOrders {
+  currentClientOrders {
+    id
+    buyed_access_count
+    eventId
+    event {
+      id
+      name
+      start_date
+      end_date
+      event_location
+      event_logo_url
+    }
+  }
+}

@@ -131,6 +131,7 @@ export const OrderService = {
 
   async currentClientOrders(id_user: number) {
     return await prisma.order.findMany({
+      include: { event: true },
       where: { user_clientId: id_user, deleted: false },
     });
   },

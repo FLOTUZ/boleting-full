@@ -42,6 +42,7 @@ export const UserClientSchema = gql`
   type Query {
     userClients(pagination: Pagination): [UserClient!]!
     userClient(id: Int!): UserClient!
+    currentClientOrders: [Order!]!
   }
 
   type Mutation {

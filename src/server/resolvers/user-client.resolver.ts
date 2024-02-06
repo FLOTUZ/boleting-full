@@ -6,7 +6,8 @@ import {
   CreateUserClientValidator,
   UpdateUserClientValidator,
 } from "@/validations";
-import { UserClientService } from "../services";
+import { OrderService, UserClientService } from "../services";
+import { UnauthorizedError } from "../utils";
 
 //
 // Resolver for UserClient model
@@ -19,6 +20,16 @@ export const UserClientResolver = {
 
     userClient: async (_: any, { id }: { id: number }, __: IGraphqlContext) => {
       return await UserClientService.userClient(id);
+    },
+
+    currentClientOrders: async (
+      _: any,
+      __: any,
+      { id_user }: IGraphqlContext
+    ) => {
+      if (id_user === null)
+        throw new UnauthorizedError("Unauthorized organization");
+      return await OrderService.currentClientOrders(id_user!);
     },
   },
 
