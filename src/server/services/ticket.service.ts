@@ -25,7 +25,11 @@ export const TicketService = {
   async courtecyTickets(pagination?: Pagination, eventId?: number) {
     return await prisma.ticket.findMany({
       ...pagination,
-      where: { deleted: false, eventId, is_courtesy: true },
+      where: {
+        eventId,
+        access_type: { is_courtesy: true },
+        deleted: false,
+      },
       orderBy: { createdAt: "desc" },
     });
   },
@@ -38,7 +42,10 @@ export const TicketService = {
     }
   },
 
-  async createCourtesyTicket(userId: number, data: Ticket) {
+  async createCourtesyTicket(
+    userId: number,
+    data: { note: string; eventId: number; access_typeId: number }
+  ) {
     // Verify if user belongs to organization of event
 
     const event = await prisma.event.findUnique({
@@ -57,8 +64,7 @@ export const TicketService = {
         data: {
           ...data,
           serial_number: uuidv4(),
-          service_charge: 0,
-          is_courtesy: true,
+          access_typeId: data.access_typeId,
         },
       });
     } catch (error) {
@@ -90,5 +96,16 @@ export const TicketService = {
       ...pagination,
       where: { event: { id: event_id } },
     });
+  },
+
+  async selledTicketsByOrder(order_id: number, pagination?: Pagination) {
+    return await prisma.ticket.findMany({
+      ...pagination,
+      where: { order: { id: order_id } },
+    });
+  },
+
+  async courtecyTicket(id: number) {
+    return await prisma.ticket.findUnique({ where: { id } });
   },
 };

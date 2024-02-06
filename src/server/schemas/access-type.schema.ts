@@ -14,6 +14,7 @@ export const AccessTypeSchema = gql`
     description: String
     enter_and_exit_option: Boolean
     price: Decimal
+    available_tickets_count: Int
     deleted: Boolean
   }
 
@@ -23,6 +24,7 @@ export const AccessTypeSchema = gql`
     description: String
     enter_and_exit_option: Boolean!
     price: Decimal!
+    available_tickets_count: Int!
     createdAt: DateTime!
     updatedAt: DateTime!
     deleted: Boolean!
@@ -36,6 +38,7 @@ export const AccessTypeSchema = gql`
     accessTypes(pagination: Pagination): [AccessType!]!
     accessType(id: Int!): AccessType!
     accessTypesByEventId(eventId: Int!): [AccessType!]!
+    courtesyAccessTypes(eventId: Int!): [AccessType!]!
   }
 
   type Mutation {

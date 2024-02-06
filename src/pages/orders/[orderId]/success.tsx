@@ -2,9 +2,12 @@ import { ShowOrdersPath } from "@/routes";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-const SuccessPage = () => {
+import { GetServerSideProps } from "next";
+import { prisma } from "@/server";
+import { Order } from "@/gql/generated";
+
+const SuccessPage = ({ order }: { order: Order }) => {
   const router = useRouter();
-  const { orderId } = router.query;
 
   const [seconds, setSeconds] = useState(5);
 
@@ -27,11 +30,30 @@ const SuccessPage = () => {
 
   return (
     <div>
-      <h1> Orden {orderId} completada </h1>
+      <h1> Orden {order.id} completada </h1>
 
       <p>Podrás revisar tu orden en {seconds} segundos</p>
     </div>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const { orderId } = ctx.query;
+
+  const order = await prisma.order.update({
+    where: {
+      id: Number(orderId),
+    },
+    data: {
+      is_paid: true,
+    },
+  });
+
+  return {
+    props: {
+      order: JSON.parse(JSON.stringify(order)),
+    },
+  };
 };
 
 export default SuccessPage;

@@ -19,7 +19,7 @@ export const OrderSchema = gql`
   }
 
   type Order {
-    id: ID!
+    id: Int!
     individual_price: Decimal
     total_price: Decimal!
     user_clientId: Int!
@@ -41,7 +41,7 @@ export const OrderSchema = gql`
 
   type Query {
     orders(pagination: Pagination): [Order!]!
-    order(id: ID!): Order
+    order(id: Int!): Order
   }
 
   type Mutation {

@@ -202,7 +202,6 @@ model Event {
   event_social_media   EventSocialMedia[] @relation("event_social_media")
   organization         Organization?      @relation("events_on_organization", fields: [organizationId], references: [id])
   access_types         AccessType[]       @relation("types_of_access_for_event")
-  owner_types          OwnerType[]        @relation("owner_types_for_event")
   dealers              AuthorizedDealer[] @relation("dealer_of_event")
   orders               Order[]            @relation("event_orders")
 }
@@ -247,55 +246,37 @@ model EventSubCategory {
 //===================================== TICKETING =====================================
 
 model AccessType {
-  id                    Int       @id @unique @default(autoincrement())
-  name                  String    @db.VarChar(15)
-  description           String?   @db.VarChar(1000)
-  enter_and_exit_option Boolean?  @default(false)
-  price                 Decimal   @db.Money
-  createdAt             DateTime  @default(now())
-  updatedAt             DateTime  @updatedAt
-  deleted               Boolean   @default(false)
-  deletedAt             DateTime?
-  eventId               Int
-  event                 Event     @relation("types_of_access_for_event", fields: [eventId], references: [id])
-  tickets               Ticket[]  @relation("access_type")
-}
-
-model OwnerType {
-  id             Int       @id @unique @default(autoincrement())
-  name           String    @db.VarChar(50)
-  description    String?   @db.VarChar(255)
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
-  deleted        Boolean   @default(false)
-  deletedAt      DateTime?
-  eventId        Int
-  organizationId Int
-  event          Event     @relation("owner_types_for_event", fields: [eventId], references: [id])
-  ticket         Ticket[]  @relation("owner_types")
+  id                      Int       @id @unique @default(autoincrement())
+  name                    String    @db.VarChar(15)
+  description             String?   @db.VarChar(1000)
+  enter_and_exit_option   Boolean?  @default(false)
+  price                   Decimal   @db.Money
+  available_tickets_count Int
+  is_courtesy             Boolean   @default(false)
+  createdAt               DateTime  @default(now())
+  updatedAt               DateTime  @updatedAt
+  deleted                 Boolean   @default(false)
+  deletedAt               DateTime?
+  eventId                 Int
+  event                   Event     @relation("types_of_access_for_event", fields: [eventId], references: [id])
+  tickets                 Ticket[]  @relation("access_type")
 }
 
 model Ticket {
-  id             Int         @id @unique @default(autoincrement())
-  note           String?     @db.VarChar(50)
-  serial_number  String      @unique @db.VarChar(40)
-  price          Decimal     @db.Money
-  is_paid        Boolean     @default(false)
-  is_used        Boolean?    @default(false)
-  service_charge Decimal     @db.Money
-  eventId        Int
-  access_typeId  Int?
-  owner_typeId   Int?
-  orderId        Int?
-  is_courtesy    Boolean     @default(false)
-  createdAt      DateTime    @default(now())
-  updatedAt      DateTime    @updatedAt
-  deleted        Boolean     @default(false)
-  deletedAt      DateTime?
-  event          Event       @relation("selled_tickets", fields: [eventId], references: [id])
-  access_type    AccessType? @relation("access_type", fields: [access_typeId], references: [id])
-  ticket_type    OwnerType?  @relation("owner_types", fields: [owner_typeId], references: [id])
-  order          Order?      @relation("order_items", fields: [orderId], references: [id])
+  id            Int         @id @unique @default(autoincrement())
+  note          String?     @db.VarChar(50)
+  serial_number String      @unique @db.VarChar(40)
+  is_used       Boolean?    @default(false)
+  eventId       Int
+  access_typeId Int?
+  orderId       Int?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  deleted       Boolean     @default(false)
+  deletedAt     DateTime?
+  event         Event       @relation("selled_tickets", fields: [eventId], references: [id])
+  access_type   AccessType? @relation("access_type", fields: [access_typeId], references: [id])
+  order         Order?      @relation("order_items", fields: [orderId], references: [id], onDelete: Cascade)
 }
 
 // ================================ SEATING ================================

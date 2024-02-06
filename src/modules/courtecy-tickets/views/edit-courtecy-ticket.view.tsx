@@ -7,12 +7,10 @@ import ProgressLoaderComponent from "@/components/loaders/progress-loader.compon
 
 import {
   AccessType,
-  OwnerType,
   Ticket,
   useAccessTypesByEventLazyQuery,
+  useCourtesyTicketLazyQuery,
   useEditTicketMutation,
-  useOwnerTypeByEventLazyQuery,
-  useShowCourtesyTicketLazyQuery,
 } from "@/gql/generated";
 
 import {
@@ -35,32 +33,22 @@ const EditCourtecyTicketView = () => {
 
   const [ticket, setTicket] = useState<Ticket>();
   const [accessTypesList, setAccessTypesList] = useState<AccessType[]>();
-  const [ownerTypesList, setOwnerTypesList] = useState<OwnerType[]>();
 
   const [
-    getOwnerTypes,
-    { loading: loadingOwnerTypes, error: errorOwnerTypes },
-  ] = useOwnerTypeByEventLazyQuery({
-    variables: { eventId: Number(eventId) },
-    onCompleted(data) {
-      setOwnerTypesList(data.ownerTypeByEvent as OwnerType[]);
-    },
-  });
-  const [
-    getAccessTypes,
+    GET_ACCESS_TYPES,
     { loading: loadingAccessTypes, error: errorAccessTypes },
   ] = useAccessTypesByEventLazyQuery({
     variables: { eventId: Number(eventId) },
     onCompleted(data) {
-      setAccessTypesList(data.accessTypesByEventId as AccessType[]);
+      setAccessTypesList(data.courtesyAccessTypes as AccessType[]);
     },
   });
 
-  const [getTicket, { data, error, loading }] = useShowCourtesyTicketLazyQuery({
+  const [getTicket, { data, error, loading }] = useCourtesyTicketLazyQuery({
     fetchPolicy: "cache-and-network",
-    variables: { ticketId: Number(courtesyId) },
+    variables: { courtecyTicketId: Number(courtesyId) },
     onCompleted(data) {
-      setTicket(data.ticket as Ticket);
+      setTicket(data.courtecy_ticket as Ticket);
     },
   });
 
@@ -91,14 +79,11 @@ const EditCourtecyTicketView = () => {
     validationSchema: UpdateTicketValidator,
     initialValues: {
       note: ticket?.note,
-      price: ticket?.price,
       access_typeId: ticket?.access_typeId || 0,
-      owner_typeId: ticket?.owner_typeId || 0,
       is_used: false,
     },
     onSubmit: async (values) => {
       values.access_typeId = Number(values.access_typeId);
-      values.owner_typeId = Number(values.owner_typeId);
       await editTicket({
         variables: {
           updateTicketId: Number(courtesyId),
@@ -111,23 +96,17 @@ const EditCourtecyTicketView = () => {
   useEffect(() => {
     if (eventId && courtesyId) {
       getTicket();
-      getOwnerTypes();
-      getAccessTypes();
-    }
-  }, [courtesyId, eventId, getAccessTypes, getOwnerTypes, getTicket]);
 
-  if (loading || loadingAccessTypes || loadingOwnerTypes) {
+      GET_ACCESS_TYPES();
+    }
+  }, [courtesyId, eventId, GET_ACCESS_TYPES, getTicket]);
+
+  if (loading || loadingAccessTypes) {
     return <ProgressLoaderComponent />;
   }
 
-  if (error || errorAccessTypes || errorOwnerTypes) {
-    return (
-      <div>
-        {error?.message &&
-          errorAccessTypes?.message &&
-          errorOwnerTypes?.message}
-      </div>
-    );
+  if (error || errorAccessTypes) {
+    return <div>{error?.message && errorAccessTypes?.message}</div>;
   }
 
   return (
@@ -138,17 +117,6 @@ const EditCourtecyTicketView = () => {
           <Textarea
             name="note"
             defaultValue={ticket?.note || ""}
-            onChange={form.handleChange}
-          />
-
-          <FormLabel mt={4} htmlFor="price">
-            Precio
-          </FormLabel>
-          <Input
-            name="price"
-            type="number"
-            step="0.01"
-            defaultValue={ticket?.price}
             onChange={form.handleChange}
           />
 
@@ -169,26 +137,6 @@ const EditCourtecyTicketView = () => {
           </Select>
           {form.errors.access_typeId && form.touched.access_typeId && (
             <Text color={"red"}>{form.errors.access_typeId}</Text>
-          )}
-
-          <FormLabel mt={4} htmlFor="owner_typeId">
-            Tipo de dueño
-          </FormLabel>
-          <Select
-            name="owner_typeId"
-            placeholder={"Tipo de dueño"}
-            value={form.values.owner_typeId}
-            onChange={form.handleChange}
-          >
-            {ownerTypesList?.map((ownerType, index) => (
-              <option key={index} value={Number(ownerType.id)}>
-                {ownerType.name}
-              </option>
-            ))}
-          </Select>
-
-          {form.errors.owner_typeId && form.touched.owner_typeId && (
-            <Text color={"red"}>{form.errors.owner_typeId}</Text>
           )}
 
           <FormLabel mt={4} htmlFor="is_used">

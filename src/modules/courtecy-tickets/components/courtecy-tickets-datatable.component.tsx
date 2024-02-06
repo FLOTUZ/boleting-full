@@ -25,34 +25,21 @@ const CourtecyTicketsDatatable = (props: CourtecyTicketsDatatableProps) => {
     },
     {
       name: "Nota",
-      selector: (row) => row.note,
+      selector: (row) => row.note || "Sin nota",
       sortable: true,
     },
     {
       name: "Tipo de acceso",
-      selector: (row) => row.access_type?.name,
+      selector: (row) => row.access_type?.name || "Sin tipo de acceso",
       sortable: true,
     },
-    {
-      name: "Tipo de dueño",
-      selector: (row) => row.ticket_type?.name,
-      sortable: true,
-    },
+
     {
       name: "Estado",
       selector: (row) => (row.is_used ? "Usado" : "No usado"),
       sortable: true,
     },
-    {
-      name: "Precio",
-      selector: (row) => row.price,
-      sortable: true,
-    },
-    {
-      name: "Cargo por servicio",
-      selector: (row) => row.service_charge,
-      sortable: true,
-    },
+
     {
       name: "Fecha de creación",
       selector: (row) => moment(row.createdAt).format("DD/MM/YYYY HH:mm:ss"),

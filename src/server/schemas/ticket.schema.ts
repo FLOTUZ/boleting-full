@@ -3,35 +3,24 @@ export const TicketSchema = gql`
   input CreateTicketInput {
     note: String
     serial_number: String!
-    price: Decimal!
-    is_paid: Boolean!
     is_used: Boolean
-    service_charge: Decimal!
     eventId: Int!
     access_typeId: Int
-    owner_typeId: Int
     order_id: Int
   }
 
   input CreateCourtessyTicketInput {
     note: String!
-    price: Decimal!
-    is_paid: Boolean!
     eventId: Int!
-    access_typeId: Int
-    owner_typeId: Int
+    access_typeId: Int!
   }
 
   input UpdateTicketInput {
     note: String
     serial_number: String
-    price: Decimal
-    is_paid: Boolean
     is_used: Boolean
-    service_charge: Decimal
     eventId: Int
     access_typeId: Int
-    owner_typeId: Int
     order_id: Int
   }
 
@@ -39,22 +28,16 @@ export const TicketSchema = gql`
     id: Int!
     note: String
     serial_number: String!
-    price: Decimal!
-    is_paid: Boolean!
     is_used: Boolean!
-    service_charge: Decimal!
     eventId: Int!
     access_typeId: Int
-    owner_typeId: Int
     order_id: Int!
     createdAt: DateTime!
     updatedAt: DateTime
     deleted: Boolean!
     deletedAt: DateTime
     event: Event!
-    is_courtesy: Boolean!
     access_type: AccessType
-    ticket_type: OwnerType
     order: Order
   }
 
@@ -62,6 +45,7 @@ export const TicketSchema = gql`
     ticket(id: Int!): Ticket
     tickets(pagination: Pagination): [Ticket!]
     courtecy_tickets(eventId: Int!, pagination: Pagination): [Ticket!]
+    courtecy_ticket(id: Int!): Ticket
     selled_tickets_by_event(event_id: Int!, pagination: Pagination): [Ticket!]
   }
 

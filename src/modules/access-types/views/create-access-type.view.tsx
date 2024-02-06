@@ -51,6 +51,7 @@ const CreateAccessTypeView = () => {
       name: "",
       description: "",
       price: 0,
+      available_tickets_count: 0,
       enter_and_exit_option: false,
       eventId: eventId,
     },
@@ -113,6 +114,17 @@ const CreateAccessTypeView = () => {
           {form.errors.price && form.touched.price && (
             <Text color={"red"}>{form.errors.price}</Text>
           )}
+
+          <FormLabel htmlFor="available_tickets_count" mt={4}>
+            Cantidad de tickets disponibles
+          </FormLabel>
+
+          <Input
+            name="available_tickets_count"
+            type="number"
+            onChange={form.handleChange}
+            value={form.values.available_tickets_count}
+          />
 
           <FormLabel htmlFor="enter_and_exit_option" mt={4}>
             Admite entrada y salida

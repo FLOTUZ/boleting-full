@@ -2,10 +2,8 @@ import IntroAnimationComponent from "@/components/animations/intro-animation.com
 import ProgressLoaderComponent from "@/components/loaders/progress-loader.component";
 import {
   AccessType,
-  OwnerType,
   useAccessTypesByEventLazyQuery,
-  useCreateCourtesyMutation,
-  useOwnerTypeByEventLazyQuery,
+  useCreateCourtecyMutation,
 } from "@/gql/generated";
 import { ShowCourtecyTicketPath } from "@/routes";
 import { CreateCourtesyTicketValidator } from "@/validations";
@@ -14,9 +12,7 @@ import {
   Button,
   FormLabel,
   Heading,
-  Input,
   Select,
-  Switch,
   Text,
   Textarea,
   useToast,
@@ -31,28 +27,18 @@ const CreateCourtecyTicketView = () => {
 
   const { id: eventId } = router.query;
   const [accessTypesList, setAccessTypesList] = useState<AccessType[]>();
-  const [ownerTypesList, setOwnerTypesList] = useState<OwnerType[]>();
 
   const [
-    getOwnerTypes,
-    { loading: loadingOwnerTypes, error: errorOwnerTypes },
-  ] = useOwnerTypeByEventLazyQuery({
-    variables: { eventId: Number(eventId) },
-    onCompleted(data) {
-      setOwnerTypesList(data.ownerTypeByEvent as OwnerType[]);
-    },
-  });
-  const [
-    getAccessTypes,
+    GET_ACCESS_TYPES,
     { loading: loadingAccessTypes, error: errorAccessTypes },
   ] = useAccessTypesByEventLazyQuery({
     variables: { eventId: Number(eventId) },
     onCompleted(data) {
-      setAccessTypesList(data.accessTypesByEventId as AccessType[]);
+      setAccessTypesList(data.courtesyAccessTypes as AccessType[]);
     },
   });
 
-  const [createCourtesy, { loading, error }] = useCreateCourtesyMutation({
+  const [createCourtesy, { loading, error }] = useCreateCourtecyMutation({
     onCompleted(data) {
       toast({
         title: "Boleto de cortesía creado",
@@ -80,13 +66,16 @@ const CreateCourtecyTicketView = () => {
     validationSchema: CreateCourtesyTicketValidator,
     initialValues: {
       note: "",
-      price: 0,
-      is_paid: false,
       eventId: Number(eventId),
-      access_typeId: undefined,
-      owner_typeId: undefined,
+      access_typeId: 0,
     },
     onSubmit: async (values) => {
+      if (values.access_typeId == 0) {
+        courtesyForm.errors.access_typeId =
+          "Debes seleccionar un tipo de acceso";
+      }
+
+      values.access_typeId = Number(values.access_typeId);
       await createCourtesy({
         variables: {
           data: { ...values },
@@ -97,27 +86,20 @@ const CreateCourtecyTicketView = () => {
 
   useEffect(() => {
     if (eventId) {
-      getAccessTypes();
-      getOwnerTypes();
+      GET_ACCESS_TYPES();
     }
-  }, [eventId, getAccessTypes, getOwnerTypes]);
+  }, [eventId, GET_ACCESS_TYPES]);
 
-  if (loading || loadingAccessTypes || loadingOwnerTypes) {
+  if (loading || loadingAccessTypes) {
     return <ProgressLoaderComponent />;
   }
 
-  if (error || errorAccessTypes || errorOwnerTypes) {
-    return (
-      <div>
-        {error?.message ||
-          errorAccessTypes?.message ||
-          errorOwnerTypes?.message}
-      </div>
-    );
+  if (error || errorAccessTypes) {
+    return <div>{error?.message || errorAccessTypes?.message}</div>;
   }
 
   return (
-    <IntroAnimationComponent data={accessTypesList && ownerTypesList}>
+    <IntroAnimationComponent data={accessTypesList}>
       <Box m={4}>
         <Heading size={"sm"}>
           Aqui podrás crear boletos de cortesía para tus patrocinadores
@@ -134,19 +116,6 @@ const CreateCourtecyTicketView = () => {
           />
           {courtesyForm.errors.note && courtesyForm.touched.note && (
             <Text color={"red"}>{courtesyForm.errors.note}</Text>
-          )}
-
-          <FormLabel mt={4} htmlFor="price">
-            Precio
-          </FormLabel>
-          <Input
-            name="price"
-            placeholder={"Precio"}
-            value={courtesyForm.values.price}
-            onChange={courtesyForm.handleChange}
-          />
-          {courtesyForm.errors.price && courtesyForm.touched.price && (
-            <Text color={"red"}>{courtesyForm.errors.price}</Text>
           )}
 
           <FormLabel mt={4} htmlFor="access_typeId">
@@ -168,40 +137,6 @@ const CreateCourtecyTicketView = () => {
             courtesyForm.touched.access_typeId && (
               <Text color={"red"}>{courtesyForm.errors.access_typeId}</Text>
             )}
-
-          <FormLabel mt={4} htmlFor="owner_typeId">
-            Tipo de dueño
-          </FormLabel>
-          <Select
-            name="owner_typeId"
-            placeholder={"Tipo de dueño"}
-            value={courtesyForm.values.owner_typeId}
-            onChange={courtesyForm.handleChange}
-          >
-            {ownerTypesList?.map((ownerType, index) => (
-              <option key={index} value={ownerType.id}>
-                {ownerType.name}
-              </option>
-            ))}
-          </Select>
-
-          {courtesyForm.errors.owner_typeId &&
-            courtesyForm.touched.owner_typeId && (
-              <Text color={"red"}>{courtesyForm.errors.owner_typeId}</Text>
-            )}
-
-          <FormLabel mt={4} htmlFor="is_paid">
-            Marcar como pagado
-          </FormLabel>
-          <Switch
-            name="is_paid"
-            placeholder={"Pagado"}
-            checked={courtesyForm.values.is_paid}
-            onChange={courtesyForm.handleChange}
-          />
-          {courtesyForm.errors.is_paid && courtesyForm.touched.is_paid && (
-            <Text color={"red"}>{courtesyForm.errors.is_paid}</Text>
-          )}
 
           <Box mt={4}>
             <Button type="submit" isLoading={loading}>

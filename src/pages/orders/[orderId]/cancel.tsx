@@ -2,9 +2,12 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { ShowOrdersPath } from "@/routes";
 
-const CancelPage = () => {
+import { GetServerSideProps } from "next";
+import { prisma } from "@/server";
+import { Order } from "@/gql/generated";
+
+const CancelPage = ({ order }: { order: Order }) => {
   const router = useRouter();
-  const { orderId } = router.query;
 
   const [seconds, setSeconds] = useState(5);
 
@@ -27,11 +30,29 @@ const CancelPage = () => {
 
   return (
     <div>
-      <h1>Orden {orderId} cancelada</h1>
+      <h1>Orden {order.id} cancelada</h1>
 
       <p>Serás redireccionado en {seconds} segundos</p>
     </div>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const { orderId } = ctx.query;
+
+  await prisma.ticket.deleteMany({
+    where: { orderId: Number(orderId) },
+  });
+
+  const order = await prisma.order.delete({
+    where: { id: Number(orderId) },
+  });
+
+  return {
+    props: {
+      order: JSON.parse(JSON.stringify(order)),
+    },
+  };
 };
 
 export default CancelPage;

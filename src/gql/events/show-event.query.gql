@@ -34,10 +34,7 @@ query ShowEvent($eventId: Int!) {
     id
     createdAt
     serial_number
-    service_charge
-    is_paid
     is_used
     note
-    price
   }
 }

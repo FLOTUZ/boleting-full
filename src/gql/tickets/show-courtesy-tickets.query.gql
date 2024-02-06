@@ -3,12 +3,6 @@ query ShowCourtesyTickets($eventId: Int!) {
     id
     note
     access_typeId
-    price
-    service_charge
-    ticket_type {
-      id
-      name
-    }
     access_type {
       id
       name

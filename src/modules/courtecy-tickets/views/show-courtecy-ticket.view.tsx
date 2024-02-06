@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import IntroAnimationComponent from "@/components/animations/intro-animation.component";
 import ProgressLoaderComponent from "@/components/loaders/progress-loader.component";
 import { EditCourtecyTicketPath } from "@/routes";
-import { Ticket, useShowCourtesyTicketLazyQuery } from "@/gql/generated";
+import { Ticket, useCourtesyTicketLazyQuery } from "@/gql/generated";
 
 import SendCourtecyTicketToEmailModal from "../components/send-courtecy-ticket-to-email-modal";
 
@@ -17,15 +17,15 @@ const ShowCourtecyTicketView = () => {
 
   const [ticket, setTicket] = useState<Ticket>();
 
-  const [getTicket, { data, error, loading }] = useShowCourtesyTicketLazyQuery({
+  const [getTicket, { data, error, loading }] = useCourtesyTicketLazyQuery({
     onCompleted(data) {
-      setTicket(data.ticket as Ticket);
+      setTicket(data.courtecy_ticket as Ticket);
     },
   });
 
   useEffect(() => {
     if (courtesyId) {
-      getTicket({ variables: { ticketId: Number(courtesyId) } });
+      getTicket({ variables: { courtecyTicketId: Number(courtesyId) } });
     }
   }, [courtesyId, getTicket]);
 
@@ -55,12 +55,6 @@ const ShowCourtecyTicketView = () => {
         <Text as={"b"}>Usado</Text>
         <Box mb={4}>{ticket?.is_used ? "Si" : "No"}</Box>
 
-        <Text as={"b"}>Precio</Text>
-        <Box mb={4}>{ticket?.price}</Box>
-
-        <Text as={"b"}>Cargo por servicio</Text>
-        <Box mb={4}>{ticket?.service_charge}</Box>
-
         <Text as={"b"}>Evento</Text>
         <HStack mb={4}>
           <Text>{ticket?.event.name}</Text>
@@ -68,9 +62,6 @@ const ShowCourtecyTicketView = () => {
 
         <Text as={"b"}>Tipo de acceso</Text>
         <Box mb={4}>{ticket?.access_type?.name}</Box>
-
-        <Text as={"b"}>Tipo de dueño</Text>
-        <Box mb={4}>{ticket?.ticket_type?.name}</Box>
 
         <Text as={"b"}>Fecha de creación</Text>
         <Box mb={4}>{new Date(ticket?.createdAt).toLocaleString()}</Box>

@@ -1,0 +1,18 @@
+query CourtesyTicket($courtecyTicketId: Int!) {
+  courtecy_ticket(id: $courtecyTicketId) {
+    id
+    note
+    access_typeId
+    event {
+      id
+      name
+    }
+    access_type {
+      id
+      name
+    }
+    is_used
+    createdAt
+    updatedAt
+  }
+}
