@@ -20,6 +20,13 @@ export const AccessTypeService = {
     return await prisma.accessType.findUnique({ where: { id } });
   },
 
+  async courtesyAccessTypes(eventId: number) {
+    return await prisma.accessType.findMany({
+      where: { eventId, is_courtesy: true },
+      orderBy: { id: "asc" },
+    });
+  },
+
   async createAccessType(data: AccessType) {
     try {
       return await prisma.accessType.create({

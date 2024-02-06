@@ -38,6 +38,7 @@ export const AccessTypeSchema = gql`
     accessTypes(pagination: Pagination): [AccessType!]!
     accessType(id: Int!): AccessType!
     accessTypesByEventId(eventId: Int!): [AccessType!]!
+    courtesyAccessTypes(eventId: Int!): [AccessType!]!
   }
 
   type Mutation {

@@ -48,7 +48,7 @@ export const TicketResolver = {
       return await TicketService.selledTicketsByEvent(event_id, pagination);
     },
 
-    courtecy_ticket: async ({ id }: Ticket, _: any, __: IGraphqlContext) => {
+    courtecy_ticket: async (_: any, { id }: Ticket, __: IGraphqlContext) => {
       return await TicketService.courtecyTicket(id);
     },
   },
@@ -65,7 +65,9 @@ export const TicketResolver = {
 
     createCourtesyTicket: async (
       _: any,
-      { data }: { data: Ticket },
+      {
+        data,
+      }: { data: { note: string; eventId: number; access_typeId: number } },
       { id_user }: IGraphqlContext
     ) => {
       await autorizedAbilities({

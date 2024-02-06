@@ -42,7 +42,10 @@ export const TicketService = {
     }
   },
 
-  async createCourtesyTicket(userId: number, data: Ticket) {
+  async createCourtesyTicket(
+    userId: number,
+    data: { note: string; eventId: number; access_typeId: number }
+  ) {
     // Verify if user belongs to organization of event
 
     const event = await prisma.event.findUnique({
@@ -61,6 +64,7 @@ export const TicketService = {
         data: {
           ...data,
           serial_number: uuidv4(),
+          access_typeId: data.access_typeId,
         },
       });
     } catch (error) {

@@ -32,6 +32,13 @@ export const AccessTypeResolver = {
     ) => {
       return await AccessTypeService.accessTypesByEventId(eventId);
     },
+    courtesyAccessTypes: async (
+      _: any,
+      { eventId }: { eventId: number },
+      __: IGraphqlContext
+    ) => {
+      return await AccessTypeService.courtesyAccessTypes(eventId);
+    },
   },
 
   Mutation: {

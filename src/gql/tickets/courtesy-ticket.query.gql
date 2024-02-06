@@ -3,11 +3,16 @@ query CourtesyTicket($courtecyTicketId: Int!) {
     id
     note
     access_typeId
+    event {
+      id
+      name
+    }
     access_type {
       id
       name
     }
     is_used
     createdAt
+    updatedAt
   }
 }

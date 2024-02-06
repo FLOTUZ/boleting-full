@@ -317,6 +317,7 @@ async function main() {
         price: 1000,
         eventId: 1,
         available_tickets_count: 100,
+        is_courtesy: true,
       },
     ],
   });

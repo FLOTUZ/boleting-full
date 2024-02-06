@@ -18,7 +18,6 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
-import { access } from "fs";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
@@ -30,12 +29,12 @@ const CreateCourtecyTicketView = () => {
   const [accessTypesList, setAccessTypesList] = useState<AccessType[]>();
 
   const [
-    getAccessTypes,
+    GET_ACCESS_TYPES,
     { loading: loadingAccessTypes, error: errorAccessTypes },
   ] = useAccessTypesByEventLazyQuery({
     variables: { eventId: Number(eventId) },
     onCompleted(data) {
-      setAccessTypesList(data.accessTypesByEventId as AccessType[]);
+      setAccessTypesList(data.courtesyAccessTypes as AccessType[]);
     },
   });
 
@@ -75,6 +74,8 @@ const CreateCourtecyTicketView = () => {
         courtesyForm.errors.access_typeId =
           "Debes seleccionar un tipo de acceso";
       }
+
+      values.access_typeId = Number(values.access_typeId);
       await createCourtesy({
         variables: {
           data: { ...values },
@@ -85,9 +86,9 @@ const CreateCourtecyTicketView = () => {
 
   useEffect(() => {
     if (eventId) {
-      getAccessTypes();
+      GET_ACCESS_TYPES();
     }
-  }, [eventId, getAccessTypes]);
+  }, [eventId, GET_ACCESS_TYPES]);
 
   if (loading || loadingAccessTypes) {
     return <ProgressLoaderComponent />;

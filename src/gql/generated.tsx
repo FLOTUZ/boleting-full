@@ -894,6 +894,7 @@ export type Query = {
   availableStaff?: Maybe<Array<Maybe<User>>>;
   courtecy_ticket?: Maybe<Ticket>;
   courtecy_tickets?: Maybe<Array<Ticket>>;
+  courtesyAccessTypes: Array<AccessType>;
   currentClientOrders: Array<Order>;
   currentUser?: Maybe<User>;
   event: Event;
@@ -1003,6 +1004,11 @@ export type QueryCourtecy_TicketArgs = {
 export type QueryCourtecy_TicketsArgs = {
   eventId: Scalars['Int']['input'];
   pagination?: InputMaybe<Pagination>;
+};
+
+
+export type QueryCourtesyAccessTypesArgs = {
+  eventId: Scalars['Int']['input'];
 };
 
 
@@ -1435,7 +1441,7 @@ export type AccessTypesByEventQueryVariables = Exact<{
 }>;
 
 
-export type AccessTypesByEventQuery = { __typename?: 'Query', accessTypesByEventId: Array<{ __typename?: 'AccessType', id: number, name: string, description?: string | null, enter_and_exit_option: boolean, createdAt: any, updatedAt: any }> };
+export type AccessTypesByEventQuery = { __typename?: 'Query', courtesyAccessTypes: Array<{ __typename?: 'AccessType', id: number, name: string, description?: string | null, enter_and_exit_option: boolean, createdAt: any, updatedAt: any }> };
 
 export type CreateAccessTypeMutationVariables = Exact<{
   data: CreateAccessTypeInput;
@@ -1765,7 +1771,7 @@ export type CourtesyTicketQueryVariables = Exact<{
 }>;
 
 
-export type CourtesyTicketQuery = { __typename?: 'Query', courtecy_ticket?: { __typename?: 'Ticket', id: number, note?: string | null, access_typeId?: number | null, is_used: boolean, createdAt: any, access_type?: { __typename?: 'AccessType', id: number, name: string } | null } | null };
+export type CourtesyTicketQuery = { __typename?: 'Query', courtecy_ticket?: { __typename?: 'Ticket', id: number, note?: string | null, access_typeId?: number | null, is_used: boolean, createdAt: any, updatedAt?: any | null, event: { __typename?: 'Event', id: number, name: string }, access_type?: { __typename?: 'AccessType', id: number, name: string } | null } | null };
 
 export type CreateCourtecyMutationVariables = Exact<{
   data: CreateCourtessyTicketInput;
@@ -1914,7 +1920,7 @@ export type ShowAccessTypeLazyQueryHookResult = ReturnType<typeof useShowAccessT
 export type ShowAccessTypeQueryResult = Apollo.QueryResult<ShowAccessTypeQuery, ShowAccessTypeQueryVariables>;
 export const AccessTypesByEventDocument = gql`
     query AccessTypesByEvent($eventId: Int!) {
-  accessTypesByEventId(eventId: $eventId) {
+  courtesyAccessTypes(eventId: $eventId) {
     id
     name
     description
@@ -4089,12 +4095,17 @@ export const CourtesyTicketDocument = gql`
     id
     note
     access_typeId
+    event {
+      id
+      name
+    }
     access_type {
       id
       name
     }
     is_used
     createdAt
+    updatedAt
   }
 }
     `;
