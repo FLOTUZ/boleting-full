@@ -21,7 +21,7 @@ const CancelPage = ({ order }: { order: Order }) => {
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      //router.push(ShowOrdersPath);
+      router.push(ShowOrdersPath);
     }, 5000);
 
     return () => clearTimeout(timeout);
