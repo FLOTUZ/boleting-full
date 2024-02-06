@@ -276,7 +276,7 @@ model Ticket {
   deletedAt     DateTime?
   event         Event       @relation("selled_tickets", fields: [eventId], references: [id])
   access_type   AccessType? @relation("access_type", fields: [access_typeId], references: [id])
-  order         Order?      @relation("order_items", fields: [orderId], references: [id])
+  order         Order?      @relation("order_items", fields: [orderId], references: [id], onDelete: Cascade)
 }
 
 // ================================ SEATING ================================

@@ -26,7 +26,7 @@ const OrdersRoute = () => {
           {ordersList.map((order, index) => (
             <Link href={ShowOrderPath(String(order.id))} key={index}>
               <Button w={"full"} placeContent={"start"} variant="ghost">
-                {order.event?.name}
+                Order: {order.id} - {order.event?.name}
               </Button>
             </Link>
           ))}
