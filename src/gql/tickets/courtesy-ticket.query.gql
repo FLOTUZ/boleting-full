@@ -1,5 +1,5 @@
-query ShowCourtesyTickets($eventId: Int!) {
-  courtecy_tickets(eventId: $eventId) {
+query CourtesyTicket($courtecyTicketId: Int!) {
+  courtecy_ticket(id: $courtecyTicketId) {
     id
     note
     access_typeId

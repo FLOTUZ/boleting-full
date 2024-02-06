@@ -61,7 +61,6 @@ export const EventsSchema = gql`
     selled_tickets: [Ticket!]
     organization: Organization!
     access_types: [AccessType!]
-    owner_types: [OwnerType!]
     staff: [User!]
   }
 

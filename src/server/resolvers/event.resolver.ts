@@ -11,7 +11,6 @@ import {
   EventService,
   EventSubCategoryService,
   OrganizationService,
-  OwnerTypeService,
   TicketService,
   UserService,
 } from "../services";
@@ -109,10 +108,6 @@ export const EventResolver = {
 
     access_types: async ({ id }: Event, _: any, __: IGraphqlContext) => {
       return await AccessTypeService.accessTypesByEventId(id);
-    },
-
-    owner_types: async ({ id }: Event, _: any, __: IGraphqlContext) => {
-      return await OwnerTypeService.ownerTypesOfEvent(id);
     },
 
     selled_tickets: async ({ id }: Event, _: any, __: IGraphqlContext) => {

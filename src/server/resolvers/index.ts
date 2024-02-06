@@ -7,7 +7,6 @@ export * from "./organization.resolver";
 export * from "./event-sub-category.resolver";
 export * from "./ticket.resolver";
 export * from "./access-type.resolver";
-export * from "./owner-type.resolver";
 export * from "./order.resolver";
 export * from "./user-client.resolver";
 export * from "./payment-method.resolver";

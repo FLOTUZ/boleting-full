@@ -310,9 +310,14 @@ async function main() {
 
   await prisma.accessType.createMany({
     data: [
-      { name: "GA", price: 1000, eventId: 1 },
-      { name: "VIP", price: 1000, eventId: 1 },
-      { name: "PATREON", price: 1000, eventId: 1 },
+      { name: "GA", price: 1000, eventId: 1, available_tickets_count: 30 },
+      { name: "VIP", price: 1000, eventId: 1, available_tickets_count: 10 },
+      {
+        name: "PATREON",
+        price: 1000,
+        eventId: 1,
+        available_tickets_count: 100,
+      },
     ],
   });
 
@@ -344,7 +349,9 @@ async function main() {
   });
 
   await prisma.accessType.createMany({
-    data: [{ name: "GA", price: 1000, eventId: 2 }],
+    data: [
+      { name: "GA", price: 1000, eventId: 2, available_tickets_count: 15 },
+    ],
   });
 
   await prisma.event.create({
@@ -374,8 +381,18 @@ async function main() {
   });
   await prisma.accessType.createMany({
     data: [
-      { name: "GENERAL A", price: 1000, eventId: 3 },
-      { name: "GENERAL B", price: 1000, eventId: 3 },
+      {
+        name: "GENERAL A",
+        price: 1000,
+        eventId: 3,
+        available_tickets_count: 10,
+      },
+      {
+        name: "GENERAL B",
+        price: 1000,
+        eventId: 3,
+        available_tickets_count: 10,
+      },
     ],
   });
 }

@@ -7,7 +7,6 @@ export * from "./organization.schema";
 export * from "./event-sub-category.schema";
 export * from "./ticket.schema";
 export * from "./access-type.schema";
-export * from "./owner-type.schema";
 export * from "./order.schema";
 export * from "./user-client.schema";
 export * from "./payment-method.schema";

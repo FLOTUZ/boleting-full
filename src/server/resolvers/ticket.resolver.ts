@@ -7,12 +7,7 @@ import {
   UpdateTicketValidator,
   CreateCourtesyTicketValidator,
 } from "@/validations";
-import {
-  AccessTypeService,
-  EventService,
-  OwnerTypeService,
-  TicketService,
-} from "../services";
+import { AccessTypeService, EventService, TicketService } from "../services";
 import { autorizedAbilities } from "../autorization";
 
 //
@@ -51,6 +46,10 @@ export const TicketResolver = {
       __: IGraphqlContext
     ) => {
       return await TicketService.selledTicketsByEvent(event_id, pagination);
+    },
+
+    courtecy_ticket: async ({ id }: Ticket, _: any, __: IGraphqlContext) => {
+      return await TicketService.courtecyTicket(id);
     },
   },
 
@@ -107,15 +106,6 @@ export const TicketResolver = {
     ) => {
       if (!access_typeId) return null;
       return await AccessTypeService.accessType(access_typeId);
-    },
-
-    ticket_type: async (
-      { owner_typeId }: Ticket,
-      _: any,
-      __: IGraphqlContext
-    ) => {
-      if (!owner_typeId) return null;
-      return await OwnerTypeService.ownerType(owner_typeId);
     },
   },
 };

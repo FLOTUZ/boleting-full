@@ -6,7 +6,13 @@ import {
   CreateOrderValidator,
   UpdateOrderValidator,
 } from "@/validations";
-import { OrderService } from "../services";
+import {
+  AuthorizedDealerService,
+  EventService,
+  OrderService,
+  PaymentMethodService,
+  TicketService,
+} from "../services";
 import { AuthenticationError } from "../utils";
 
 //
@@ -57,6 +63,35 @@ export const OrderResolver = {
       __: IGraphqlContext
     ) => {
       return await OrderService.deleteOrder(id);
+    },
+  },
+
+  Order: {
+    event: async ({ eventId }: Order, _: any, __: IGraphqlContext) => {
+      return await EventService.event(eventId);
+    },
+
+    payment_method: async (
+      { payment_methodId }: Order,
+      _: any,
+      __: IGraphqlContext
+    ) => {
+      return await PaymentMethodService.paymentMethod(payment_methodId);
+    },
+
+    autorized_dealer: async (
+      { authorized_dealerId }: Order,
+      _: any,
+      __: IGraphqlContext
+    ) => {
+      if (!authorized_dealerId) return null;
+      return await AuthorizedDealerService.authorizedDealer(
+        authorized_dealerId
+      );
+    },
+
+    selled_tickets: async ({ id }: Order, _: any, __: IGraphqlContext) => {
+      return await TicketService.selledTicketsByOrder(id);
     },
   },
 };

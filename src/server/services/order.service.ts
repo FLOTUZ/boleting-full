@@ -41,10 +41,6 @@ export const OrderService = {
       where: { id: access_typeId },
     });
 
-    const paymentMethod = await prisma.paymentMethod.findUniqueOrThrow({
-      where: { id: payment_methodId },
-    });
-
     const total_price: number = buyed_access_count * Number(accessType?.price);
 
     const order = await prisma.order.create({
@@ -65,6 +61,18 @@ export const OrderService = {
     const stripe_fee = (total_price + ticket_fees) * 0.0766;
 
     const total_fees = Math.round(ticket_fees + stripe_fee);
+
+    await prisma.ticket.createMany({
+      data: Array.from({ length: buyed_access_count }, (_, i) => ({
+        eventId: accessType.eventId,
+        access_typeId: accessType.id,
+        serial_number: "uuidv4()",
+        service_charge: 0,
+        price: Number(accessType.price),
+        order_id: order.id,
+        is_courtesy: false,
+      })),
+    });
 
     const session = await stripe.checkout.sessions.create({
       line_items: [
