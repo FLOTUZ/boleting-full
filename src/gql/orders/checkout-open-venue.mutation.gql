@@ -1,3 +1,0 @@
-mutation CheckoutOpenVenue($data: CreateOpenVenueOrderInput!) {
-  createOpenVenueOrder(data: $data)
-}

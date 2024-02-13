@@ -1,6 +1,6 @@
 import { IGraphqlContext } from "@/server";
 import { Args } from "@/server/common";
-import { AccessType, Order } from "@prisma/client";
+import { AccessType, Order, PaymentMethodType } from "@prisma/client";
 import {
   validateData,
   CreateOrderValidator,
@@ -27,12 +27,18 @@ export const OrderResolver = {
     order: async (_: any, { id }: { id: number }, __: IGraphqlContext) => {
       return await OrderService.order(id);
     },
-  },
 
-  Mutation: {
     createOpenVenueOrder: async (
       _: any,
-      { data }: { data: Order & { eventId: number; access_typeId: number } },
+      {
+        data,
+      }: {
+        data: Order & {
+          eventId: number;
+          payment_method: PaymentMethodType;
+          access_typeId: number;
+        };
+      },
       { type, id_user }: IGraphqlContext
     ) => {
       if (type === "USER" || type == null || id_user == null)
@@ -47,7 +53,9 @@ export const OrderResolver = {
         data.buyed_access_count
       );
     },
+  },
 
+  Mutation: {
     updateOrder: async (
       _: any,
       { id, data }: { id: number; data: Order },
