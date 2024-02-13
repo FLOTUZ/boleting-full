@@ -1,13 +1,31 @@
-import IntroAnimationComponent from "@/components/animations/intro-animation.component";
+import Link from "next/link";
+
 import LandingLayout from "@/layouts/landing-layout.component";
+import IntroAnimationComponent from "@/components/animations/intro-animation.component";
+
 import { ShowOrderPath } from "@/routes";
 import { Box, Button, Heading } from "@chakra-ui/react";
-import Link from "next/link";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { useCreateOpenVenuePaymentLinkLazyQuery } from "@/gql/generated";
 
 const CreateOrderRoute = () => {
   const router = useRouter();
-  const { eventId, accessTypeId } = router.query;
+  const { eventId, accessTypeId, buyedTicketsCount } = router.query;
+
+  const [CHECK_OPEN_VENUE, { data, loading, error }] =
+    useCreateOpenVenuePaymentLinkLazyQuery({
+      variables: {
+        data: {
+          eventId: Number(eventId),
+          access_typeId: Number(accessTypeId),
+          buyed_access_count: Number(buyedTicketsCount),
+        },
+      },
+      onCompleted: (data) => {
+        router.push(data.createOpenVenueOrder);
+      },
+    });
 
   return (
     <LandingLayout>
@@ -15,14 +33,21 @@ const CreateOrderRoute = () => {
         <Heading>Create order</Heading>
 
         <Link href={ShowOrderPath("test")}>
-          <Button w={"full"} placeContent={"start"} variant="ghost">
-            Orden de prueba
-          </Button>
-
           <Box>
-            Evento: {eventId} - Access type: {accessTypeId}
+            Evento: {eventId} - Access type: {accessTypeId} - Buyed tickets:{" "}
+            {buyedTicketsCount}
           </Box>
         </Link>
+
+        <Button
+          w={"full"}
+          placeContent={"start"}
+          variant="ghost"
+          isLoading={loading}
+          onClick={() => CHECK_OPEN_VENUE()}
+        >
+          Orden de prueba
+        </Button>
       </IntroAnimationComponent>
     </LandingLayout>
   );
