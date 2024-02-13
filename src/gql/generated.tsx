@@ -200,7 +200,7 @@ export type CreateOpenVenueOrderInput = {
   access_typeId: Scalars['Int']['input'];
   buyed_access_count: Scalars['Int']['input'];
   eventId: Scalars['Int']['input'];
-  payment_methodId: Scalars['Int']['input'];
+  payment_methodId?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type CreateOrganizationInput = {
@@ -357,7 +357,6 @@ export type Mutation = {
   createEventSubCategory: EventSubCategory;
   createMail: Mail;
   createNotification: Notification;
-  createOpenVenueOrder: Scalars['String']['output'];
   createOrganization?: Maybe<Organization>;
   createPaymentCard: PaymentCard;
   createPaymentMethod: PaymentMethod;
@@ -480,11 +479,6 @@ export type MutationCreateMailArgs = {
 
 export type MutationCreateNotificationArgs = {
   data: CreateNotificationInput;
-};
-
-
-export type MutationCreateOpenVenueOrderArgs = {
-  data: CreateOpenVenueOrderInput;
 };
 
 
@@ -784,8 +778,8 @@ export type Order = {
   id: Scalars['Int']['output'];
   individual_price?: Maybe<Scalars['Decimal']['output']>;
   is_paid: Scalars['Boolean']['output'];
-  payment_method: PaymentMethod;
-  payment_methodId: Scalars['Int']['output'];
+  payment_method?: Maybe<PaymentMethod>;
+  payment_methodId?: Maybe<Scalars['Int']['output']>;
   selled_tickets?: Maybe<Array<Ticket>>;
   total_price: Scalars['Decimal']['output'];
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
@@ -895,6 +889,7 @@ export type Query = {
   courtecy_ticket?: Maybe<Ticket>;
   courtecy_tickets?: Maybe<Array<Ticket>>;
   courtesyAccessTypes: Array<AccessType>;
+  createOpenVenueOrder: Scalars['String']['output'];
   currentClientOrders: Array<Order>;
   currentUser?: Maybe<User>;
   event: Event;
@@ -1009,6 +1004,11 @@ export type QueryCourtecy_TicketsArgs = {
 
 export type QueryCourtesyAccessTypesArgs = {
   eventId: Scalars['Int']['input'];
+};
+
+
+export type QueryCreateOpenVenueOrderArgs = {
+  data: CreateOpenVenueOrderInput;
 };
 
 
@@ -1601,12 +1601,12 @@ export type NotificationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type NotificationsQuery = { __typename?: 'Query', notifications: Array<{ __typename?: 'Notification', id: number, title: string, description?: string | null, createdAt: any, user?: { __typename?: 'User', id: number, name?: string | null } | null }> };
 
-export type CheckoutOpenVenueMutationVariables = Exact<{
+export type CreateOpenVenuePaymentLinkQueryVariables = Exact<{
   data: CreateOpenVenueOrderInput;
 }>;
 
 
-export type CheckoutOpenVenueMutation = { __typename?: 'Mutation', createOpenVenueOrder: string };
+export type CreateOpenVenuePaymentLinkQuery = { __typename?: 'Query', createOpenVenueOrder: string };
 
 export type CurrentClientOrdersQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -3057,37 +3057,39 @@ export function useNotificationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type NotificationsQueryHookResult = ReturnType<typeof useNotificationsQuery>;
 export type NotificationsLazyQueryHookResult = ReturnType<typeof useNotificationsLazyQuery>;
 export type NotificationsQueryResult = Apollo.QueryResult<NotificationsQuery, NotificationsQueryVariables>;
-export const CheckoutOpenVenueDocument = gql`
-    mutation CheckoutOpenVenue($data: CreateOpenVenueOrderInput!) {
+export const CreateOpenVenuePaymentLinkDocument = gql`
+    query CreateOpenVenuePaymentLink($data: CreateOpenVenueOrderInput!) {
   createOpenVenueOrder(data: $data)
 }
     `;
-export type CheckoutOpenVenueMutationFn = Apollo.MutationFunction<CheckoutOpenVenueMutation, CheckoutOpenVenueMutationVariables>;
 
 /**
- * __useCheckoutOpenVenueMutation__
+ * __useCreateOpenVenuePaymentLinkQuery__
  *
- * To run a mutation, you first call `useCheckoutOpenVenueMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCheckoutOpenVenueMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
+ * To run a query within a React component, call `useCreateOpenVenuePaymentLinkQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCreateOpenVenuePaymentLinkQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
  *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const [checkoutOpenVenueMutation, { data, loading, error }] = useCheckoutOpenVenueMutation({
+ * const { data, loading, error } = useCreateOpenVenuePaymentLinkQuery({
  *   variables: {
  *      data: // value for 'data'
  *   },
  * });
  */
-export function useCheckoutOpenVenueMutation(baseOptions?: Apollo.MutationHookOptions<CheckoutOpenVenueMutation, CheckoutOpenVenueMutationVariables>) {
+export function useCreateOpenVenuePaymentLinkQuery(baseOptions: Apollo.QueryHookOptions<CreateOpenVenuePaymentLinkQuery, CreateOpenVenuePaymentLinkQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CheckoutOpenVenueMutation, CheckoutOpenVenueMutationVariables>(CheckoutOpenVenueDocument, options);
+        return Apollo.useQuery<CreateOpenVenuePaymentLinkQuery, CreateOpenVenuePaymentLinkQueryVariables>(CreateOpenVenuePaymentLinkDocument, options);
       }
-export type CheckoutOpenVenueMutationHookResult = ReturnType<typeof useCheckoutOpenVenueMutation>;
-export type CheckoutOpenVenueMutationResult = Apollo.MutationResult<CheckoutOpenVenueMutation>;
-export type CheckoutOpenVenueMutationOptions = Apollo.BaseMutationOptions<CheckoutOpenVenueMutation, CheckoutOpenVenueMutationVariables>;
+export function useCreateOpenVenuePaymentLinkLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CreateOpenVenuePaymentLinkQuery, CreateOpenVenuePaymentLinkQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CreateOpenVenuePaymentLinkQuery, CreateOpenVenuePaymentLinkQueryVariables>(CreateOpenVenuePaymentLinkDocument, options);
+        }
+export type CreateOpenVenuePaymentLinkQueryHookResult = ReturnType<typeof useCreateOpenVenuePaymentLinkQuery>;
+export type CreateOpenVenuePaymentLinkLazyQueryHookResult = ReturnType<typeof useCreateOpenVenuePaymentLinkLazyQuery>;
+export type CreateOpenVenuePaymentLinkQueryResult = Apollo.QueryResult<CreateOpenVenuePaymentLinkQuery, CreateOpenVenuePaymentLinkQueryVariables>;
 export const CurrentClientOrdersDocument = gql`
     query CurrentClientOrders {
   currentClientOrders {

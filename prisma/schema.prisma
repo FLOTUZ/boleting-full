@@ -411,7 +411,7 @@ model Order {
   total_price         Decimal           @db.Money
   is_paid             Boolean?          @default(false)
   user_clientId       Int
-  payment_methodId    Int
+  payment_methodId    Int?
   authorized_dealerId Int?
   buyed_access_count  Int
   expiry_time         DateTime
@@ -423,7 +423,7 @@ model Order {
   event               Event             @relation("event_orders", fields: [eventId], references: [id])
   user_client         UserClient        @relation("orders", fields: [user_clientId], references: [id])
   selled_tickets      Ticket[]          @relation("order_items")
-  payment_method      PaymentMethod     @relation("payment_method", fields: [payment_methodId], references: [id])
+  payment_method      PaymentMethod?    @relation("payment_method", fields: [payment_methodId], references: [id])
   autorized_dealer    AuthorizedDealer? @relation(fields: [authorized_dealerId], references: [id])
 }
 
