@@ -43,6 +43,7 @@ export type AccessType = {
   eventId: Scalars['Int']['output'];
   id: Scalars['Int']['output'];
   name: Scalars['String']['output'];
+  orders: Array<Order>;
   price: Scalars['Decimal']['output'];
   tickets: Array<Ticket>;
   updatedAt: Scalars['DateTime']['output'];
@@ -767,6 +768,8 @@ export type Notification = {
 
 export type Order = {
   __typename?: 'Order';
+  access_type?: Maybe<AccessType>;
+  access_typeId?: Maybe<Scalars['Int']['output']>;
   authorized_dealerId?: Maybe<Scalars['Int']['output']>;
   autorized_dealer?: Maybe<AuthorizedDealer>;
   buyed_access_count: Scalars['Int']['output'];
@@ -1312,6 +1315,7 @@ export type UpdateNotificationInput = {
 };
 
 export type UpdateOrderInput = {
+  access_typeId?: InputMaybe<Scalars['Int']['input']>;
   buyed_access_count?: InputMaybe<Scalars['Int']['input']>;
   deleted?: InputMaybe<Scalars['Boolean']['input']>;
   is_paid?: InputMaybe<Scalars['Boolean']['input']>;

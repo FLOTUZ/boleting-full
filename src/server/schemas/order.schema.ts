@@ -14,6 +14,7 @@ export const OrderSchema = gql`
     is_paid: Boolean
     buyed_access_count: Int
     payment_methodId: Int
+    access_typeId: Int
     selled_tickets: [Int!]
     deleted: Boolean
   }
@@ -28,6 +29,7 @@ export const OrderSchema = gql`
     authorized_dealerId: Int
     buyed_access_count: Int!
     eventId: Int
+    access_typeId: Int
     createdAt: DateTime!
     updatedAt: DateTime
     deleted: Boolean!
@@ -37,6 +39,7 @@ export const OrderSchema = gql`
     selled_tickets: [Ticket!]
     payment_method: PaymentMethod
     autorized_dealer: AuthorizedDealer
+    access_type: AccessType
   }
 
   type Query {

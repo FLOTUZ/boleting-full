@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { ShowOrdersPath } from "@/routes";
+import { SearchTicketsByEvent, ShowOrdersPath } from "@/routes";
 
 import { GetServerSideProps } from "next";
 import { prisma } from "@/server";
@@ -21,7 +21,9 @@ const CancelPage = ({ order }: { order: Order }) => {
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      router.push(ShowOrdersPath);
+      router.push(
+        SearchTicketsByEvent(String(order.eventId), String(order.access_typeId))
+      );
     }, 5000);
 
     return () => clearTimeout(timeout);

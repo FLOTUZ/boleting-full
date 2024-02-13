@@ -52,6 +52,7 @@ export const OrderService = {
         buyed_access_count,
         total_price,
         user_clientId,
+        access_typeId,
         payment_methodId: payment_methodId,
         expiry_time: new Date(Date.now() + 1000 * 60 * 5), // 5minutes
         is_paid: false,
