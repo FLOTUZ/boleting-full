@@ -1,0 +1,3 @@
+query CreateOpenVenuePaymentLink($data: CreateOpenVenueOrderInput!) {
+  createOpenVenueOrder(data: $data)
+}

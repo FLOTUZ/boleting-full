@@ -3,7 +3,7 @@ import { prisma } from "@/server";
 
 import { Pagination } from "../common";
 import { PrismaError } from "../utils";
-import { AccessType, Order } from "@prisma/client";
+import { AccessType, Order, PaymentMethodType } from "@prisma/client";
 import { v4 as uuidv4 } from "uuid";
 
 //
@@ -52,7 +52,8 @@ export const OrderService = {
         buyed_access_count,
         total_price,
         user_clientId,
-        payment_methodId,
+        access_typeId,
+        payment_methodId: payment_methodId,
         expiry_time: new Date(Date.now() + 1000 * 60 * 5), // 5minutes
         is_paid: false,
       },

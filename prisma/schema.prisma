@@ -260,6 +260,7 @@ model AccessType {
   eventId                 Int
   event                   Event     @relation("types_of_access_for_event", fields: [eventId], references: [id])
   tickets                 Ticket[]  @relation("access_type")
+  orders                  Order[]   @relation("selled_access_type")
 }
 
 model Ticket {
@@ -411,11 +412,12 @@ model Order {
   total_price         Decimal           @db.Money
   is_paid             Boolean?          @default(false)
   user_clientId       Int
-  payment_methodId    Int
+  payment_methodId    Int?
   authorized_dealerId Int?
   buyed_access_count  Int
   expiry_time         DateTime
   eventId             Int
+  access_typeId       Int
   createdAt           DateTime          @default(now())
   updatedAt           DateTime          @updatedAt
   deleted             Boolean           @default(false)
@@ -423,8 +425,9 @@ model Order {
   event               Event             @relation("event_orders", fields: [eventId], references: [id])
   user_client         UserClient        @relation("orders", fields: [user_clientId], references: [id])
   selled_tickets      Ticket[]          @relation("order_items")
-  payment_method      PaymentMethod     @relation("payment_method", fields: [payment_methodId], references: [id])
+  payment_method      PaymentMethod?    @relation("payment_method", fields: [payment_methodId], references: [id])
   autorized_dealer    AuthorizedDealer? @relation(fields: [authorized_dealerId], references: [id])
+  access_type         AccessType        @relation("selled_access_type", fields: [access_typeId], references: [id])
 }
 
 model PaymentRecibed {

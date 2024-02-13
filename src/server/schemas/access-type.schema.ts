@@ -32,6 +32,7 @@ export const AccessTypeSchema = gql`
     eventId: Int!
     event: Event!
     tickets: [Ticket!]!
+    orders: [Order!]!
   }
 
   type Query {
