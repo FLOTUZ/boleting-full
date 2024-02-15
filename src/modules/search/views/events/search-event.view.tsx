@@ -56,6 +56,7 @@ const SearchEventView = () => {
     <IntroAnimationComponent data={event != null}>
       <Box>
         <Image
+          alt="event banner"
           w={"100vw"}
           h={{ base: "50vh", lg: "60vh", xl: "40vh" }}
           objectFit={"cover"}

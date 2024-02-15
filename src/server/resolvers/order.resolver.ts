@@ -49,7 +49,6 @@ export const OrderResolver = {
         id_user,
         data.eventId,
         data.access_typeId,
-        data.payment_methodId,
         data.buyed_access_count
       );
     },
@@ -84,7 +83,7 @@ export const OrderResolver = {
       _: any,
       __: IGraphqlContext
     ) => {
-      return await PaymentMethodService.paymentMethod(payment_methodId);
+      return await PaymentMethodService.paymentMethod(payment_methodId!);
     },
 
     autorized_dealer: async (

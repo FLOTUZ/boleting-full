@@ -32,7 +32,7 @@ const ShowAccessTypesView = () => {
 
   useEffect(() => {
     if (data) {
-      setAccessTypes(data.accessTypesByEventId as AccessType[]);
+      setAccessTypes(data.courtesyAccessTypes as AccessType[]);
     }
   }, [data]);
 

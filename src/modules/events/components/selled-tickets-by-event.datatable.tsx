@@ -23,11 +23,6 @@ const SelledTicketsByEventDatatable = (props: TicketsDatatable) => {
       sortable: true,
     },
     {
-      name: "Precio",
-      selector: (row) => row.price,
-      sortable: true,
-    },
-    {
       name: "Fecha de venta",
       selector: (row) => row.createdAt,
       sortable: true,
