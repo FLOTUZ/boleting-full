@@ -5,7 +5,6 @@ import {
 } from "@/gql/generated";
 import { Box, Heading, Text, useMediaQuery } from "@chakra-ui/react";
 import SelectPaymentMethod from "@/modules/orders/views/select-payment-method.view";
-import { redirect } from "next/dist/server/api-utils";
 
 interface AvailableEventTicketsProps {
   eventId: string;
@@ -13,7 +12,6 @@ interface AvailableEventTicketsProps {
 }
 
 const ShowavailableTicketsByAccessTypesView = ({
-  eventId,
   accessTypeId,
 }: AvailableEventTicketsProps) => {
   const [accessType, setAccessType] = useState<AccessType>();

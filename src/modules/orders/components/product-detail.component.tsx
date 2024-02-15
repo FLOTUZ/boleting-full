@@ -19,13 +19,22 @@ import { useEffect, useState } from "react";
 import { CgMathMinus, CgMathPlus } from "react-icons/cg";
 import moment from "moment";
 
-const ProductDetailComponent = () => {
+interface ProductDetailProps {
+  defaultBuyedTickets: number;
+  onSubmit: (ticketQuantity: number) => void;
+}
+
+const ProductDetailComponent = ({
+  defaultBuyedTickets,
+  onSubmit,
+}: ProductDetailProps) => {
   const [isMobile] = useMediaQuery("(max-width: 767px)");
   const router = useRouter();
 
   const { eventId, accessTypeId } = router.query;
 
-  const [ticketQuantity, setTicketQuantity] = useState<number>(1);
+  const [ticketQuantity, setTicketQuantity] =
+    useState<number>(defaultBuyedTickets);
   const [accessType, setAccessType] = useState<AccessType>();
   const [event, setEvent] = useState<Event>();
 
@@ -45,6 +54,12 @@ const ProductDetailComponent = () => {
       GET_ACCESS_TYPE();
     }
   }, [accessTypeId, GET_ACCESS_TYPE]);
+
+  useEffect(() => {
+    if (ticketQuantity) {
+      onSubmit(ticketQuantity);
+    }
+  }, [ticketQuantity, onSubmit]);
 
   if (loading) {
     return <ProgressLoaderComponent />;
