@@ -31,7 +31,6 @@ export const OrderService = {
     user_clientId: number,
     event_id: number,
     access_typeId: number,
-    payment_methodId: number,
     buyed_access_count: number = 1
   ) {
     const userClient = await prisma.userClient.findUniqueOrThrow({
@@ -53,7 +52,6 @@ export const OrderService = {
         total_price,
         user_clientId,
         access_typeId,
-        payment_methodId: payment_methodId,
         expiry_time: new Date(Date.now() + 1000 * 60 * 5), // 5minutes
         is_paid: false,
       },
