@@ -1,8 +1,8 @@
-import { useState } from "react";
 import PaymentOptionsComponent from "../components/payment-options.component";
 import ProductDetailComponent from "../components/product-detail.component";
+import { useState } from "react";
+
 import { Box, Button, useMediaQuery } from "@chakra-ui/react";
-import { Media } from "react-data-table-component";
 import { useRouter } from "next/router";
 import { CreateOrderPath } from "@/routes";
 
