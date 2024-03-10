@@ -170,6 +170,17 @@ model Application {
   application_logs ActivityLog[] @relation("application_log")
 }
 
+model Image {
+  id            String   @id @default(uuid())
+  original_name String?
+  new_name      String
+  size          Int
+  url           String
+  mime_type     String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
 //============================= EVENT MANAGEMENT ================================
 
 model Event {
