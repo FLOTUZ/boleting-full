@@ -51,7 +51,7 @@ const EventCards = ({ events }: EventCardsProps) => {
           {events.map((item, index) => (
             <Box key={index}>
               <Card
-                maxW="sm"
+                maxW="min-content"
                 mx="auto"
                 bg="white"
                 _dark={{
@@ -64,12 +64,12 @@ const EventCards = ({ events }: EventCardsProps) => {
                 <Image
                   height={250}
                   width={250}
-                  objectPosition="center"
+                  layout="fixed"
                   style={{
                     borderRadius: "5px",
                   }}
                   src={
-                    item.event_logo_url ||
+                    item.event_logo?.url ||
                     "/assets/foto_provisional_eventos.jpg"
                   }
                   alt="Imagen del evento"
@@ -117,7 +117,7 @@ const EventCards = ({ events }: EventCardsProps) => {
                     <Button
                       variant="outline"
                       display="inline-flex"
-                      w="200px"
+                      w="100%"
                       mt={4}
                       _light={{
                         color: "#1a202ceb",

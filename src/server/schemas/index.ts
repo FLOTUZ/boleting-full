@@ -17,3 +17,4 @@ export * from "./application.schema";
 export * from "./mail.schema";
 export * from "./notification.schema";
 export * from "./authorized-dealer.schema";
+export * from "./image.schema";

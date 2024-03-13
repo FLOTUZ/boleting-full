@@ -25,10 +25,10 @@ const TicketEventCard = ({ event }: TicketEventCardProps) => {
         }}
       >
         <HStack>
-          {event.event_logo_url && (
+          {event.event_logo?.url && (
             <Image
               height={50}
-              src={event.event_logo_url}
+              src={event.event_logo?.url}
               alt={event.description!}
               rounded="md"
               mb={4}

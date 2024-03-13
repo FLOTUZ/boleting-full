@@ -19,3 +19,4 @@ export * from "./mail.validations";
 export * from "./notification.validations";
 export * from "./autorized-dealer.validations";
 export * from "./send-courtecy-ticket-to-email-modal.validation";
+export * from "./image.validations";

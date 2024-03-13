@@ -27,7 +27,7 @@ const MainEvent = ({ event }: MainEventProps) => {
           <Flex bg="brand.400">
             <Image
               src={
-                event.event_banner_url || "/assets/evento_principal_prov.jpg"
+                event.event_banner?.url || "/assets/evento_principal_prov.jpg"
               }
               alt="Imagen del evento"
               height={1280}

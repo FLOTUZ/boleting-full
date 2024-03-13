@@ -127,7 +127,7 @@ const SearchClientButtonComponent = () => {
                             <Flex w={isMobile ? "100%" : "auto"}>
                               <Box>
                                 <Img
-                                  src={event.event_logo_url || ""}
+                                  src={event.event_logo?.url || ""}
                                   alt="Imagen del evento"
                                   objectFit={"cover"}
                                   height={isMobile ? "100%" : 58}

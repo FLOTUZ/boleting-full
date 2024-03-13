@@ -8,8 +8,14 @@ query ShowTicketsByAccessType($accessTypeId: Int!) {
     event {
       id
       name
-      event_logo_url
-      event_banner_url
+      event_logo {
+        id
+        url
+      }
+      event_banner {
+        id
+        url
+      }
     }
   }
 }

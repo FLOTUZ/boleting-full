@@ -17,3 +17,4 @@ export * from "./payment-recibed.service";
 export * from "./ticket.service";
 export * from "./user-client.service";
 export * from "./autorized-dealer.service";
+export * from "./image.service";

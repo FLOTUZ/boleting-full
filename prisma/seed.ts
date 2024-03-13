@@ -260,7 +260,7 @@ async function main() {
         event_categoryId: 1,
       },
       {
-        name: "Drama",
+        name: "Kpop",
         event_categoryId: 2,
       },
       {
@@ -282,6 +282,58 @@ async function main() {
     ],
   });
 
+  // =========== Logos ================
+
+  const tomorrowlandLogo = await prisma.image.create({
+    data: {
+      new_name: "tomorrowland-logo",
+      size: 100,
+      url: "https://soundcinemas.files.wordpress.com/2020/04/logo-tomorrowland.jpg",
+    },
+  });
+
+  const edcLogo = await prisma.image.create({
+    data: {
+      new_name: "edc-logo",
+      size: 100,
+      url: "https://img.ocesa.com.mx/events/EDC_Mexico/squared/1691707934321.jpg",
+    },
+  });
+
+  const blackpinkLogo = await prisma.image.create({
+    data: {
+      new_name: "blackpink-logo",
+      size: 100,
+      url: "https://i.pinimg.com/originals/00/5b/36/005b36c78f2ba0585416fccd55d58439.jpg",
+    },
+  });
+
+  //=========== Banner ================
+
+  const tomorrowlandBanner = await prisma.image.create({
+    data: {
+      new_name: "tomorrowland-banner",
+      size: 100,
+      url: "https://www.tomorrowland.com/src/Frontend/Themes/tomorrowland/Core/Layout/images/opengraph/festival-2022.jpg",
+    },
+  });
+
+  const edcBanner = await prisma.image.create({
+    data: {
+      new_name: "edc-banner",
+      size: 100,
+      url: "https://prismic-images.tmol.io/ticketmaster-tm-mx/f3cbd96f-daf7-457b-b38e-dc5701a8ccd4_EDC24_fotos_tipodeboleto_HEADER1024x432px.jpg",
+    },
+  });
+
+  const blackpinkBanner = await prisma.image.create({
+    data: {
+      new_name: "blackpink-banner",
+      size: 100,
+      url: "https://i.pinimg.com/736x/b3/6c/0c/b36c0c7d7e0fdb71a597ba8edc3730cd.jpg",
+    },
+  });
+
   await prisma.event.create({
     data: {
       name: "Tomorrowland",
@@ -292,10 +344,8 @@ async function main() {
       end_date: new Date("2021-07-18"),
       start_time: "23:00",
       end_time: "23:00",
-      event_logo_url:
-        "https://upload.wikimedia.org/wikipedia/commons/1/1f/Logo-tomorrowland.jpg",
-      event_banner_url:
-        "https://media.staging.ops.tomorrowland.com/og-image.jpg",
+      event_logoId: tomorrowlandLogo.id,
+      event_bannerId: tomorrowlandBanner.id,
       event_location_url: "https://goo.gl/maps/yBHzTgwNdsRJGR5Q6",
       re_entry: true,
       userId: 1,
@@ -304,6 +354,9 @@ async function main() {
           name: "Facebook",
           url: "https://www.facebook.com/tomorrowland/",
         },
+      },
+      event_sub_categories: {
+        connect: [{ id: 1 }, { id: 2 }],
       },
     },
   });
@@ -333,10 +386,8 @@ async function main() {
       end_date: new Date("2024-02-28"),
       start_time: "14:00",
       end_time: "23:00",
-      event_logo_url:
-        "https://d3vhc53cl8e8km.cloudfront.net/hello-staging/wp-content/uploads/2017/11/12181722/edc_2020_web_our_world_tile_1080x1080_r01v2.jpg",
-      event_banner_url:
-        "https://majomontemayor.com/wp-content/uploads/2019/08/EDCLV2019_0517_193353-1603_CCW.jpg",
+      event_logoId: edcLogo.id,
+      event_bannerId: edcBanner.id,
       event_location_url: "https://goo.gl/maps/G2JymRFzCGzKbgeF7",
       re_entry: true,
       userId: 1,
@@ -345,6 +396,9 @@ async function main() {
           name: "Facebook",
           url: "https://www.facebook.com/ElectricDaisyCarnivalMexico",
         },
+      },
+      event_sub_categories: {
+        connect: [{ id: 1 }, { id: 2 }],
       },
     },
   });
@@ -365,10 +419,8 @@ async function main() {
       end_date: new Date("2021-12-02"),
       start_time: "20:00",
       end_time: "23:00",
-      event_logo_url:
-        "https://i.pinimg.com/originals/7e/82/80/7e8280cc0fd26eeb00d17821a4e6f0e2.jpg",
-      event_banner_url:
-        "https://kpopvip.com/wp-content/uploads/2022/04/Blackpink-este-2022-1024x650.jpg",
+      event_logoId: blackpinkLogo.id,
+      event_bannerId: blackpinkBanner.id,
       event_location_url: "https://goo.gl/maps/G2JymRFzCGzKbgeF7",
       re_entry: false,
       userId: 1,
@@ -378,8 +430,12 @@ async function main() {
           url: "https://www.facebook.com/BLACKPINKOFFICIAL",
         },
       },
+      event_sub_categories: {
+        connect: [{ id: 4 }],
+      },
     },
   });
+
   await prisma.accessType.createMany({
     data: [
       {

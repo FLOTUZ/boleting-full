@@ -5,19 +5,24 @@ query SearchEvent($eventId: Int!) {
     name
     description
     event_location
-    event_logo_url
-    event_banner_url
     event_location_url
     start_date
     start_time
     end_time
     re_entry
-    event_logo_url
     price_from
     price_to
     createdAt
     updatedAt
     deleted
+    event_logo {
+      id
+      url
+    }
+    event_banner {
+      id
+      url
+    }
     organization {
       id
       name

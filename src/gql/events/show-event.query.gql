@@ -5,17 +5,22 @@ query ShowEvent($eventId: Int!) {
     name
     description
     event_location
-    event_logo_url
-    event_banner_url
     event_location_url
     start_date
     start_time
     end_time
     re_entry
-    event_logo_url
     createdAt
     updatedAt
     deleted
+    event_logo {
+      id
+      url
+    }
+    event_banner {
+      id
+      url
+    }
     createdBy {
       id
       name

@@ -5,12 +5,14 @@ mutation CreateEvent($input: CreateEventInput!) {
     name
     description
     event_location
-    event_logo_url
     start_date
     start_time
     end_time
     re_entry
-    event_logo_url
+    event_logo {
+      id
+      url
+    }
     userId
     event_sub_categories {
       id

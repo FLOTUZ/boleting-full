@@ -3,10 +3,13 @@ query MainSearch($query: String!) {
     id
     name
     description
-    event_logo_url
     start_date
     price_from
     event_location
+    event_logo {
+      id
+      url
+    }
     event_sub_categories {
       id
       name

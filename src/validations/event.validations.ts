@@ -12,8 +12,8 @@ export const CreateEventValidator = y.object().shape({
   re_entry: y.boolean().required(),
   price_from: y.number().min(0),
   price_to: y.number().min(0),
-  event_logo_url: y.string().max(1000),
-  event_banner_url: y.string().max(1000),
+  event_logo: y.string(),
+  event_banner: y.string(),
   event_sub_categories: y
     .array(y.number())
     .min(1, "Select at least one sub category")
@@ -35,8 +35,8 @@ export const UpdateEventValidator = y.object().shape({
   re_entry: y.boolean(),
   price_from: y.number().min(0),
   price_to: y.number().min(0),
-  event_logo_url: y.string().max(1000),
-  event_banner_url: y.string().max(1000),
+  event_logo: y.string(),
+  event_banner: y.string(),
   event_sub_categories: y.array(y.number()).of(y.number()),
   event_social_media: y.array(y.string().max(1000)),
 });

@@ -10,7 +10,13 @@ query LandingView {
     description
     start_date
     event_location
-    event_logo_url
-    event_banner_url
+    event_logo {
+      id
+      url
+    }
+    event_banner {
+      id
+      url
+    }
   }
 }
