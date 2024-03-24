@@ -381,7 +381,7 @@ const CreateEventView = () => {
             <HStack mt={4}>
               <Spacer />
               <Button type="submit" isLoading={loading}>
-                Publicar evento
+                Guardar evento
               </Button>
             </HStack>
           </form>
