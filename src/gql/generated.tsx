@@ -157,13 +157,13 @@ export type CreateEventCategoryInput = {
 };
 
 export type CreateEventInput = {
+  base_64_event_banner?: InputMaybe<Scalars['String']['input']>;
+  base_64_event_logo?: InputMaybe<Scalars['String']['input']>;
   description: Scalars['String']['input'];
   end_date?: InputMaybe<Scalars['DateTime']['input']>;
   end_time: Scalars['String']['input'];
-  event_banner_url: Scalars['String']['input'];
   event_location: Scalars['String']['input'];
   event_location_url: Scalars['String']['input'];
-  event_logo_url: Scalars['String']['input'];
   event_sub_categories?: InputMaybe<Array<Scalars['Int']['input']>>;
   name: Scalars['String']['input'];
   price_from?: InputMaybe<Scalars['Decimal']['input']>;
@@ -178,6 +178,13 @@ export type CreateEventSubCategoryInput = {
   description: Scalars['String']['input'];
   event_categoryId: Scalars['Int']['input'];
   name: Scalars['String']['input'];
+};
+
+export type CreateImageInput = {
+  new_name: Scalars['String']['input'];
+  original_name?: InputMaybe<Scalars['String']['input']>;
+  size: Scalars['Int']['input'];
+  url: Scalars['String']['input'];
 };
 
 export type CreateMailInput = {
@@ -275,11 +282,13 @@ export type Event = {
   description?: Maybe<Scalars['String']['output']>;
   end_date?: Maybe<Scalars['DateTime']['output']>;
   end_time?: Maybe<Scalars['String']['output']>;
-  event_banner_url?: Maybe<Scalars['String']['output']>;
+  event_banner?: Maybe<Image>;
+  event_bannerId?: Maybe<Scalars['String']['output']>;
   event_key?: Maybe<Scalars['String']['output']>;
   event_location: Scalars['String']['output'];
   event_location_url: Scalars['String']['output'];
-  event_logo_url?: Maybe<Scalars['String']['output']>;
+  event_logo?: Maybe<Image>;
+  event_logoId?: Maybe<Scalars['String']['output']>;
   event_sub_categories?: Maybe<Array<EventSubCategory>>;
   id: Scalars['Int']['output'];
   name: Scalars['String']['output'];
@@ -325,6 +334,20 @@ export type EventSubCategory = {
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
+export type Image = {
+  __typename?: 'Image';
+  createdAt: Scalars['DateTime']['output'];
+  deleted: Scalars['Boolean']['output'];
+  deletedAt?: Maybe<Scalars['DateTime']['output']>;
+  id: Scalars['String']['output'];
+  mime_type?: Maybe<Scalars['String']['output']>;
+  new_name: Scalars['String']['output'];
+  original_name?: Maybe<Scalars['String']['output']>;
+  size: Scalars['Int']['output'];
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  url: Scalars['String']['output'];
+};
+
 export type Mail = {
   __typename?: 'Mail';
   body: Scalars['String']['output'];
@@ -356,6 +379,7 @@ export type Mutation = {
   createEvent: Event;
   createEventCategory?: Maybe<EventCategory>;
   createEventSubCategory: EventSubCategory;
+  createImage: Image;
   createMail: Mail;
   createNotification: Notification;
   createOrganization?: Maybe<Organization>;
@@ -374,6 +398,7 @@ export type Mutation = {
   deleteEvent: Event;
   deleteEventCategory?: Maybe<EventCategory>;
   deleteEventSubCategory?: Maybe<EventSubCategory>;
+  deleteImage: Image;
   deleteMail: Mail;
   deleteNotification: Notification;
   deleteOrder?: Maybe<Order>;
@@ -396,6 +421,7 @@ export type Mutation = {
   updateEvent: Event;
   updateEventCategory?: Maybe<EventCategory>;
   updateEventSubCategory?: Maybe<EventSubCategory>;
+  updateImage: Image;
   updateMail: Mail;
   updateNotification: Notification;
   updateOrder?: Maybe<Order>;
@@ -470,6 +496,11 @@ export type MutationCreateEventCategoryArgs = {
 
 export type MutationCreateEventSubCategoryArgs = {
   data: CreateEventSubCategoryInput;
+};
+
+
+export type MutationCreateImageArgs = {
+  data: CreateImageInput;
 };
 
 
@@ -560,6 +591,11 @@ export type MutationDeleteEventCategoryArgs = {
 
 export type MutationDeleteEventSubCategoryArgs = {
   id: Scalars['Int']['input'];
+};
+
+
+export type MutationDeleteImageArgs = {
+  id: Scalars['String']['input'];
 };
 
 
@@ -681,6 +717,12 @@ export type MutationUpdateEventCategoryArgs = {
 export type MutationUpdateEventSubCategoryArgs = {
   data: UpdateEventSubCategoryInput;
   id: Scalars['Int']['input'];
+};
+
+
+export type MutationUpdateImageArgs = {
+  data: UpdateImageInput;
+  id: Scalars['String']['input'];
 };
 
 
@@ -905,6 +947,8 @@ export type Query = {
   eventsByCategory?: Maybe<Array<Event>>;
   eventsBySubcategory?: Maybe<Array<Event>>;
   filteredByParentsEventSubCategories?: Maybe<Array<EventCategory>>;
+  image: Image;
+  images: Array<Image>;
   mail: Mail;
   mails: Array<Mail>;
   notification: Notification;
@@ -1062,6 +1106,16 @@ export type QueryEventsBySubcategoryArgs = {
 
 export type QueryFilteredByParentsEventSubCategoriesArgs = {
   parentsIds?: InputMaybe<Array<Scalars['Int']['input']>>;
+};
+
+
+export type QueryImageArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type QueryImagesArgs = {
+  pagination?: InputMaybe<Pagination>;
 };
 
 
@@ -1274,13 +1328,13 @@ export type UpdateEventCategoryInput = {
 };
 
 export type UpdateEventInput = {
+  base_64_event_banner?: InputMaybe<Scalars['String']['input']>;
+  base_64_event_logo?: InputMaybe<Scalars['String']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   end_date?: InputMaybe<Scalars['DateTime']['input']>;
   end_time?: InputMaybe<Scalars['String']['input']>;
-  event_banner_url?: InputMaybe<Scalars['String']['input']>;
   event_location?: InputMaybe<Scalars['String']['input']>;
   event_location_url?: InputMaybe<Scalars['String']['input']>;
-  event_logo_url?: InputMaybe<Scalars['String']['input']>;
   event_sub_categories?: InputMaybe<Array<Scalars['Int']['input']>>;
   name?: InputMaybe<Scalars['String']['input']>;
   price_from?: InputMaybe<Scalars['Decimal']['input']>;
@@ -1295,6 +1349,13 @@ export type UpdateEventSubCategoryInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   event_categoryId?: InputMaybe<Scalars['Int']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type UpdateImageInput = {
+  new_name?: InputMaybe<Scalars['String']['input']>;
+  original_name?: InputMaybe<Scalars['String']['input']>;
+  size?: InputMaybe<Scalars['Int']['input']>;
+  url?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type UpdateMailInput = {
@@ -1474,7 +1535,7 @@ export type ShowTicketsByAccessTypeQueryVariables = Exact<{
 }>;
 
 
-export type ShowTicketsByAccessTypeQuery = { __typename?: 'Query', accessType: { __typename?: 'AccessType', id: number, name: string, price: any, enter_and_exit_option: boolean, description?: string | null, event: { __typename?: 'Event', id: number, name: string, event_logo_url?: string | null, event_banner_url?: string | null } } };
+export type ShowTicketsByAccessTypeQuery = { __typename?: 'Query', accessType: { __typename?: 'AccessType', id: number, name: string, price: any, enter_and_exit_option: boolean, description?: string | null, event: { __typename?: 'Event', id: number, name: string, event_logo?: { __typename?: 'Image', id: string, url: string } | null, event_banner?: { __typename?: 'Image', id: string, url: string } | null } } };
 
 export type WhoAMiQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1535,26 +1596,26 @@ export type CreateEventMutationVariables = Exact<{
 }>;
 
 
-export type CreateEventMutation = { __typename?: 'Mutation', createEvent: { __typename?: 'Event', id: number, event_key?: string | null, name: string, description?: string | null, event_location: string, event_logo_url?: string | null, start_date: any, start_time?: string | null, end_time?: string | null, re_entry: boolean, userId: number, event_sub_categories?: Array<{ __typename?: 'EventSubCategory', id: number, name: string }> | null } };
+export type CreateEventMutation = { __typename?: 'Mutation', createEvent: { __typename?: 'Event', id: number, event_key?: string | null, name: string, description?: string | null, event_location: string, start_date: any, start_time?: string | null, end_time?: string | null, re_entry: boolean, userId: number, event_logo?: { __typename?: 'Image', id: string, url: string } | null, event_sub_categories?: Array<{ __typename?: 'EventSubCategory', id: number, name: string }> | null } };
 
 export type EditEventQueryVariables = Exact<{
   eventId: Scalars['Int']['input'];
 }>;
 
 
-export type EditEventQuery = { __typename?: 'Query', event: { __typename?: 'Event', id: number, name: string, description?: string | null, event_location: string, event_location_url: string, start_date: any, end_date?: any | null, start_time?: string | null, end_time?: string | null, re_entry: boolean, event_logo_url?: string | null, event_banner_url?: string | null, event_sub_categories?: Array<{ __typename?: 'EventSubCategory', id: number, name: string }> | null }, eventSubCategories?: Array<{ __typename?: 'EventSubCategory', id: number, name: string }> | null };
+export type EditEventQuery = { __typename?: 'Query', event: { __typename?: 'Event', id: number, name: string, description?: string | null, event_location: string, event_location_url: string, start_date: any, end_date?: any | null, start_time?: string | null, end_time?: string | null, re_entry: boolean, event_logo?: { __typename?: 'Image', id: string, url: string } | null, event_banner?: { __typename?: 'Image', id: string, url: string } | null, event_sub_categories?: Array<{ __typename?: 'EventSubCategory', id: number, name: string }> | null }, eventSubCategories?: Array<{ __typename?: 'EventSubCategory', id: number, name: string }> | null };
 
 export type LandingViewQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type LandingViewQuery = { __typename?: 'Query', eventCategories?: Array<{ __typename?: 'EventCategory', id: number, name: string }> | null, popular_events?: Array<{ __typename?: 'Event', id: number, name: string, description?: string | null, start_date: any, event_location: string, event_logo_url?: string | null, event_banner_url?: string | null }> | null };
+export type LandingViewQuery = { __typename?: 'Query', eventCategories?: Array<{ __typename?: 'EventCategory', id: number, name: string }> | null, popular_events?: Array<{ __typename?: 'Event', id: number, name: string, description?: string | null, start_date: any, event_location: string, event_logo?: { __typename?: 'Image', id: string, url: string } | null, event_banner?: { __typename?: 'Image', id: string, url: string } | null }> | null };
 
 export type SearchEventsBySubcategoryQueryVariables = Exact<{
   subCategoryId: Scalars['Int']['input'];
 }>;
 
 
-export type SearchEventsBySubcategoryQuery = { __typename?: 'Query', eventSubCategory?: { __typename?: 'EventSubCategory', id: number, name: string } | null, eventsBySubcategory?: Array<{ __typename?: 'Event', id: number, event_key?: string | null, name: string, event_location: string, event_logo_url?: string | null, start_date: any, start_time?: string | null, end_time?: string | null, price_from?: any | null, price_to?: any | null, organization: { __typename?: 'Organization', id: string, name?: string | null } }> | null };
+export type SearchEventsBySubcategoryQuery = { __typename?: 'Query', eventSubCategory?: { __typename?: 'EventSubCategory', id: number, name: string } | null, eventsBySubcategory?: Array<{ __typename?: 'Event', id: number, event_key?: string | null, name: string, event_location: string, start_date: any, start_time?: string | null, end_time?: string | null, price_from?: any | null, price_to?: any | null, event_logo?: { __typename?: 'Image', id: string, url: string } | null, event_banner?: { __typename?: 'Image', id: string, url: string } | null, organization: { __typename?: 'Organization', id: string, name?: string | null } }> | null };
 
 export type ShowEventStaffQueryVariables = Exact<{
   eventId: Scalars['Int']['input'];
@@ -1566,19 +1627,19 @@ export type ShowEventStaffQuery = { __typename?: 'Query', event: { __typename?: 
 export type ShowEventTicketsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ShowEventTicketsQuery = { __typename?: 'Query', events?: Array<{ __typename?: 'Event', id: number, name: string, start_date: any, event_logo_url?: string | null, event_location: string, event_key?: string | null, description?: string | null }> | null };
+export type ShowEventTicketsQuery = { __typename?: 'Query', events?: Array<{ __typename?: 'Event', id: number, name: string, start_date: any, event_location: string, event_key?: string | null, description?: string | null, event_logo?: { __typename?: 'Image', id: string, url: string } | null }> | null };
 
 export type ShowEventQueryVariables = Exact<{
   eventId: Scalars['Int']['input'];
 }>;
 
 
-export type ShowEventQuery = { __typename?: 'Query', event: { __typename?: 'Event', id: number, event_key?: string | null, name: string, description?: string | null, event_location: string, event_logo_url?: string | null, event_banner_url?: string | null, event_location_url: string, start_date: any, start_time?: string | null, end_time?: string | null, re_entry: boolean, createdAt: any, updatedAt: any, deleted: boolean, createdBy: { __typename?: 'User', id: number, name?: string | null }, event_sub_categories?: Array<{ __typename?: 'EventSubCategory', id: number, name: string, event_category: { __typename?: 'EventCategory', id: number, name: string } }> | null }, selled_tickets_by_event?: Array<{ __typename?: 'Ticket', id: number, createdAt: any, serial_number: string, is_used: boolean, note?: string | null }> | null };
+export type ShowEventQuery = { __typename?: 'Query', event: { __typename?: 'Event', id: number, event_key?: string | null, name: string, description?: string | null, event_location: string, event_location_url: string, start_date: any, start_time?: string | null, end_time?: string | null, re_entry: boolean, createdAt: any, updatedAt: any, deleted: boolean, event_logo?: { __typename?: 'Image', id: string, url: string } | null, event_banner?: { __typename?: 'Image', id: string, url: string } | null, createdBy: { __typename?: 'User', id: number, name?: string | null }, event_sub_categories?: Array<{ __typename?: 'EventSubCategory', id: number, name: string, event_category: { __typename?: 'EventCategory', id: number, name: string } }> | null }, selled_tickets_by_event?: Array<{ __typename?: 'Ticket', id: number, createdAt: any, serial_number: string, is_used: boolean, note?: string | null }> | null };
 
 export type ShowEventsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ShowEventsQuery = { __typename?: 'Query', events?: Array<{ __typename?: 'Event', id: number, event_logo_url?: string | null, event_location: string, event_key?: string | null, name: string, description?: string | null, start_date: any, deleted: boolean, event_banner_url?: string | null, event_sub_categories?: Array<{ __typename?: 'EventSubCategory', id: number, name: string }> | null }> | null };
+export type ShowEventsQuery = { __typename?: 'Query', events?: Array<{ __typename?: 'Event', id: number, event_location: string, event_key?: string | null, name: string, description?: string | null, start_date: any, deleted: boolean, event_logo?: { __typename?: 'Image', id: string, url: string } | null, event_sub_categories?: Array<{ __typename?: 'EventSubCategory', id: number, name: string }> | null }> | null };
 
 export type UpdateEventMutationVariables = Exact<{
   updateEventId: Scalars['Int']['input'];
@@ -1586,7 +1647,7 @@ export type UpdateEventMutationVariables = Exact<{
 }>;
 
 
-export type UpdateEventMutation = { __typename?: 'Mutation', updateEvent: { __typename?: 'Event', id: number, event_key?: string | null, name: string, description?: string | null, event_location: string, event_logo_url?: string | null, start_date: any, start_time?: string | null, end_time?: string | null, re_entry: boolean, userId: number, event_sub_categories?: Array<{ __typename?: 'EventSubCategory', id: number, name: string }> | null } };
+export type UpdateEventMutation = { __typename?: 'Mutation', updateEvent: { __typename?: 'Event', id: number, event_key?: string | null, name: string, description?: string | null, event_location: string, start_date: any, start_time?: string | null, end_time?: string | null, re_entry: boolean, userId: number, event_logo?: { __typename?: 'Image', id: string, url: string } | null, event_banner?: { __typename?: 'Image', id: string, url: string } | null, event_sub_categories?: Array<{ __typename?: 'EventSubCategory', id: number, name: string }> | null } };
 
 export type ClearnotificationsMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -1615,7 +1676,7 @@ export type CreateOpenVenuePaymentLinkQuery = { __typename?: 'Query', createOpen
 export type CurrentClientOrdersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CurrentClientOrdersQuery = { __typename?: 'Query', currentClientOrders: Array<{ __typename?: 'Order', id: number, buyed_access_count: number, eventId?: number | null, event?: { __typename?: 'Event', id: number, name: string, start_date: any, end_date?: any | null, event_location: string, event_logo_url?: string | null } | null }> };
+export type CurrentClientOrdersQuery = { __typename?: 'Query', currentClientOrders: Array<{ __typename?: 'Order', id: number, buyed_access_count: number, eventId?: number | null, event?: { __typename?: 'Event', id: number, name: string, start_date: any, end_date?: any | null, event_location: string, event_logo?: { __typename?: 'Image', id: string, url: string } | null } | null }> };
 
 export type SelectPaymentMethodQueryVariables = Exact<{
   accessTypeId: Scalars['Int']['input'];
@@ -1623,7 +1684,7 @@ export type SelectPaymentMethodQueryVariables = Exact<{
 }>;
 
 
-export type SelectPaymentMethodQuery = { __typename?: 'Query', accessType: { __typename?: 'AccessType', id: number, name: string, description?: string | null, price: any }, event: { __typename?: 'Event', id: number, name: string, description?: string | null, event_location: string, event_banner_url?: string | null, start_date: any, start_time?: string | null } };
+export type SelectPaymentMethodQuery = { __typename?: 'Query', accessType: { __typename?: 'AccessType', id: number, name: string, description?: string | null, price: any }, event: { __typename?: 'Event', id: number, name: string, description?: string | null, event_location: string, start_date: any, start_time?: string | null, event_banner?: { __typename?: 'Image', id: string, url: string } | null } };
 
 export type CreateOrganizationMutationVariables = Exact<{
   data: CreateOrganizationInput;
@@ -1708,7 +1769,7 @@ export type SearchEventQueryVariables = Exact<{
 }>;
 
 
-export type SearchEventQuery = { __typename?: 'Query', event: { __typename?: 'Event', id: number, event_key?: string | null, name: string, description?: string | null, event_location: string, event_logo_url?: string | null, event_banner_url?: string | null, event_location_url: string, start_date: any, start_time?: string | null, end_time?: string | null, re_entry: boolean, price_from?: any | null, price_to?: any | null, createdAt: any, updatedAt: any, deleted: boolean, organization: { __typename?: 'Organization', id: string, name?: string | null }, event_sub_categories?: Array<{ __typename?: 'EventSubCategory', id: number, name: string, event_category: { __typename?: 'EventCategory', id: number, name: string } }> | null } };
+export type SearchEventQuery = { __typename?: 'Query', event: { __typename?: 'Event', id: number, event_key?: string | null, name: string, description?: string | null, event_location: string, event_location_url: string, start_date: any, start_time?: string | null, end_time?: string | null, re_entry: boolean, price_from?: any | null, price_to?: any | null, createdAt: any, updatedAt: any, deleted: boolean, event_logo?: { __typename?: 'Image', id: string, url: string } | null, event_banner?: { __typename?: 'Image', id: string, url: string } | null, organization: { __typename?: 'Organization', id: string, name?: string | null }, event_sub_categories?: Array<{ __typename?: 'EventSubCategory', id: number, name: string, event_category: { __typename?: 'EventCategory', id: number, name: string } }> | null } };
 
 export type SearchEventsByCategoryQueryVariables = Exact<{
   categoryId: Scalars['Int']['input'];
@@ -1729,7 +1790,7 @@ export type MainSearchQueryVariables = Exact<{
 }>;
 
 
-export type MainSearchQuery = { __typename?: 'Query', search_events?: Array<{ __typename?: 'Event', id: number, name: string, description?: string | null, event_logo_url?: string | null, start_date: any, price_from?: any | null, event_location: string, event_sub_categories?: Array<{ __typename?: 'EventSubCategory', id: number, name: string }> | null }> | null, searchOrganizations?: Array<{ __typename?: 'Organization', id: string, name?: string | null, current_events_count?: number | null } | null> | null };
+export type MainSearchQuery = { __typename?: 'Query', search_events?: Array<{ __typename?: 'Event', id: number, name: string, description?: string | null, start_date: any, price_from?: any | null, event_location: string, event_logo?: { __typename?: 'Image', id: string, url: string } | null, event_sub_categories?: Array<{ __typename?: 'EventSubCategory', id: number, name: string }> | null }> | null, searchOrganizations?: Array<{ __typename?: 'Organization', id: string, name?: string | null, current_events_count?: number | null } | null> | null };
 
 export type AssignManyStaffMutationVariables = Exact<{
   eventId: Scalars['Int']['input'];
@@ -2093,8 +2154,14 @@ export const ShowTicketsByAccessTypeDocument = gql`
     event {
       id
       name
-      event_logo_url
-      event_banner_url
+      event_logo {
+        id
+        url
+      }
+      event_banner {
+        id
+        url
+      }
     }
   }
 }
@@ -2518,12 +2585,14 @@ export const CreateEventDocument = gql`
     name
     description
     event_location
-    event_logo_url
     start_date
     start_time
     end_time
     re_entry
-    event_logo_url
+    event_logo {
+      id
+      url
+    }
     userId
     event_sub_categories {
       id
@@ -2571,8 +2640,14 @@ export const EditEventDocument = gql`
     start_time
     end_time
     re_entry
-    event_logo_url
-    event_banner_url
+    event_logo {
+      id
+      url
+    }
+    event_banner {
+      id
+      url
+    }
     event_sub_categories {
       id
       name
@@ -2624,8 +2699,14 @@ export const LandingViewDocument = gql`
     description
     start_date
     event_location
-    event_logo_url
-    event_banner_url
+    event_logo {
+      id
+      url
+    }
+    event_banner {
+      id
+      url
+    }
   }
 }
     `;
@@ -2667,13 +2748,19 @@ export const SearchEventsBySubcategoryDocument = gql`
     event_key
     name
     event_location
-    event_logo_url
     start_date
     start_time
     end_time
-    event_logo_url
     price_from
     price_to
+    event_logo {
+      id
+      url
+    }
+    event_banner {
+      id
+      url
+    }
     organization {
       id
       name
@@ -2758,7 +2845,10 @@ export const ShowEventTicketsDocument = gql`
     id
     name
     start_date
-    event_logo_url
+    event_logo {
+      id
+      url
+    }
     event_location
     event_key
     description
@@ -2800,17 +2890,22 @@ export const ShowEventDocument = gql`
     name
     description
     event_location
-    event_logo_url
-    event_banner_url
     event_location_url
     start_date
     start_time
     end_time
     re_entry
-    event_logo_url
     createdAt
     updatedAt
     deleted
+    event_logo {
+      id
+      url
+    }
+    event_banner {
+      id
+      url
+    }
     createdBy {
       id
       name
@@ -2865,14 +2960,20 @@ export const ShowEventsDocument = gql`
     query ShowEvents {
   events {
     id
-    event_logo_url
     event_location
     event_key
     name
     description
     start_date
     deleted
-    event_banner_url
+    event_logo {
+      id
+      url
+    }
+    event_logo {
+      id
+      url
+    }
     event_sub_categories {
       id
       name
@@ -2915,12 +3016,18 @@ export const UpdateEventDocument = gql`
     name
     description
     event_location
-    event_logo_url
     start_date
     start_time
     end_time
     re_entry
-    event_logo_url
+    event_logo {
+      id
+      url
+    }
+    event_banner {
+      id
+      url
+    }
     userId
     event_sub_categories {
       id
@@ -3106,7 +3213,10 @@ export const CurrentClientOrdersDocument = gql`
       start_date
       end_date
       event_location
-      event_logo_url
+      event_logo {
+        id
+        url
+      }
     }
   }
 }
@@ -3151,7 +3261,10 @@ export const SelectPaymentMethodDocument = gql`
     name
     description
     event_location
-    event_banner_url
+    event_banner {
+      id
+      url
+    }
     start_date
     start_time
   }
@@ -3692,19 +3805,24 @@ export const SearchEventDocument = gql`
     name
     description
     event_location
-    event_logo_url
-    event_banner_url
     event_location_url
     start_date
     start_time
     end_time
     re_entry
-    event_logo_url
     price_from
     price_to
     createdAt
     updatedAt
     deleted
+    event_logo {
+      id
+      url
+    }
+    event_banner {
+      id
+      url
+    }
     organization {
       id
       name
@@ -3848,10 +3966,13 @@ export const MainSearchDocument = gql`
     id
     name
     description
-    event_logo_url
     start_date
     price_from
     event_location
+    event_logo {
+      id
+      url
+    }
     event_sub_categories {
       id
       name

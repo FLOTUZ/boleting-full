@@ -171,14 +171,18 @@ model Application {
 }
 
 model Image {
-  id            String   @id @default(uuid())
+  id            String    @id @default(uuid())
   original_name String?
   new_name      String
   size          Int
   url           String
   mime_type     String?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  deleted       Boolean   @default(false)
+  deletedAt     DateTime?
+  event_logos   Event[]   @relation("event_logo")
+  event_banners Event[]   @relation("event_banner")
 }
 
 //============================= EVENT MANAGEMENT ================================
@@ -197,8 +201,8 @@ model Event {
   re_entry             Boolean            @default(false)
   price_from           Decimal?           @default(0) @db.Money
   price_to             Decimal?           @db.Money
-  event_logo_url       String?            @db.VarChar(1000)
-  event_banner_url     String?            @db.VarChar(1000)
+  event_logoId         String?
+  event_bannerId       String?
   userId               Int
   organizationId       Int
   createdAt            DateTime           @default(now())
@@ -215,6 +219,8 @@ model Event {
   access_types         AccessType[]       @relation("types_of_access_for_event")
   dealers              AuthorizedDealer[] @relation("dealer_of_event")
   orders               Order[]            @relation("event_orders")
+  event_logo           Image?             @relation("event_logo", fields: [event_logoId], references: [id])
+  event_banner         Image?             @relation("event_banner", fields: [event_bannerId], references: [id])
 }
 
 model EventSocialMedia {

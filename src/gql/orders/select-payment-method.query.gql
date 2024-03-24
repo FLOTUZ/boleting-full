@@ -11,7 +11,10 @@ query SelectPaymentMethod($accessTypeId: Int!, $eventId: Int!) {
     name
     description
     event_location
-    event_banner_url
+    event_banner {
+      id
+      url
+    }
     start_date
     start_time
   }

@@ -61,7 +61,7 @@ const SearchEventView = () => {
           h={{ base: "50vh", lg: "60vh", xl: "40vh" }}
           objectFit={"cover"}
           borderBottomRadius={"1rem"}
-          src={event?.event_banner_url ?? ""}
+          src={event?.event_banner?.url ?? ""}
           zIndex={0}
         />
       </Box>

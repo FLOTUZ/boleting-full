@@ -95,9 +95,9 @@ const ShowEventView = () => {
 
         <Card mb={4} p={4}>
           <Box>
-            {dataEvent?.event_logo_url && (
+            {dataEvent?.event_logo?.url && (
               <Image
-                src={dataEvent?.event_logo_url}
+                src={dataEvent?.event_logo?.url}
                 alt={dataEvent?.name!}
                 height={100}
               />

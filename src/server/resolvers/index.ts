@@ -17,3 +17,4 @@ export * from "./application.resolver";
 export * from "./mail.resolver";
 export * from "./notification.resolver";
 export * from "./autorized-dealer.resolver";
+export * from "./image.resolver";

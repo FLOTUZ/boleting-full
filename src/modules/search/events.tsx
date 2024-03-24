@@ -106,7 +106,7 @@ const EventsByCategoryView = () => {
               >
                 <CardBody>
                   <Image
-                    src={event.event_logo_url || "/next.svg"}
+                    src={event.event_logo?.url || "/next.svg"}
                     alt="Green double couch with wooden legs"
                     width={1770}
                     height={1180}

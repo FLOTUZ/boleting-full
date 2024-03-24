@@ -27,6 +27,7 @@ import {
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { ShowEventPath } from "@/routes";
+import { oneFileHandler } from "@/utils/file.util";
 
 const EditEventForm = () => {
   const router = useRouter();
@@ -65,8 +66,8 @@ const EditEventForm = () => {
       start_time: event?.start_time,
       end_time: event?.end_time,
       re_entry: event?.re_entry,
-      event_logo_url: event?.event_logo_url,
-      event_banner_url: event?.event_banner_url,
+      base_64_event_logo: null,
+      base_64_event_banner: null,
       event_sub_categories: event?.event_sub_categories?.map(
         (subCategory) => subCategory.id
       ),
@@ -258,28 +259,92 @@ const EditEventForm = () => {
           <Text color="red">{form.errors.re_entry}</Text>
         )}
 
-        <FormLabel htmlFor="event_logo_url">Logo del evento:</FormLabel>
+        <FormLabel mt={4} htmlFor="base_64_event_logo">
+          Logo del evento (No mayor a 2MB):
+        </FormLabel>
         <Input
-          name="event_logo_url"
+          name="base_64_event_logo"
           type="file"
           accept="image/gif, image/jpeg, image/png"
           variant={"filled"}
           maxLength={255}
-          onChange={form.handleChange}
+          onChange={async (e) => {
+            form.setFieldValue("base_64_event_logo", e.target.value);
+            await oneFileHandler({
+              file: e.target.files ? (e.target.files[0] as File) : undefined,
+              validator: (file) => {
+                if (!file) return "La imagen es requerida";
+                if (file!.size / 1024 / 1024 > 2)
+                  return "La imagen debe ser menor a 2 MB";
+
+                return null;
+              },
+              handledFile: (base64File) => {
+                form.setFieldValue("base_64_event_logo", base64File);
+              },
+              onError: (error) => {
+                form.setFieldValue("base_64_event_logo", "");
+                form.setFieldValue("base_64_event_logo", "");
+                form.setFieldError("base_64_event_logo", error);
+                toast({
+                  title: "Error al cargar el logo",
+                  description: error,
+                  status: "error",
+                  duration: 8000,
+                  isClosable: true,
+                  position: "bottom-right",
+                });
+              },
+            });
+          }}
         />
-        {form.errors.event_logo_url && form.touched.event_logo_url && (
-          <Text color="red">{form.errors.event_logo_url}</Text>
+        {form.errors.base_64_event_logo && form.touched.base_64_event_logo && (
+          <Text color={"red"}>{form.errors.base_64_event_logo}</Text>
         )}
 
-        <FormLabel htmlFor="event_banner_url">Banner del evento:</FormLabel>
+        <FormLabel htmlFor="base_64_event_banner">
+          Banner del evento (No mayor a 2MB):
+        </FormLabel>
         <Input
-          name="event_banner_url"
+          name="base_64_event_banner"
           type="file"
-          onChange={form.handleChange}
+          accept="image/gif, image/jpeg, image/png"
+          variant={"filled"}
+          maxLength={255}
+          onChange={async (e) => {
+            form.setFieldValue("base_64_event_banner", e.target.value);
+            await oneFileHandler({
+              file: e.target.files ? (e.target.files[0] as File) : undefined,
+              validator: (file) => {
+                if (!file) return "La imagen es requerida";
+                if (file!.size / 1024 / 1024 > 2)
+                  return "La imagen debe ser menor a 2 MB";
+
+                return null;
+              },
+              handledFile: (base64File) => {
+                form.setFieldValue("base_64_event_banner", base64File);
+              },
+              onError: (error) => {
+                form.setFieldValue("base_64_event_banner", "");
+                form.setFieldValue("base_64_event_banner", "");
+                form.setFieldError("base_64_event_banner", error);
+                toast({
+                  title: "Error al cargar el banner",
+                  description: error,
+                  status: "error",
+                  duration: 8000,
+                  isClosable: true,
+                  position: "bottom-right",
+                });
+              },
+            });
+          }}
         />
-        {form.errors.event_banner_url && form.touched.event_banner_url && (
-          <Text color="red">{form.errors.event_banner_url}</Text>
-        )}
+        {form.errors.base_64_event_banner &&
+          form.touched.base_64_event_banner && (
+            <Text color={"red"}>{form.errors.base_64_event_banner}</Text>
+          )}
 
         <HStack mt={4} mb={16}>
           <Spacer />

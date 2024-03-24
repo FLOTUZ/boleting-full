@@ -8,15 +8,19 @@ query SearchEventsBySubcategory($subCategoryId: Int!) {
     event_key
     name
     event_location
-    event_logo_url
     start_date
     start_time
     end_time
-
-    event_logo_url
     price_from
     price_to
-
+    event_logo {
+      id
+      url
+    }
+    event_banner {
+      id
+      url
+    }
     organization {
       id
       name

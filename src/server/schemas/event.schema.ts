@@ -12,8 +12,8 @@ export const EventsSchema = gql`
     re_entry: Boolean!
     price_from: Decimal
     price_to: Decimal
-    event_logo_url: String!
-    event_banner_url: String!
+    base_64_event_logo: String
+    base_64_event_banner: String
     event_sub_categories: [Int!]
   }
 
@@ -29,8 +29,8 @@ export const EventsSchema = gql`
     re_entry: Boolean
     price_from: Decimal
     price_to: Decimal
-    event_logo_url: String
-    event_banner_url: String
+    base_64_event_logo: String
+    base_64_event_banner: String
     event_sub_categories: [Int!]
   }
 
@@ -48,8 +48,8 @@ export const EventsSchema = gql`
     re_entry: Boolean!
     price_from: Decimal
     price_to: Decimal
-    event_logo_url: String
-    event_banner_url: String
+    event_logoId: String
+    event_bannerId: String
     userId: Int!
     organizationId: Int!
     createdAt: DateTime!
@@ -62,6 +62,8 @@ export const EventsSchema = gql`
     organization: Organization!
     access_types: [AccessType!]
     staff: [User!]
+    event_logo: Image
+    event_banner: Image
   }
 
   type Query {

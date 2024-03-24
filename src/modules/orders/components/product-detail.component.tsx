@@ -79,7 +79,7 @@ const ProductDetailComponent = ({
         >
           <Image
             src={
-              event?.event_banner_url ||
+              event?.event_banner?.url ||
               "https://us.123rf.com/450wm/yoginta/yoginta2301/yoginta230100567/196853824-imagen-no-encontrada-ilustraci%C3%B3n-vectorial.jpg"
             }
             height={100}

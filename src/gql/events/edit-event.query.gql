@@ -10,8 +10,14 @@ query EditEvent($eventId: Int!) {
     start_time
     end_time
     re_entry
-    event_logo_url
-    event_banner_url
+    event_logo {
+      id
+      url
+    }
+    event_banner {
+      id
+      url
+    }
     event_sub_categories {
       id
       name

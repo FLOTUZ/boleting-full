@@ -4,6 +4,14 @@ import { apolloServer } from "@/server";
 import { startServerAndCreateNextHandler } from "@as-integrations/next";
 import { jwtVerifier } from "@/utils/jwt-verifier.util";
 
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: "6mb",
+    },
+  },
+};
+
 export default startServerAndCreateNextHandler(apolloServer, {
   context: async (req: NextApiRequest, res: NextApiResponse) => {
     req.headers.authorization == null;

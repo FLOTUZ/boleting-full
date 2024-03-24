@@ -5,12 +5,18 @@ mutation UpdateEvent($updateEventId: Int!, $input: UpdateEventInput!) {
     name
     description
     event_location
-    event_logo_url
     start_date
     start_time
     end_time
     re_entry
-    event_logo_url
+    event_logo {
+      id
+      url
+    }
+    event_banner {
+      id
+      url
+    }
     userId
     event_sub_categories {
       id

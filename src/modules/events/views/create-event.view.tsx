@@ -2,12 +2,12 @@ import IntroAnimationComponent from "@/components/animations/intro-animation.com
 import ProgressLoaderComponent from "@/components/loaders/progress-loader.component";
 import {
   CreateEventInput,
-  Event,
   EventCategory,
   EventSubCategory,
   useCreateEventMutation,
   useEventCategoriesQuery,
 } from "@/gql/generated";
+import { oneFileHandler } from "@/utils/file.util";
 import { CreateEventValidator } from "@/validations";
 import {
   Spacer,
@@ -47,7 +47,9 @@ const CreateEventView = () => {
   });
 
   const [createEvent, { loading }] = useCreateEventMutation();
+
   const form = useFormik({
+    validationSchema: CreateEventValidator,
     initialValues: {
       name: "",
       description: "",
@@ -58,13 +60,13 @@ const CreateEventView = () => {
       start_time: "",
       end_time: "",
       re_entry: false,
-      event_logo_url: "",
-      event_banner_url: "",
+      base_64_event_logo: null,
+      base_64_event_banner: null,
       event_sub_categories: eventSubCategories.map(
         (subCategory) => subCategory.id!
       ) as number[],
     },
-    validationSchema: CreateEventValidator,
+
     async onSubmit(values: CreateEventInput) {
       values.start_date = new Date(values.start_date).toISOString();
       values.end_date = new Date(values.end_date).toISOString();
@@ -106,7 +108,7 @@ const CreateEventView = () => {
         <FormikProvider value={form}>
           <form onSubmit={form.handleSubmit}>
             <Box>
-              <FormLabel htmlFor="name">Nombre:</FormLabel>
+              <FormLabel htmlFor="name">Nombre del evento:</FormLabel>
               <Input
                 name="name"
                 variant={"filled"}
@@ -118,7 +120,9 @@ const CreateEventView = () => {
                 <Text color={"red"}>{form.errors.name}</Text>
               )}
 
-              <FormLabel htmlFor="description">Detalles del evento:</FormLabel>
+              <FormLabel mt={4} htmlFor="description">
+                Detalles del evento:
+              </FormLabel>
               <Textarea
                 name="description"
                 variant={"filled"}
@@ -130,8 +134,8 @@ const CreateEventView = () => {
                 <Text color={"red"}>{form.errors.description}</Text>
               )}
 
-              <FormLabel htmlFor="event_sub_categories">
-                Sub categorias:
+              <FormLabel mt={4} htmlFor="event_sub_categories">
+                Subcategorias del evento:
               </FormLabel>
 
               <SimpleGrid columns={[1, 2, 3, 4]}>
@@ -168,7 +172,9 @@ const CreateEventView = () => {
                   <Text color={"red"}>{form.errors.event_sub_categories}</Text>
                 )}
 
-              <FormLabel htmlFor="event_location">Ubicacion evento:</FormLabel>
+              <FormLabel mt={4} htmlFor="event_location">
+                Ubicacion evento:
+              </FormLabel>
               <Input
                 name="event_location"
                 variant={"filled"}
@@ -181,8 +187,8 @@ const CreateEventView = () => {
                 <Text color={"red"}>{form.errors.event_location}</Text>
               )}
 
-              <FormLabel htmlFor="event_location_url">
-                Event location URL:
+              <FormLabel mt={4} htmlFor="event_location_url">
+                URL de ubicacion del evento (obtenida de maps):
               </FormLabel>
               <Input
                 name="event_location_url"
@@ -197,71 +203,77 @@ const CreateEventView = () => {
                   <Text color={"red"}>{form.errors.event_location_url}</Text>
                 )}
 
-              <SimpleGrid columns={[1, 2, 3]} spacing={4} w={"100%"}>
-                <Box w={"100%"}>
-                  <FormLabel htmlFor="date">Fecha de inicio:</FormLabel>
-                  <Input
-                    name="start_date"
-                    type="date"
-                    variant={"filled"}
-                    onChange={form.handleChange}
-                  />
-                  {form.errors.start_date && form.touched.start_date && (
-                    <Text color={"red"}>
-                      {form.errors.start_date.toString()}
-                    </Text>
-                  )}
-
+              <SimpleGrid columns={[1, 2]} gap={4} mt={4} w={"100%"}>
+                <Box>
                   <Box w={"100%"}>
-                    <FormLabel htmlFor="end_date">Fecha de cierre:</FormLabel>
+                    <FormLabel htmlFor="date">Fecha de inicio:</FormLabel>
                     <Input
-                      name="end_date"
+                      name="start_date"
                       type="date"
                       variant={"filled"}
                       onChange={form.handleChange}
                     />
-                    {form.errors.end_date && form.touched.end_date && (
+                    {form.errors.start_date && form.touched.start_date && (
                       <Text color={"red"}>
-                        {form.errors.end_date.toString()}
+                        {form.errors.start_date.toString()}
                       </Text>
                     )}
+
+                    <Box mt={4} w={"100%"}>
+                      <FormLabel htmlFor="end_date">Fecha de cierre:</FormLabel>
+                      <Input
+                        name="end_date"
+                        type="date"
+                        variant={"filled"}
+                        onChange={form.handleChange}
+                      />
+                      {form.errors.end_date && form.touched.end_date && (
+                        <Text color={"red"}>
+                          {form.errors.end_date.toString()}
+                        </Text>
+                      )}
+                    </Box>
                   </Box>
                 </Box>
 
-                <Box w={"100%"}>
-                  <FormLabel htmlFor="start_time">Hora de inicio:</FormLabel>
-                  <Input
-                    name="start_time"
-                    type="time"
-                    variant={"filled"}
-                    onChange={form.handleChange}
-                    value={form.values.start_time}
-                  />
+                <Box>
+                  <Box w={"100%"}>
+                    <FormLabel htmlFor="start_time">Hora de inicio:</FormLabel>
+                    <Input
+                      name="start_time"
+                      type="time"
+                      variant={"filled"}
+                      onChange={form.handleChange}
+                      value={form.values.start_time}
+                    />
 
-                  {form.errors.start_time && form.touched.start_time && (
-                    <Text color={"red"}>{form.errors.start_time}</Text>
-                  )}
-                </Box>
+                    {form.errors.start_time && form.touched.start_time && (
+                      <Text color={"red"}>{form.errors.start_time}</Text>
+                    )}
+                  </Box>
 
-                <Box w={"100%"}>
-                  <FormLabel htmlFor="end_time">
-                    Hora de finalizacion:
-                  </FormLabel>
-                  <Input
-                    name="end_time"
-                    type="time"
-                    variant={"filled"}
-                    onChange={form.handleChange}
-                    value={form.values.end_time}
-                  />
+                  <Box mt={4} w={"100%"}>
+                    <FormLabel htmlFor="end_time">
+                      Hora de finalizacion:
+                    </FormLabel>
+                    <Input
+                      name="end_time"
+                      type="time"
+                      variant={"filled"}
+                      onChange={form.handleChange}
+                      value={form.values.end_time}
+                    />
 
-                  {form.errors.end_time && form.touched.end_time && (
-                    <Text color={"red"}>{form.errors.end_time}</Text>
-                  )}
+                    {form.errors.end_time && form.touched.end_time && (
+                      <Text color={"red"}>{form.errors.end_time}</Text>
+                    )}
+                  </Box>
                 </Box>
               </SimpleGrid>
 
-              <FormLabel htmlFor="re_entry">Permitir reingreso:</FormLabel>
+              <FormLabel mt={4} htmlFor="re_entry">
+                Permitir reingreso:
+              </FormLabel>
               <Switch
                 size={"lg"}
                 name="re_entry"
@@ -273,42 +285,103 @@ const CreateEventView = () => {
                 <Text color={"red"}>{form.errors.re_entry.toString()}</Text>
               )}
 
-              <FormLabel htmlFor="event_logo_url">Logo del evento:</FormLabel>
-              <Input
-                name="event_logo_url"
-                type="file"
-                accept="image/gif, image/jpeg, image/png"
-                variant={"filled"}
-                maxLength={255}
-                onChange={form.handleChange}
-                value={form.values.event_logo_url!}
-              />
-              {form.errors.event_logo_url && form.touched.event_logo_url && (
-                <Text color={"red"}>{form.errors.event_logo_url}</Text>
-              )}
-
-              <FormLabel htmlFor="event_banner_url">
-                Banner del evento:
+              <FormLabel mt={4} htmlFor="base_64_event_logo">
+                Logo del evento (No mayor a 2MB):
               </FormLabel>
               <Input
-                name="event_banner_url"
+                name="base_64_event_logo"
                 type="file"
                 accept="image/gif, image/jpeg, image/png"
                 variant={"filled"}
                 maxLength={255}
-                onChange={form.handleChange}
-                value={form.values.event_banner_url!}
+                onChange={async (e) => {
+                  form.setFieldValue("base_64_event_logo", e.target.value);
+                  await oneFileHandler({
+                    file: e.target.files
+                      ? (e.target.files[0] as File)
+                      : undefined,
+                    validator: (file) => {
+                      if (!file) return "La imagen es requerida";
+                      if (file!.size / 1024 / 1024 > 2)
+                        return "La imagen debe ser menor a 2 MB";
+
+                      return null;
+                    },
+                    handledFile: (base64File) => {
+                      form.setFieldValue("base_64_event_logo", base64File);
+                    },
+                    onError: (error) => {
+                      form.setFieldValue("base_64_event_logo", "");
+                      form.setFieldValue("base_64_event_logo", "");
+                      form.setFieldError("base_64_event_logo", error);
+                      toast({
+                        title: "Error al cargar el logo",
+                        description: error,
+                        status: "error",
+                        duration: 8000,
+                        isClosable: true,
+                        position: "bottom-right",
+                      });
+                    },
+                  });
+                }}
               />
-              {form.errors.event_banner_url &&
-                form.touched.event_banner_url && (
-                  <Text color={"red"}>{form.errors.event_banner_url}</Text>
+              {form.errors.base_64_event_logo &&
+                form.touched.base_64_event_logo && (
+                  <Text color={"red"}>{form.errors.base_64_event_logo}</Text>
+                )}
+
+              <FormLabel htmlFor="base_64_event_banner">
+                Banner del evento (No mayor a 2MB):
+              </FormLabel>
+              <Input
+                name="base_64_event_banner"
+                type="file"
+                accept="image/gif, image/jpeg, image/png"
+                variant={"filled"}
+                maxLength={255}
+                onChange={async (e) => {
+                  form.setFieldValue("base_64_event_banner", e.target.value);
+                  await oneFileHandler({
+                    file: e.target.files
+                      ? (e.target.files[0] as File)
+                      : undefined,
+                    validator: (file) => {
+                      if (!file) return "La imagen es requerida";
+                      if (file!.size / 1024 / 1024 > 2)
+                        return "La imagen debe ser menor a 2 MB";
+
+                      return null;
+                    },
+                    handledFile: (base64File) => {
+                      form.setFieldValue("base_64_event_banner", base64File);
+                    },
+                    onError: (error) => {
+                      form.setFieldValue("base_64_event_banner", "");
+                      form.setFieldValue("base_64_event_banner", "");
+                      form.setFieldError("base_64_event_banner", error);
+                      toast({
+                        title: "Error al cargar el banner",
+                        description: error,
+                        status: "error",
+                        duration: 8000,
+                        isClosable: true,
+                        position: "bottom-right",
+                      });
+                    },
+                  });
+                }}
+              />
+              {form.errors.base_64_event_banner &&
+                form.touched.base_64_event_banner && (
+                  <Text color={"red"}>{form.errors.base_64_event_banner}</Text>
                 )}
             </Box>
 
             <HStack mt={4}>
               <Spacer />
               <Button type="submit" isLoading={loading}>
-                Enviar
+                Publicar evento
               </Button>
             </HStack>
           </form>

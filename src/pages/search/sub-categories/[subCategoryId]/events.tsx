@@ -64,11 +64,11 @@ const SearchEventsBySubcategoryRoute = () => {
                   },
                 }}
               >
-                {event.event_banner_url && (
+                {event.event_logo?.url && (
                   <Image
                     width={400}
                     height={400}
-                    src={event.event_logo_url!}
+                    src={event.event_logo.url}
                     layout="responsive"
                     alt={`image of event ${event.name}`}
                   />
