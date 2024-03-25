@@ -110,6 +110,7 @@ export type CreateAbilityInput = {
 };
 
 export type CreateAccessTypeInput = {
+  available_tickets_count?: InputMaybe<Scalars['Int']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   enter_and_exit_option?: InputMaybe<Scalars['Boolean']['input']>;
   eventId: Scalars['Int']['input'];
@@ -1515,14 +1516,21 @@ export type AccessTypesByEventQueryVariables = Exact<{
 }>;
 
 
-export type AccessTypesByEventQuery = { __typename?: 'Query', courtesyAccessTypes: Array<{ __typename?: 'AccessType', id: number, name: string, description?: string | null, enter_and_exit_option: boolean, createdAt: any, updatedAt: any }> };
+export type AccessTypesByEventQuery = { __typename?: 'Query', accessTypesByEventId: Array<{ __typename?: 'AccessType', id: number, name: string, description?: string | null, enter_and_exit_option: boolean, createdAt: any, updatedAt: any }> };
+
+export type CourtesyAccessTypesByEventQueryVariables = Exact<{
+  eventId: Scalars['Int']['input'];
+}>;
+
+
+export type CourtesyAccessTypesByEventQuery = { __typename?: 'Query', courtesyAccessTypes: Array<{ __typename?: 'AccessType', id: number, name: string, description?: string | null, enter_and_exit_option: boolean, createdAt: any, updatedAt: any }> };
 
 export type CreateAccessTypeMutationVariables = Exact<{
   data: CreateAccessTypeInput;
 }>;
 
 
-export type CreateAccessTypeMutation = { __typename?: 'Mutation', createAccessType: { __typename?: 'AccessType', id: number, name: string, description?: string | null, enter_and_exit_option: boolean, price: any, createdAt: any, updatedAt: any } };
+export type CreateAccessTypeMutation = { __typename?: 'Mutation', createAccessType: { __typename?: 'AccessType', id: number, name: string, description?: string | null, available_tickets_count: number, enter_and_exit_option: boolean, price: any, createdAt: any, updatedAt: any } };
 
 export type EditAccessTypeMutationVariables = Exact<{
   updateAccessTypeId: Scalars['Int']['input'];
@@ -2001,7 +2009,7 @@ export type ShowAccessTypeLazyQueryHookResult = ReturnType<typeof useShowAccessT
 export type ShowAccessTypeQueryResult = Apollo.QueryResult<ShowAccessTypeQuery, ShowAccessTypeQueryVariables>;
 export const AccessTypesByEventDocument = gql`
     query AccessTypesByEvent($eventId: Int!) {
-  courtesyAccessTypes(eventId: $eventId) {
+  accessTypesByEventId(eventId: $eventId) {
     id
     name
     description
@@ -2039,12 +2047,53 @@ export function useAccessTypesByEventLazyQuery(baseOptions?: Apollo.LazyQueryHoo
 export type AccessTypesByEventQueryHookResult = ReturnType<typeof useAccessTypesByEventQuery>;
 export type AccessTypesByEventLazyQueryHookResult = ReturnType<typeof useAccessTypesByEventLazyQuery>;
 export type AccessTypesByEventQueryResult = Apollo.QueryResult<AccessTypesByEventQuery, AccessTypesByEventQueryVariables>;
+export const CourtesyAccessTypesByEventDocument = gql`
+    query CourtesyAccessTypesByEvent($eventId: Int!) {
+  courtesyAccessTypes(eventId: $eventId) {
+    id
+    name
+    description
+    enter_and_exit_option
+    createdAt
+    updatedAt
+  }
+}
+    `;
+
+/**
+ * __useCourtesyAccessTypesByEventQuery__
+ *
+ * To run a query within a React component, call `useCourtesyAccessTypesByEventQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCourtesyAccessTypesByEventQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCourtesyAccessTypesByEventQuery({
+ *   variables: {
+ *      eventId: // value for 'eventId'
+ *   },
+ * });
+ */
+export function useCourtesyAccessTypesByEventQuery(baseOptions: Apollo.QueryHookOptions<CourtesyAccessTypesByEventQuery, CourtesyAccessTypesByEventQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CourtesyAccessTypesByEventQuery, CourtesyAccessTypesByEventQueryVariables>(CourtesyAccessTypesByEventDocument, options);
+      }
+export function useCourtesyAccessTypesByEventLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CourtesyAccessTypesByEventQuery, CourtesyAccessTypesByEventQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CourtesyAccessTypesByEventQuery, CourtesyAccessTypesByEventQueryVariables>(CourtesyAccessTypesByEventDocument, options);
+        }
+export type CourtesyAccessTypesByEventQueryHookResult = ReturnType<typeof useCourtesyAccessTypesByEventQuery>;
+export type CourtesyAccessTypesByEventLazyQueryHookResult = ReturnType<typeof useCourtesyAccessTypesByEventLazyQuery>;
+export type CourtesyAccessTypesByEventQueryResult = Apollo.QueryResult<CourtesyAccessTypesByEventQuery, CourtesyAccessTypesByEventQueryVariables>;
 export const CreateAccessTypeDocument = gql`
     mutation CreateAccessType($data: CreateAccessTypeInput!) {
   createAccessType(data: $data) {
     id
     name
     description
+    available_tickets_count
     enter_and_exit_option
     price
     createdAt

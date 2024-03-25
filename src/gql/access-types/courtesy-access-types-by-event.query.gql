@@ -1,0 +1,10 @@
+query CourtesyAccessTypesByEvent($eventId: Int!) {
+  courtesyAccessTypes(eventId: $eventId) {
+    id
+    name
+    description
+    enter_and_exit_option
+    createdAt
+    updatedAt
+  }
+}
