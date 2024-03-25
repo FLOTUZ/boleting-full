@@ -3,7 +3,6 @@ import { prisma } from "@/server";
 import { Pagination } from "../common";
 import { PrismaError } from "../utils";
 import { Event } from "@prisma/client";
-import { supabaseUploadFile } from "@/utils/supabase-upload.util";
 
 //
 // Service for Event model
