@@ -12,6 +12,7 @@ export const EventsSchema = gql`
     re_entry: Boolean!
     price_from: Decimal
     price_to: Decimal
+    is_published: Boolean
     base_64_event_logo: String
     base_64_event_banner: String
     event_sub_categories: [Int!]
@@ -29,6 +30,7 @@ export const EventsSchema = gql`
     re_entry: Boolean
     price_from: Decimal
     price_to: Decimal
+    is_published: Boolean
     base_64_event_logo: String
     base_64_event_banner: String
     event_sub_categories: [Int!]
@@ -48,6 +50,7 @@ export const EventsSchema = gql`
     re_entry: Boolean!
     price_from: Decimal
     price_to: Decimal
+    is_published: Boolean!
     event_logoId: String
     event_bannerId: String
     userId: Int!
@@ -79,5 +82,6 @@ export const EventsSchema = gql`
     createEvent(data: CreateEventInput!): Event!
     updateEvent(id: Int!, data: UpdateEventInput!): Event!
     deleteEvent(id: Int!): Event!
+    publishEvent(id: Int!): Event!
   }
 `;

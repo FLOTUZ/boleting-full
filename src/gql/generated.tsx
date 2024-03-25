@@ -165,6 +165,7 @@ export type CreateEventInput = {
   event_location: Scalars['String']['input'];
   event_location_url: Scalars['String']['input'];
   event_sub_categories?: InputMaybe<Array<Scalars['Int']['input']>>;
+  is_published?: InputMaybe<Scalars['Boolean']['input']>;
   name: Scalars['String']['input'];
   price_from?: InputMaybe<Scalars['Decimal']['input']>;
   price_to?: InputMaybe<Scalars['Decimal']['input']>;
@@ -291,6 +292,7 @@ export type Event = {
   event_logoId?: Maybe<Scalars['String']['output']>;
   event_sub_categories?: Maybe<Array<EventSubCategory>>;
   id: Scalars['Int']['output'];
+  is_published: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
   organization: Organization;
   organizationId: Scalars['Int']['output'];
@@ -410,6 +412,7 @@ export type Mutation = {
   deleteTicket?: Maybe<Ticket>;
   deleteUser?: Maybe<User>;
   deleteUserClient: UserClient;
+  publishEvent: Event;
   removeUsersFromRole?: Maybe<Role>;
   unassignManyStaff?: Maybe<Array<Maybe<User>>>;
   unassignStaff?: Maybe<User>;
@@ -650,6 +653,11 @@ export type MutationDeleteUserArgs = {
 
 
 export type MutationDeleteUserClientArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type MutationPublishEventArgs = {
   id: Scalars['Int']['input'];
 };
 
@@ -1336,6 +1344,7 @@ export type UpdateEventInput = {
   event_location?: InputMaybe<Scalars['String']['input']>;
   event_location_url?: InputMaybe<Scalars['String']['input']>;
   event_sub_categories?: InputMaybe<Array<Scalars['Int']['input']>>;
+  is_published?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   price_from?: InputMaybe<Scalars['Decimal']['input']>;
   price_to?: InputMaybe<Scalars['Decimal']['input']>;
@@ -1610,6 +1619,13 @@ export type LandingViewQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type LandingViewQuery = { __typename?: 'Query', eventCategories?: Array<{ __typename?: 'EventCategory', id: number, name: string }> | null, popular_events?: Array<{ __typename?: 'Event', id: number, name: string, description?: string | null, start_date: any, event_location: string, event_logo?: { __typename?: 'Image', id: string, url: string } | null, event_banner?: { __typename?: 'Image', id: string, url: string } | null }> | null };
 
+export type PublishEventMutationVariables = Exact<{
+  eventId: Scalars['Int']['input'];
+}>;
+
+
+export type PublishEventMutation = { __typename?: 'Mutation', publishEvent: { __typename?: 'Event', id: number, name: string } };
+
 export type SearchEventsBySubcategoryQueryVariables = Exact<{
   subCategoryId: Scalars['Int']['input'];
 }>;
@@ -1634,7 +1650,7 @@ export type ShowEventQueryVariables = Exact<{
 }>;
 
 
-export type ShowEventQuery = { __typename?: 'Query', event: { __typename?: 'Event', id: number, event_key?: string | null, name: string, description?: string | null, event_location: string, event_location_url: string, start_date: any, start_time?: string | null, end_time?: string | null, re_entry: boolean, createdAt: any, updatedAt: any, deleted: boolean, event_logo?: { __typename?: 'Image', id: string, url: string } | null, event_banner?: { __typename?: 'Image', id: string, url: string } | null, createdBy: { __typename?: 'User', id: number, name?: string | null }, event_sub_categories?: Array<{ __typename?: 'EventSubCategory', id: number, name: string, event_category: { __typename?: 'EventCategory', id: number, name: string } }> | null }, selled_tickets_by_event?: Array<{ __typename?: 'Ticket', id: number, createdAt: any, serial_number: string, is_used: boolean, note?: string | null }> | null };
+export type ShowEventQuery = { __typename?: 'Query', event: { __typename?: 'Event', id: number, event_key?: string | null, name: string, description?: string | null, event_location: string, event_location_url: string, start_date: any, start_time?: string | null, end_time?: string | null, re_entry: boolean, is_published: boolean, createdAt: any, updatedAt: any, deleted: boolean, event_logo?: { __typename?: 'Image', id: string, url: string } | null, event_banner?: { __typename?: 'Image', id: string, url: string } | null, createdBy: { __typename?: 'User', id: number, name?: string | null }, event_sub_categories?: Array<{ __typename?: 'EventSubCategory', id: number, name: string, event_category: { __typename?: 'EventCategory', id: number, name: string } }> | null }, selled_tickets_by_event?: Array<{ __typename?: 'Ticket', id: number, createdAt: any, serial_number: string, is_used: boolean, note?: string | null }> | null };
 
 export type ShowEventsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2737,6 +2753,40 @@ export function useLandingViewLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type LandingViewQueryHookResult = ReturnType<typeof useLandingViewQuery>;
 export type LandingViewLazyQueryHookResult = ReturnType<typeof useLandingViewLazyQuery>;
 export type LandingViewQueryResult = Apollo.QueryResult<LandingViewQuery, LandingViewQueryVariables>;
+export const PublishEventDocument = gql`
+    mutation PublishEvent($eventId: Int!) {
+  publishEvent(id: $eventId) {
+    id
+    name
+  }
+}
+    `;
+export type PublishEventMutationFn = Apollo.MutationFunction<PublishEventMutation, PublishEventMutationVariables>;
+
+/**
+ * __usePublishEventMutation__
+ *
+ * To run a mutation, you first call `usePublishEventMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `usePublishEventMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [publishEventMutation, { data, loading, error }] = usePublishEventMutation({
+ *   variables: {
+ *      eventId: // value for 'eventId'
+ *   },
+ * });
+ */
+export function usePublishEventMutation(baseOptions?: Apollo.MutationHookOptions<PublishEventMutation, PublishEventMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<PublishEventMutation, PublishEventMutationVariables>(PublishEventDocument, options);
+      }
+export type PublishEventMutationHookResult = ReturnType<typeof usePublishEventMutation>;
+export type PublishEventMutationResult = Apollo.MutationResult<PublishEventMutation>;
+export type PublishEventMutationOptions = Apollo.BaseMutationOptions<PublishEventMutation, PublishEventMutationVariables>;
 export const SearchEventsBySubcategoryDocument = gql`
     query SearchEventsBySubcategory($subCategoryId: Int!) {
   eventSubCategory(id: $subCategoryId) {
@@ -2895,6 +2945,7 @@ export const ShowEventDocument = gql`
     start_time
     end_time
     re_entry
+    is_published
     createdAt
     updatedAt
     deleted

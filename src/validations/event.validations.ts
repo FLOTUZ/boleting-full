@@ -12,6 +12,7 @@ export const CreateEventValidator = y.object().shape({
   re_entry: y.boolean().required(),
   price_from: y.number().min(0),
   price_to: y.number().min(0),
+  is_published: y.boolean(),
   event_logo: y.string(),
   event_banner: y.string(),
   event_sub_categories: y
@@ -35,6 +36,7 @@ export const UpdateEventValidator = y.object().shape({
   re_entry: y.boolean(),
   price_from: y.number().min(0),
   price_to: y.number().min(0),
+  is_published: y.boolean(),
   event_logo: y.string(),
   event_banner: y.string(),
   event_sub_categories: y.array(y.number()).of(y.number()),
