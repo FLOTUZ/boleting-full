@@ -52,40 +52,44 @@ const ShowEventAccessTypes = ({ eventId }: AvailableEventTicketsProps) => {
       </Box>
       <Box>
         <Box mt={8}>
-          {accessTypesList.map((accessType) => {
-            return (
-              <Link
-                key={accessType.id}
-                href={SearchTicketsByEvent(eventId, String(accessType.id))}
-              >
-                <Card
+          {accessTypesList.length == 0 ? (
+            <p> Sin accesos disponibles </p>
+          ) : (
+            accessTypesList.map((accessType) => {
+              return (
+                <Link
                   key={accessType.id}
-                  p={4}
-                  _hover={{
-                    cursor: "pointer",
-                    bg: "gray.100",
-                    color: "black",
-                  }}
-                  _dark={{
-                    _hover: {
-                      bg: "gray.700",
-                      color: "white",
-                    },
-                  }}
-                  display={"flex"}
-                  flexDirection={"row"}
-                  alignItems={"center"}
+                  href={SearchTicketsByEvent(eventId, String(accessType.id))}
                 >
-                  <Box>
-                    <Heading>{accessType.name}</Heading>
-                    <Text>{accessType.description ?? "Sin descripción"}</Text>
-                  </Box>
-                  <Spacer />
-                  <BsArrowRightCircleFill size={30} />
-                </Card>
-              </Link>
-            );
-          })}
+                  <Card
+                    key={accessType.id}
+                    p={4}
+                    _hover={{
+                      cursor: "pointer",
+                      bg: "gray.100",
+                      color: "black",
+                    }}
+                    _dark={{
+                      _hover: {
+                        bg: "gray.700",
+                        color: "white",
+                      },
+                    }}
+                    display={"flex"}
+                    flexDirection={"row"}
+                    alignItems={"center"}
+                  >
+                    <Box>
+                      <Heading>{accessType.name}</Heading>
+                      <Text>{accessType.description ?? "Sin descripción"}</Text>
+                    </Box>
+                    <Spacer />
+                    <BsArrowRightCircleFill size={30} />
+                  </Card>
+                </Link>
+              );
+            })
+          )}
         </Box>
       </Box>
     </IntroAnimationComponent>
