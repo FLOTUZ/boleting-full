@@ -94,7 +94,7 @@ export const TicketService = {
   async selledTicketsByEvent(event_id: number, pagination?: Pagination) {
     return await prisma.ticket.findMany({
       ...pagination,
-      where: { event: { id: event_id } },
+      where: { eventId: event_id, deleted: false },
     });
   },
 
