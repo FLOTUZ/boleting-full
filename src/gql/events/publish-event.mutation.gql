@@ -1,0 +1,6 @@
+mutation PublishEvent($eventId: Int!) {
+  publishEvent(id: $eventId) {
+    id
+    name
+  }
+}

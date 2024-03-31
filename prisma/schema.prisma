@@ -201,6 +201,7 @@ model Event {
   re_entry             Boolean            @default(false)
   price_from           Decimal?           @default(0) @db.Money
   price_to             Decimal?           @db.Money
+  is_published         Boolean            @default(false)
   event_logoId         String?
   event_bannerId       String?
   userId               Int

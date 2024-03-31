@@ -6,7 +6,6 @@ import {
   FormLabel,
   HStack,
   Input,
-  Spacer,
   Switch,
   Text,
   Textarea,
@@ -14,8 +13,10 @@ import {
 } from "@chakra-ui/react";
 import { CreateAccessTypeValidatorForm } from "@/validations";
 import { useRouter } from "next/router";
-import { useCreateAccessTypeMutation } from "@/gql/generated";
-import { log } from "console";
+import {
+  CreateAccessTypeInput,
+  useCreateAccessTypeMutation,
+} from "@/gql/generated";
 
 const CreateAccessTypeView = () => {
   const router = useRouter();
@@ -53,17 +54,13 @@ const CreateAccessTypeView = () => {
       price: 0,
       available_tickets_count: 0,
       enter_and_exit_option: false,
-      eventId: eventId,
+      eventId: Number(eventId),
     },
-    onSubmit: async (values) => {
+    onSubmit: async (values: CreateAccessTypeInput) => {
       await createAccessType({
         variables: {
           data: {
-            name: values.name,
-            description: values.description,
-            price: values.price,
-            enter_and_exit_option: values.enter_and_exit_option,
-            eventId: Number(values.eventId),
+            ...values,
           },
         },
       });
@@ -93,7 +90,7 @@ const CreateAccessTypeView = () => {
             name="description"
             placeholder="Agrega una descripción"
             onChange={form.handleChange}
-            value={form.values.description}
+            value={form.values.description || ""}
           />
 
           {form.errors.description && form.touched.description && (
@@ -110,9 +107,8 @@ const CreateAccessTypeView = () => {
             onChange={form.handleChange}
             value={form.values.price}
           />
-
           {form.errors.price && form.touched.price && (
-            <Text color={"red"}>{form.errors.price}</Text>
+            <Text color={"red"}>{String(form.errors.price)}</Text>
           )}
 
           <FormLabel htmlFor="available_tickets_count" mt={4}>
@@ -123,7 +119,7 @@ const CreateAccessTypeView = () => {
             name="available_tickets_count"
             type="number"
             onChange={form.handleChange}
-            value={form.values.available_tickets_count}
+            value={form.values.available_tickets_count || 0}
           />
 
           <FormLabel htmlFor="enter_and_exit_option" mt={4}>
@@ -133,8 +129,8 @@ const CreateAccessTypeView = () => {
             name="enter_and_exit_option"
             size={"lg"}
             onChange={form.handleChange}
-            isChecked={form.values.enter_and_exit_option}
-            checked={form.values.enter_and_exit_option}
+            isChecked={form.values.enter_and_exit_option || false}
+            checked={form.values.enter_and_exit_option || false}
           />
 
           {form.errors.enter_and_exit_option &&

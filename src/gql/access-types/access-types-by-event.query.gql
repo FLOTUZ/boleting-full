@@ -1,5 +1,5 @@
 query AccessTypesByEvent($eventId: Int!) {
-  courtesyAccessTypes(eventId: $eventId) {
+  accessTypesByEventId(eventId: $eventId) {
     id
     name
     description

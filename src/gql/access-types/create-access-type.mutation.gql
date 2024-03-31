@@ -3,6 +3,7 @@ mutation CreateAccessType($data: CreateAccessTypeInput!) {
     id
     name
     description
+    available_tickets_count
     enter_and_exit_option
     price
     createdAt

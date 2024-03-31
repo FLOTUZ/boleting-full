@@ -148,11 +148,20 @@ export const EventResolver = {
     deleteEvent: async (_: any, { id }: Event, __: IGraphqlContext) => {
       return await EventService.deleteEvent(id);
     },
+
+    publishEvent: async (
+      _: any,
+      { id }: Event,
+      { id_organization, id_user }: IGraphqlContext
+    ) => {
+      if (!id_user) throw new AuthenticationError("User not authenticated");
+      return await EventService.publishEvent(id, id_organization!);
+    },
   },
 
   Event: {
-    createdBy: async ({ id }: Event, _: any, __: IGraphqlContext) => {
-      return await EventService.createdBy(id);
+    createdBy: async ({ userId }: Event, _: any, __: IGraphqlContext) => {
+      return await UserService.userById(userId);
     },
 
     event_sub_categories: async (

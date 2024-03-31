@@ -2,7 +2,7 @@ import IntroAnimationComponent from "@/components/animations/intro-animation.com
 import ProgressLoaderComponent from "@/components/loaders/progress-loader.component";
 import {
   AccessType,
-  useAccessTypesByEventLazyQuery,
+  useCourtesyAccessTypesByEventLazyQuery,
   useCreateCourtecyMutation,
 } from "@/gql/generated";
 import { ShowCourtecyTicketPath } from "@/routes";
@@ -31,7 +31,7 @@ const CreateCourtecyTicketView = () => {
   const [
     GET_ACCESS_TYPES,
     { loading: loadingAccessTypes, error: errorAccessTypes },
-  ] = useAccessTypesByEventLazyQuery({
+  ] = useCourtesyAccessTypesByEventLazyQuery({
     variables: { eventId: Number(eventId) },
     onCompleted(data) {
       setAccessTypesList(data.courtesyAccessTypes as AccessType[]);

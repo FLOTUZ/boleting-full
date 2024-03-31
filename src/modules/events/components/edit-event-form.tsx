@@ -7,13 +7,12 @@ import {
   useUpdateEventMutation,
 } from "@/gql/generated";
 import { UpdateEventValidator } from "@/validations";
-import { useFormik, FormikProvider } from "formik";
+import { useFormik } from "formik";
 import {
   Box,
   Button,
   Center,
   Checkbox,
-  Container,
   FormLabel,
   HStack,
   Input,
@@ -247,14 +246,6 @@ const EditEventForm = () => {
           <Text color="red">{form.errors.end_time.toString()}</Text>
         )}
 
-        <FormLabel htmlFor="re_entry">Permitir reingreso:</FormLabel>
-        <Switch
-          name="re_entry"
-          size={"lg"}
-          isChecked={form.values.re_entry ?? false}
-          onChange={form.handleChange}
-        />
-
         {form.errors.re_entry && form.touched.re_entry && (
           <Text color="red">{form.errors.re_entry}</Text>
         )}
@@ -346,6 +337,14 @@ const EditEventForm = () => {
             <Text color={"red"}>{form.errors.base_64_event_banner}</Text>
           )}
 
+        <FormLabel htmlFor="re_entry">Permitir reingreso:</FormLabel>
+        <Switch
+          name="re_entry"
+          size={"lg"}
+          isChecked={form.values.re_entry ?? false}
+          onChange={form.handleChange}
+        />
+
         <HStack mt={4} mb={16}>
           <Spacer />
           <Button
@@ -353,7 +352,7 @@ const EditEventForm = () => {
             onClick={form.submitForm}
             isLoading={loadingUpdateEvent}
           >
-            Actualizar
+            Guardar
           </Button>
         </HStack>
       </form>

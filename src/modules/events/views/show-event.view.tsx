@@ -7,7 +7,12 @@ import ProgressLoaderComponent from "@/components/loaders/progress-loader.compon
 
 import SelledTicketsByEventDatatable from "../components/selled-tickets-by-event.datatable";
 
-import { Event, Ticket, useShowEventLazyQuery } from "@/gql/generated";
+import {
+  Event,
+  Ticket,
+  usePublishEventMutation,
+  useShowEventLazyQuery,
+} from "@/gql/generated";
 import {
   Badge,
   Box,
@@ -16,6 +21,7 @@ import {
   Heading,
   Image,
   Text,
+  useToast,
 } from "@chakra-ui/react";
 import {
   AccessTypesPath,
@@ -26,29 +32,56 @@ import {
 import { IoTicketSharp } from "react-icons/io5";
 import { PiUsersFourFill } from "react-icons/pi";
 import { FaGift } from "react-icons/fa";
+import { VscBroadcast } from "react-icons/vsc";
 import { useRouter } from "next/router";
 
 const ShowEventView = () => {
   const router = useRouter();
+  const toast = useToast();
   const { id: eventId } = router.query;
 
   const [dataEvent, setDataEvent] = useState<Event>();
   const [selledTickets, setSelledTickets] = useState<Ticket[]>([]);
 
-  const [
-    GET_EVENT,
-    { loading: selledByEventLoader, refetch: refetchSelledByEvent },
-  ] = useShowEventLazyQuery({
-    fetchPolicy: "no-cache",
+  const [PUBLISH_EVENT] = usePublishEventMutation({
     variables: { eventId: Number(eventId) },
-    onCompleted(data) {
-      setDataEvent(data.event as Event);
-      setSelledTickets(data.selled_tickets_by_event as Ticket[]);
+    onCompleted() {
+      refetch();
+      toast({
+        title: dataEvent?.is_published
+          ? "Evento publicado"
+          : "Evento despublicado",
+        description: dataEvent?.is_published
+          ? "El evento fue publicado"
+          : "El evento fue despublicado",
+        status: dataEvent?.is_published ? "success" : "info",
+        duration: 8000,
+        isClosable: true,
+      });
     },
     onError(error) {
-      console.log(error);
+      toast({
+        title: "Error al publicar evento",
+        description: error.message,
+        status: "error",
+        duration: 8000,
+        isClosable: true,
+      });
     },
   });
+
+  const [GET_EVENT, { loading: selledByEventLoader, refetch }] =
+    useShowEventLazyQuery({
+      fetchPolicy: "no-cache",
+      variables: { eventId: Number(eventId) },
+      onCompleted(data) {
+        setDataEvent(data.event as Event);
+        setSelledTickets(data.selled_tickets_by_event as Ticket[]);
+      },
+      onError(error) {
+        console.log(error);
+      },
+    });
 
   useEffect(() => {
     if (eventId) {
@@ -92,6 +125,18 @@ const ShowEventView = () => {
             </Box>
           </Button>
         </Link>
+
+        <Button
+          mb={4}
+          ml={4}
+          colorScheme={dataEvent?.is_published ? "red" : "green"}
+          onClick={() => PUBLISH_EVENT()}
+        >
+          {dataEvent?.is_published ? "Despublicar" : "Publicar"}
+          <Box pl={2}>
+            <VscBroadcast />
+          </Box>
+        </Button>
 
         <Card mb={4} p={4}>
           <Box>
@@ -142,7 +187,7 @@ const ShowEventView = () => {
         <SelledTicketsByEventDatatable
           progressPending={selledByEventLoader}
           data={selledTickets}
-          refetch={refetchSelledByEvent}
+          refetch={refetch}
         />
       </Box>
     </IntroAnimationComponent>

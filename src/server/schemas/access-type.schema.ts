@@ -5,6 +5,7 @@ export const AccessTypeSchema = gql`
     name: String!
     description: String
     enter_and_exit_option: Boolean
+    available_tickets_count: Int
     price: Decimal!
     eventId: Int!
   }

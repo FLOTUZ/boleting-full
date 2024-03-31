@@ -3,7 +3,6 @@ import { prisma } from "@/server";
 import { Pagination } from "../common";
 import { PrismaError } from "../utils";
 import { Event } from "@prisma/client";
-import { supabaseUploadFile } from "@/utils/supabase-upload.util";
 
 //
 // Service for Event model
@@ -68,23 +67,29 @@ export const EventService = {
     });
   },
 
-  // ======================= FOR ANOTHER RESOLVERS =======================
+  async publishEvent(id: number, organizationId: number) {
+    const event = await prisma.event.findUnique({ where: { id } });
 
-  async createdBy(eventId: number) {
-    return await prisma.event
-      .findUnique({ where: { id: eventId } })
-      .createdBy();
+    return await prisma.event.update({
+      where: { id, organizationId },
+      data: { is_published: event?.is_published ? false : true },
+    });
   },
+
+  // ======================= FOR ANOTHER RESOLVERS =======================
 
   async eventsByOrganization(id_organization: number) {
     return await prisma.event.findMany({
-      where: { organizationId: id_organization },
+      where: { is_published: true, organizationId: id_organization },
     });
   },
 
   async eventsCountByCategory(id_category: number) {
     return await prisma.event.count({
-      where: { event_sub_categories: { some: { id: id_category } } },
+      where: {
+        event_sub_categories: { some: { id: id_category } },
+        is_published: true,
+      },
     });
   },
 
@@ -96,7 +101,10 @@ export const EventService = {
 
   async eventsBySubCategory(subcategoryId: number) {
     return await prisma.event.findMany({
-      where: { event_sub_categories: { some: { id: subcategoryId } } },
+      where: {
+        is_published: true,
+        event_sub_categories: { some: { id: subcategoryId } },
+      },
     });
   },
 
@@ -104,7 +112,7 @@ export const EventService = {
     return await prisma.event.findMany({
       skip: pagination?.skip,
       take: pagination?.take,
-      where: { deleted: false },
+      where: { is_published: true, deleted: false },
       orderBy: { selled_tickets: { _count: "desc" } },
     });
   },
@@ -113,6 +121,7 @@ export const EventService = {
     return await prisma.event.findMany({
       ...pagination,
       where: {
+        is_published: true,
         OR: [
           { name: { contains: query, mode: "insensitive" } },
           { description: { contains: query, mode: "insensitive" } },
@@ -126,6 +135,7 @@ export const EventService = {
     return await prisma.event.count({
       where: {
         organizationId,
+        is_published: true,
         end_date: { gt: new Date() },
         deleted: false,
       },

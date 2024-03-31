@@ -10,6 +10,7 @@ query ShowEvent($eventId: Int!) {
     start_time
     end_time
     re_entry
+    is_published
     createdAt
     updatedAt
     deleted
