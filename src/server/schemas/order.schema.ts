@@ -1,6 +1,12 @@
 import { gql } from "graphql-tag";
 
 export const OrderSchema = gql`
+  input CreateFreeOrderInput {
+    eventId: Int!
+    buyed_access_count: Int!
+    access_typeId: Int!
+  }
+
   input CreateOpenVenueOrderInput {
     eventId: Int!
     buyed_access_count: Int!
@@ -50,6 +56,7 @@ export const OrderSchema = gql`
 
   type Mutation {
     updateOrder(id: ID!, data: UpdateOrderInput!): Order
+    createFreeOrder(data: CreateFreeOrderInput!): Order
     deleteOrder(id: ID!): Order
   }
 `;

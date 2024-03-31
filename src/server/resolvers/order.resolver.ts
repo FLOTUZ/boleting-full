@@ -64,6 +64,29 @@ export const OrderResolver = {
       return OrderService.updateOrder(id, data);
     },
 
+    createFreeOrder: async (
+      _: any,
+      {
+        data,
+      }: {
+        data: Order & {
+          eventId: number;
+          payment_method: PaymentMethodType;
+          access_typeId: number;
+        };
+      },
+      { type, id_user }: IGraphqlContext
+    ) => {
+      if (type === "USER" || type == null || id_user == null)
+        throw new AuthenticationError("User not authenticated");
+
+      return await OrderService.createFreeOrder(
+        id_user,
+        data.eventId,
+        data.access_typeId
+      );
+    },
+
     deleteOrder: async (
       _: any,
       { id }: { id: number },

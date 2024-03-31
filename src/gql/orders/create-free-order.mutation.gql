@@ -1,0 +1,11 @@
+mutation CreateFreeOrder($data: CreateFreeOrderInput!) {
+  createFreeOrder(data: $data) {
+    id
+    event {
+      name
+    }
+    access_type {
+      name
+    }
+  }
+}

@@ -5,10 +5,12 @@ import { ShowOrderPath } from "@/routes";
 import { Order, useCurrentClientOrdersLazyQuery } from "@/gql/generated";
 import { Button, Heading } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import ProgressLoaderComponent from "@/components/loaders/progress-loader.component";
 
 const OrdersRoute = () => {
   const [ordersList, setOrdersList] = useState<Order[]>([]);
   const [GET_ORDERS, { data, loading }] = useCurrentClientOrdersLazyQuery({
+    fetchPolicy: "network-only",
     onCompleted(data) {
       setOrdersList(data.currentClientOrders as Order[]);
     },
@@ -17,6 +19,10 @@ const OrdersRoute = () => {
   useEffect(() => {
     GET_ORDERS();
   }, [GET_ORDERS]);
+
+  if (loading) {
+    return <ProgressLoaderComponent />;
+  }
 
   return (
     <LandingLayout>

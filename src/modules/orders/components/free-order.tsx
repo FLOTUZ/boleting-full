@@ -10,6 +10,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import Link from "next/link";
+import { useState } from "react";
 
 interface FreeOrderProps {
   accessType: AccessType;
@@ -17,6 +18,8 @@ interface FreeOrderProps {
 }
 
 const FreeOrder = ({ accessType, onSubmit }: FreeOrderProps) => {
+  const [acceptedTandC, setAcceptedTandC] = useState(false);
+
   return (
     <Center>
       <Card p={4} w={"80%"}>
@@ -31,7 +34,11 @@ const FreeOrder = ({ accessType, onSubmit }: FreeOrderProps) => {
           <Heading size={"xl"}>{accessType?.description}</Heading>
         </Box>
         <Box display={"flex"} alignItems={"center"} my={4}>
-          <Checkbox mr={1}>
+          <Checkbox
+            mr={1}
+            isChecked={acceptedTandC}
+            onChange={() => setAcceptedTandC(!acceptedTandC)}
+          >
             Al dar click en registrar, usted acepta los
           </Checkbox>
 
@@ -46,7 +53,7 @@ const FreeOrder = ({ accessType, onSubmit }: FreeOrderProps) => {
             </Text>
           </Link>
         </Box>
-        <Button w={"full"} onClick={onSubmit}>
+        <Button w={"full"} isDisabled={!acceptedTandC} onClick={onSubmit}>
           Registrar
         </Button>
       </Card>

@@ -6,7 +6,7 @@ import {
 import { Box, Heading, Text, useMediaQuery } from "@chakra-ui/react";
 import ProductDetailComponent from "@/modules/orders/components/product-detail.component";
 import { useRouter } from "next/router";
-import { PaymentPath } from "@/routes";
+import { CreateOrderPath, PaymentPath } from "@/routes";
 
 interface AvailableEventTicketsProps {
   eventId: string;
@@ -60,6 +60,16 @@ const ShowavailableTicketsByAccessTypesView = ({
         <ProductDetailComponent
           key={0}
           onSubmit={(buyedTikets) => {
+            if (Number(accessType?.price) === 0) {
+              router.push(
+                CreateOrderPath(
+                  String(eventId),
+                  String(accessTypeId),
+                  Number(buyedTikets)
+                )
+              );
+              return;
+            }
             router.push(PaymentPath(eventId, accessTypeId, buyedTikets));
           }}
         />
