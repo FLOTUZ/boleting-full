@@ -1,13 +1,5 @@
 import ProgressLoaderComponent from "@/components/loaders/progress-loader.component";
-import {
-  Box,
-  Button,
-  Divider,
-  GridItem,
-  SimpleGrid,
-  Text,
-  useMediaQuery,
-} from "@chakra-ui/react";
+import { Box, Button, Divider, Text, useMediaQuery } from "@chakra-ui/react";
 import Image from "next/image";
 import {
   AccessType,
@@ -20,21 +12,16 @@ import { CgMathMinus, CgMathPlus } from "react-icons/cg";
 import moment from "moment";
 
 interface ProductDetailProps {
-  defaultBuyedTickets: number;
   onSubmit: (ticketQuantity: number) => void;
 }
 
-const ProductDetailComponent = ({
-  defaultBuyedTickets,
-  onSubmit,
-}: ProductDetailProps) => {
+const ProductDetailComponent = ({ onSubmit }: ProductDetailProps) => {
   const [isMobile] = useMediaQuery("(max-width: 767px)");
   const router = useRouter();
 
   const { eventId, accessTypeId } = router.query;
 
-  const [ticketQuantity, setTicketQuantity] =
-    useState<number>(defaultBuyedTickets);
+  const [ticketQuantity, setTicketQuantity] = useState<number>(1);
   const [accessType, setAccessType] = useState<AccessType>();
   const [event, setEvent] = useState<Event>();
 
@@ -54,12 +41,6 @@ const ProductDetailComponent = ({
       GET_ACCESS_TYPE();
     }
   }, [accessTypeId, GET_ACCESS_TYPE]);
-
-  useEffect(() => {
-    if (ticketQuantity) {
-      onSubmit(ticketQuantity);
-    }
-  }, [ticketQuantity, onSubmit]);
 
   if (loading) {
     return <ProgressLoaderComponent />;
@@ -148,6 +129,18 @@ const ProductDetailComponent = ({
                 ${accessType?.price * ticketQuantity} MXN
               </Text>
             </Box>
+
+            <Button
+              mt={8}
+              w={"100%"}
+              h={"3rem"}
+              colorScheme="green"
+              onClick={() => {
+                onSubmit(ticketQuantity);
+              }}
+            >
+              Comprar
+            </Button>
           </Box>
         </Box>
       </Box>

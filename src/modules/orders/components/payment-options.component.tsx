@@ -1,11 +1,8 @@
 import { BsCashCoin } from "react-icons/bs";
 import CashComponent from "./cash.component";
 import ExpandedPanelComponent from "./expanded-panel";
-import { Box, GridItem, Heading, Text, useMediaQuery } from "@chakra-ui/react";
-import Link from "next/link";
+import { Box, Heading, Text, useMediaQuery } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { CreateOrderPath } from "@/routes";
-import { useState } from "react";
 import { AiOutlineCreditCard } from "react-icons/ai";
 
 interface PaymentOptionsProps {

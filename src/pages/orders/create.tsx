@@ -6,14 +6,13 @@ import IntroAnimationComponent from "@/components/animations/intro-animation.com
 import { ShowOrderPath } from "@/routes";
 import { Box, Button, Heading } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 import { useCreateOpenVenuePaymentLinkLazyQuery } from "@/gql/generated";
 
 const CreateOrderRoute = () => {
   const router = useRouter();
   const { eventId, accessTypeId, buyedTicketsCount } = router.query;
 
-  const [CHECK_OPEN_VENUE, { data, loading, error }] =
+  const [CHECK_OPEN_VENUE, { loading }] =
     useCreateOpenVenuePaymentLinkLazyQuery({
       variables: {
         data: {
