@@ -103,5 +103,12 @@ export const PaymentPath = (
   `/orders/payment?eventId=${eventId}&accessTypeId=${accessTypeId}&buyedTicketsCount=${buyedTicketsCount}`;
 
 export const ShowOrderPath = (orderId: string) => `/orders/${orderId}`;
+
+export const SuccessPaymentPath = (orderId: string) =>
+  `/orders/${orderId}/success`;
+
+export const CancelPaymentPath = (orderId: string) =>
+  `/orders/${orderId}/cancel`;
+
 export const ShowOrderCheckoutPath = (orderId: string) =>
   `/orders/${orderId}/checkout`;
