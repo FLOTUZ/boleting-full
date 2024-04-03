@@ -1722,6 +1722,13 @@ export type CurrentClientOrdersQueryVariables = Exact<{ [key: string]: never; }>
 
 export type CurrentClientOrdersQuery = { __typename?: 'Query', currentClientOrders: Array<{ __typename?: 'Order', id: number, buyed_access_count: number, eventId?: number | null, event?: { __typename?: 'Event', id: number, name: string, start_date: any, end_date?: any | null, event_location: string, event_logo?: { __typename?: 'Image', id: string, url: string } | null } | null }> };
 
+export type OrderDetailsQueryVariables = Exact<{
+  orderId: Scalars['Int']['input'];
+}>;
+
+
+export type OrderDetailsQuery = { __typename?: 'Query', order?: { __typename?: 'Order', id: number, buyed_access_count: number, createdAt: any, event?: { __typename?: 'Event', id: number, name: string, start_date: any, end_date?: any | null, event_logo?: { __typename?: 'Image', id: string, url: string } | null, event_banner?: { __typename?: 'Image', id: string, url: string } | null } | null, selled_tickets?: Array<{ __typename?: 'Ticket', id: number, note?: string | null, serial_number: string, is_used: boolean, access_type?: { __typename?: 'AccessType', id: number, name: string, description?: string | null, enter_and_exit_option: boolean } | null }> | null } | null };
+
 export type SelectPaymentMethodQueryVariables = Exact<{
   accessTypeId: Scalars['Int']['input'];
   eventId: Scalars['Int']['input'];
@@ -3412,6 +3419,69 @@ export function useCurrentClientOrdersLazyQuery(baseOptions?: Apollo.LazyQueryHo
 export type CurrentClientOrdersQueryHookResult = ReturnType<typeof useCurrentClientOrdersQuery>;
 export type CurrentClientOrdersLazyQueryHookResult = ReturnType<typeof useCurrentClientOrdersLazyQuery>;
 export type CurrentClientOrdersQueryResult = Apollo.QueryResult<CurrentClientOrdersQuery, CurrentClientOrdersQueryVariables>;
+export const OrderDetailsDocument = gql`
+    query OrderDetails($orderId: Int!) {
+  order(id: $orderId) {
+    id
+    buyed_access_count
+    createdAt
+    event {
+      id
+      name
+      start_date
+      end_date
+      event_logo {
+        id
+        url
+      }
+      event_banner {
+        id
+        url
+      }
+    }
+    selled_tickets {
+      id
+      note
+      serial_number
+      is_used
+      access_type {
+        id
+        name
+        description
+        enter_and_exit_option
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useOrderDetailsQuery__
+ *
+ * To run a query within a React component, call `useOrderDetailsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useOrderDetailsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useOrderDetailsQuery({
+ *   variables: {
+ *      orderId: // value for 'orderId'
+ *   },
+ * });
+ */
+export function useOrderDetailsQuery(baseOptions: Apollo.QueryHookOptions<OrderDetailsQuery, OrderDetailsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<OrderDetailsQuery, OrderDetailsQueryVariables>(OrderDetailsDocument, options);
+      }
+export function useOrderDetailsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<OrderDetailsQuery, OrderDetailsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<OrderDetailsQuery, OrderDetailsQueryVariables>(OrderDetailsDocument, options);
+        }
+export type OrderDetailsQueryHookResult = ReturnType<typeof useOrderDetailsQuery>;
+export type OrderDetailsLazyQueryHookResult = ReturnType<typeof useOrderDetailsLazyQuery>;
+export type OrderDetailsQueryResult = Apollo.QueryResult<OrderDetailsQuery, OrderDetailsQueryVariables>;
 export const SelectPaymentMethodDocument = gql`
     query SelectPaymentMethod($accessTypeId: Int!, $eventId: Int!) {
   accessType(id: $accessTypeId) {

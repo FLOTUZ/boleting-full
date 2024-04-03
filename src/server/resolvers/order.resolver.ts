@@ -7,6 +7,7 @@ import {
   UpdateOrderValidator,
 } from "@/validations";
 import {
+  AccessTypeService,
   AuthorizedDealerService,
   EventService,
   OrderService,
@@ -103,6 +104,14 @@ export const OrderResolver = {
   Order: {
     event: async ({ eventId }: Order, _: any, __: IGraphqlContext) => {
       return await EventService.event(eventId);
+    },
+
+    access_type: async (
+      { access_typeId }: Order,
+      _: any,
+      __: IGraphqlContext
+    ) => {
+      return await AccessTypeService.accessType(access_typeId);
     },
 
     payment_method: async (

@@ -1,0 +1,33 @@
+query OrderDetails($orderId: Int!) {
+  order(id: $orderId) {
+    id
+    buyed_access_count
+    createdAt
+    event {
+      id
+      name
+      start_date
+      end_date
+      event_logo {
+        id
+        url
+      }
+      event_banner {
+        id
+        url
+      }
+    }
+    selled_tickets {
+      id
+      note
+      serial_number
+      is_used
+      access_type {
+        id
+        name
+        description
+        enter_and_exit_option
+      }
+    }
+  }
+}
