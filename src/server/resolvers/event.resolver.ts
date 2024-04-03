@@ -78,7 +78,10 @@ export const EventResolver = {
       },
       { id_user, id_organization }: IGraphqlContext
     ) => {
-      if (!id_user) throw new AuthenticationError("User not authenticated");
+      if (!id_user)
+        throw new AuthenticationError({
+          message: "User not authenticated",
+        });
       await validateData({ schema: CreateEventValidator, data });
 
       // Remove base64 event logo and banner properties form data object
@@ -154,7 +157,10 @@ export const EventResolver = {
       { id }: Event,
       { id_organization, id_user }: IGraphqlContext
     ) => {
-      if (!id_user) throw new AuthenticationError("User not authenticated");
+      if (!id_user)
+        throw new AuthenticationError({
+          message: "User not authenticated",
+        });
       return await EventService.publishEvent(id, id_organization!);
     },
   },

@@ -23,16 +23,14 @@ interface LandingLayoutProps {
 }
 
 const LandingLayout = ({ children }: LandingLayoutProps) => {
-  const [isLargerThan800] = useMediaQuery("(min-width: 420px)");
   const [eventSubCategories, setEventSubCategories] = useState<
     EventSubCategory[]
   >([]);
-  const [GET_SUBCATEGORIES, { loading, error }] =
-    useShowEventSubCategoriesLazyQuery({
-      onCompleted(data) {
-        setEventSubCategories(data.eventSubCategories as EventSubCategory[]);
-      },
-    });
+  const [GET_SUBCATEGORIES] = useShowEventSubCategoriesLazyQuery({
+    onCompleted(data) {
+      setEventSubCategories(data.eventSubCategories as EventSubCategory[]);
+    },
+  });
 
   useEffect(() => {
     GET_SUBCATEGORIES();

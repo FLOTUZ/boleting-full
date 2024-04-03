@@ -994,6 +994,7 @@ export type Query = {
   tickets?: Maybe<Array<Ticket>>;
   user?: Maybe<User>;
   userClient: UserClient;
+  userClientIsAuthenticated: Scalars['Boolean']['output'];
   userClients: Array<UserClient>;
   users?: Maybe<Array<Maybe<User>>>;
 };
@@ -1902,6 +1903,11 @@ export type ShowCourtesyTicketsQueryVariables = Exact<{
 
 
 export type ShowCourtesyTicketsQuery = { __typename?: 'Query', courtecy_tickets?: Array<{ __typename?: 'Ticket', id: number, note?: string | null, access_typeId?: number | null, is_used: boolean, createdAt: any, access_type?: { __typename?: 'AccessType', id: number, name: string } | null }> | null };
+
+export type UserClientIsAuthenticatedQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type UserClientIsAuthenticatedQuery = { __typename?: 'Query', userClientIsAuthenticated: boolean };
 
 export type UserClientQueryVariables = Exact<{
   userClientId: Scalars['Int']['input'];
@@ -4553,6 +4559,38 @@ export function useShowCourtesyTicketsLazyQuery(baseOptions?: Apollo.LazyQueryHo
 export type ShowCourtesyTicketsQueryHookResult = ReturnType<typeof useShowCourtesyTicketsQuery>;
 export type ShowCourtesyTicketsLazyQueryHookResult = ReturnType<typeof useShowCourtesyTicketsLazyQuery>;
 export type ShowCourtesyTicketsQueryResult = Apollo.QueryResult<ShowCourtesyTicketsQuery, ShowCourtesyTicketsQueryVariables>;
+export const UserClientIsAuthenticatedDocument = gql`
+    query UserClientIsAuthenticated {
+  userClientIsAuthenticated
+}
+    `;
+
+/**
+ * __useUserClientIsAuthenticatedQuery__
+ *
+ * To run a query within a React component, call `useUserClientIsAuthenticatedQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserClientIsAuthenticatedQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserClientIsAuthenticatedQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useUserClientIsAuthenticatedQuery(baseOptions?: Apollo.QueryHookOptions<UserClientIsAuthenticatedQuery, UserClientIsAuthenticatedQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UserClientIsAuthenticatedQuery, UserClientIsAuthenticatedQueryVariables>(UserClientIsAuthenticatedDocument, options);
+      }
+export function useUserClientIsAuthenticatedLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserClientIsAuthenticatedQuery, UserClientIsAuthenticatedQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UserClientIsAuthenticatedQuery, UserClientIsAuthenticatedQueryVariables>(UserClientIsAuthenticatedDocument, options);
+        }
+export type UserClientIsAuthenticatedQueryHookResult = ReturnType<typeof useUserClientIsAuthenticatedQuery>;
+export type UserClientIsAuthenticatedLazyQueryHookResult = ReturnType<typeof useUserClientIsAuthenticatedLazyQuery>;
+export type UserClientIsAuthenticatedQueryResult = Apollo.QueryResult<UserClientIsAuthenticatedQuery, UserClientIsAuthenticatedQueryVariables>;
 export const UserClientDocument = gql`
     query UserClient($userClientId: Int!) {
   userClient(id: $userClientId) {

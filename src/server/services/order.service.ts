@@ -21,6 +21,7 @@ export const OrderService = {
     return prisma.order.findMany({
       ...pagination,
       where: { deleted: false },
+      orderBy: { createdAt: "desc" },
     });
   },
 
@@ -200,6 +201,7 @@ export const OrderService = {
     return await prisma.order.findMany({
       include: { event: true },
       where: { user_clientId: id_user, deleted: false },
+      orderBy: { createdAt: "desc" },
     });
   },
 };

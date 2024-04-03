@@ -42,7 +42,9 @@ export const OrderResolver = {
       { type, id_user }: IGraphqlContext
     ) => {
       if (type === "USER" || type == null || id_user == null)
-        throw new AuthenticationError("User not authenticated");
+        throw new AuthenticationError({
+          message: "User not authenticated",
+        });
       // await validateData({ schema: CreateOrderValidator, data });
 
       return await OrderService.createOpenVenueOrder(
@@ -78,7 +80,9 @@ export const OrderResolver = {
       { type, id_user }: IGraphqlContext
     ) => {
       if (type === "USER" || type == null || id_user == null)
-        throw new AuthenticationError("User not authenticated");
+        throw new AuthenticationError({
+          message: "User not authenticated",
+        });
 
       return await OrderService.createFreeOrder(
         id_user,
