@@ -1,11 +1,13 @@
-import IntroAnimationComponent from "@/components/animations/intro-animation.component";
-import ProgressLoaderComponent from "@/components/loaders/progress-loader.component";
-import { Order, useOrderDetailsLazyQuery } from "@/gql/generated";
-import AutenticationClientComponent from "@/layouts/autentication-client.component";
-import LandingLayout from "@/layouts/landing-layout.component";
-import { Heading } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+
+import LandingLayout from "@/layouts/landing-layout.component";
+import IntroAnimationComponent from "@/components/animations/intro-animation.component";
+import ProgressLoaderComponent from "@/components/loaders/progress-loader.component";
+import AutenticationClientComponent from "@/layouts/autentication-client.component";
+
+import { Order, useOrderDetailsLazyQuery } from "@/gql/generated";
+import { Heading } from "@chakra-ui/react";
 
 const OrderDetailsRoute = () => {
   const router = useRouter();
@@ -13,17 +15,15 @@ const OrderDetailsRoute = () => {
 
   const [order, setOrder] = useState<Order | null>(null);
 
-  const [
-    GET_ORDER_DETAILS,
-    { data: orderDetails, loading: orderDetailsLoading },
-  ] = useOrderDetailsLazyQuery({
-    variables: {
-      orderId: Number(orderId),
-    },
-    onCompleted(data) {
-      setOrder(data.order as Order);
-    },
-  });
+  const [GET_ORDER_DETAILS, { loading: orderDetailsLoading }] =
+    useOrderDetailsLazyQuery({
+      variables: {
+        orderId: Number(orderId),
+      },
+      onCompleted(data) {
+        setOrder(data.order as Order);
+      },
+    });
 
   useEffect(() => {
     if (orderId) {
