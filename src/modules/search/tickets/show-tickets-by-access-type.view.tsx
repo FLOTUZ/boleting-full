@@ -4,7 +4,9 @@ import {
   useShowTicketsByAccessTypeLazyQuery,
 } from "@/gql/generated";
 import { Box, Heading, Text, useMediaQuery } from "@chakra-ui/react";
-import SelectPaymentMethod from "@/modules/orders/views/select-payment-method.view";
+import ProductDetailComponent from "@/modules/orders/components/product-detail.component";
+import { useRouter } from "next/router";
+import { CreateOrderPath, PaymentPath } from "@/routes";
 
 interface AvailableEventTicketsProps {
   eventId: string;
@@ -12,17 +14,19 @@ interface AvailableEventTicketsProps {
 }
 
 const ShowavailableTicketsByAccessTypesView = ({
+  eventId,
   accessTypeId,
 }: AvailableEventTicketsProps) => {
+  const router = useRouter();
+
   const [accessType, setAccessType] = useState<AccessType>();
   const [isMobile] = useMediaQuery("(max-width: 767px)");
 
-  const [GET_TICKETS_BY_ACCESS_TYPE, { loading, error }] =
-    useShowTicketsByAccessTypeLazyQuery({
-      onCompleted(data) {
-        setAccessType(data.accessType as AccessType);
-      },
-    });
+  const [GET_TICKETS_BY_ACCESS_TYPE] = useShowTicketsByAccessTypeLazyQuery({
+    onCompleted(data) {
+      setAccessType(data.accessType as AccessType);
+    },
+  });
 
   useEffect(() => {
     if (accessTypeId) {
@@ -41,7 +45,7 @@ const ShowavailableTicketsByAccessTypesView = ({
         flexWrap={"wrap"}
         justifyContent={isMobile ? "start" : "center"}
       >
-        <Heading mr={2}>Tickets de </Heading>
+        <Heading mr={2}>Tickets</Heading>
         <Text mx={isMobile ? 0 : 2} fontSize={"3xl"} fontWeight="thin">
           {accessType?.name}
         </Text>
@@ -52,7 +56,24 @@ const ShowavailableTicketsByAccessTypesView = ({
           {accessType?.event.name}
         </Text>
       </Box>
-      <SelectPaymentMethod />
+      <Box>
+        <ProductDetailComponent
+          key={0}
+          onSubmit={(buyedTikets) => {
+            if (Number(accessType?.price) === 0) {
+              router.push(
+                CreateOrderPath(
+                  String(eventId),
+                  String(accessTypeId),
+                  Number(buyedTikets)
+                )
+              );
+              return;
+            }
+            router.push(PaymentPath(eventId, accessTypeId, buyedTikets));
+          }}
+        />
+      </Box>
     </>
   );
 };

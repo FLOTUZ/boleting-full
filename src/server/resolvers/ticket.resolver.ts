@@ -41,8 +41,10 @@ export const TicketResolver = {
 
     selled_tickets_by_event: async (
       _: any,
-      { pagination }: Args,
-      { event_id }: { event_id: number },
+      {
+        event_id,
+        pagination,
+      }: { event_id: number; pagination: Args["pagination"] },
       __: IGraphqlContext
     ) => {
       return await TicketService.selledTicketsByEvent(event_id, pagination);

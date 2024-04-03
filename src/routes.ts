@@ -5,7 +5,7 @@ export const LoginClientPath = "/auth/client";
 export const RegisterClientPath = "/auth/client/register";
 export const ProfilePath = "/profile";
 export const DashboardPath = "/dashboard";
-
+export const TermsAndConditionsPath = "/terms-and-conditions";
 export const PaymentIntentAPIPath = "/api/create-payment-intent";
 
 // ============ ORGANIZATIONS ============
@@ -95,6 +95,20 @@ export const CreateOrderPath = (
 ) =>
   `/orders/create?eventId=${eventId}&accessTypeId=${accessTypeId}&buyedTicketsCount=${buyedTicketsCount}`;
 
+export const PaymentPath = (
+  eventId: string,
+  accessTypeId: string,
+  buyedTicketsCount: number
+) =>
+  `/orders/payment?eventId=${eventId}&accessTypeId=${accessTypeId}&buyedTicketsCount=${buyedTicketsCount}`;
+
 export const ShowOrderPath = (orderId: string) => `/orders/${orderId}`;
+
+export const SuccessPaymentPath = (orderId: string) =>
+  `/orders/${orderId}/success`;
+
+export const CancelPaymentPath = (orderId: string) =>
+  `/orders/${orderId}/cancel`;
+
 export const ShowOrderCheckoutPath = (orderId: string) =>
   `/orders/${orderId}/checkout`;

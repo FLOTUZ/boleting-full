@@ -182,6 +182,12 @@ export type CreateEventSubCategoryInput = {
   name: Scalars['String']['input'];
 };
 
+export type CreateFreeOrderInput = {
+  access_typeId: Scalars['Int']['input'];
+  buyed_access_count: Scalars['Int']['input'];
+  eventId: Scalars['Int']['input'];
+};
+
 export type CreateImageInput = {
   new_name: Scalars['String']['input'];
   original_name?: InputMaybe<Scalars['String']['input']>;
@@ -382,6 +388,7 @@ export type Mutation = {
   createEvent: Event;
   createEventCategory?: Maybe<EventCategory>;
   createEventSubCategory: EventSubCategory;
+  createFreeOrder?: Maybe<Order>;
   createImage: Image;
   createMail: Mail;
   createNotification: Notification;
@@ -500,6 +507,11 @@ export type MutationCreateEventCategoryArgs = {
 
 export type MutationCreateEventSubCategoryArgs = {
   data: CreateEventSubCategoryInput;
+};
+
+
+export type MutationCreateFreeOrderArgs = {
+  data: CreateFreeOrderInput;
 };
 
 
@@ -1689,6 +1701,13 @@ export type NotificationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type NotificationsQuery = { __typename?: 'Query', notifications: Array<{ __typename?: 'Notification', id: number, title: string, description?: string | null, createdAt: any, user?: { __typename?: 'User', id: number, name?: string | null } | null }> };
+
+export type CreateFreeOrderMutationVariables = Exact<{
+  data: CreateFreeOrderInput;
+}>;
+
+
+export type CreateFreeOrderMutation = { __typename?: 'Mutation', createFreeOrder?: { __typename?: 'Order', id: number, event?: { __typename?: 'Event', name: string } | null, access_type?: { __typename?: 'AccessType', name: string } | null } | null };
 
 export type CreateOpenVenuePaymentLinkQueryVariables = Exact<{
   data: CreateOpenVenueOrderInput;
@@ -3268,6 +3287,45 @@ export function useNotificationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type NotificationsQueryHookResult = ReturnType<typeof useNotificationsQuery>;
 export type NotificationsLazyQueryHookResult = ReturnType<typeof useNotificationsLazyQuery>;
 export type NotificationsQueryResult = Apollo.QueryResult<NotificationsQuery, NotificationsQueryVariables>;
+export const CreateFreeOrderDocument = gql`
+    mutation CreateFreeOrder($data: CreateFreeOrderInput!) {
+  createFreeOrder(data: $data) {
+    id
+    event {
+      name
+    }
+    access_type {
+      name
+    }
+  }
+}
+    `;
+export type CreateFreeOrderMutationFn = Apollo.MutationFunction<CreateFreeOrderMutation, CreateFreeOrderMutationVariables>;
+
+/**
+ * __useCreateFreeOrderMutation__
+ *
+ * To run a mutation, you first call `useCreateFreeOrderMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateFreeOrderMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createFreeOrderMutation, { data, loading, error }] = useCreateFreeOrderMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useCreateFreeOrderMutation(baseOptions?: Apollo.MutationHookOptions<CreateFreeOrderMutation, CreateFreeOrderMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateFreeOrderMutation, CreateFreeOrderMutationVariables>(CreateFreeOrderDocument, options);
+      }
+export type CreateFreeOrderMutationHookResult = ReturnType<typeof useCreateFreeOrderMutation>;
+export type CreateFreeOrderMutationResult = Apollo.MutationResult<CreateFreeOrderMutation>;
+export type CreateFreeOrderMutationOptions = Apollo.BaseMutationOptions<CreateFreeOrderMutation, CreateFreeOrderMutationVariables>;
 export const CreateOpenVenuePaymentLinkDocument = gql`
     query CreateOpenVenuePaymentLink($data: CreateOpenVenueOrderInput!) {
   createOpenVenueOrder(data: $data)
