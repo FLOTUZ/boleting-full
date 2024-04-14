@@ -1,18 +1,18 @@
-import Link from "next/link";
+import ProgressLoaderComponent from "@/components/loaders/progress-loader.component";
+
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-
-import { ShowOrderPath, SuccessPaymentPath } from "@/routes";
-
-import { Heading, Button, Box, useToast } from "@chakra-ui/react";
-import ProgressLoaderComponent from "@/components/loaders/progress-loader.component";
+import { SuccessPaymentPath } from "@/routes";
+import { Heading, Button, useToast, Card, Text } from "@chakra-ui/react";
 
 import {
   AccessType,
+  Event,
   useCreateFreeOrderMutation,
   useCreateOpenVenuePaymentLinkLazyQuery,
-  useShowAccessTypeLazyQuery,
+  useOrderResumeLazyQuery,
 } from "@/gql/generated";
+
 import FreeOrder from "../components/free-order";
 
 const CreateOrderView = () => {
@@ -21,16 +21,19 @@ const CreateOrderView = () => {
 
   const { eventId, accessTypeId, buyedTicketsCount } = router.query;
 
+  const [event, setEvent] = useState<Event | null>(null);
   const [accessType, setAccessType] = useState<AccessType | null>(null);
-  const [GET_ACCESS_TYPE, { loading: loadingAccessType }] =
-    useShowAccessTypeLazyQuery({
-      variables: {
-        accessTypeId: Number(accessTypeId),
-      },
-      onCompleted(data) {
-        setAccessType(data.accessType as AccessType);
-      },
-    });
+
+  const [GET_ORDER_DETAILS] = useOrderResumeLazyQuery({
+    variables: {
+      eventId: Number(eventId),
+      accessTypeId: Number(accessTypeId),
+    },
+    onCompleted(data) {
+      setEvent(data.event as Event);
+      setAccessType(data.accessType as AccessType);
+    },
+  });
 
   const [CHECK_OPEN_VENUE, { loading }] =
     useCreateOpenVenuePaymentLinkLazyQuery({
@@ -70,9 +73,9 @@ const CreateOrderView = () => {
 
   useEffect(() => {
     if (accessTypeId) {
-      GET_ACCESS_TYPE();
+      GET_ORDER_DETAILS();
     }
-  }, [GET_ACCESS_TYPE, accessTypeId]);
+  }, [GET_ORDER_DETAILS, accessTypeId]);
 
   if (loading) {
     return <ProgressLoaderComponent />;
@@ -88,26 +91,32 @@ const CreateOrderView = () => {
   }
 
   return (
-    <Box>
-      <Heading>Create order</Heading>
+    <Card p={8}>
+      <Heading>Resumen de orden</Heading>
 
-      <Link href={ShowOrderPath("test")}>
-        <Box>
-          Evento: {eventId} - Access type: {accessTypeId} - Buyed tickets:{" "}
-          {buyedTicketsCount}
-        </Box>
-      </Link>
+      <Text>Evento: {event?.name}</Text>
+      <Text>
+        {buyedTicketsCount}x {accessType?.name}
+      </Text>
+
+      <Text>
+        Total: {Number(accessType?.price) * Number(buyedTicketsCount)}
+      </Text>
 
       <Button
         w={"full"}
-        placeContent={"start"}
-        variant="ghost"
+        h={"4rem"}
+        mt={8}
+        placeContent={"center"}
+        colorScheme="green"
         isLoading={loading}
+        _hover={{ bg: "blue.500" }}
+        _dark={{ _hover: { color: "white" } }}
         onClick={() => CHECK_OPEN_VENUE()}
       >
-        Orden de prueba
+        Proceder al pago
       </Button>
-    </Box>
+    </Card>
   );
 };
 

@@ -1729,6 +1729,14 @@ export type OrderDetailsQueryVariables = Exact<{
 
 export type OrderDetailsQuery = { __typename?: 'Query', order?: { __typename?: 'Order', id: number, buyed_access_count: number, createdAt: any, event?: { __typename?: 'Event', id: number, name: string, start_date: any, end_date?: any | null, event_logo?: { __typename?: 'Image', id: string, url: string } | null, event_banner?: { __typename?: 'Image', id: string, url: string } | null } | null, selled_tickets?: Array<{ __typename?: 'Ticket', id: number, note?: string | null, serial_number: string, is_used: boolean, access_type?: { __typename?: 'AccessType', id: number, name: string, description?: string | null, enter_and_exit_option: boolean } | null }> | null } | null };
 
+export type OrderResumeQueryVariables = Exact<{
+  eventId: Scalars['Int']['input'];
+  accessTypeId: Scalars['Int']['input'];
+}>;
+
+
+export type OrderResumeQuery = { __typename?: 'Query', event: { __typename?: 'Event', id: number, name: string, start_date: any, end_date?: any | null, event_logo?: { __typename?: 'Image', id: string, url: string } | null, event_banner?: { __typename?: 'Image', id: string, url: string } | null }, accessType: { __typename?: 'AccessType', id: number, name: string, description?: string | null, price: any } };
+
 export type SelectPaymentMethodQueryVariables = Exact<{
   accessTypeId: Scalars['Int']['input'];
   eventId: Scalars['Int']['input'];
@@ -3482,6 +3490,59 @@ export function useOrderDetailsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
 export type OrderDetailsQueryHookResult = ReturnType<typeof useOrderDetailsQuery>;
 export type OrderDetailsLazyQueryHookResult = ReturnType<typeof useOrderDetailsLazyQuery>;
 export type OrderDetailsQueryResult = Apollo.QueryResult<OrderDetailsQuery, OrderDetailsQueryVariables>;
+export const OrderResumeDocument = gql`
+    query OrderResume($eventId: Int!, $accessTypeId: Int!) {
+  event(id: $eventId) {
+    id
+    name
+    start_date
+    end_date
+    event_logo {
+      id
+      url
+    }
+    event_banner {
+      id
+      url
+    }
+  }
+  accessType(id: $accessTypeId) {
+    id
+    name
+    description
+    price
+  }
+}
+    `;
+
+/**
+ * __useOrderResumeQuery__
+ *
+ * To run a query within a React component, call `useOrderResumeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useOrderResumeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useOrderResumeQuery({
+ *   variables: {
+ *      eventId: // value for 'eventId'
+ *      accessTypeId: // value for 'accessTypeId'
+ *   },
+ * });
+ */
+export function useOrderResumeQuery(baseOptions: Apollo.QueryHookOptions<OrderResumeQuery, OrderResumeQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<OrderResumeQuery, OrderResumeQueryVariables>(OrderResumeDocument, options);
+      }
+export function useOrderResumeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<OrderResumeQuery, OrderResumeQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<OrderResumeQuery, OrderResumeQueryVariables>(OrderResumeDocument, options);
+        }
+export type OrderResumeQueryHookResult = ReturnType<typeof useOrderResumeQuery>;
+export type OrderResumeLazyQueryHookResult = ReturnType<typeof useOrderResumeLazyQuery>;
+export type OrderResumeQueryResult = Apollo.QueryResult<OrderResumeQuery, OrderResumeQueryVariables>;
 export const SelectPaymentMethodDocument = gql`
     query SelectPaymentMethod($accessTypeId: Int!, $eventId: Int!) {
   accessType(id: $accessTypeId) {

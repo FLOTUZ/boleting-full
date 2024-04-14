@@ -97,8 +97,25 @@ export const OrderService = {
     });
     const accessType = await prisma.accessType.findUniqueOrThrow({
       include: { event: true },
-      where: { id: access_typeId },
+      where: { id: access_typeId, eventId: event_id },
     });
+
+    // if event we have available tickets for this access type
+    if (accessType.available_tickets_count < buyed_access_count) {
+      throw new PrismaError({
+        code: "NOT_FOUND",
+        message:
+          "No hay suficientes tickets disponibles para realizar la compra.",
+      });
+    }
+
+    // If tickets its sold out for this access type
+    if (accessType.available_tickets_count === 0) {
+      throw new PrismaError({
+        code: "NOT_FOUND",
+        message: "No hay tickets disponibles para realizar la compra.",
+      });
+    }
 
     const total_price: number = buyed_access_count * Number(accessType?.price);
 
