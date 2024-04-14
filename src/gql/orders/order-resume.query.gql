@@ -1,0 +1,22 @@
+query OrderResume($eventId: Int!, $accessTypeId: Int!) {
+  event(id: $eventId) {
+    id
+    name
+    start_date
+    end_date
+    event_logo {
+      id
+      url
+    }
+    event_banner {
+      id
+      url
+    }
+  }
+  accessType(id: $accessTypeId) {
+    id
+    name
+    description
+    price
+  }
+}

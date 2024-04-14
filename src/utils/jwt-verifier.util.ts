@@ -13,6 +13,8 @@ export const jwtVerifier = (token: string) => {
 
     return res;
   } catch (error) {
-    throw new AuthenticationError("Invalid token");
+    throw new AuthenticationError({
+      message: "Invalid token",
+    });
   }
 };

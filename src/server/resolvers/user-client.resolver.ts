@@ -7,18 +7,30 @@ import {
   UpdateUserClientValidator,
 } from "@/validations";
 import { OrderService, UserClientService } from "../services";
-import { UnauthorizedError } from "../utils";
+import { AuthenticationError } from "../utils";
 
 //
 // Resolver for UserClient model
 //
 export const UserClientResolver = {
   Query: {
+    userClientIsAuthenticated: async (
+      _: any,
+      __: any,
+      { id_user }: IGraphqlContext
+    ) => {
+      return id_user !== null;
+    },
     userClients: async (_: any, { pagination }: Args, __: IGraphqlContext) => {
       return await UserClientService.userClients(pagination);
     },
 
-    userClient: async (_: any, { id }: { id: number }, __: IGraphqlContext) => {
+    userClient: async (
+      _: any,
+      { id }: { id: number },
+      { id_user }: IGraphqlContext
+    ) => {
+      if (id_user === null) throw new AuthenticationError();
       return await UserClientService.userClient(id);
     },
 
@@ -27,8 +39,7 @@ export const UserClientResolver = {
       __: any,
       { id_user }: IGraphqlContext
     ) => {
-      if (id_user === null)
-        throw new UnauthorizedError("Unauthorized organization");
+      if (id_user === null) throw new AuthenticationError();
       return await OrderService.currentClientOrders(id_user!);
     },
   },

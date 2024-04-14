@@ -1,5 +1,9 @@
 export class AuthenticationError extends Error {
-  constructor(message: string = "Authentication error") {
+  constructor(
+    { message }: { message?: string } = {
+      message: "AUTHENTICATION_ERROR",
+    }
+  ) {
     super(message);
   }
 }

@@ -7,6 +7,7 @@ import {
   UpdateOrderValidator,
 } from "@/validations";
 import {
+  AccessTypeService,
   AuthorizedDealerService,
   EventService,
   OrderService,
@@ -42,7 +43,9 @@ export const OrderResolver = {
       { type, id_user }: IGraphqlContext
     ) => {
       if (type === "USER" || type == null || id_user == null)
-        throw new AuthenticationError("User not authenticated");
+        throw new AuthenticationError({
+          message: "User not authenticated",
+        });
       // await validateData({ schema: CreateOrderValidator, data });
 
       return await OrderService.createOpenVenueOrder(
@@ -78,7 +81,9 @@ export const OrderResolver = {
       { type, id_user }: IGraphqlContext
     ) => {
       if (type === "USER" || type == null || id_user == null)
-        throw new AuthenticationError("User not authenticated");
+        throw new AuthenticationError({
+          message: "User not authenticated",
+        });
 
       return await OrderService.createFreeOrder(
         id_user,
@@ -99,6 +104,14 @@ export const OrderResolver = {
   Order: {
     event: async ({ eventId }: Order, _: any, __: IGraphqlContext) => {
       return await EventService.event(eventId);
+    },
+
+    access_type: async (
+      { access_typeId }: Order,
+      _: any,
+      __: IGraphqlContext
+    ) => {
+      return await AccessTypeService.accessType(access_typeId);
     },
 
     payment_method: async (

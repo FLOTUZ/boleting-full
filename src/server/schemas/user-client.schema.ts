@@ -40,6 +40,7 @@ export const UserClientSchema = gql`
   }
 
   type Query {
+    userClientIsAuthenticated: Boolean!
     userClients(pagination: Pagination): [UserClient!]!
     userClient(id: Int!): UserClient!
     currentClientOrders: [Order!]!
